@@ -26,6 +26,19 @@
       --oneui-gray-border: rgba(255, 255, 255, 0.25);
       --oneui-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
       --oneui-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+
+      /* Tier Colors */
+      --tier-1-color: #ef4444;
+      --tier-1-bg: rgba(239, 68, 68, 0.12);
+      --tier-1-border: rgba(239, 68, 68, 0.35);
+
+      --tier-2-color: #f59e0b;
+      --tier-2-bg: rgba(245, 158, 11, 0.12);
+      --tier-2-border: rgba(245, 158, 11, 0.35);
+
+      --tier-3-color: #10b981;
+      --tier-3-bg: rgba(16, 185, 129, 0.12);
+      --tier-3-border: rgba(16, 185, 129, 0.35);
     }
 
     body {
@@ -43,7 +56,72 @@
       padding-bottom: 90px;
     }
 
-    /* Samsung One UI Physics & Spring Keyframes */
+    /* Top Focus Nudge Popup Banner */
+    .focus-nudge-banner {
+      position: fixed;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2000;
+      width: 90%;
+      max-width: 540px;
+      background: rgba(17, 24, 39, 0.94);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      box-shadow: 0 16px 36px rgba(239, 68, 68, 0.25), 0 8px 24px rgba(0, 0, 0, 0.6);
+      border-radius: 22px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      transition: top 0.45s var(--oneui-spring), opacity 0.3s ease;
+      opacity: 0;
+    }
+
+    .focus-nudge-banner.show {
+      top: 20px;
+      opacity: 1;
+    }
+
+    .nudge-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nudge-icon {
+      font-size: 1.5rem;
+      animation: pulseAlert 1.5s infinite;
+    }
+
+    @keyframes pulseAlert {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    .nudge-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--tier-1-color);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .nudge-msg {
+      font-size: 0.9rem;
+      color: #ffffff;
+      margin-top: 1px;
+    }
+
+    .nudge-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Keyframes */
     @keyframes oneUiSpringIn {
       0% {
         opacity: 0;
@@ -69,7 +147,6 @@
       100% { opacity: 1; transform: scale(1); }
     }
 
-    /* Micro-Interactions */
     .glass-card, .widget-card, button, input, select, textarea, .task-item, .schedule-item, .habit-pill {
       transition: transform 0.3s var(--oneui-spring), 
                   background-color 0.25s ease, 
@@ -78,7 +155,6 @@
                   opacity 0.25s ease;
     }
 
-    /* Compacted Desktop Layout Engine */
     .desktop-wrapper {
       width: 100%;
       max-width: 1180px;
@@ -169,7 +245,6 @@
       transform: scale(0.95); 
     }
 
-    /* Compact Grid Layout */
     .home-desktop-grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
@@ -271,7 +346,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    /* Fixed Timer Circle with Overflow Safeguard */
+    /* Timer Circle with Glow Safeguard */
     .timer-circle-container {
       position: relative;
       width: 240px;
@@ -309,26 +384,67 @@
       letter-spacing: -1.5px;
     }
 
-    /* Homework Priority Badges */
-    .badge-high { background: rgba(239, 68, 68, 0.25); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; }
-    .badge-medium { background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.4); color: #fde68a; }
-    .badge-low { background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; }
-    .priority-pill { padding: 3px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
+    /* Task Tiers & High-Visibility Color Coding */
+    .tier-container {
+      margin-top: 18px;
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--oneui-card-border);
+    }
+
+    .tier-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .tier-badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .tier-1-badge { background: var(--tier-1-bg); border: 1px solid var(--tier-1-border); color: var(--tier-1-color); }
+    .tier-2-badge { background: var(--tier-2-bg); border: 1px solid var(--tier-2-border); color: var(--tier-2-color); }
+    .tier-3-badge { background: var(--tier-3-bg); border: 1px solid var(--tier-3-border); color: var(--tier-3-color); }
 
     .task-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: var(--oneui-pill);
       padding: 14px 18px;
       border-radius: 18px;
       margin-top: 10px;
-      border: 1px solid var(--oneui-card-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .task-item.tier-1 {
+      background: var(--tier-1-bg);
+      border: 1px solid var(--tier-1-border);
+      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.08);
+    }
+
+    .task-item.tier-2 {
+      background: var(--tier-2-bg);
+      border: 1px solid var(--tier-2-border);
+    }
+
+    .task-item.tier-3 {
+      background: var(--tier-3-bg);
+      border: 1px solid var(--tier-3-border);
     }
 
     .task-item:hover {
       transform: translateY(-2px) scale(1.005);
-      border-color: var(--oneui-gray-border);
+      filter: brightness(1.12);
     }
 
     .task-inputs-grid {
@@ -338,7 +454,6 @@
       margin-bottom: 16px;
     }
 
-    /* Widget Components: Timetable & Habits */
     .schedule-item {
       display: flex;
       align-items: center;
@@ -379,7 +494,7 @@
       color: #a7f3d0;
     }
 
-    /* Apple-Style Separated Floating Navigation Dock */
+    /* Apple-Style Dock Nav with Precision Active Alignment Fix */
     nav.apple-dock-nav {
       position: fixed;
       bottom: 18px;
@@ -394,10 +509,9 @@
       transition: transform 0.35s var(--oneui-spring), opacity 0.25s ease;
     }
 
-    /* Dynamic Scroll State for Navigation Dock */
     nav.apple-dock-nav.dock-minimized {
       transform: translateX(-50%) scale(0.85);
-      opacity: 0.82;
+      opacity: 0.85;
     }
 
     nav.apple-dock-nav.dock-minimized:hover {
@@ -431,29 +545,29 @@
       z-index: 2;
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       font-size: 0.88rem;
       font-weight: 700;
-      transition: padding 0.3s var(--oneui-spring);
+      transition: padding 0.3s var(--oneui-spring), color 0.25s ease;
+      height: 38px;
     }
 
     .nav-btn span {
       max-width: 100px;
       opacity: 1;
       display: inline-block;
-      transition: max-width 0.35s var(--oneui-smooth), opacity 0.25s ease;
+      transition: max-width 0.35s var(--oneui-smooth), opacity 0.25s ease, margin 0.35s var(--oneui-smooth);
       white-space: nowrap;
       overflow: hidden;
     }
 
-    /* Collapse Text Labels on Scroll Down */
     nav.apple-dock-nav.dock-minimized .nav-btn span {
       max-width: 0;
       opacity: 0;
       margin: 0;
     }
 
-    /* Restore Labels on Dock Hover */
     nav.apple-dock-nav.dock-minimized:hover .nav-btn span {
       max-width: 100px;
       opacity: 1;
@@ -468,9 +582,8 @@
     }
 
     .nav-btn:hover { color: #ffffff; }
-    .nav-btn:hover svg { transform: scale(1.18); }
+    .nav-btn:hover svg { transform: scale(1.15); }
 
-    /* Active States */
     .home-segment .nav-btn.active {
       color: #ffffff;
       background: var(--oneui-pill-active);
@@ -480,21 +593,19 @@
 
     .tool-segment .nav-btn.active { color: #ffffff; }
 
-    /* Nav Indicator with Fixed Compaction Sync */
+    /* Precise Centered Indicator Pill Fix */
     .nav-indicator {
       position: absolute;
-      top: 5px;
-      bottom: 5px;
       border-radius: 999px;
       background: var(--oneui-pill-active);
       border: 1px solid var(--oneui-gray-border);
-      transition: left 0.35s var(--oneui-spring), width 0.35s var(--oneui-spring), opacity 0.2s ease;
+      transition: left 0.3s var(--oneui-spring), width 0.3s var(--oneui-spring), top 0.3s var(--oneui-spring), height 0.3s var(--oneui-spring), opacity 0.2s ease;
       z-index: 1;
       opacity: 0;
       pointer-events: none;
+      box-sizing: border-box;
     }
 
-    /* Dynamic Dictionary Cards */
     .primary-def-card {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
       border: 1px solid rgba(255, 255, 255, 0.3) !important;
@@ -506,7 +617,6 @@
 
     .def-item { animation: popIn 0.35s var(--oneui-smooth) forwards; }
 
-    /* Responsive fallbacks for smaller desktop screens */
     @media (max-width: 992px) {
       .col-8, .col-7, .col-6, .col-5, .col-4 { grid-column: span 12; }
       .calc-desktop-grid { grid-template-columns: 1fr; }
@@ -516,13 +626,28 @@
 </head>
 <body>
 
+  <!-- DYNAMIC TOP FOCUS NUDGE POPUP -->
+  <div id="focus-nudge-popup" class="focus-nudge-banner">
+    <div class="nudge-content">
+      <span class="nudge-icon">🚨</span>
+      <div>
+        <div class="nudge-title">Focus Warning</div>
+        <div class="nudge-msg" id="nudge-text">You are off-task! Focus on: <strong>Homework Assignment</strong></div>
+      </div>
+    </div>
+    <div class="nudge-actions">
+      <button class="action-btn" onclick="switchPage('tasks'); hideNudge();" style="padding:5px 14px; font-size:0.8rem;">Focus Now</button>
+      <button onclick="hideNudge()" style="background:transparent; border:none; color:var(--oneui-text-sub); cursor:pointer; font-size:1.1rem; padding:0 4px;">✕</button>
+    </div>
+  </div>
+
   <div class="desktop-wrapper">
 
     <!-- HOMESCREEN DASHBOARD -->
     <section id="home" class="page active-page">
       <div class="home-desktop-grid">
         
-        <!-- WIDGET 1: Hero Galaxy Clock -->
+        <!-- WIDGET 1: Hero Clock -->
         <div class="widget-card col-12" style="text-align: center; padding: 32px 20px; animation: cardPulseGlow 6s infinite ease-in-out;">
           <div class="widget-title" style="justify-content: center; gap: 8px;">
             <span>DESK TIME & WORKSTATION</span>
@@ -532,16 +657,16 @@
           <div id="clock-date" style="color: var(--oneui-text-sub); font-size: 1.1rem; margin-top: 4px; font-weight: 600;">Loading calendar...</div>
         </div>
 
-        <!-- WIDGET 2: Homework Queue -->
+        <!-- WIDGET 2: Homework Priority Queue -->
         <div class="widget-card col-7">
           <div class="widget-title">
-            <span>📌 Assignment Priority Queue</span>
+            <span>📌 Assignment Tier Status</span>
             <button class="action-btn" onclick="switchPage('tasks')" style="padding: 4px 14px; font-size: 0.8rem;">Planner</button>
           </div>
           <div id="home-priority-tasks"></div>
         </div>
 
-        <!-- WIDGET 3: Fully Accessible Focus Timer Widget -->
+        <!-- WIDGET 3: Focus Timer Widget -->
         <div class="widget-card col-5" style="display: flex; flex-direction: column; justify-content: space-between;">
           <div class="widget-title">
             <span>⏱️ Focus Timer</span>
@@ -558,7 +683,7 @@
           </div>
         </div>
 
-        <!-- NEW WIDGET 4: Today's Class Timetable -->
+        <!-- WIDGET 4: Class Timetable Today -->
         <div class="widget-card col-6">
           <div class="widget-title">
             <span>📅 Class Timetable Today</span>
@@ -578,7 +703,7 @@
           </div>
         </div>
 
-        <!-- NEW WIDGET 5: Study Habit Tracker & Audio Synth -->
+        <!-- WIDGET 5: Study Habit Tracker & Audio Synth -->
         <div class="widget-card col-6" style="display:flex; flex-direction:column; justify-content:space-between;">
           <div>
             <div class="widget-title">
@@ -599,7 +724,7 @@
           </div>
         </div>
 
-        <!-- WIDGET 6: Interactive Quick Scratchpad -->
+        <!-- WIDGET 6: Desktop Scratchpad -->
         <div class="widget-card col-12">
           <div class="widget-title">
             <span>📝 Desktop Scratchpad & Quick Notes</span>
@@ -677,7 +802,6 @@
         <h2 class="oneui-header-title">Focus Study Timer</h2>
         <p class="oneui-header-sub">Visual real-time light countdown with icebreak chime</p>
         
-        <!-- Re-dimensioned SVG viewBox preventing glow cutoff -->
         <div class="timer-circle-container">
           <svg class="timer-svg" viewBox="0 0 240 240">
             <circle class="timer-bg" cx="120" cy="120" r="95" />
@@ -699,32 +823,31 @@
       </div>
     </section>
 
-    <!-- TASKS -->
+    <!-- TASKS (TIERED HIGH VISIBILITY PLANNER) -->
     <section id="tasks" class="page">
       <div class="glass-card">
-        <h2 class="oneui-header-title">Homework Planner</h2>
-        <p class="oneui-header-sub">Organize your assignments and deadlines</p>
+        <h2 class="oneui-header-title">Tiered Homework Planner</h2>
+        <p class="oneui-header-sub">Color-coded tier assignment priority board</p>
         
         <div class="task-inputs-grid">
           <input type="text" id="task-name" placeholder="Assignment title..." />
-          <select id="task-priority">
-            <option value="High">High Priority</option>
-            <option value="Medium" selected>Medium Priority</option>
-            <option value="Low">Low Priority</option>
+          <select id="task-tier">
+            <option value="Tier 1" selected>Tier 1: High / Urgent</option>
+            <option value="Tier 2">Tier 2: Medium / Standard</option>
+            <option value="Tier 3">Tier 3: Low / Flexible</option>
           </select>
           <input type="date" id="task-date" />
           <button class="action-btn" onclick="addTask()">Add Task</button>
         </div>
 
-        <div id="full-task-list"></div>
+        <div id="tiered-task-board"></div>
       </div>
     </section>
 
   </div>
 
-  <!-- APPLE-STYLE SEPARATED FLOATING DOCK NAV -->
+  <!-- APPLE-STYLE SEPARATED DOCK NAV WITH PERFECT ALIGNMENT ENGINE -->
   <nav class="apple-dock-nav" id="apple-dock">
-    <!-- Standalone Home Pill -->
     <div class="nav-segment home-segment">
       <button class="nav-btn active" id="btn-home" onclick="switchPage('home')" title="Home Dashboard">
         <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -732,29 +855,24 @@
       </button>
     </div>
 
-    <!-- Separated Function Tools Segment -->
     <div class="nav-segment tool-segment">
       <div class="nav-indicator" id="nav-indicator"></div>
 
-      <!-- Calculator -->
       <button class="nav-btn" id="btn-calc" onclick="switchPage('calc')" title="Calculator">
         <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-6 14h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zM7 7h2v2H7V7zm0 4h2v2H7v-2zm0 4h2v2H7v-2z"/></svg>
         <span>Calculator</span>
       </button>
 
-      <!-- Dictionary -->
       <button class="nav-btn" id="btn-dict" onclick="switchPage('dict')" title="Dictionary">
         <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
         <span>Dictionary</span>
       </button>
 
-      <!-- Timer -->
       <button class="nav-btn" id="btn-timer" onclick="switchPage('timer')" title="Timer">
         <svg viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
         <span>Timer</span>
       </button>
 
-      <!-- Tasks -->
       <button class="nav-btn" id="btn-tasks" onclick="switchPage('tasks')" title="Tasks">
         <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
         <span>Tasks</span>
@@ -763,44 +881,63 @@
   </nav>
 
   <script>
-    let tasks = JSON.parse(localStorage.getItem("ut_tasks")) || [];
+    let tasks = JSON.parse(localStorage.getItem("ut_tasks_v2")) || [
+      { id: 1, name: "Math Chapter 4 Problems", tier: "Tier 1", date: "2026-08-28" },
+      { id: 2, name: "History Reading Assignment", tier: "Tier 2", date: "2026-08-30" },
+      { id: 3, name: "Science Quiz Prep", tier: "Tier 3", date: "2026-09-02" }
+    ];
     let currentPage = 'home';
     let is24Hour = false;
     let lastScrollY = window.scrollY;
 
-    /* Dynamic Nav Slider Indicator Calculation */
+    /* Unscaled Bounding Engine Fixing Pill Alignment Glitch */
     function updateNavIndicator(btn) {
       const indicator = document.getElementById('nav-indicator');
-      if (!indicator) return;
+      const segment = document.querySelector('.tool-segment');
+      if (!indicator || !segment) return;
 
-      if (btn && btn.parentElement.classList.contains('tool-segment')) {
+      if (btn && btn.parentElement === segment) {
+        const btnRect = btn.getBoundingClientRect();
+        const segRect = segment.getBoundingClientRect();
+        
+        // Normalize against potential dock CSS scale transforms
+        const scale = segRect.width / segment.offsetWidth || 1;
+        const leftOffset = (btnRect.left - segRect.left) / scale;
+        const topOffset = (btnRect.top - segRect.top) / scale;
+        const width = btnRect.width / scale;
+        const height = btnRect.height / scale;
+
         indicator.style.opacity = '1';
-        indicator.style.width = `${btn.offsetWidth}px`;
-        indicator.style.left = `${btn.offsetLeft}px`;
+        indicator.style.left = `${leftOffset}px`;
+        indicator.style.top = `${topOffset}px`;
+        indicator.style.width = `${width}px`;
+        indicator.style.height = `${height}px`;
       } else {
         indicator.style.opacity = '0';
       }
     }
 
-    /* Fixed Scroll Listener Syncing Minimized Dock Indicator */
+    /* Scroll Dock State Sync */
     window.addEventListener('scroll', () => {
       const dock = document.getElementById('apple-dock');
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > lastScrollY && currentScrollY > 40) {
+      if (currentScrollY > lastScrollY && currentScrollY > 30) {
         dock.classList.add('dock-minimized');
       } else if (currentScrollY < lastScrollY) {
         dock.classList.remove('dock-minimized');
       }
       
       lastScrollY = currentScrollY;
+      realignActiveIndicator();
+    });
 
-      // Force instant indicator realign as text collapses or expands
-      setTimeout(() => {
+    function realignActiveIndicator() {
+      requestAnimationFrame(() => {
         const activeBtn = document.getElementById(`btn-${currentPage}`);
         if (activeBtn) updateNavIndicator(activeBtn);
-      }, 50);
-    });
+      });
+    }
 
     function switchPage(pageId) {
       if (currentPage === pageId) return;
@@ -825,20 +962,44 @@
       }
 
       currentPage = pageId;
+      triggerFocusNudgeCheck(pageId);
+    }
+
+    /* OFF-TASK FOCUS NUDGE POPUP TRIGGER */
+    function triggerFocusNudgeCheck(pageId) {
+      if (pageId === 'calc' || pageId === 'dict') {
+        const tier1Task = tasks.find(t => t.tier === 'Tier 1');
+        const activeTask = tier1Task || tasks[0];
+
+        if (activeTask) {
+          showNudge(`Off-Task Warning! Focus on assignment: "${activeTask.name}"`);
+        }
+      }
+    }
+
+    function showNudge(msg) {
+      const banner = document.getElementById('focus-nudge-popup');
+      document.getElementById('nudge-text').innerHTML = msg;
+      banner.classList.add('show');
+
+      // Auto dismiss after 6 seconds
+      setTimeout(() => {
+        hideNudge();
+      }, 6000);
+    }
+
+    function hideNudge() {
+      document.getElementById('focus-nudge-popup').classList.remove('show');
     }
 
     window.addEventListener('load', () => {
-      const activeBtn = document.getElementById('btn-home');
-      updateNavIndicator(activeBtn);
+      realignActiveIndicator();
       document.getElementById('quick-note').value = localStorage.getItem('ut_quick_note') || '';
     });
 
-    window.addEventListener('resize', () => {
-      const activeBtn = document.getElementById(`btn-${currentPage}`);
-      updateNavIndicator(activeBtn);
-    });
+    window.addEventListener('resize', realignActiveIndicator);
 
-    /* --- CLOCK --- */
+    /* CLOCK */
     function toggleTimeFormat() {
       is24Hour = !is24Hour;
       updateClock();
@@ -859,7 +1020,7 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    /* --- HABIT WIDGET --- */
+    /* HABIT WIDGET */
     function toggleHabit(el) {
       el.classList.toggle('completed');
       const total = document.querySelectorAll('.habit-pill').length;
@@ -867,13 +1028,13 @@
       document.getElementById('habit-counter').innerText = `${done}/${total} Done`;
     }
 
-    /* --- AUDIO SYNTHESIZERS (Icebreak & Ambient Noise) --- */
+    /* AUDIO SYNTHESIZERS */
     let audioCtx = null;
     let noiseNode = null;
 
     function playIcebreakRingtone() {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const freqs = [1567.98, 2093.00, 2637.02, 3135.96, 4186.01]; // G6, C7, E7, G7, C8 high chime frequencies
+      const freqs = [1567.98, 2093.00, 2637.02, 3135.96, 4186.01];
       
       freqs.forEach((freq, idx) => {
         const osc = ctx.createOscillator();
@@ -910,7 +1071,7 @@
       let lastOut = 0.0;
       for (let i = 0; i < bufferSize; i++) {
         const white = Math.random() * 2 - 1;
-        data[i] = (lastOut + (0.02 * white)) / 1.02; // Soft pink noise filter
+        data[i] = (lastOut + (0.02 * white)) / 1.02;
         lastOut = data[i];
       }
 
@@ -929,13 +1090,13 @@
       btn.style.background = "rgba(16, 185, 129, 0.4)";
     }
 
-    /* --- QUICK NOTE --- */
+    /* QUICK NOTE */
     function saveQuickNote() {
       const val = document.getElementById('quick-note').value;
       localStorage.setItem('ut_quick_note', val);
     }
 
-    /* --- CALCULATOR --- */
+    /* CALCULATOR */
     let calcVal = "0";
     let calcHistoryList = [];
 
@@ -976,7 +1137,7 @@
       else if (e.key === 'Escape') { clearCalc(); }
     });
 
-    /* --- DICTIONARY --- */
+    /* DICTIONARY */
     async function searchAIDictionary() {
       const word = document.getElementById("dict-input").value.trim();
       const output = document.getElementById("dict-output");
@@ -1033,7 +1194,7 @@
       document.getElementById("dict-input").value = "";
     }
 
-    /* --- TIMER WITH REAL LIGHT COUNTDOWN & ICEBREAK RINGTONE --- */
+    /* TIMER */
     let totalSeconds = 1500;
     let timeLeft = 1500;
     let timerId = null;
@@ -1061,16 +1222,13 @@
         statusTag.style.color = "#a7f3d0";
       }
 
-      // 597 Circumference for r=95 in viewBox 240x240
       const circumference = 597;
       const progressCircle = document.getElementById("timer-progress");
-      
-      // Light goes away proportional to time left (0 offset = full light ring, 597 offset = zero light remaining)
       const lightOffset = circumference * (1 - (timeLeft / totalSeconds));
       progressCircle.style.strokeDashoffset = lightOffset;
 
       if (timeLeft <= 10) {
-        progressCircle.style.stroke = "#ef4444"; // Warning red glow on final 10 sec
+        progressCircle.style.stroke = "#ef4444";
       } else {
         progressCircle.style.stroke = "#6366f1";
       }
@@ -1116,15 +1274,15 @@
     
     renderTimer();
 
-    /* --- TASKS --- */
+    /* TIERED TASKS SYSTEM */
     function addTask() {
       const name = document.getElementById("task-name").value.trim();
-      const priority = document.getElementById("task-priority").value;
+      const tier = document.getElementById("task-tier").value;
       const date = document.getElementById("task-date").value || "No date";
       
       if (!name) return;
 
-      tasks.push({ id: Date.now(), name, priority, date });
+      tasks.push({ id: Date.now(), name, tier, date });
       saveTasks();
       renderTasks();
       document.getElementById("task-name").value = "";
@@ -1136,43 +1294,63 @@
       renderTasks();
     }
 
-    function saveTasks() { localStorage.setItem("ut_tasks", JSON.stringify(tasks)); }
+    function saveTasks() { localStorage.setItem("ut_tasks_v2", JSON.stringify(tasks)); }
 
     function renderTasks() {
-      const fullList = document.getElementById("full-task-list");
+      const board = document.getElementById("tiered-task-board");
       const homeWidget = document.getElementById("home-priority-tasks");
 
       if (tasks.length === 0) {
-        fullList.innerHTML = `<p style="color:var(--oneui-text-sub); margin-top:10px; font-size:0.95rem;">No active assignments pending.</p>`;
+        board.innerHTML = `<p style="color:var(--oneui-text-sub); margin-top:10px; font-size:0.95rem;">No active assignments pending.</p>`;
         homeWidget.innerHTML = `<p style="color:var(--oneui-text-sub); font-size:0.9rem;">All caught up! No active tasks due.</p>`;
         return;
       }
 
-      const priorityOrder = { High: 1, Medium: 2, Low: 3 };
-      tasks.sort((a, b) => priorityOrder[a.priority] - priorityOrder[b.priority]);
+      const tiers = [
+        { name: "Tier 1", label: "🔥 Tier 1: Urgent / High Priority", class: "tier-1-badge" },
+        { name: "Tier 2", label: "⚡ Tier 2: Medium Priority", class: "tier-2-badge" },
+        { name: "Tier 3", label: "🌱 Tier 3: Low / Flexible Priority", class: "tier-3-badge" }
+      ];
 
-      fullList.innerHTML = tasks.map(t => `
-        <div class="task-item">
-          <div>
-            <strong style="font-size:1rem;">${t.name}</strong>
-            <div style="font-size:0.85rem; color:var(--oneui-text-sub); margin-top:2px;">
-              Due: ${t.date} | Priority: <span class="priority-pill badge-${t.priority.toLowerCase()}">${t.priority}</span>
+      board.innerHTML = tiers.map(t => {
+        const tierTasks = tasks.filter(task => task.tier === t.name);
+        if (tierTasks.length === 0) return '';
+
+        return `
+          <div class="tier-container">
+            <div class="tier-header">
+              <span class="tier-badge ${t.class}">${t.label}</span>
+              <span style="font-size:0.8rem; color:var(--oneui-text-sub);">${tierTasks.length} task(s)</span>
             </div>
+            ${tierTasks.map(task => `
+              <div class="task-item ${t.name.toLowerCase().replace(' ', '-')}">
+                <div>
+                  <strong style="font-size:1rem;">${task.name}</strong>
+                  <div style="font-size:0.85rem; color:var(--oneui-text-sub); margin-top:2px;">
+                    Due: ${task.date}
+                  </div>
+                </div>
+                <button class="action-btn" onclick="completeTask(${task.id})" style="padding: 6px 16px; font-size:0.85rem;">✓ Complete</button>
+              </div>
+            `).join('')}
           </div>
-          <button class="action-btn" onclick="completeTask(${t.id})" style="padding: 6px 16px; font-size:0.85rem;">✓ Done</button>
-        </div>
-      `).join('');
+        `;
+      }).join('');
+
+      const priorityOrder = { "Tier 1": 1, "Tier 2": 2, "Tier 3": 3 };
+      tasks.sort((a, b) => priorityOrder[a.tier] - priorityOrder[b.tier]);
 
       homeWidget.innerHTML = tasks.slice(0, 3).map(t => `
-        <div class="task-item" style="padding:10px 14px;">
+        <div class="task-item ${t.tier.toLowerCase().replace(' ', '-')}" style="padding:10px 14px;">
           <div>
-            <span class="priority-pill badge-${t.priority.toLowerCase()}">${t.priority}</span>
+            <span class="tier-badge ${t.tier.toLowerCase().replace(' ', '-')}-badge">${t.tier}</span>
             <span style="margin-left:8px; font-weight:600; font-size:0.95rem;">${t.name}</span>
           </div>
-          <button class="action-btn" onclick="completeTask(${t.id})" style="padding: 4px 12px; font-size:0.8rem;">✓ Complete</button>
+          <button class="action-btn" onclick="completeTask(${t.id})" style="padding: 4px 12px; font-size:0.8rem;">✓ Done</button>
         </div>
       `).join('');
     }
+
     renderTasks();
   </script>
 </body>
