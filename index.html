@@ -22,7 +22,7 @@
       --oneui-pill-hover: rgba(255, 255, 255, 0.14);
       --oneui-text-sub: #9ea1b0;
       --oneui-gray-accent: #2c2d35;
-      --oneui-gray-border: rgba(255, 255, 255, 0.15);
+      --oneui-gray-border: rgba(255, 255, 255, 0.18);
     }
 
     body {
@@ -33,15 +33,45 @@
       overflow-x: hidden;
     }
 
-    /* Sophisticated Hover Easing & Scaling */
-    .glass-card, .widget-card, button, input, select, .task-item {
-      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), 
-                  background-color 0.2s ease, 
-                  box-shadow 0.25s ease, 
-                  border-color 0.2s ease;
+    /* Keyframe Animations */
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.97);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
-    /* Floating Navigation Bar with Gray Dynamic Indicator */
+    @keyframes expandWidget {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.7;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes primaryPulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.15); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+    }
+
+    /* Global Micro-Transitions */
+    .glass-card, .widget-card, button, input, select, .task-item {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+                  background-color 0.25s ease, 
+                  box-shadow 0.3s ease, 
+                  border-color 0.25s ease,
+                  max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Floating Navigation Bar */
     nav {
       position: sticky;
       top: 12px;
@@ -52,7 +82,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(18, 19, 26, 0.8);
+      background: rgba(18, 19, 26, 0.85);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
       border: 1px solid var(--oneui-card-border);
@@ -68,6 +98,11 @@
       color: #ffffff;
       cursor: pointer;
       white-space: nowrap;
+      transition: transform 0.2s ease;
+    }
+
+    .nav-brand:hover {
+      transform: scale(1.05);
     }
 
     .nav-links-wrapper {
@@ -75,12 +110,12 @@
       display: flex;
       align-items: center;
       overflow-x: auto;
-      scrollbar-width: none; /* Firefox */
-      -ms-overflow-style: none; /* IE/Edge */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
     }
     
     .nav-links-wrapper::-webkit-scrollbar {
-      display: none; /* Chrome/Safari */
+      display: none;
     }
 
     .nav-links {
@@ -106,14 +141,13 @@
 
     .nav-btn:hover {
       color: #ffffff;
-      transform: scale(1.05);
+      transform: scale(1.08);
     }
 
     .nav-btn.active {
       color: #ffffff;
     }
 
-    /* Neutral Gray Dynamic Pill Indicator */
     .nav-indicator {
       position: absolute;
       top: 0;
@@ -121,7 +155,7 @@
       border-radius: 999px;
       background: var(--oneui-pill-active);
       border: 1px solid var(--oneui-gray-border);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 1;
     }
 
@@ -134,8 +168,8 @@
     .page { 
       display: none; 
       opacity: 0;
-      transform: translateY(12px) scale(0.98);
-      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(16px) scale(0.97);
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .page.active-page {
@@ -144,7 +178,6 @@
       transform: translateY(0) scale(1);
     }
 
-    /* One UI 8 Squircle Cards */
     .glass-card {
       background: var(--oneui-card);
       backdrop-filter: blur(20px);
@@ -157,7 +190,8 @@
     }
 
     .glass-card:hover {
-      border-color: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.18);
+      transform: translateY(-2px);
     }
 
     .oneui-header-title {
@@ -173,7 +207,6 @@
       margin-bottom: 20px;
     }
 
-    /* Input & Neutral Gray Controls */
     input, select, textarea {
       width: 100%;
       padding: 13px 18px;
@@ -188,6 +221,7 @@
     input:focus, select:focus, textarea:focus {
       border-color: var(--oneui-gray-border);
       background: var(--oneui-pill-hover);
+      transform: scale(1.01);
     }
 
     option { background: #161822; color: white; }
@@ -203,15 +237,15 @@
     }
 
     button.action-btn:hover {
-      transform: scale(1.04) translateY(-1px);
+      transform: scale(1.06) translateY(-1px);
       background: rgba(255, 255, 255, 0.28);
     }
 
     button.action-btn:active { 
-      transform: scale(0.96); 
+      transform: scale(0.95); 
     }
 
-    /* One UI 8 Interactive Homescreen Dashboard Layout */
+    /* Homescreen Grid & Interactive Expandable Widgets */
     .home-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -229,12 +263,22 @@
       padding: 20px;
       backdrop-filter: blur(20px);
       position: relative;
+      overflow: hidden;
     }
 
     .widget-card:hover {
-      transform: scale(1.02) translateY(-2px);
-      border-color: rgba(255, 255, 255, 0.16);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+      transform: scale(1.03) translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 14px 28px rgba(0,0,0,0.4);
+    }
+
+    /* Expanding Widget State */
+    .widget-card.is-expanded {
+      grid-column: span 2 !important;
+      animation: expandWidget 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.5);
     }
 
     .widget-title {
@@ -247,6 +291,53 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    .expand-btn {
+      background: transparent;
+      border: none;
+      color: var(--oneui-text-sub);
+      font-size: 0.75rem;
+      cursor: pointer;
+      padding: 2px 8px;
+      border-radius: 12px;
+      transition: all 0.2s ease;
+    }
+
+    .expand-btn:hover {
+      background: var(--oneui-pill-hover);
+      color: #ffffff;
+      transform: scale(1.1);
+    }
+
+    /* Dictionary Animated Results & Staggered Top-to-Bottom Entry */
+    .def-item {
+      opacity: 0;
+      animation: fadeInDown 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Primary Definition Accent Style */
+    .primary-def-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+      border: 1px solid rgba(255, 255, 255, 0.32) !important;
+      border-radius: 22px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+      animation: fadeInDown 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards, primaryPulse 3s infinite;
+    }
+
+    .primary-def-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 999px;
+      letter-spacing: 0.6px;
+      margin-bottom: 8px;
     }
 
     /* Calculator */
@@ -284,7 +375,7 @@
     }
 
     .calc-grid button:hover {
-      transform: scale(1.06);
+      transform: scale(1.08);
       background: var(--oneui-pill-hover);
     }
 
@@ -341,8 +432,8 @@
       letter-spacing: -1.5px;
     }
 
-    /* Tasks & Neutral Gray Badges */
-    .badge-high { background: rgba(255, 255, 255, 0.22); border: 1px solid rgba(255, 255, 255, 0.3); color: #ffffff; }
+    /* Tasks & Badges */
+    .badge-high { background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(255, 255, 255, 0.35); color: #ffffff; }
     .badge-medium { background: rgba(255, 255, 255, 0.14); border: 1px solid rgba(255, 255, 255, 0.2); color: #e2e8f0; }
     .badge-low { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); color: #cbd5e1; }
     .priority-pill { padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 800; }
@@ -396,6 +487,9 @@
       .home-grid-full {
         grid-column: span 1;
       }
+      .widget-card.is-expanded {
+        grid-column: span 1 !important;
+      }
       .calc-container { 
         grid-template-columns: 1fr; 
       }
@@ -407,7 +501,7 @@
 </head>
 <body>
 
-  <!-- FLOATING NAVIGATION BAR WITH DYNAMIC GRAY SLIDER -->
+  <!-- FLOATING NAVIGATION BAR WITH DYNAMIC SLIDER -->
   <nav>
     <div class="nav-brand" onclick="switchPage('home')">⚡ Ultimate Tools</div>
     <div class="nav-links-wrapper">
@@ -428,29 +522,35 @@
     <section id="home" class="page active-page">
       <div class="home-grid">
         
-        <!-- WIDGET 1: Interactive One UI Clock Widget -->
-        <div class="widget-card home-grid-full" style="text-align: center; padding: 30px 16px;">
+        <!-- WIDGET 1: Interactive Clock Widget -->
+        <div class="widget-card home-grid-full" id="widget-clock" style="text-align: center; padding: 30px 16px;">
           <div class="widget-title" style="justify-content: center; gap: 6px;">
             <span>GALAXY TIME</span>
-            <span style="font-size:0.7rem; opacity:0.6; cursor:pointer;" onclick="toggleTimeFormat()" title="Click to toggle format">(12H/24H)</span>
+            <span style="font-size:0.7rem; opacity:0.6; cursor:pointer;" onclick="toggleTimeFormat()">(12H/24H)</span>
           </div>
           <div id="clock-time" style="font-size: clamp(2.8rem, 8vw, 4rem); font-weight: 800; letter-spacing: -1.5px; cursor: pointer;" onclick="toggleTimeFormat()">00:00:00</div>
           <div id="clock-date" style="color: var(--oneui-text-sub); font-size: 0.98rem; margin-top: 4px; font-weight: 600;">Loading date...</div>
         </div>
 
-        <!-- WIDGET 2: Interactive Priority Tasks Summary -->
-        <div class="widget-card home-grid-full">
+        <!-- WIDGET 2: Homework Queue -->
+        <div class="widget-card home-grid-full" id="widget-tasks">
           <div class="widget-title">
             <span>📌 Homework Queue</span>
-            <button class="action-btn" onclick="switchPage('tasks')" style="padding: 4px 12px; font-size: 0.75rem;">Open Tasks</button>
+            <div>
+              <button class="expand-btn" onclick="toggleWidgetExpand('widget-tasks')">⤢ Expand</button>
+              <button class="action-btn" onclick="switchPage('tasks')" style="padding: 4px 12px; font-size: 0.75rem;">Open</button>
+            </div>
           </div>
           <div id="home-priority-tasks"></div>
         </div>
 
         <!-- WIDGET 3: Quick Focus Control Widget -->
-        <div class="widget-card">
-          <div class="widget-title">⏱️ Quick Focus</div>
-          <div style="font-size: 1.5rem; font-weight: 800; margin: 8px 0;" id="home-timer-val">25:00</div>
+        <div class="widget-card" id="widget-timer">
+          <div class="widget-title">
+            <span>⏱️ Focus</span>
+            <button class="expand-btn" onclick="toggleWidgetExpand('widget-timer')">⤢ Expand</button>
+          </div>
+          <div style="font-size: 1.6rem; font-weight: 800; margin: 8px 0;" id="home-timer-val">25:00</div>
           <div style="display: flex; gap: 6px;">
             <button class="action-btn" onclick="switchPage('timer'); startTimer();" style="flex: 1; padding: 8px; font-size: 0.8rem;">Start</button>
             <button class="action-btn" onclick="switchPage('timer')" style="flex: 1; padding: 8px; font-size: 0.8rem; background: var(--oneui-pill);">View</button>
@@ -458,8 +558,11 @@
         </div>
 
         <!-- WIDGET 4: Interactive Quick Scratchpad -->
-        <div class="widget-card">
-          <div class="widget-title">📝 Quick Note</div>
+        <div class="widget-card" id="widget-note">
+          <div class="widget-title">
+            <span>📝 Scratchpad</span>
+            <button class="expand-btn" onclick="toggleWidgetExpand('widget-note')">⤢ Expand</button>
+          </div>
           <textarea id="quick-note" placeholder="Jot down a quick thought..." style="height: 65px; resize: none; font-size: 0.85rem; border-radius: 14px;" oninput="saveQuickNote()"></textarea>
         </div>
 
@@ -508,19 +611,21 @@
       </div>
     </section>
 
-    <!-- DICTIONARY -->
+    <!-- DICTIONARY WITH TOP-TO-BOTTOM ANIMATION -->
     <section id="dict" class="page">
       <div class="glass-card">
         <h2 class="oneui-header-title">Dictionary</h2>
-        <p class="oneui-header-sub">Lookup definitions instantly</p>
+        <p class="oneui-header-sub">Lookup definitions with dynamic entries</p>
 
         <div style="display: flex; gap: 8px;">
           <input type="text" id="dict-input" placeholder="Search word..." onkeydown="if(event.key==='Enter') searchAIDictionary()"/>
           <button class="action-btn" onclick="searchAIDictionary()" style="width: auto; padding: 0 22px;">Search</button>
         </div>
 
-        <div id="dict-output" style="margin-top: 16px; background: rgba(0,0,0,0.45); padding: 18px; border-radius: 22px; border: 1px solid var(--oneui-card-border);">
-          Type a word above to search definitions.
+        <div id="dict-output" style="margin-top: 16px; min-height: 80px;">
+          <div style="color:var(--oneui-text-sub); background: rgba(0,0,0,0.3); padding: 18px; border-radius: 22px; border: 1px solid var(--oneui-card-border);">
+            Type a word above to search definitions.
+          </div>
         </div>
       </div>
     </section>
@@ -580,7 +685,7 @@
     let currentPage = 'home';
     let is24Hour = false;
 
-    /* Dynamic Gray Nav Slider Indicator */
+    /* Dynamic Nav Slider */
     function updateNavIndicator(btn) {
       const indicator = document.getElementById('nav-indicator');
       if (btn && indicator) {
@@ -604,7 +709,7 @@
 
       if (oldPage) {
         oldPage.style.opacity = '0';
-        oldPage.style.transform = 'translateY(10px) scale(0.98)';
+        oldPage.style.transform = 'translateY(12px) scale(0.97)';
         setTimeout(() => {
           oldPage.classList.remove('active-page');
           newPage.classList.add('active-page');
@@ -616,6 +721,14 @@
       }
 
       currentPage = pageId;
+    }
+
+    /* Widget Expand Animation Toggle */
+    function toggleWidgetExpand(widgetId) {
+      const card = document.getElementById(widgetId);
+      if (card) {
+        card.classList.toggle('is-expanded');
+      }
     }
 
     window.addEventListener('load', () => {
@@ -697,13 +810,13 @@
       else if (e.key === 'Escape') { clearCalc(); }
     });
 
-    /* --- DATAMUSE DICTIONARY --- */
+    /* --- DATAMUSE DICTIONARY WITH STAGGERED FADE-IN --- */
     async function searchAIDictionary() {
       const word = document.getElementById("dict-input").value.trim();
       const output = document.getElementById("dict-output");
 
       if (!word) return;
-      output.innerHTML = "Searching definitions...";
+      output.innerHTML = `<div style="color:var(--oneui-text-sub); padding: 18px;">Searching definitions...</div>`;
 
       try {
         const [defRes, synRes] = await Promise.all([
@@ -718,37 +831,41 @@
           const entry = defData[0];
           const synonyms = synData.map(s => s.word).join(", ") || "None found";
 
-          let html = `<h3 style="color:#ffffff; text-transform:capitalize; margin-bottom:12px; font-size:1.3rem;">${entry.word}</h3>`;
-          html += `<ul style="list-style-type: none; padding-left: 0; line-height: 1.5;">`;
+          let html = `<h3 class="def-item" style="color:#ffffff; text-transform:capitalize; margin-bottom:14px; font-size:1.4rem; animation-delay: 0.05s;">${entry.word}</h3>`;
           
           entry.defs.forEach((d, index) => {
             const parts = d.split('\t');
             const pos = parts[0] ? `(${parts[0]})` : '';
             const defText = parts[1] || d;
+            const delay = (0.12 + index * 0.08).toFixed(2);
 
             if (index === 0) {
+              /* EMPHASIZED PRIMARY DEFINITION CARD */
               html += `
-                <li style="background: var(--oneui-pill-active); border: 1px solid var(--oneui-gray-border); padding: 12px 14px; border-radius: 16px; margin-bottom: 10px;">
-                  <div style="color: var(--oneui-text-sub); font-weight: 800; font-size: 0.75rem; margin-bottom: 2px;">PRIMARY DEFINITION</div>
-                  <strong style="color:#ffffff;">${pos}</strong> ${defText}
-                </li>`;
+                <div class="primary-def-card" style="animation-delay: ${delay}s;">
+                  <div class="primary-def-badge">⭐ PRIMARY DEFINITION</div>
+                  <div style="font-size: 1.05rem; line-height: 1.45; color: #ffffff;">
+                    <strong style="color: rgba(255,255,255,0.7);">${pos}</strong> ${defText}
+                  </div>
+                </div>`;
             } else {
+              /* STAGGERED TOP-TO-BOTTOM SECONDARY DEFINITIONS */
               html += `
-                <li style="margin-bottom: 8px; padding-left: 6px; color: rgba(255, 255, 255, 0.85);">
-                  • <strong style="color:#ffffff;">${pos}</strong> ${defText}
-                </li>`;
+                <div class="def-item" style="background: rgba(0,0,0,0.35); border: 1px solid var(--oneui-card-border); padding: 12px 16px; border-radius: 18px; margin-bottom: 8px; animation-delay: ${delay}s;">
+                  <strong style="color: var(--oneui-text-sub);">${pos}</strong> ${defText}
+                </div>`;
             }
           });
           
-          html += `</ul>`;
-          html += `<p style="margin-top: 12px; font-size: 0.85rem; color: var(--oneui-text-sub);"><b>Synonyms:</b> ${synonyms}</p>`;
+          const synDelay = (0.15 + entry.defs.length * 0.08).toFixed(2);
+          html += `<p class="def-item" style="margin-top: 12px; font-size: 0.88rem; color: var(--oneui-text-sub); animation-delay: ${synDelay}s;"><b>Synonyms:</b> ${synonyms}</p>`;
 
           output.innerHTML = html;
         } else {
-          output.innerHTML = `<span style="color:#fca5a5;">No definitions found for "${word}".</span>`;
+          output.innerHTML = `<div class="def-item" style="color:#fca5a5; padding: 18px; background: rgba(0,0,0,0.3); border-radius:20px;">No definitions found for "${word}".</div>`;
         }
       } catch (err) {
-        output.innerHTML = `<span style="color:#fca5a5;">Network error. Please try again.</span>`;
+        output.innerHTML = `<div class="def-item" style="color:#fca5a5; padding: 18px; background: rgba(0,0,0,0.3); border-radius:20px;">Network error. Please try again.</div>`;
       }
 
       document.getElementById("dict-input").value = "";
