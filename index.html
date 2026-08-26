@@ -71,40 +71,42 @@
                   border-color 0.25s ease;
     }
 
-    /* Floating Bottom Navigation Bar */
-    nav {
+    /* Apple-Style Split Floating Navigation Dock */
+    nav.apple-dock-nav {
       position: fixed;
-      bottom: 14px;
+      bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px; /* Distinct visual gap between Home and Tools */
       width: fit-content;
       max-width: calc(100% - 24px);
-      padding: 6px 10px;
+    }
+
+    .nav-segment {
       display: flex;
-      justify-content: center;
       align-items: center;
-      background: rgba(18, 19, 28, 0.92);
+      background: rgba(18, 19, 28, 0.88);
       backdrop-filter: blur(32px);
       -webkit-backdrop-filter: blur(32px);
       border: 1px solid var(--oneui-card-border);
       border-radius: 999px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65);
+      padding: 5px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.65);
+      position: relative;
     }
 
-    .nav-links {
-      display: flex;
-      gap: 6px;
-      align-items: center;
-      list-style: none;
-      position: relative;
+    .tool-segment {
+      gap: 2px;
     }
 
     .nav-btn {
       background: transparent;
-      border: none;
+      border: 1px solid transparent;
       color: var(--oneui-text-sub);
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-radius: 999px;
       cursor: pointer;
       position: relative;
@@ -117,18 +119,18 @@
     }
 
     .nav-btn svg {
-      width: 22px;
-      height: 22px;
+      width: 21px;
+      height: 21px;
       fill: currentColor;
       transition: transform 0.25s ease, fill 0.25s ease;
     }
 
     .nav-label {
-      font-size: 0.62rem;
+      font-size: 0.6rem;
       font-weight: 600;
       letter-spacing: 0.4px;
       text-transform: uppercase;
-      opacity: 0.35; /* Subdued / barely visible */
+      opacity: 0.35;
       transition: opacity 0.25s ease, color 0.25s ease;
       line-height: 1;
     }
@@ -143,29 +145,48 @@
       color: #ffffff;
     }
 
-    .nav-btn.active {
+    /* Standalone Home Pill Highlight */
+    .home-segment .nav-btn.active {
       color: #ffffff;
+      background: var(--oneui-pill-active);
+      border: 1px solid var(--oneui-gray-border);
     }
 
-    .nav-btn.active svg {
+    .home-segment .nav-btn.active svg {
       transform: scale(1.08);
       fill: #ffffff;
     }
 
-    .nav-btn.active .nav-label {
-      opacity: 0.8;
+    .home-segment .nav-btn.active .nav-label {
+      opacity: 0.85;
+      color: #ffffff;
+    }
+
+    /* Indicator for Tool Segment */
+    .tool-segment .nav-btn.active {
+      color: #ffffff;
+    }
+
+    .tool-segment .nav-btn.active svg {
+      transform: scale(1.08);
+      fill: #ffffff;
+    }
+
+    .tool-segment .nav-btn.active .nav-label {
+      opacity: 0.85;
       color: #ffffff;
     }
 
     .nav-indicator {
       position: absolute;
-      top: 0;
-      bottom: 0;
+      top: 5px;
+      bottom: 5px;
       border-radius: 999px;
       background: var(--oneui-pill-active);
       border: 1px solid var(--oneui-gray-border);
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 1;
+      opacity: 0;
     }
 
     .container {
@@ -471,22 +492,19 @@
 
     /* Mobile Optimization */
     @media (max-width: 680px) {
-      nav { 
+      nav.apple-dock-nav { 
         bottom: 10px; 
-        padding: 4px 6px;
-      }
-      .nav-links {
-        gap: 2px;
+        gap: 6px;
       }
       .nav-btn {
-        padding: 6px 11px;
+        padding: 6px 10px;
       }
       .nav-btn svg {
-        width: 20px;
-        height: 20px;
+        width: 19px;
+        height: 19px;
       }
       .nav-label {
-        font-size: 0.58rem;
+        font-size: 0.56rem;
       }
       .container { 
         padding: 0 12px; 
@@ -676,51 +694,44 @@
 
   </div>
 
-  <!-- FLOATING BOTTOM NAVIGATION BAR WITH SNUG FITTING PILLS & SUBTLE LABELS -->
-  <nav>
-    <ul class="nav-links">
+  <!-- APPLE-STYLE SEPARATED FLOATING NAVIGATION DOCK -->
+  <nav class="apple-dock-nav">
+    <!-- Standalone Home Pill -->
+    <div class="nav-segment home-segment">
+      <button class="nav-btn active" id="btn-home" onclick="switchPage('home')" title="Home">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span class="nav-label">Home</span>
+      </button>
+    </div>
+
+    <!-- Separated Function Tools Pill Group -->
+    <div class="nav-segment tool-segment">
       <div class="nav-indicator" id="nav-indicator"></div>
-      
-      <!-- Home Icon + Subtle Text -->
-      <li>
-        <button class="nav-btn active" id="btn-home" onclick="switchPage('home')" title="Home">
-          <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-          <span class="nav-label">Home</span>
-        </button>
-      </li>
-      
-      <!-- Calculator Icon + Subtle Text -->
-      <li>
-        <button class="nav-btn" id="btn-calc" onclick="switchPage('calc')" title="Calculator">
-          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-6 14h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zM7 7h2v2H7V7zm0 4h2v2H7v-2zm0 4h2v2H7v-2z"/></svg>
-          <span class="nav-label">Calc</span>
-        </button>
-      </li>
 
-      <!-- Dictionary Icon + Subtle Text -->
-      <li>
-        <button class="nav-btn" id="btn-dict" onclick="switchPage('dict')" title="Dictionary">
-          <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
-          <span class="nav-label">Dict</span>
-        </button>
-      </li>
+      <!-- Calculator -->
+      <button class="nav-btn" id="btn-calc" onclick="switchPage('calc')" title="Calculator">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-6 14h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zM7 7h2v2H7V7zm0 4h2v2H7v-2zm0 4h2v2H7v-2z"/></svg>
+        <span class="nav-label">Calc</span>
+      </button>
 
-      <!-- Timer Icon + Subtle Text -->
-      <li>
-        <button class="nav-btn" id="btn-timer" onclick="switchPage('timer')" title="Timer">
-          <svg viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
-          <span class="nav-label">Timer</span>
-        </button>
-      </li>
+      <!-- Dictionary -->
+      <button class="nav-btn" id="btn-dict" onclick="switchPage('dict')" title="Dictionary">
+        <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+        <span class="nav-label">Dict</span>
+      </button>
 
-      <!-- Tasks Icon + Subtle Text -->
-      <li>
-        <button class="nav-btn" id="btn-tasks" onclick="switchPage('tasks')" title="Tasks">
-          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-          <span class="nav-label">Tasks</span>
-        </button>
-      </li>
-    </ul>
+      <!-- Timer -->
+      <button class="nav-btn" id="btn-timer" onclick="switchPage('timer')" title="Timer">
+        <svg viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
+        <span class="nav-label">Timer</span>
+      </button>
+
+      <!-- Tasks -->
+      <button class="nav-btn" id="btn-tasks" onclick="switchPage('tasks')" title="Tasks">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <span class="nav-label">Tasks</span>
+      </button>
+    </div>
   </nav>
 
   <script>
@@ -728,12 +739,17 @@
     let currentPage = 'home';
     let is24Hour = false;
 
-    /* Dynamic Nav Slider for Bottom Bar */
+    /* Dynamic Nav Slider for Separated Tool Segment */
     function updateNavIndicator(btn) {
       const indicator = document.getElementById('nav-indicator');
-      if (btn && indicator) {
+      if (!indicator) return;
+
+      if (btn && btn.parentElement.classList.contains('tool-segment')) {
+        indicator.style.opacity = '1';
         indicator.style.width = `${btn.offsetWidth}px`;
         indicator.style.left = `${btn.offsetLeft}px`;
+      } else {
+        indicator.style.opacity = '0';
       }
     }
 
