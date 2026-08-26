@@ -2,190 +2,249 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ultimate Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Ultimate Tools - One UI</title>
   <style>
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      font-family: "Samsung One", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root {
+      --oneui-bg: #0b0d14;
+      --oneui-card: rgba(22, 25, 35, 0.75);
+      --oneui-card-border: rgba(255, 255, 255, 0.08);
+      --oneui-accent: #6366f1;
+      --oneui-accent-glow: rgba(99, 102, 241, 0.35);
+      --oneui-text-sub: #94a3b8;
+      --oneui-pill-bg: rgba(255, 255, 255, 0.06);
     }
 
     body {
       min-height: 100vh;
-      color: #ffffff;
-      padding-bottom: 50px;
-      transition: background 0.5s ease;
+      color: #f8fafc;
+      padding-bottom: 60px;
+      transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background-color: var(--oneui-bg);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.1) 0%, transparent 40%);
+      background-attachment: fixed;
     }
 
-    body.theme-aurora {
-      background: linear-gradient(135deg, #0f172a, #1e1b4b, #311042, #0284c7);
-      background-size: 400% 400%;
-      animation: aurora 15s ease infinite;
+    body.theme-titanium {
+      --oneui-bg: #090a0f;
+      --oneui-card: rgba(20, 22, 30, 0.85);
+      --oneui-accent: #38bdf8;
+      --oneui-accent-glow: rgba(56, 189, 248, 0.35);
     }
 
-    body.theme-emerald {
-      background: linear-gradient(135deg, #022c22, #064e3b, #065f46, #0d9488);
-      background-size: 400% 400%;
-      animation: aurora 15s ease infinite;
+    body.theme-violet {
+      --oneui-bg: #0e0a17;
+      --oneui-card: rgba(26, 20, 40, 0.85);
+      --oneui-accent: #a855f7;
+      --oneui-accent-glow: rgba(168, 85, 247, 0.35);
     }
 
-    body.theme-obsidian {
-      background: linear-gradient(135deg, #09090b, #18181b, #27272a, #09090b);
-      background-size: 400% 400%;
-      animation: aurora 15s ease infinite;
+    body.theme-onyx {
+      --oneui-bg: #000000;
+      --oneui-card: #121214;
+      --oneui-card-border: rgba(255, 255, 255, 0.12);
+      --oneui-accent: #3b82f6;
+      --oneui-accent-glow: rgba(59, 130, 246, 0.35);
     }
 
-    @keyframes aurora {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
+    /* One UI Floating Navigation Bar */
     nav {
       position: sticky;
-      top: 0;
+      top: 12px;
       z-index: 100;
+      max-width: 860px;
+      margin: 12px auto 0 auto;
+      padding: 8px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 30px;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(18, 20, 29, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--oneui-card-border);
+      border-radius: 999px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
 
     .nav-brand {
-      font-weight: 800;
-      font-size: 1.3rem;
-      cursor: pointer;
-      background: linear-gradient(90deg, #ffffff, #93c5fd);
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding-left: 10px;
+      letter-spacing: -0.3px;
+      background: linear-gradient(135deg, #ffffff, #c7d2fe);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .nav-links {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       list-style: none;
     }
 
     .nav-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: white;
-      padding: 8px 14px;
-      border-radius: 12px;
+      background: transparent;
+      border: none;
+      color: var(--oneui-text-sub);
+      padding: 8px 16px;
+      border-radius: 999px;
       cursor: pointer;
-      font-size: 0.88rem;
-      transition: all 0.2s;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .nav-btn:hover, .nav-btn.active {
-      background: rgba(255, 255, 255, 0.25);
-      border-color: rgba(255, 255, 255, 0.4);
+    .nav-btn:hover {
+      color: #ffffff;
+      background: var(--oneui-pill-bg);
+    }
+
+    .nav-btn.active {
+      color: #ffffff;
+      background: var(--oneui-accent);
+      box-shadow: 0 4px 15px var(--oneui-accent-glow);
     }
 
     .container {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 0 20px;
+      max-width: 860px;
+      margin: 24px auto;
+      padding: 0 16px;
     }
 
     .page { display: none; }
     .page.active-page {
       display: block;
-      animation: fadeIn 0.25s ease-out;
+      animation: oneUiScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes oneUiScale {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
     }
 
+    /* One UI Squircle Glass Cards */
     .glass-card {
-      background: rgba(255, 255, 255, 0.09);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 24px;
-      padding: 26px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-      margin-bottom: 20px;
+      background: var(--oneui-card);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--oneui-card-border);
+      border-radius: 28px;
+      padding: 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      margin-bottom: 6px;
     }
 
     input, select, button {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      background: rgba(0, 0, 0, 0.2);
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid var(--oneui-card-border);
+      background: rgba(0, 0, 0, 0.25);
       color: white;
       font-size: 0.95rem;
       outline: none;
+      transition: border-color 0.2s;
     }
-    option { background: #1e1b4b; color: white; }
+
+    input:focus, select:focus {
+      border-color: var(--oneui-accent);
+    }
+
+    option { background: #12141d; color: white; }
 
     button.action-btn {
-      background: rgba(255, 255, 255, 0.2);
+      background: var(--oneui-accent);
+      border: none;
+      color: white;
       font-weight: 600;
+      border-radius: 999px;
       cursor: pointer;
       margin-top: 10px;
-      transition: background 0.2s;
+      box-shadow: 0 4px 12px var(--oneui-accent-glow);
+      transition: transform 0.15s ease, opacity 0.2s;
     }
-    button.action-btn:hover { background: rgba(255, 255, 255, 0.35); }
+    button.action-btn:active { transform: scale(0.97); }
 
-    /* Calculator */
+    /* Calculator One UI Style */
     .calc-container {
       display: grid;
-      grid-template-columns: 260px 1fr;
+      grid-template-columns: 280px 1fr;
       gap: 20px;
     }
-    @media(max-width: 650px) { .calc-container { grid-template-columns: 1fr; } }
 
     .calc-display {
-      background: rgba(0, 0, 0, 0.45);
-      border-radius: 14px;
-      font-size: 1.4rem;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 20px;
+      font-size: 1.8rem;
+      font-weight: 700;
       text-align: right;
-      padding: 12px 16px;
+      padding: 16px 20px;
       margin-bottom: 12px;
-      min-height: 52px;
-      border: 1px solid rgba(255,255,255,0.1);
+      min-height: 64px;
+      border: 1px solid var(--oneui-card-border);
       font-family: monospace;
+      letter-spacing: 1px;
     }
-    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-    .calc-grid button { height: 44px; font-size: 1rem; border-radius: 10px; padding: 0; }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .calc-grid button {
+      height: 52px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border-radius: 16px;
+      padding: 0;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--oneui-card-border);
+    }
+    .calc-grid button.op-btn {
+      background: rgba(99, 102, 241, 0.15);
+      color: #a5b4fc;
+    }
     .calc-history {
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 14px;
-      padding: 14px;
-      max-height: 280px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 20px;
+      padding: 16px;
+      max-height: 300px;
       overflow-y: auto;
-      border: 1px solid rgba(255,255,255,0.1);
+      border: 1px solid var(--oneui-card-border);
     }
     .history-item {
       font-family: monospace;
-      font-size: 0.88rem;
-      padding: 6px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-size: 0.9rem;
+      padding: 8px 0;
+      color: var(--oneui-text-sub);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
     }
 
-    /* Timer */
+    /* Timer One UI Ring */
     .timer-circle-container {
       position: relative;
-      width: 200px;
-      height: 200px;
+      width: 210px;
+      height: 210px;
       margin: 20px auto;
     }
     .timer-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-    .timer-bg { fill: none; stroke: rgba(255, 255, 255, 0.1); stroke-width: 10; }
+    .timer-bg { fill: none; stroke: rgba(255, 255, 255, 0.06); stroke-width: 12; }
     .timer-progress {
       fill: none;
-      stroke: url(#liquid-gradient);
-      stroke-width: 10;
+      stroke: var(--oneui-accent);
+      stroke-width: 12;
       stroke-linecap: round;
       stroke-dasharray: 565;
       stroke-dashoffset: 0;
@@ -195,44 +254,82 @@
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 2.5rem;
+      font-size: 2.8rem;
       font-weight: 800;
+      letter-spacing: -1px;
     }
 
-    /* Badges & Tasks */
-    .badge-high { background: rgba(239, 68, 68, 0.25); border: 1px solid rgba(239, 68, 68, 0.5); color: #fca5a5; }
-    .badge-medium { background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.5); color: #fde68a; }
-    .badge-low { background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.5); color: #6ee7b7; }
-    .priority-pill { padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; }
+    /* One UI Badges & List Items */
+    .badge-high { background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; }
+    .badge-medium { background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.4); color: #fde68a; }
+    .badge-low { background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.4); color: #6ee7b7; }
+    .priority-pill { padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; }
 
     .task-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: rgba(0, 0, 0, 0.2);
-      padding: 12px 16px;
-      border-radius: 12px;
+      padding: 14px 18px;
+      border-radius: 20px;
       margin-top: 10px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--oneui-card-border);
+    }
+
+    .task-inputs-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 10px;
+      margin-bottom: 15px;
     }
 
     .theme-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
     .theme-card {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 16px;
-      padding: 16px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--oneui-card-border);
+      border-radius: 22px;
+      padding: 18px;
       text-align: center;
+    }
+
+    /* Mobile Responsive Optimizations for Galaxy S25 */
+    @media (max-width: 650px) {
+      nav {
+        top: 8px;
+        margin: 8px 10px 0 10px;
+        flex-direction: column;
+        gap: 8px;
+        border-radius: 24px;
+        padding: 10px 12px;
+      }
+      
+      .nav-links {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 2px;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .nav-btn {
+        white-space: nowrap;
+        padding: 8px 14px;
+      }
+
+      .container { padding: 0 10px; margin: 16px auto; }
+      .glass-card { padding: 20px; border-radius: 24px; }
+      .calc-container { grid-template-columns: 1fr; }
+      .task-inputs-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
-<body class="theme-aurora">
+<body class="theme-titanium">
 
+  <!-- ONE UI FLOATING NAVIGATION -->
   <nav>
-    <div class="nav-brand" onclick="switchPage('home')">⚡ Ultimate Tools</div>
+    <div class="nav-brand" onclick="switchPage('home')">Galaxy Tools</div>
     <ul class="nav-links">
       <li><button class="nav-btn active" id="btn-home" onclick="switchPage('home')">Home</button></li>
-      <li><button class="nav-btn" id="btn-calc" onclick="switchPage('calc')">Calculator</button></li>
+      <li><button class="nav-btn" id="btn-calc" onclick="switchPage('calc')">Calc</button></li>
       <li><button class="nav-btn" id="btn-dict" onclick="switchPage('dict')">Dictionary</button></li>
       <li><button class="nav-btn" id="btn-timer" onclick="switchPage('timer')">Timer</button></li>
       <li><button class="nav-btn" id="btn-tasks" onclick="switchPage('tasks')">Tasks</button></li>
@@ -244,15 +341,15 @@
 
     <!-- HOMEPAGE -->
     <section id="home" class="page active-page">
-      <div class="glass-card" style="text-align: center;">
-        <div id="clock-time" style="font-size: 3.2rem; font-weight: 800;">00:00:00</div>
-        <div id="clock-date" style="color: rgba(255,255,255,0.7); font-size: 1rem; margin-top: 4px;">Loading date...</div>
+      <div class="glass-card" style="text-align: center; padding: 36px 20px;">
+        <div id="clock-time" style="font-size: 3.6rem; font-weight: 800; letter-spacing: -1px;">00:00:00</div>
+        <div id="clock-date" style="color: var(--oneui-text-sub); font-size: 1rem; margin-top: 4px; font-weight: 500;">Loading date...</div>
       </div>
 
       <div class="glass-card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-          <h2>📌 Priority Homework Widget</h2>
-          <button class="action-btn" onclick="switchPage('tasks')" style="width: auto; margin:0; padding: 6px 12px; font-size: 0.8rem;">Manage Tasks</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+          <h2>📌 Priority Homework</h2>
+          <button class="action-btn" onclick="switchPage('tasks')" style="width: auto; margin:0; padding: 6px 16px; font-size: 0.8rem;">Manage</button>
         </div>
         <div id="home-priority-tasks"></div>
       </div>
@@ -261,40 +358,40 @@
     <!-- CALCULATOR -->
     <section id="calc" class="page">
       <div class="glass-card">
-        <h2>🧮 Keyboard Calculator</h2>
-        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.7); margin-bottom: 14px;">
-          Type on your physical keyboard. Press <kbd>Enter</kbd> to solve, <kbd>Esc</kbd> to clear.
+        <h2>🧮 One UI Calculator</h2>
+        <p style="font-size: 0.85rem; color: var(--oneui-text-sub); margin-bottom: 14px;">
+          Tap keys or type on a connected keyboard (<kbd>Enter</kbd> to solve).
         </p>
         <div class="calc-container">
           <div>
             <div id="calc-display" class="calc-display">0</div>
             <div class="calc-grid">
-              <button onclick="clearCalc()">C</button>
-              <button onclick="pressCalc('(')">(</button>
-              <button onclick="pressCalc(')')">)</button>
-              <button onclick="pressCalc('/')">÷</button>
+              <button class="op-btn" onclick="clearCalc()">C</button>
+              <button class="op-btn" onclick="pressCalc('(')">(</button>
+              <button class="op-btn" onclick="pressCalc(')')">)</button>
+              <button class="op-btn" onclick="pressCalc('/')">÷</button>
               <button onclick="pressCalc('7')">7</button>
               <button onclick="pressCalc('8')">8</button>
               <button onclick="pressCalc('9')">9</button>
-              <button onclick="pressCalc('*')">×</button>
+              <button class="op-btn" onclick="pressCalc('*')">×</button>
               <button onclick="pressCalc('4')">4</button>
               <button onclick="pressCalc('5')">5</button>
               <button onclick="pressCalc('6')">6</button>
-              <button onclick="pressCalc('-')">-</button>
+              <button class="op-btn" onclick="pressCalc('-')">-</button>
               <button onclick="pressCalc('1')">1</button>
               <button onclick="pressCalc('2')">2</button>
               <button onclick="pressCalc('3')">3</button>
-              <button onclick="pressCalc('+')">+</button>
+              <button class="op-btn" onclick="pressCalc('+')">+</button>
               <button onclick="pressCalc('0')">0</button>
               <button onclick="pressCalc('.')">.</button>
               <button onclick="backspaceCalc()">⌫</button>
-              <button onclick="solveCalc()" style="background:#0284c7; font-weight:700;">=</button>
+              <button onclick="solveCalc()" style="background: var(--oneui-accent); color: white; font-weight:700;">=</button>
             </div>
           </div>
           <div>
-            <h4 style="margin-bottom: 8px;">History</h4>
+            <h4 style="margin-bottom: 10px; font-weight: 600;">Calculation Log</h4>
             <div id="calc-history" class="calc-history">
-              <div style="color:rgba(255,255,255,0.5); font-size:0.8rem;">No history yet</div>
+              <div style="color:var(--oneui-text-sub); font-size:0.85rem;">No recent calculations</div>
             </div>
           </div>
         </div>
@@ -304,18 +401,18 @@
     <!-- DATAMUSE DICTIONARY WITH STAR HIGHLIGHT -->
     <section id="dict" class="page">
       <div class="glass-card">
-        <h2>📖 Instant Dictionary & Thesaurus</h2>
-        <p style="margin-bottom: 12px; color: rgba(255,255,255,0.7); font-size: 0.9rem;">
-          Enter any word to pull definitions and synonyms (No API Key Required).
+        <h2>📖 Instant Dictionary</h2>
+        <p style="margin-bottom: 14px; color: var(--oneui-text-sub); font-size: 0.9rem;">
+          Instant definition and synonym lookup powered by Datamuse API.
         </p>
 
         <div style="display: flex; gap: 10px;">
-          <input type="text" id="dict-input" placeholder="Enter word (e.g., Photosynthesis, Irony, Eloquent)..." onkeydown="if(event.key==='Enter') searchAIDictionary()"/>
-          <button class="action-btn" onclick="searchAIDictionary()" style="width: auto; margin-top:0;">Search</button>
+          <input type="text" id="dict-input" placeholder="Search word..." onkeydown="if(event.key==='Enter') searchAIDictionary()"/>
+          <button class="action-btn" onclick="searchAIDictionary()" style="width: auto; margin-top:0; padding: 0 22px;">Search</button>
         </div>
 
-        <div id="dict-output" style="margin-top: 18px; background: rgba(0,0,0,0.3); padding: 18px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1);">
-          Enter a word above to view its definition.
+        <div id="dict-output" style="margin-top: 18px; background: rgba(0,0,0,0.25); padding: 20px; border-radius: 20px; border: 1px solid var(--oneui-card-border);">
+          Enter a word above to view definitions.
         </div>
       </div>
     </section>
@@ -323,31 +420,25 @@
     <!-- TIMER -->
     <section id="timer" class="page">
       <div class="glass-card" style="text-align: center;">
-        <h2>⏱️ Liquid Glass Focus Timer</h2>
+        <h2>⏱️ Focus Timer</h2>
         
         <div class="timer-circle-container">
           <svg class="timer-svg" viewBox="0 0 200 200">
-            <defs>
-              <linearGradient id="liquid-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#38bdf8"/>
-                <stop offset="100%" stop-color="#818cf8"/>
-              </linearGradient>
-            </defs>
             <circle class="timer-bg" cx="100" cy="100" r="90" />
             <circle id="timer-progress" class="timer-progress" cx="100" cy="100" r="90" />
           </svg>
           <div id="timer-display" class="timer-text">25:00</div>
         </div>
 
-        <div style="display: flex; gap: 10px; max-width: 400px; margin: 0 auto 15px auto;">
-          <input type="number" id="custom-minutes" placeholder="Minutes" min="1" max="120" style="text-align: center;">
-          <button class="action-btn" onclick="setCustomTimer()" style="width: 50%; margin-top: 0;">Set Time</button>
+        <div style="display: flex; gap: 10px; max-width: 360px; margin: 0 auto 15px auto;">
+          <input type="number" id="custom-minutes" placeholder="Mins" min="1" max="120" style="text-align: center;">
+          <button class="action-btn" onclick="setCustomTimer()" style="width: 50%; margin-top: 0;">Set</button>
         </div>
 
-        <div style="display: flex; gap: 10px; justify-content: center; max-width: 400px; margin: 0 auto;">
+        <div style="display: flex; gap: 10px; justify-content: center; max-width: 360px; margin: 0 auto;">
           <button class="action-btn" onclick="startTimer()">Start</button>
-          <button class="action-btn" onclick="pauseTimer()">Pause</button>
-          <button class="action-btn" onclick="resetTimer()">Reset</button>
+          <button class="action-btn" onclick="pauseTimer()" style="background: rgba(255,255,255,0.1); box-shadow: none;">Pause</button>
+          <button class="action-btn" onclick="resetTimer()" style="background: rgba(255,255,255,0.1); box-shadow: none;">Reset</button>
         </div>
       </div>
     </section>
@@ -357,15 +448,15 @@
       <div class="glass-card">
         <h2>📝 Homework Planner</h2>
         
-        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 10px; margin-bottom: 15px;">
-          <input type="text" id="task-name" placeholder="Assignment details..." />
+        <div class="task-inputs-grid">
+          <input type="text" id="task-name" placeholder="Assignment name..." />
           <select id="task-priority">
             <option value="High">High Priority</option>
             <option value="Medium" selected>Medium</option>
             <option value="Low">Low</option>
           </select>
           <input type="date" id="task-date" />
-          <button class="action-btn" onclick="addTask()" style="margin-top:0; width:auto; padding:0 18px;">Add</button>
+          <button class="action-btn" onclick="addTask()" style="margin-top:0; width:auto; padding:0 20px;">Add</button>
         </div>
 
         <div id="full-task-list"></div>
@@ -375,19 +466,19 @@
     <!-- THEMES -->
     <section id="themes" class="page">
       <div class="glass-card">
-        <h2>🎨 Liquid Glass Themes</h2>
+        <h2>🎨 One UI Themes</h2>
         <div class="theme-grid">
           <div class="theme-card">
-            <h3>🌌 Cosmic Aurora</h3>
-            <button class="action-btn" onclick="applyTheme('theme-aurora')">Equip</button>
+            <h3 style="margin-bottom: 8px;">📱 Titanium Dark</h3>
+            <button class="action-btn" onclick="applyTheme('theme-titanium')">Apply</button>
           </div>
           <div class="theme-card">
-            <h3>🌲 Emerald Liquid</h3>
-            <button class="action-btn" onclick="applyTheme('theme-emerald')">Equip</button>
+            <h3 style="margin-bottom: 8px;">✨ Violet Glow</h3>
+            <button class="action-btn" onclick="applyTheme('theme-violet')">Apply</button>
           </div>
           <div class="theme-card">
-            <h3>🖤 Obsidian Glass</h3>
-            <button class="action-btn" onclick="applyTheme('theme-obsidian')">Equip</button>
+            <h3 style="margin-bottom: 8px;">🖤 Onyx OLED</h3>
+            <button class="action-btn" onclick="applyTheme('theme-onyx')">Apply</button>
           </div>
         </div>
       </div>
@@ -412,9 +503,9 @@
     /* --- CLOCK --- */
     function updateClock() {
       const now = new Date();
-      document.getElementById('clock-time').innerText = now.toLocaleTimeString();
+      document.getElementById('clock-time').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
       document.getElementById('clock-date').innerText = now.toLocaleDateString(undefined, {
-        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        weekday: 'long', month: 'short', day: 'numeric', year: 'numeric'
       });
     }
     setInterval(updateClock, 1000);
@@ -461,14 +552,14 @@
       else if (e.key === 'Escape') { clearCalc(); }
     });
 
-    /* --- DATAMUSE DICTIONARY WITH STARRED PRIMARY DEFINITION --- */
+    /* --- DATAMUSE DICTIONARY WITH STAR HIGHLIGHT --- */
     async function searchAIDictionary() {
       const word = document.getElementById("dict-input").value.trim();
       const output = document.getElementById("dict-output");
 
       if (!word) return;
 
-      output.innerHTML = "Fetching definition...";
+      output.innerHTML = "Searching Datamuse...";
 
       try {
         const [defRes, synRes] = await Promise.all([
@@ -483,7 +574,7 @@
           const entry = defData[0];
           const synonyms = synData.map(s => s.word).join(", ") || "None found";
 
-          let html = `<h3 style="color:#93c5fd; text-transform:capitalize; margin-bottom:12px;">${entry.word}</h3>`;
+          let html = `<h3 style="color:#a5b4fc; text-transform:capitalize; margin-bottom:14px;">${entry.word}</h3>`;
           html += `<ul style="list-style-type: none; padding-left: 0; line-height: 1.6;">`;
           
           entry.defs.forEach((d, index) => {
@@ -493,24 +584,24 @@
 
             if (index === 0) {
               html += `
-                <li style="background: rgba(255, 215, 0, 0.15); border: 1px solid rgba(255, 215, 0, 0.4); padding: 12px 14px; border-radius: 12px; margin-bottom: 12px;">
-                  <div style="color: #ffd700; font-weight: 700; font-size: 0.85rem; margin-bottom: 4px;">⭐ PRIMARY DEFINITION</div>
+                <li style="background: rgba(255, 215, 0, 0.12); border: 1px solid rgba(255, 215, 0, 0.35); padding: 14px 16px; border-radius: 18px; margin-bottom: 12px;">
+                  <div style="color: #ffd700; font-weight: 700; font-size: 0.8rem; letter-spacing: 0.5px; margin-bottom: 4px;">⭐ PRIMARY DEFINITION</div>
                   <strong style="color:#a7f3d0;">${pos}</strong> ${defText}
                 </li>`;
             } else {
               html += `
-                <li style="margin-bottom: 8px; padding-left: 8px; color: rgba(255, 255, 255, 0.85);">
+                <li style="margin-bottom: 10px; padding-left: 8px; color: rgba(255, 255, 255, 0.85);">
                   • <strong style="color:#a7f3d0;">${pos}</strong> ${defText}
                 </li>`;
             }
           });
           
           html += `</ul>`;
-          html += `<p style="margin-top: 14px; font-size: 0.9rem; color: rgba(255,255,255,0.7);"><b>Synonyms:</b> ${synonyms}</p>`;
+          html += `<p style="margin-top: 14px; font-size: 0.9rem; color: var(--oneui-text-sub);"><b>Synonyms:</b> ${synonyms}</p>`;
 
           output.innerHTML = html;
         } else {
-          output.innerHTML = `<span style="color:#fca5a5;">No definitions found for "${word}". Check spelling and try again.</span>`;
+          output.innerHTML = `<span style="color:#fca5a5;">No definitions found for "${word}".</span>`;
         }
       } catch (err) {
         output.innerHTML = `<span style="color:#fca5a5;">Network connection error.</span>`;
@@ -553,7 +644,11 @@
         } else {
           clearInterval(timerId);
           timerId = null;
-          alert("Focus session complete!");
+          if ("Notification" in window && Notification.permission === "granted") {
+            new Notification("⏱️ Focus Timer Finished", { body: "Your timer has completed!" });
+          } else {
+            alert("Focus session complete!");
+          }
         }
       }, 1000);
     }
@@ -588,8 +683,8 @@
       const homeWidget = document.getElementById("home-priority-tasks");
 
       if (tasks.length === 0) {
-        fullList.innerHTML = `<p style="color:rgba(255,255,255,0.5); margin-top:10px;">No pending tasks.</p>`;
-        homeWidget.innerHTML = `<p style="color:rgba(255,255,255,0.5);">No upcoming priority assignments.</p>`;
+        fullList.innerHTML = `<p style="color:var(--oneui-text-sub); margin-top:10px;">No pending assignments.</p>`;
+        homeWidget.innerHTML = `<p style="color:var(--oneui-text-sub);">No priority tasks due soon.</p>`;
         return;
       }
 
@@ -600,25 +695,80 @@
         <div class="task-item">
           <div>
             <strong>${t.name}</strong>
-            <div style="font-size:0.8rem; color:rgba(255,255,255,0.6); margin-top:4px;">
+            <div style="font-size:0.8rem; color:var(--oneui-text-sub); margin-top:4px;">
               Due: ${t.date} | Priority: <span class="priority-pill badge-${t.priority.toLowerCase()}">${t.priority}</span>
             </div>
           </div>
-          <button class="action-btn" onclick="completeTask(${t.id})" style="width:auto; margin:0; font-size:0.8rem;">✓ Complete</button>
+          <button class="action-btn" onclick="completeTask(${t.id})" style="width:auto; margin:0; padding: 6px 14px; font-size:0.8rem;">✓ Done</button>
         </div>
       `).join('');
 
       homeWidget.innerHTML = tasks.slice(0, 3).map(t => `
-        <div class="task-item" style="padding:10px 14px;">
+        <div class="task-item" style="padding:12px 16px;">
           <div>
             <span class="priority-pill badge-${t.priority.toLowerCase()}">${t.priority}</span>
             <span style="margin-left:8px; font-weight:600;">${t.name}</span>
           </div>
-          <span style="font-size:0.8rem; color:rgba(255,255,255,0.6);">${t.date}</span>
+          <span style="font-size:0.8rem; color:var(--oneui-text-sub);">${t.date}</span>
         </div>
       `).join('');
     }
     renderTasks();
+
+    /* --- NOTIFICATION ENGINE --- */
+    let taskCheckInterval = null;
+
+    function startTaskNotifier() {
+      if (!("Notification" in window)) return;
+      if (Notification.permission === "default") {
+        Notification.requestPermission();
+      }
+      checkTaskNotifications();
+      if (!taskCheckInterval) {
+        taskCheckInterval = setInterval(checkTaskNotifications, 60000);
+      }
+    }
+
+    function checkTaskNotifications() {
+      if (Notification.permission !== "granted" || tasks.length === 0) return;
+
+      const now = Date.now();
+      const ONE_HOUR = 60 * 60 * 1000;
+      const ONE_DAY = 24 * 60 * 60 * 1000;
+
+      const lastHourly = parseInt(localStorage.getItem("ut_last_hourly_alert") || "0");
+      const lastBatch = parseInt(localStorage.getItem("ut_last_batch_alert") || "0");
+
+      if (now - lastHourly >= ONE_HOUR) {
+        const urgentTasks = tasks.filter(t => {
+          if (t.priority !== 'High' || t.date === "No due date") return false;
+          const dueDate = new Date(t.date + "T23:59:59").getTime();
+          const timeRemaining = dueDate - now;
+          return timeRemaining > -ONE_DAY && timeRemaining <= ONE_DAY;
+        });
+
+        if (urgentTasks.length > 0) {
+          urgentTasks.forEach(t => {
+            new Notification(`🚨 High Priority Homework Alert`, {
+              body: `"${t.name}" is due soon (${t.date})!`
+            });
+          });
+          localStorage.setItem("ut_last_hourly_alert", now.toString());
+        }
+      }
+
+      if (now - lastBatch >= ONE_DAY) {
+        const regularTasks = tasks.filter(t => t.priority === 'Medium' || t.priority === 'Low');
+        if (regularTasks.length > 0) {
+          const taskSummary = regularTasks.map(t => `• [${t.priority}] ${t.name}`).join("\n");
+          new Notification(`📋 Pending Homework Summary (${regularTasks.length})`, {
+            body: taskSummary
+          });
+          localStorage.setItem("ut_last_batch_alert", now.toString());
+        }
+      }
+    }
+    startTaskNotifier();
 
     /* --- THEMES --- */
     function applyTheme(themeClass) {
