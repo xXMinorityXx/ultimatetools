@@ -28,7 +28,7 @@
       min-height: 100vh;
       color: #ffffff;
       padding-top: 16px;
-      padding-bottom: 110px; /* Space for larger bottom nav */
+      padding-bottom: 100px;
       background-color: var(--oneui-bg);
       overflow-x: hidden;
       font-size: 1.05rem;
@@ -63,7 +63,7 @@
       100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
     }
 
-    /* Global Micro-Transitions & Larger Visual Scaling */
+    /* Global Micro-Transitions */
     .glass-card, .widget-card, button, input, select, .task-item {
       transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
                   background-color 0.25s ease, 
@@ -74,15 +74,15 @@
     /* Floating Bottom Navigation Bar */
     nav {
       position: fixed;
-      bottom: 18px;
+      bottom: 14px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 1000;
-      width: calc(100% - 28px);
-      max-width: 520px;
-      padding: 8px 12px;
+      width: fit-content;
+      max-width: calc(100% - 24px);
+      padding: 6px 10px;
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
       background: rgba(18, 19, 28, 0.92);
       backdrop-filter: blur(32px);
@@ -94,8 +94,7 @@
 
     .nav-links {
       display: flex;
-      width: 100%;
-      justify-content: space-around;
+      gap: 6px;
       align-items: center;
       list-style: none;
       position: relative;
@@ -105,26 +104,43 @@
       background: transparent;
       border: none;
       color: var(--oneui-text-sub);
-      padding: 12px 18px;
+      padding: 8px 16px;
       border-radius: 999px;
       cursor: pointer;
       position: relative;
       z-index: 2;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 3px;
     }
 
     .nav-btn svg {
-      width: 28px;
-      height: 28px;
+      width: 22px;
+      height: 22px;
       fill: currentColor;
       transition: transform 0.25s ease, fill 0.25s ease;
     }
 
+    .nav-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      opacity: 0.35; /* Subdued / barely visible */
+      transition: opacity 0.25s ease, color 0.25s ease;
+      line-height: 1;
+    }
+
     .nav-btn:hover svg {
       color: #ffffff;
-      transform: scale(1.22);
+      transform: translateY(-1px) scale(1.1);
+    }
+
+    .nav-btn:hover .nav-label {
+      opacity: 0.65;
+      color: #ffffff;
     }
 
     .nav-btn.active {
@@ -132,8 +148,13 @@
     }
 
     .nav-btn.active svg {
-      transform: scale(1.15);
+      transform: scale(1.08);
       fill: #ffffff;
+    }
+
+    .nav-btn.active .nav-label {
+      opacity: 0.8;
+      color: #ffffff;
     }
 
     .nav-indicator {
@@ -298,7 +319,7 @@
       transform: scale(1.1);
     }
 
-    /* Dictionary Animated Results & Staggered Top-to-Bottom Entry */
+    /* Dictionary Animated Results */
     .def-item {
       opacity: 0;
       animation: fadeInDown 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -390,7 +411,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    /* Larger Timer Ring */
+    /* Timer Ring */
     .timer-circle-container {
       position: relative;
       width: 240px;
@@ -419,7 +440,7 @@
       letter-spacing: -1.5px;
     }
 
-    /* Larger Tasks & Badges */
+    /* Tasks & Badges */
     .badge-high { background: rgba(255, 255, 255, 0.28); border: 1px solid rgba(255, 255, 255, 0.4); color: #ffffff; }
     .badge-medium { background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.24); color: #e2e8f0; }
     .badge-low { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.15); color: #cbd5e1; }
@@ -448,19 +469,24 @@
       margin-bottom: 14px;
     }
 
-    /* Mobile Optimization for Galaxy S25 */
+    /* Mobile Optimization */
     @media (max-width: 680px) {
       nav { 
-        bottom: 12px; 
-        width: calc(100% - 20px); 
-        padding: 6px 8px;
+        bottom: 10px; 
+        padding: 4px 6px;
+      }
+      .nav-links {
+        gap: 2px;
       }
       .nav-btn {
-        padding: 10px 14px;
+        padding: 6px 11px;
       }
       .nav-btn svg {
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
+      }
+      .nav-label {
+        font-size: 0.58rem;
       }
       .container { 
         padding: 0 12px; 
@@ -581,7 +607,7 @@
       </div>
     </section>
 
-    <!-- DICTIONARY WITH TOP-TO-BOTTOM ANIMATION -->
+    <!-- DICTIONARY -->
     <section id="dict" class="page">
       <div class="glass-card">
         <h2 class="oneui-header-title">Dictionary</h2>
@@ -650,43 +676,48 @@
 
   </div>
 
-  <!-- FLOATING BOTTOM NAVIGATION BAR WITH LOGOS -->
+  <!-- FLOATING BOTTOM NAVIGATION BAR WITH SNUG FITTING PILLS & SUBTLE LABELS -->
   <nav>
     <ul class="nav-links">
       <div class="nav-indicator" id="nav-indicator"></div>
       
-      <!-- Home Icon -->
+      <!-- Home Icon + Subtle Text -->
       <li>
         <button class="nav-btn active" id="btn-home" onclick="switchPage('home')" title="Home">
           <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+          <span class="nav-label">Home</span>
         </button>
       </li>
       
-      <!-- Calculator Icon -->
+      <!-- Calculator Icon + Subtle Text -->
       <li>
         <button class="nav-btn" id="btn-calc" onclick="switchPage('calc')" title="Calculator">
           <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-6 14h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zM7 7h2v2H7V7zm0 4h2v2H7v-2zm0 4h2v2H7v-2z"/></svg>
+          <span class="nav-label">Calc</span>
         </button>
       </li>
 
-      <!-- Dictionary Icon -->
+      <!-- Dictionary Icon + Subtle Text -->
       <li>
         <button class="nav-btn" id="btn-dict" onclick="switchPage('dict')" title="Dictionary">
           <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+          <span class="nav-label">Dict</span>
         </button>
       </li>
 
-      <!-- Timer Icon -->
+      <!-- Timer Icon + Subtle Text -->
       <li>
         <button class="nav-btn" id="btn-timer" onclick="switchPage('timer')" title="Timer">
           <svg viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
+          <span class="nav-label">Timer</span>
         </button>
       </li>
 
-      <!-- Tasks Icon -->
+      <!-- Tasks Icon + Subtle Text -->
       <li>
         <button class="nav-btn" id="btn-tasks" onclick="switchPage('tasks')" title="Tasks">
           <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          <span class="nav-label">Tasks</span>
         </button>
       </li>
     </ul>
@@ -822,7 +853,7 @@
       else if (e.key === 'Escape') { clearCalc(); }
     });
 
-    /* --- DATAMUSE DICTIONARY WITH STAGGERED FADE-IN --- */
+    /* --- DATAMUSE DICTIONARY --- */
     async function searchAIDictionary() {
       const word = document.getElementById("dict-input").value.trim();
       const output = document.getElementById("dict-output");
@@ -852,7 +883,6 @@
             const delay = (0.12 + index * 0.08).toFixed(2);
 
             if (index === 0) {
-              /* EMPHASIZED PRIMARY DEFINITION CARD */
               html += `
                 <div class="primary-def-card" style="animation-delay: ${delay}s;">
                   <div class="primary-def-badge">⭐ PRIMARY DEFINITION</div>
@@ -861,7 +891,6 @@
                   </div>
                 </div>`;
             } else {
-              /* STAGGERED TOP-TO-BOTTOM SECONDARY DEFINITIONS */
               html += `
                 <div class="def-item" style="background: rgba(0,0,0,0.38); border: 1px solid var(--oneui-card-border); padding: 14px 18px; border-radius: 20px; margin-bottom: 10px; font-size: 1.02rem; animation-delay: ${delay}s;">
                   <strong style="color: var(--oneui-text-sub);">${pos}</strong> ${defText}
