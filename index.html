@@ -618,22 +618,22 @@
       <span>⚡ Desk Workstation</span>
     </div>
     <div class="user-profile-box">
-      <!-- Firebase Login Action Button -->
-      <button class="action-btn" id="loginBtn" style="background: var(--oneui-accent); border: none;">
+      <!-- Firebase Login Action Button with explicit type="button" -->
+      <button type="button" class="action-btn" id="loginBtn" style="background: var(--oneui-accent); border: none;">
         <span>🔐 Sign in with Google</span>
       </button>
 
       <!-- User Active Status Display -->
       <div id="userInfo" style="display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); padding: 4px 12px 4px 6px; border-radius: 999px; border: 1px solid var(--oneui-card-border);">
-        <img id="userAvatar" src="" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;" />
+        <img id="userAvatar" src="" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;" alt="Profile Avatar" />
         <span id="userName" style="font-weight: 700; font-size: 0.85rem; color: white;"></span>
-        <button class="action-btn" id="logoutBtn" style="padding: 2px 10px; font-size: 0.72rem; background: rgba(239,68,68,0.25); border-color: rgba(239,68,68,0.4); color: #fca5a5;">Sign Out</button>
+        <button type="button" class="action-btn" id="logoutBtn" style="padding: 2px 10px; font-size: 0.72rem; background: rgba(239,68,68,0.25); border-color: rgba(239,68,68,0.4); color: #fca5a5;">Sign Out</button>
       </div>
     </div>
   </header>
 
   <!-- TOP CLICKABLE FOCUS ALERT POPUP -->
-  <div id="focus-nudge-popup" class="focus-nudge-banner" onclick="handleNudgeClick()">
+  <div id="focus-nudge-popup" class="focus-nudge-banner">
     <div class="nudge-content">
       <span class="nudge-icon">🚨</span>
       <div>
@@ -642,8 +642,8 @@
       </div>
     </div>
     <div style="display:flex; gap:6px; align-items:center;">
-      <button class="action-btn" style="padding:4px 12px; font-size:0.78rem;">Focus Now</button>
-      <button onclick="event.stopPropagation(); hideNudge();" style="background:transparent; border:none; color:var(--oneui-text-sub); font-size:1.1rem; cursor:pointer; padding:0 4px;">✕</button>
+      <button type="button" class="action-btn" style="padding:4px 12px; font-size:0.78rem;" onclick="switchPage('tasks')">Focus Now</button>
+      <button type="button" onclick="hideNudge()" style="background:transparent; border:none; color:var(--oneui-text-sub); font-size:1.1rem; cursor:pointer; padding:0 4px;">✕</button>
     </div>
   </div>
 
@@ -665,7 +665,7 @@
         <div class="widget-card col-7">
           <div class="widget-title">
             <span>📌 Priority Assignments Queue</span>
-            <button class="action-btn" onclick="switchPage('tasks')" style="padding: 4px 12px; font-size: 0.78rem;">Open Board</button>
+            <button type="button" class="action-btn" onclick="switchPage('tasks')" style="padding: 4px 12px; font-size: 0.78rem;">Open Board</button>
           </div>
           <div id="home-priority-tasks"></div>
         </div>
@@ -673,7 +673,7 @@
         <div class="widget-card col-5">
           <div class="widget-title">
             <span>📅 My Class Schedule</span>
-            <button class="action-btn" onclick="promptAddSchedule()" style="padding: 2px 10px; font-size: 0.75rem;">+ Add Class</button>
+            <button type="button" class="action-btn" onclick="promptAddSchedule()" style="padding: 2px 10px; font-size: 0.75rem;">+ Add Class</button>
           </div>
           <div id="schedule-container"></div>
         </div>
@@ -691,7 +691,7 @@
               <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> Clean Workstation</div>
             </div>
           </div>
-          <button class="action-btn" id="sound-synth-btn" onclick="toggleStudyWhiteNoise()" style="padding: 10px 20px; font-size: 0.85rem;">▶ White Noise</button>
+          <button type="button" class="action-btn" id="sound-synth-btn" onclick="toggleStudyWhiteNoise()" style="padding: 10px 20px; font-size: 0.85rem;">▶ White Noise</button>
         </div>
 
       </div>
@@ -775,7 +775,7 @@
           </div>
 
           <div style="text-align:right; margin-top:14px;">
-            <button class="action-btn" onclick="addTask()" style="padding: 10px 28px;">+ Save Assignment</button>
+            <button type="button" class="action-btn" onclick="addTask()" style="padding: 10px 28px;">+ Save Assignment</button>
           </div>
         </div>
 
@@ -791,7 +791,7 @@
 
         <div class="notes-layout">
           <div class="notes-sidebar">
-            <button class="action-btn" onclick="createNewNote()" style="width:100%;">+ New Note</button>
+            <button type="button" class="action-btn" onclick="createNewNote()" style="width:100%;">+ New Note</button>
             <div style="font-size:0.75rem; font-weight:800; color:var(--oneui-text-sub); text-transform:uppercase; margin-top:8px;">Saved Notes</div>
             <div id="notes-file-list" style="display:flex; flex-direction:column; gap:6px; overflow-y:auto; max-height:360px;"></div>
           </div>
@@ -802,10 +802,10 @@
             
             <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;">
               <div style="display:flex; gap:8px;">
-                <button class="action-btn" onclick="saveCurrentNote()">💾 Save Note</button>
-                <button class="action-btn" onclick="exportNoteAsFile()" style="background:var(--oneui-pill);">📁 Download File (.txt)</button>
+                <button type="button" class="action-btn" onclick="saveCurrentNote()">💾 Save Note</button>
+                <button type="button" class="action-btn" onclick="exportNoteAsFile()" style="background:var(--oneui-pill);">📁 Download File (.txt)</button>
               </div>
-              <button class="action-btn" onclick="deleteCurrentNote()" style="background:rgba(239,68,68,0.2); border-color:rgba(239,68,68,0.4); color:#fca5a5;">🗑️ Delete</button>
+              <button type="button" class="action-btn" onclick="deleteCurrentNote()" style="background:rgba(239,68,68,0.2); border-color:rgba(239,68,68,0.4); color:#fca5a5;">🗑️ Delete</button>
             </div>
           </div>
         </div>
@@ -864,26 +864,26 @@
           <div>
             <div id="calc-display" class="calc-display">0</div>
             <div class="calc-grid">
-              <button onclick="clearCalc()">C</button>
-              <button onclick="pressCalc('(')">(</button>
-              <button onclick="pressCalc(')')">)</button>
-              <button onclick="pressCalc('/')">÷</button>
-              <button onclick="pressCalc('7')">7</button>
-              <button onclick="pressCalc('8')">8</button>
-              <button onclick="pressCalc('9')">9</button>
-              <button onclick="pressCalc('*')">×</button>
-              <button onclick="pressCalc('4')">4</button>
-              <button onclick="pressCalc('5')">5</button>
-              <button onclick="pressCalc('6')">6</button>
-              <button onclick="pressCalc('-')">-</button>
-              <button onclick="pressCalc('1')">1</button>
-              <button onclick="pressCalc('2')">2</button>
-              <button onclick="pressCalc('3')">3</button>
-              <button onclick="pressCalc('+')">+</button>
-              <button onclick="pressCalc('0')">0</button>
-              <button onclick="pressCalc('.')">.</button>
-              <button onclick="backspaceCalc()">⌫</button>
-              <button onclick="solveCalc()" style="background: var(--oneui-pill-active); border: 1px solid var(--oneui-gray-border);">=</button>
+              <button type="button" onclick="clearCalc()">C</button>
+              <button type="button" onclick="pressCalc('(')">(</button>
+              <button type="button" onclick="pressCalc(')')">)</button>
+              <button type="button" onclick="pressCalc('/')">÷</button>
+              <button type="button" onclick="pressCalc('7')">7</button>
+              <button type="button" onclick="pressCalc('8')">8</button>
+              <button type="button" onclick="pressCalc('9')">9</button>
+              <button type="button" onclick="pressCalc('*')">×</button>
+              <button type="button" onclick="pressCalc('4')">4</button>
+              <button type="button" onclick="pressCalc('5')">5</button>
+              <button type="button" onclick="pressCalc('6')">6</button>
+              <button type="button" onclick="pressCalc('-')">-</button>
+              <button type="button" onclick="pressCalc('1')">1</button>
+              <button type="button" onclick="pressCalc('2')">2</button>
+              <button type="button" onclick="pressCalc('3')">3</button>
+              <button type="button" onclick="pressCalc('+')">+</button>
+              <button type="button" onclick="pressCalc('0')">0</button>
+              <button type="button" onclick="pressCalc('.')">.</button>
+              <button type="button" onclick="backspaceCalc()">⌫</button>
+              <button type="button" onclick="solveCalc()" style="background: var(--oneui-pill-active); border: 1px solid var(--oneui-gray-border);">=</button>
             </div>
           </div>
           <div>
@@ -903,7 +903,7 @@
 
         <div style="display: flex; gap: 12px; max-width: 750px;">
           <input type="text" id="dict-input" placeholder="Type a word..." onkeydown="if(event.key==='Enter') searchAIDictionary()"/>
-          <button class="action-btn" onclick="searchAIDictionary()" style="padding: 0 28px;">Search</button>
+          <button type="button" class="action-btn" onclick="searchAIDictionary()" style="padding: 0 28px;">Search</button>
         </div>
 
         <div id="dict-output" style="margin-top: 20px; min-height: 120px;">
@@ -929,13 +929,13 @@
 
         <div style="display: flex; gap: 10px; max-width: 340px; margin: 0 auto 18px auto;">
           <input type="number" id="custom-minutes" placeholder="Minutes" min="1" max="180" style="text-align: center;">
-          <button class="action-btn" onclick="setCustomTimer()" style="width: 50%;">Set Time</button>
+          <button type="button" class="action-btn" onclick="setCustomTimer()" style="width: 50%;">Set Time</button>
         </div>
 
         <div style="display: flex; gap: 10px; justify-content: center; max-width: 380px; margin: 0 auto;">
-          <button class="action-btn" onclick="startTimer()" style="flex: 1;">Start</button>
-          <button class="action-btn" onclick="pauseTimer()" style="flex: 1; background: var(--oneui-pill);">Pause</button>
-          <button class="action-btn" onclick="resetTimer()" style="flex: 1; background: var(--oneui-pill);">Reset</button>
+          <button type="button" class="action-btn" onclick="startTimer()" style="flex: 1;">Start</button>
+          <button type="button" class="action-btn" onclick="pauseTimer()" style="flex: 1; background: var(--oneui-pill);">Pause</button>
+          <button type="button" class="action-btn" onclick="resetTimer()" style="flex: 1; background: var(--oneui-pill);">Reset</button>
         </div>
       </div>
     </section>
@@ -944,32 +944,32 @@
 
   <!-- APPLE-STYLE DOCK NAV -->
   <nav class="apple-dock-nav" id="apple-dock">
-    <button class="nav-btn active" id="btn-home" onclick="switchPage('home')">
+    <button type="button" class="nav-btn active" id="btn-home" onclick="switchPage('home')">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       <span>Home</span>
     </button>
-    <button class="nav-btn" id="btn-tasks" onclick="switchPage('tasks')">
+    <button type="button" class="nav-btn" id="btn-tasks" onclick="switchPage('tasks')">
       <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
       <span>Tasks</span>
     </button>
-    <button class="nav-btn" id="btn-notes" onclick="switchPage('notes')">
+    <button type="button" class="nav-btn" id="btn-notes" onclick="switchPage('notes')">
       <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
       <span>Notes</span>
     </button>
-    <button class="nav-btn" id="btn-history" onclick="switchPage('history')">
+    <button type="button" class="nav-btn" id="btn-history" onclick="switchPage('history')">
       <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
       <span>History</span>
     </button>
 
     <div style="position:relative;">
-      <button class="nav-btn" id="btn-more" onclick="toggleMoreMenu(event)">
+      <button type="button" class="nav-btn" id="btn-more" onclick="toggleMoreMenu(event)">
         <svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
         <span>More</span>
       </button>
       <div class="more-apps-menu" id="more-menu">
-        <button class="more-menu-item" onclick="openExtraApp('timer')">⏱️ Focus Timer</button>
-        <button class="more-menu-item" onclick="openExtraApp('calc')">🧮 Calculator</button>
-        <button class="more-menu-item" onclick="openExtraApp('dict')">📚 Dictionary</button>
+        <button type="button" class="more-menu-item" onclick="openExtraApp('timer')">⏱️ Focus Timer</button>
+        <button type="button" class="more-menu-item" onclick="openExtraApp('calc')">🧮 Calculator</button>
+        <button type="button" class="more-menu-item" onclick="openExtraApp('dict')">📚 Dictionary</button>
       </div>
     </div>
   </nav>
@@ -1003,8 +1003,10 @@
     let savedNotes = [];
     let activeNoteId = null;
 
-    // AUTH CONTROLS
-    document.getElementById("loginBtn").addEventListener("click", async () => {
+    // AUTH CONTROLS - FIXED EVENT HANDLING PREVENTS POPUP DISAPPEARING
+    document.getElementById("loginBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       try {
         await signInWithPopup(auth, provider);
       } catch (err) {
@@ -1012,7 +1014,8 @@
       }
     });
 
-    document.getElementById("logoutBtn").addEventListener("click", () => {
+    document.getElementById("logoutBtn").addEventListener("click", (e) => {
+      e.preventDefault();
       signOut(auth).then(() => location.reload());
     });
 
@@ -1022,7 +1025,7 @@
         document.getElementById("loginBtn").style.display = "none";
         document.getElementById("userInfo").style.display = "flex";
         document.getElementById("userName").innerText = user.displayName;
-        document.getElementById("userAvatar").src = user.photoURL;
+        document.getElementById("userAvatar").src = user.photoURL || '';
 
         // Load logged-in user data from Cloud Firestore
         await loadUserDataFromCloud();
@@ -1175,7 +1178,7 @@
                     <strong style="font-size:1.15rem; color:#fff;">${task.name}</strong>
                     <div style="font-size:0.82rem; color:var(--oneui-text-sub); margin-top:2px;">Target Date: ${task.date}</div>
                   </div>
-                  <button class="action-btn" onclick="completeTask(${task.id})" style="padding:6px 16px; font-size:0.82rem;">✓ Complete</button>
+                  <button type="button" class="action-btn" onclick="completeTask(${task.id})" style="padding:6px 16px; font-size:0.82rem;">✓ Complete</button>
                 </div>
                 <div class="specs-grid-display">
                   <span class="spec-pill">${subjectIcons[task.subject] || '📌'} ${task.subject}</span>
@@ -1197,7 +1200,7 @@
               <span class="spec-pill" style="font-size:0.72rem;">${subjectIcons[t.subject] || '📌'} ${t.subject}</span>
               <strong style="margin-left:8px; font-size:0.95rem;">${t.name}</strong>
             </div>
-            <button class="action-btn" onclick="completeTask(${t.id})" style="padding:4px 12px; font-size:0.78rem;">✓ Done</button>
+            <button type="button" class="action-btn" onclick="completeTask(${t.id})" style="padding:4px 12px; font-size:0.78rem;">✓ Done</button>
           </div>
         </div>
       `).join('');
@@ -1236,7 +1239,7 @@
           <div><strong>${item.className}</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">${item.room}</div></div>
           <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">${item.timeStr}</span>
-            <button onclick="deleteScheduleItem(${item.id})" style="background:transparent; border:none; color:var(--oneui-text-sub); cursor:pointer;">✕</button>
+            <button type="button" onclick="deleteScheduleItem(${item.id})" style="background:transparent; border:none; color:var(--oneui-text-sub); cursor:pointer;">✕</button>
           </div>
         </div>
       `).join('');
@@ -1336,7 +1339,7 @@
       a.click();
     };
 
-    // UTILITIES
+    // UTILITIES & NOTIFICATION HANDLERS
     let currentPage = 'home', is24Hour = false;
     window.switchPage = function(pageId) {
       if (currentPage === pageId) return;
@@ -1357,9 +1360,21 @@
       currentPage = pageId;
     };
 
-    window.toggleMoreMenu = function(e) { e.stopPropagation(); document.getElementById('more-menu').classList.toggle('show'); };
+    window.toggleMoreMenu = function(e) { 
+      e.stopPropagation(); 
+      document.getElementById('more-menu').classList.toggle('show'); 
+    };
+    
     document.addEventListener('click', () => document.getElementById('more-menu')?.classList.remove('show'));
-    window.openExtraApp = function(appId) { document.getElementById('more-menu').classList.remove('show'); switchPage(appId); };
+    
+    window.openExtraApp = function(appId) { 
+      document.getElementById('more-menu').classList.remove('show'); 
+      switchPage(appId); 
+    };
+
+    window.hideNudge = function() {
+      document.getElementById('focus-nudge-popup').classList.remove('show');
+    };
 
     window.toggleTimeFormat = function() { is24Hour = !is24Hour; updateClock(); };
     function updateClock() {
@@ -1376,6 +1391,35 @@
       document.getElementById('habit-counter').innerText = `${done}/${total} Done`;
     };
 
+    // AUDIO SYNTHESIZER FOR WHITE NOISE
+    let audioCtx = null, noiseNode = null;
+    window.toggleStudyWhiteNoise = function() {
+      const btn = document.getElementById('sound-synth-btn');
+      if (noiseNode) {
+        noiseNode.stop();
+        noiseNode = null;
+        btn.innerText = "▶ White Noise";
+        btn.style.background = "var(--oneui-pill-active)";
+        return;
+      }
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const bufferSize = audioCtx.sampleRate * 2;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+      noiseNode = audioCtx.createBufferSource();
+      noiseNode.buffer = buffer;
+      noiseNode.loop = true;
+      const gainNode = audioCtx.createGain();
+      gainNode.gain.value = 0.04;
+      noiseNode.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      noiseNode.start();
+      btn.innerText = "⏸️ Stop White Noise";
+      btn.style.background = "rgba(16, 185, 129, 0.3)";
+    };
+
+    // CALCULATOR CONTROLS
     let calcVal = "0", calcHistoryList = [];
     window.pressCalc = function(v) { calcVal = (calcVal === "0" && v !== '.') ? v : calcVal + v; document.getElementById("calc-display").innerText = calcVal; };
     window.clearCalc = function() { calcVal = "0"; document.getElementById("calc-display").innerText = calcVal; };
@@ -1390,6 +1434,7 @@
       document.getElementById("calc-display").innerText = calcVal;
     };
 
+    // DICTIONARY LOOKUP
     window.searchAIDictionary = async function() {
       const word = document.getElementById("dict-input").value.trim();
       const output = document.getElementById("dict-output");
@@ -1409,6 +1454,7 @@
       } catch { output.innerHTML = `<div style="color:#fca5a5; padding:16px;">Error searching dictionary.</div>`; }
     };
 
+    // FOCUS TIMER
     let totalSeconds = 1500, timeLeft = 1500, timerId = null;
     function renderTimer() {
       const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
