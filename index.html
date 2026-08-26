@@ -40,17 +40,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 110px;
+      padding-bottom: 90px;
     }
 
     /* Samsung One UI Physics & Spring Keyframes */
     @keyframes oneUiSpringIn {
       0% {
         opacity: 0;
-        transform: translateY(24px) scale(0.94);
+        transform: translateY(18px) scale(0.96);
       }
       60% {
-        transform: translateY(-4px) scale(1.01);
+        transform: translateY(-3px) scale(1.005);
       }
       100% {
         opacity: 1;
@@ -59,52 +59,52 @@
     }
 
     @keyframes cardPulseGlow {
-      0% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); }
-      50% { box-shadow: 0 12px 40px rgba(99, 102, 241, 0.25); }
-      100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); }
+      0% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
+      50% { box-shadow: 0 10px 32px rgba(99, 102, 241, 0.2); }
+      100% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
     }
 
     @keyframes popIn {
-      0% { opacity: 0; transform: scale(0.9); }
+      0% { opacity: 0; transform: scale(0.92); }
       100% { opacity: 1; transform: scale(1); }
     }
 
     /* Micro-Interactions */
-    .glass-card, .widget-card, button, input, select, textarea, .task-item {
-      transition: transform 0.4s var(--oneui-spring), 
-                  background-color 0.3s ease, 
-                  box-shadow 0.3s ease, 
-                  border-color 0.3s ease,
-                  opacity 0.3s ease;
+    .glass-card, .widget-card, button, input, select, textarea, .task-item, .schedule-item, .habit-pill {
+      transition: transform 0.3s var(--oneui-spring), 
+                  background-color 0.25s ease, 
+                  box-shadow 0.25s ease, 
+                  border-color 0.25s ease,
+                  opacity 0.25s ease;
     }
 
-    /* Desktop Responsive Layout Engine */
+    /* Compacted Desktop Layout Engine */
     .desktop-wrapper {
       width: 100%;
-      max-width: 1280px;
-      padding: 32px 28px;
+      max-width: 1180px;
+      padding: 20px 20px;
     }
 
     .page { 
       display: none; 
       opacity: 0;
-      transform: translateY(20px) scale(0.96);
-      transition: opacity 0.4s var(--oneui-smooth), transform 0.4s var(--oneui-smooth);
+      transform: translateY(14px) scale(0.97);
+      transition: opacity 0.35s var(--oneui-smooth), transform 0.35s var(--oneui-smooth);
     }
     
     .page.active-page {
       display: block;
-      animation: oneUiSpringIn 0.5s var(--oneui-smooth) forwards;
+      animation: oneUiSpringIn 0.45s var(--oneui-smooth) forwards;
     }
 
     .glass-card {
       background: var(--oneui-card);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
       border: 1px solid var(--oneui-card-border);
-      border-radius: 36px;
-      padding: 36px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
     }
 
     .glass-card:hover {
@@ -112,34 +112,34 @@
     }
 
     .oneui-header-title {
-      font-size: 2.2rem;
+      font-size: 1.8rem;
       font-weight: 800;
-      letter-spacing: -0.8px;
-      margin-bottom: 6px;
+      letter-spacing: -0.6px;
+      margin-bottom: 4px;
     }
 
     .oneui-header-sub {
       color: var(--oneui-text-sub);
-      font-size: 1.05rem;
-      margin-bottom: 28px;
+      font-size: 0.95rem;
+      margin-bottom: 20px;
     }
 
     input, select, textarea {
       width: 100%;
-      padding: 16px 22px;
-      border-radius: 20px;
+      padding: 12px 18px;
+      border-radius: 16px;
       border: 1px solid var(--oneui-card-border);
       background: var(--oneui-pill);
       color: white;
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       outline: none;
     }
 
     input:focus, select:focus, textarea:focus {
       border-color: var(--oneui-gray-border);
       background: var(--oneui-pill-hover);
-      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
-      transform: translateY(-2px);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+      transform: translateY(-1px);
     }
 
     option { background: #12141d; color: white; }
@@ -149,48 +149,48 @@
       border: 1px solid var(--oneui-gray-border);
       color: white;
       font-weight: 700;
-      font-size: 1rem;
-      padding: 14px 28px;
+      font-size: 0.9rem;
+      padding: 10px 20px;
       border-radius: 999px;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
     }
 
     button.action-btn:hover {
-      transform: scale(1.05) translateY(-2px);
-      background: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      transform: scale(1.04) translateY(-1px);
+      background: rgba(255, 255, 255, 0.28);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
     }
 
     button.action-btn:active { 
-      transform: scale(0.96); 
+      transform: scale(0.95); 
     }
 
-    /* Desktop Home Grid Layout */
+    /* Compact Grid Layout */
     .home-desktop-grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
-      gap: 22px;
+      gap: 16px;
     }
 
     .widget-card {
       background: var(--oneui-card);
       border: 1px solid var(--oneui-card-border);
-      border-radius: 32px;
-      padding: 28px;
-      backdrop-filter: blur(28px);
-      -webkit-backdrop-filter: blur(28px);
+      border-radius: 24px;
+      padding: 20px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       position: relative;
       overflow: hidden;
     }
 
     .widget-card:hover {
-      transform: translateY(-4px) scale(1.01);
-      border-color: rgba(255, 255, 255, 0.25);
-      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
+      transform: translateY(-3px) scale(1.005);
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
     }
 
     .col-12 { grid-column: span 12; }
@@ -201,12 +201,12 @@
     .col-4 { grid-column: span 4; }
 
     .widget-title {
-      font-size: 0.9rem;
+      font-size: 0.82rem;
       font-weight: 800;
       color: var(--oneui-text-sub);
       text-transform: uppercase;
-      letter-spacing: 1.2px;
-      margin-bottom: 18px;
+      letter-spacing: 1.1px;
+      margin-bottom: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -215,31 +215,31 @@
     /* Calculator Desktop Side-by-Side Layout */
     .calc-desktop-grid {
       display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 32px;
+      grid-template-columns: 1fr 300px;
+      gap: 22px;
     }
 
     .calc-display {
       background: rgba(0, 0, 0, 0.6);
-      border-radius: 24px;
-      font-size: 3rem;
+      border-radius: 20px;
+      font-size: 2.5rem;
       font-weight: 700;
       text-align: right;
-      padding: 24px;
-      margin-bottom: 20px;
-      min-height: 96px;
+      padding: 18px;
+      margin-bottom: 16px;
+      min-height: 80px;
       border: 1px solid var(--oneui-card-border);
       font-family: monospace;
       word-break: break-all;
-      box-shadow: inset 0 4px 12px rgba(0,0,0,0.5);
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
     }
 
-    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
     .calc-grid button {
-      height: 72px;
-      font-size: 1.5rem;
+      height: 58px;
+      font-size: 1.3rem;
       font-weight: 700;
-      border-radius: 22px;
+      border-radius: 16px;
       background: var(--oneui-pill);
       border: 1px solid var(--oneui-card-border);
       color: white;
@@ -247,111 +247,157 @@
     }
 
     .calc-grid button:hover {
-      transform: scale(1.06) translateY(-2px);
+      transform: scale(1.04) translateY(-1px);
       background: var(--oneui-pill-hover);
     }
 
     .calc-grid button:active { transform: scale(0.94); }
-
-    .calc-grid button.op-btn {
-      background: rgba(255, 255, 255, 0.16);
-    }
+    .calc-grid button.op-btn { background: rgba(255, 255, 255, 0.16); }
 
     .calc-history {
       background: rgba(0, 0, 0, 0.4);
-      border-radius: 24px;
-      padding: 20px;
-      height: 380px;
+      border-radius: 20px;
+      padding: 16px;
+      height: 310px;
       overflow-y: auto;
       border: 1px solid var(--oneui-card-border);
     }
 
     .history-item {
       font-family: monospace;
-      font-size: 1.05rem;
-      padding: 10px 0;
+      font-size: 0.95rem;
+      padding: 8px 0;
       color: var(--oneui-text-sub);
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    /* Timer Ring Animated */
+    /* Fixed Timer Circle with Overflow Safeguard */
     .timer-circle-container {
       position: relative;
-      width: 260px;
-      height: 260px;
-      margin: 24px auto;
+      width: 240px;
+      height: 240px;
+      margin: 14px auto;
+      overflow: visible;
     }
 
-    .timer-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+    .timer-svg { 
+      transform: rotate(-90deg); 
+      width: 100%; 
+      height: 100%; 
+      overflow: visible;
+    }
+
     .timer-bg { fill: none; stroke: var(--oneui-pill); stroke-width: 10; }
+    
     .timer-progress {
       fill: none;
-      stroke: #ffffff;
+      stroke: #6366f1;
       stroke-width: 10;
       stroke-linecap: round;
-      stroke-dasharray: 565;
+      stroke-dasharray: 597;
       stroke-dashoffset: 0;
-      transition: stroke-dashoffset 1s linear;
-      filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
+      transition: stroke-dashoffset 0.8s linear, stroke 0.4s ease;
+      filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.8));
     }
 
     .timer-text {
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 3.8rem;
+      font-size: 3.2rem;
       font-weight: 800;
-      letter-spacing: -2px;
+      letter-spacing: -1.5px;
     }
 
     /* Homework Priority Badges */
     .badge-high { background: rgba(239, 68, 68, 0.25); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; }
     .badge-medium { background: rgba(245, 158, 11, 0.25); border: 1px solid rgba(245, 158, 11, 0.4); color: #fde68a; }
     .badge-low { background: rgba(16, 185, 129, 0.25); border: 1px solid rgba(16, 185, 129, 0.4); color: #a7f3d0; }
-    .priority-pill { padding: 4px 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; }
+    .priority-pill { padding: 3px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; }
 
     .task-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: var(--oneui-pill);
-      padding: 18px 24px;
-      border-radius: 22px;
-      margin-top: 12px;
+      padding: 14px 18px;
+      border-radius: 18px;
+      margin-top: 10px;
       border: 1px solid var(--oneui-card-border);
     }
 
     .task-item:hover {
-      transform: translateY(-2px) scale(1.01);
+      transform: translateY(-2px) scale(1.005);
       border-color: var(--oneui-gray-border);
     }
 
     .task-inputs-grid {
       display: grid;
       grid-template-columns: 3fr 1.5fr 1.5fr auto;
-      gap: 14px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    /* Widget Components: Timetable & Habits */
+    .schedule-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--oneui-card-border);
+      padding: 10px 14px;
+      border-radius: 14px;
+      margin-bottom: 8px;
+    }
+
+    .schedule-item:hover {
+      background: var(--oneui-pill);
+    }
+
+    .habit-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .habit-pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--oneui-card-border);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
+    }
+
+    .habit-pill.completed {
+      background: rgba(16, 185, 129, 0.25);
+      border-color: rgba(16, 185, 129, 0.5);
+      color: #a7f3d0;
     }
 
     /* Apple-Style Separated Floating Navigation Dock */
     nav.apple-dock-nav {
       position: fixed;
-      bottom: 24px;
+      bottom: 18px;
       left: 50%;
       transform: translateX(-50%) scale(1);
       transform-origin: bottom center;
       z-index: 1000;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       width: fit-content;
-      transition: transform 0.4s var(--oneui-spring), opacity 0.3s ease;
+      transition: transform 0.35s var(--oneui-spring), opacity 0.25s ease;
     }
 
     /* Dynamic Scroll State for Navigation Dock */
     nav.apple-dock-nav.dock-minimized {
-      transform: translateX(-50%) scale(0.82);
-      opacity: 0.75;
+      transform: translateX(-50%) scale(0.85);
+      opacity: 0.82;
     }
 
     nav.apple-dock-nav.dock-minimized:hover {
@@ -362,42 +408,40 @@
     .nav-segment {
       display: flex;
       align-items: center;
-      background: rgba(15, 17, 26, 0.85);
-      backdrop-filter: blur(36px);
-      -webkit-backdrop-filter: blur(36px);
+      background: rgba(15, 17, 26, 0.88);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
       border: 1px solid var(--oneui-card-border);
       border-radius: 999px;
-      padding: 6px 8px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+      padding: 5px 6px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6);
       position: relative;
     }
 
-    .tool-segment {
-      gap: 4px;
-    }
+    .tool-segment { gap: 4px; }
 
     .nav-btn {
       background: transparent;
       border: 1px solid transparent;
       color: var(--oneui-text-sub);
-      padding: 10px 20px;
+      padding: 8px 16px;
       border-radius: 999px;
       cursor: pointer;
       position: relative;
       z-index: 2;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.92rem;
+      gap: 6px;
+      font-size: 0.88rem;
       font-weight: 700;
       transition: padding 0.3s var(--oneui-spring);
     }
 
     .nav-btn span {
-      max-width: 120px;
+      max-width: 100px;
       opacity: 1;
       display: inline-block;
-      transition: max-width 0.4s var(--oneui-smooth), opacity 0.3s ease;
+      transition: max-width 0.35s var(--oneui-smooth), opacity 0.25s ease;
       white-space: nowrap;
       overflow: hidden;
     }
@@ -406,67 +450,61 @@
     nav.apple-dock-nav.dock-minimized .nav-btn span {
       max-width: 0;
       opacity: 0;
+      margin: 0;
     }
 
     /* Restore Labels on Dock Hover */
     nav.apple-dock-nav.dock-minimized:hover .nav-btn span {
-      max-width: 120px;
+      max-width: 100px;
       opacity: 1;
     }
 
     .nav-btn svg {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       fill: currentColor;
-      transition: transform 0.3s var(--oneui-spring), fill 0.3s ease;
+      transition: transform 0.3s var(--oneui-spring), fill 0.25s ease;
       flex-shrink: 0;
     }
 
-    .nav-btn:hover {
-      color: #ffffff;
-    }
-
-    .nav-btn:hover svg {
-      transform: scale(1.2);
-    }
+    .nav-btn:hover { color: #ffffff; }
+    .nav-btn:hover svg { transform: scale(1.18); }
 
     /* Active States */
     .home-segment .nav-btn.active {
       color: #ffffff;
       background: var(--oneui-pill-active);
       border: 1px solid var(--oneui-gray-border);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
     }
 
-    .tool-segment .nav-btn.active {
-      color: #ffffff;
-    }
+    .tool-segment .nav-btn.active { color: #ffffff; }
 
+    /* Nav Indicator with Fixed Compaction Sync */
     .nav-indicator {
       position: absolute;
-      top: 6px;
-      bottom: 6px;
+      top: 5px;
+      bottom: 5px;
       border-radius: 999px;
       background: var(--oneui-pill-active);
       border: 1px solid var(--oneui-gray-border);
-      transition: all 0.4s var(--oneui-spring);
+      transition: left 0.35s var(--oneui-spring), width 0.35s var(--oneui-spring), opacity 0.2s ease;
       z-index: 1;
       opacity: 0;
+      pointer-events: none;
     }
 
     /* Dynamic Dictionary Cards */
     .primary-def-card {
       background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
       border: 1px solid rgba(255, 255, 255, 0.3) !important;
-      border-radius: 28px;
-      padding: 24px;
-      margin-bottom: 18px;
-      animation: popIn 0.4s var(--oneui-smooth) forwards;
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 14px;
+      animation: popIn 0.35s var(--oneui-smooth) forwards;
     }
 
-    .def-item {
-      animation: popIn 0.4s var(--oneui-smooth) forwards;
-    }
+    .def-item { animation: popIn 0.35s var(--oneui-smooth) forwards; }
 
     /* Responsive fallbacks for smaller desktop screens */
     @media (max-width: 992px) {
@@ -485,45 +523,88 @@
       <div class="home-desktop-grid">
         
         <!-- WIDGET 1: Hero Galaxy Clock -->
-        <div class="widget-card col-12" style="text-align: center; padding: 48px 24px; animation: cardPulseGlow 6s infinite ease-in-out;">
-          <div class="widget-title" style="justify-content: center; gap: 10px;">
+        <div class="widget-card col-12" style="text-align: center; padding: 32px 20px; animation: cardPulseGlow 6s infinite ease-in-out;">
+          <div class="widget-title" style="justify-content: center; gap: 8px;">
             <span>DESK TIME & WORKSTATION</span>
             <span style="font-size:0.75rem; opacity:0.7; cursor:pointer;" onclick="toggleTimeFormat()">(12H / 24H)</span>
           </div>
-          <div id="clock-time" style="font-size: clamp(4rem, 8vw, 6rem); font-weight: 800; letter-spacing: -3px; cursor: pointer; text-shadow: 0 10px 30px rgba(0,0,0,0.5);" onclick="toggleTimeFormat()">00:00:00</div>
-          <div id="clock-date" style="color: var(--oneui-text-sub); font-size: 1.25rem; margin-top: 8px; font-weight: 600;">Loading calendar...</div>
+          <div id="clock-time" style="font-size: clamp(3.2rem, 6vw, 4.8rem); font-weight: 800; letter-spacing: -2px; cursor: pointer; text-shadow: 0 8px 24px rgba(0,0,0,0.5);" onclick="toggleTimeFormat()">00:00:00</div>
+          <div id="clock-date" style="color: var(--oneui-text-sub); font-size: 1.1rem; margin-top: 4px; font-weight: 600;">Loading calendar...</div>
         </div>
 
         <!-- WIDGET 2: Homework Queue -->
         <div class="widget-card col-7">
           <div class="widget-title">
             <span>📌 Assignment Priority Queue</span>
-            <button class="action-btn" onclick="switchPage('tasks')" style="padding: 6px 18px; font-size: 0.85rem;">Manage Tasks</button>
+            <button class="action-btn" onclick="switchPage('tasks')" style="padding: 4px 14px; font-size: 0.8rem;">Planner</button>
           </div>
           <div id="home-priority-tasks"></div>
         </div>
 
-        <!-- WIDGET 3: Focus Timer Quick Control -->
+        <!-- WIDGET 3: Fully Accessible Focus Timer Widget -->
         <div class="widget-card col-5" style="display: flex; flex-direction: column; justify-content: space-between;">
           <div class="widget-title">
             <span>⏱️ Focus Timer</span>
+            <span id="home-timer-status" style="font-size:0.75rem; color:#a7f3d0; background:rgba(16,185,129,0.2); padding:2px 8px; border-radius:999px;">Ready</span>
           </div>
-          <div style="text-align: center; margin: 10px 0;">
-            <div style="font-size: 3.5rem; font-weight: 800; letter-spacing: -1px;" id="home-timer-val">25:00</div>
-            <p style="color: var(--oneui-text-sub); font-size: 0.95rem;">Pomodoro Study Session</p>
+          <div style="text-align: center; margin: 6px 0;">
+            <div style="font-size: 3rem; font-weight: 800; letter-spacing: -1px; font-family: monospace;" id="home-timer-val">25:00</div>
+            <p style="color: var(--oneui-text-sub); font-size: 0.85rem; margin-top: 2px;">Pomodoro Focus Session</p>
           </div>
-          <div style="display: flex; gap: 12px;">
-            <button class="action-btn" onclick="switchPage('timer'); startTimer();" style="flex: 1;">Start Session</button>
-            <button class="action-btn" onclick="switchPage('timer')" style="flex: 1; background: var(--oneui-pill);">View Timer</button>
+          <div style="display: flex; gap: 8px; justify-content: center;">
+            <button class="action-btn" id="home-start-btn" onclick="startTimer()" style="flex: 1; padding: 8px 12px; font-size: 0.85rem;">Start</button>
+            <button class="action-btn" onclick="pauseTimer()" style="flex: 1; padding: 8px 12px; font-size: 0.85rem; background: var(--oneui-pill);">Pause</button>
+            <button class="action-btn" onclick="resetTimer()" style="flex: 1; padding: 8px 12px; font-size: 0.85rem; background: var(--oneui-pill);">Reset</button>
           </div>
         </div>
 
-        <!-- WIDGET 4: Interactive Quick Scratchpad -->
+        <!-- NEW WIDGET 4: Today's Class Timetable -->
+        <div class="widget-card col-6">
+          <div class="widget-title">
+            <span>📅 Class Timetable Today</span>
+            <span style="font-size:0.75rem; color:var(--oneui-text-sub);">Regular Schedule</span>
+          </div>
+          <div class="schedule-item">
+            <div><strong>Period 1: Mathematics</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Algebra II & Trigonometry</div></div>
+            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">08:30 AM</span>
+          </div>
+          <div class="schedule-item">
+            <div><strong>Period 2: Physical Science</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Lab Room 204</div></div>
+            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">10:15 AM</span>
+          </div>
+          <div class="schedule-item">
+            <div><strong>Period 3: History & Literature</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Essay Review Session</div></div>
+            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">01:00 PM</span>
+          </div>
+        </div>
+
+        <!-- NEW WIDGET 5: Study Habit Tracker & Audio Synth -->
+        <div class="widget-card col-6" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div class="widget-title">
+              <span>⚡ Daily Study Habits</span>
+              <span id="habit-counter" style="font-size:0.75rem; color:var(--oneui-text-sub);">0/4 Done</span>
+            </div>
+            <div class="habit-grid">
+              <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> Review Notes</div>
+              <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> 30m Reading</div>
+              <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> Hydrate Water</div>
+              <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> Clean Desk</div>
+            </div>
+          </div>
+          
+          <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--oneui-card-border); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.82rem; font-weight: 800; color: var(--oneui-text-sub);">AUDIO FOCUS SOUND</span>
+            <button class="action-btn" id="sound-synth-btn" onclick="toggleStudyWhiteNoise()" style="padding: 6px 16px; font-size: 0.8rem;">▶ Ambient Noise</button>
+          </div>
+        </div>
+
+        <!-- WIDGET 6: Interactive Quick Scratchpad -->
         <div class="widget-card col-12">
           <div class="widget-title">
             <span>📝 Desktop Scratchpad & Quick Notes</span>
           </div>
-          <textarea id="quick-note" placeholder="Jot down quick homework notes, formulas, or reminders here..." style="height: 110px; resize: vertical; font-size: 1.05rem;" oninput="saveQuickNote()"></textarea>
+          <textarea id="quick-note" placeholder="Jot down quick homework notes, formulas, or reminders here..." style="height: 90px; resize: vertical; font-size: 0.95rem;" oninput="saveQuickNote()"></textarea>
         </div>
 
       </div>
@@ -562,9 +643,9 @@
             </div>
           </div>
           <div>
-            <h4 style="margin-bottom: 14px; font-weight: 700; font-size: 1.15rem; color: var(--oneui-text-sub);">Calculation History</h4>
+            <h4 style="margin-bottom: 12px; font-weight: 700; font-size: 1.05rem; color: var(--oneui-text-sub);">Calculation History</h4>
             <div id="calc-history" class="calc-history">
-              <div style="color:var(--oneui-text-sub); font-size:0.95rem;">No equations solved yet.</div>
+              <div style="color:var(--oneui-text-sub); font-size:0.9rem;">No equations solved yet.</div>
             </div>
           </div>
         </div>
@@ -577,13 +658,13 @@
         <h2 class="oneui-header-title">Dictionary & Thesaurus</h2>
         <p class="oneui-header-sub">Instant definition lookup for study research</p>
 
-        <div style="display: flex; gap: 14px; max-width: 800px;">
+        <div style="display: flex; gap: 12px; max-width: 750px;">
           <input type="text" id="dict-input" placeholder="Type a word to define..." onkeydown="if(event.key==='Enter') searchAIDictionary()"/>
-          <button class="action-btn" onclick="searchAIDictionary()" style="padding: 0 32px;">Search</button>
+          <button class="action-btn" onclick="searchAIDictionary()" style="padding: 0 28px;">Search</button>
         </div>
 
-        <div id="dict-output" style="margin-top: 24px; min-height: 120px;">
-          <div style="color:var(--oneui-text-sub); background: rgba(0,0,0,0.3); padding: 28px; border-radius: 24px; border: 1px solid var(--oneui-card-border); font-size: 1.05rem;">
+        <div id="dict-output" style="margin-top: 20px; min-height: 120px;">
+          <div style="color:var(--oneui-text-sub); background: rgba(0,0,0,0.3); padding: 22px; border-radius: 20px; border: 1px solid var(--oneui-card-border); font-size: 0.95rem;">
             Type any term above and press search to view definitions and synonyms.
           </div>
         </div>
@@ -592,24 +673,25 @@
 
     <!-- TIMER -->
     <section id="timer" class="page">
-      <div class="glass-card" style="text-align: center; max-width: 700px; margin: 0 auto;">
+      <div class="glass-card" style="text-align: center; max-width: 640px; margin: 0 auto;">
         <h2 class="oneui-header-title">Focus Study Timer</h2>
-        <p class="oneui-header-sub">Keep track of your study sessions</p>
+        <p class="oneui-header-sub">Visual real-time light countdown with icebreak chime</p>
         
+        <!-- Re-dimensioned SVG viewBox preventing glow cutoff -->
         <div class="timer-circle-container">
-          <svg class="timer-svg" viewBox="0 0 200 200">
-            <circle class="timer-bg" cx="100" cy="100" r="90" />
-            <circle id="timer-progress" class="timer-progress" cx="100" cy="100" r="90" />
+          <svg class="timer-svg" viewBox="0 0 240 240">
+            <circle class="timer-bg" cx="120" cy="120" r="95" />
+            <circle id="timer-progress" class="timer-progress" cx="120" cy="120" r="95" />
           </svg>
           <div id="timer-display" class="timer-text">25:00</div>
         </div>
 
-        <div style="display: flex; gap: 12px; max-width: 380px; margin: 0 auto 20px auto;">
+        <div style="display: flex; gap: 10px; max-width: 340px; margin: 0 auto 18px auto;">
           <input type="number" id="custom-minutes" placeholder="Minutes" min="1" max="180" style="text-align: center;">
           <button class="action-btn" onclick="setCustomTimer()" style="width: 50%;">Set Time</button>
         </div>
 
-        <div style="display: flex; gap: 12px; justify-content: center; max-width: 420px; margin: 0 auto;">
+        <div style="display: flex; gap: 10px; justify-content: center; max-width: 380px; margin: 0 auto;">
           <button class="action-btn" onclick="startTimer()" style="flex: 1;">Start</button>
           <button class="action-btn" onclick="pauseTimer()" style="flex: 1; background: var(--oneui-pill);">Pause</button>
           <button class="action-btn" onclick="resetTimer()" style="flex: 1; background: var(--oneui-pill);">Reset</button>
@@ -686,27 +768,7 @@
     let is24Hour = false;
     let lastScrollY = window.scrollY;
 
-    /* Dynamic Scroll Listener for Dock Shrinking */
-    window.addEventListener('scroll', () => {
-      const dock = document.getElementById('apple-dock');
-      const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY && currentScrollY > 40) {
-        // Scrolling DOWN -> Shrink dock, hide text labels
-        dock.classList.add('dock-minimized');
-      } else if (currentScrollY < lastScrollY) {
-        // Scrolling UP -> Expand dock back to normal size
-        dock.classList.remove('dock-minimized');
-      }
-      
-      lastScrollY = currentScrollY;
-      
-      // Keep active slider perfectly aligned during scaling transition
-      const activeBtn = document.getElementById(`btn-${currentPage}`);
-      if (activeBtn) updateNavIndicator(activeBtn);
-    });
-
-    /* Dynamic Nav Slider for Separated Tool Segment */
+    /* Dynamic Nav Slider Indicator Calculation */
     function updateNavIndicator(btn) {
       const indicator = document.getElementById('nav-indicator');
       if (!indicator) return;
@@ -719,6 +781,26 @@
         indicator.style.opacity = '0';
       }
     }
+
+    /* Fixed Scroll Listener Syncing Minimized Dock Indicator */
+    window.addEventListener('scroll', () => {
+      const dock = document.getElementById('apple-dock');
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 40) {
+        dock.classList.add('dock-minimized');
+      } else if (currentScrollY < lastScrollY) {
+        dock.classList.remove('dock-minimized');
+      }
+      
+      lastScrollY = currentScrollY;
+
+      // Force instant indicator realign as text collapses or expands
+      setTimeout(() => {
+        const activeBtn = document.getElementById(`btn-${currentPage}`);
+        if (activeBtn) updateNavIndicator(activeBtn);
+      }, 50);
+    });
 
     function switchPage(pageId) {
       if (currentPage === pageId) return;
@@ -735,11 +817,11 @@
 
       if (oldPage) {
         oldPage.style.opacity = '0';
-        oldPage.style.transform = 'translateY(16px) scale(0.96)';
+        oldPage.style.transform = 'translateY(12px) scale(0.97)';
         setTimeout(() => {
           oldPage.classList.remove('active-page');
           newPage.classList.add('active-page');
-        }, 220);
+        }, 180);
       }
 
       currentPage = pageId;
@@ -776,6 +858,76 @@
     }
     setInterval(updateClock, 1000);
     updateClock();
+
+    /* --- HABIT WIDGET --- */
+    function toggleHabit(el) {
+      el.classList.toggle('completed');
+      const total = document.querySelectorAll('.habit-pill').length;
+      const done = document.querySelectorAll('.habit-pill.completed').length;
+      document.getElementById('habit-counter').innerText = `${done}/${total} Done`;
+    }
+
+    /* --- AUDIO SYNTHESIZERS (Icebreak & Ambient Noise) --- */
+    let audioCtx = null;
+    let noiseNode = null;
+
+    function playIcebreakRingtone() {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const freqs = [1567.98, 2093.00, 2637.02, 3135.96, 4186.01]; // G6, C7, E7, G7, C8 high chime frequencies
+      
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
+        
+        gain.gain.setValueAtTime(0.2, ctx.currentTime + idx * 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.06 + 0.6);
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        osc.start(ctx.currentTime + idx * 0.06);
+        osc.stop(ctx.currentTime + idx * 0.06 + 0.65);
+      });
+    }
+
+    function toggleStudyWhiteNoise() {
+      const btn = document.getElementById('sound-synth-btn');
+      if (noiseNode) {
+        noiseNode.stop();
+        noiseNode = null;
+        btn.innerText = "▶ Ambient Noise";
+        btn.style.background = "var(--oneui-pill-active)";
+        return;
+      }
+
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const bufferSize = audioCtx.sampleRate * 2;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      
+      let lastOut = 0.0;
+      for (let i = 0; i < bufferSize; i++) {
+        const white = Math.random() * 2 - 1;
+        data[i] = (lastOut + (0.02 * white)) / 1.02; // Soft pink noise filter
+        lastOut = data[i];
+      }
+
+      noiseNode = audioCtx.createBufferSource();
+      noiseNode.buffer = buffer;
+      noiseNode.loop = true;
+
+      const gain = audioCtx.createGain();
+      gain.gain.value = 0.08;
+
+      noiseNode.connect(gain);
+      gain.connect(audioCtx.destination);
+      noiseNode.start();
+
+      btn.innerText = "⏸ Pause Noise";
+      btn.style.background = "rgba(16, 185, 129, 0.4)";
+    }
 
     /* --- QUICK NOTE --- */
     function saveQuickNote() {
@@ -830,7 +982,7 @@
       const output = document.getElementById("dict-output");
 
       if (!word) return;
-      output.innerHTML = `<div style="color:var(--oneui-text-sub); padding: 24px;">Searching definitions...</div>`;
+      output.innerHTML = `<div style="color:var(--oneui-text-sub); padding: 20px;">Searching definitions...</div>`;
 
       try {
         const [defRes, synRes] = await Promise.all([
@@ -845,7 +997,7 @@
           const entry = defData[0];
           const synonyms = synData.map(s => s.word).join(", ") || "None found";
 
-          let html = `<h3 class="def-item" style="color:#ffffff; text-transform:capitalize; margin-bottom:18px; font-size:1.8rem;">${entry.word}</h3>`;
+          let html = `<h3 class="def-item" style="color:#ffffff; text-transform:capitalize; margin-bottom:14px; font-size:1.5rem;">${entry.word}</h3>`;
           
           entry.defs.forEach((d, index) => {
             const parts = d.split('\t');
@@ -855,33 +1007,33 @@
             if (index === 0) {
               html += `
                 <div class="primary-def-card">
-                  <div style="font-size: 0.8rem; font-weight: 800; opacity: 0.8; letter-spacing: 0.8px; margin-bottom: 8px;">PRIMARY DEFINITION</div>
-                  <div style="font-size: 1.2rem; line-height: 1.5; color: #ffffff;">
+                  <div style="font-size: 0.75rem; font-weight: 800; opacity: 0.8; letter-spacing: 0.8px; margin-bottom: 6px;">PRIMARY DEFINITION</div>
+                  <div style="font-size: 1.1rem; line-height: 1.4; color: #ffffff;">
                     <strong style="color: rgba(255,255,255,0.75);">${pos}</strong> ${defText}
                   </div>
                 </div>`;
             } else {
               html += `
-                <div class="def-item" style="background: rgba(0,0,0,0.3); border: 1px solid var(--oneui-card-border); padding: 16px 20px; border-radius: 20px; margin-bottom: 12px; font-size: 1.05rem;">
+                <div class="def-item" style="background: rgba(0,0,0,0.3); border: 1px solid var(--oneui-card-border); padding: 12px 16px; border-radius: 16px; margin-bottom: 10px; font-size: 0.95rem;">
                   <strong style="color: var(--oneui-text-sub);">${pos}</strong> ${defText}
                 </div>`;
             }
           });
           
-          html += `<p class="def-item" style="margin-top: 16px; font-size: 1rem; color: var(--oneui-text-sub);"><b>Synonyms:</b> ${synonyms}</p>`;
+          html += `<p class="def-item" style="margin-top: 12px; font-size: 0.9rem; color: var(--oneui-text-sub);"><b>Synonyms:</b> ${synonyms}</p>`;
 
           output.innerHTML = html;
         } else {
-          output.innerHTML = `<div class="def-item" style="color:#fca5a5; padding: 24px; background: rgba(0,0,0,0.3); border-radius:24px;">No definitions found for "${word}".</div>`;
+          output.innerHTML = `<div class="def-item" style="color:#fca5a5; padding: 20px; background: rgba(0,0,0,0.3); border-radius:20px;">No definitions found for "${word}".</div>`;
         }
       } catch (err) {
-        output.innerHTML = `<div class="def-item" style="color:#fca5a5; padding: 24px; background: rgba(0,0,0,0.3); border-radius:24px;">Network error. Please check your connection.</div>`;
+        output.innerHTML = `<div class="def-item" style="color:#fca5a5; padding: 20px; background: rgba(0,0,0,0.3); border-radius:20px;">Network error. Please check your connection.</div>`;
       }
 
       document.getElementById("dict-input").value = "";
     }
 
-    /* --- TIMER --- */
+    /* --- TIMER WITH REAL LIGHT COUNTDOWN & ICEBREAK RINGTONE --- */
     let totalSeconds = 1500;
     let timeLeft = 1500;
     let timerId = null;
@@ -890,12 +1042,38 @@
       const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
       const s = String(timeLeft % 60).padStart(2, '0');
       const timeStr = `${m}:${s}`;
+      
       document.getElementById("timer-display").innerText = timeStr;
       document.getElementById("home-timer-val").innerText = timeStr;
       
-      const circumference = 565;
-      const offset = circumference - (timeLeft / totalSeconds) * circumference;
-      document.getElementById("timer-progress").style.strokeDashoffset = offset;
+      const statusTag = document.getElementById("home-timer-status");
+      if (timerId) {
+        statusTag.innerText = "Running";
+        statusTag.style.background = "rgba(99,102,241,0.3)";
+        statusTag.style.color = "#c7d2fe";
+      } else if (timeLeft < totalSeconds && timeLeft > 0) {
+        statusTag.innerText = "Paused";
+        statusTag.style.background = "rgba(245,158,11,0.25)";
+        statusTag.style.color = "#fde68a";
+      } else {
+        statusTag.innerText = "Ready";
+        statusTag.style.background = "rgba(16,185,129,0.2)";
+        statusTag.style.color = "#a7f3d0";
+      }
+
+      // 597 Circumference for r=95 in viewBox 240x240
+      const circumference = 597;
+      const progressCircle = document.getElementById("timer-progress");
+      
+      // Light goes away proportional to time left (0 offset = full light ring, 597 offset = zero light remaining)
+      const lightOffset = circumference * (1 - (timeLeft / totalSeconds));
+      progressCircle.style.strokeDashoffset = lightOffset;
+
+      if (timeLeft <= 10) {
+        progressCircle.style.stroke = "#ef4444"; // Warning red glow on final 10 sec
+      } else {
+        progressCircle.style.stroke = "#6366f1";
+      }
     }
 
     function setCustomTimer() {
@@ -917,12 +1095,25 @@
         } else {
           clearInterval(timerId);
           timerId = null;
-          alert("Focus session completed!");
+          renderTimer();
+          playIcebreakRingtone();
         }
       }, 1000);
+      renderTimer();
     }
-    function pauseTimer() { clearInterval(timerId); timerId = null; }
-    function resetTimer() { pauseTimer(); timeLeft = totalSeconds; renderTimer(); }
+
+    function pauseTimer() { 
+      clearInterval(timerId); 
+      timerId = null; 
+      renderTimer();
+    }
+
+    function resetTimer() { 
+      pauseTimer(); 
+      timeLeft = totalSeconds; 
+      renderTimer(); 
+    }
+    
     renderTimer();
 
     /* --- TASKS --- */
@@ -952,8 +1143,8 @@
       const homeWidget = document.getElementById("home-priority-tasks");
 
       if (tasks.length === 0) {
-        fullList.innerHTML = `<p style="color:var(--oneui-text-sub); margin-top:12px; font-size:1rem;">No active assignments pending.</p>`;
-        homeWidget.innerHTML = `<p style="color:var(--oneui-text-sub); font-size:0.95rem;">All caught up! No active tasks due.</p>`;
+        fullList.innerHTML = `<p style="color:var(--oneui-text-sub); margin-top:10px; font-size:0.95rem;">No active assignments pending.</p>`;
+        homeWidget.innerHTML = `<p style="color:var(--oneui-text-sub); font-size:0.9rem;">All caught up! No active tasks due.</p>`;
         return;
       }
 
@@ -963,22 +1154,22 @@
       fullList.innerHTML = tasks.map(t => `
         <div class="task-item">
           <div>
-            <strong style="font-size:1.1rem;">${t.name}</strong>
-            <div style="font-size:0.9rem; color:var(--oneui-text-sub); margin-top:4px;">
-              Due Date: ${t.date} | Priority: <span class="priority-pill badge-${t.priority.toLowerCase()}">${t.priority}</span>
+            <strong style="font-size:1rem;">${t.name}</strong>
+            <div style="font-size:0.85rem; color:var(--oneui-text-sub); margin-top:2px;">
+              Due: ${t.date} | Priority: <span class="priority-pill badge-${t.priority.toLowerCase()}">${t.priority}</span>
             </div>
           </div>
-          <button class="action-btn" onclick="completeTask(${t.id})" style="padding: 8px 20px; font-size:0.9rem;">✓ Done</button>
+          <button class="action-btn" onclick="completeTask(${t.id})" style="padding: 6px 16px; font-size:0.85rem;">✓ Done</button>
         </div>
       `).join('');
 
-      homeWidget.innerHTML = tasks.slice(0, 4).map(t => `
-        <div class="task-item" style="padding:14px 20px;">
+      homeWidget.innerHTML = tasks.slice(0, 3).map(t => `
+        <div class="task-item" style="padding:10px 14px;">
           <div>
             <span class="priority-pill badge-${t.priority.toLowerCase()}">${t.priority}</span>
-            <span style="margin-left:12px; font-weight:600; font-size:1.02rem;">${t.name}</span>
+            <span style="margin-left:8px; font-weight:600; font-size:0.95rem;">${t.name}</span>
           </div>
-          <button class="action-btn" onclick="completeTask(${t.id})" style="padding: 6px 14px; font-size:0.85rem;">✓ Complete</button>
+          <button class="action-btn" onclick="completeTask(${t.id})" style="padding: 4px 12px; font-size:0.8rem;">✓ Complete</button>
         </div>
       `).join('');
     }
