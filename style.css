@@ -1,10 +1,4 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
 :root {
   --oneui-bg: #090a10;
   --oneui-card: rgba(255, 255, 255, 0.05);
@@ -12,82 +6,43 @@
   --oneui-pill: rgba(255, 255, 255, 0.08);
   --oneui-pill-active: rgba(255, 255, 255, 0.22);
   --oneui-text-sub: #94a3b8;
-  
-  --tier-1-color: #ef4444; --tier-1-bg: rgba(239, 68, 68, 0.12); --tier-1-border: rgba(239, 68, 68, 0.35);
-  --tier-2-color: #f59e0b; --tier-2-bg: rgba(245, 158, 11, 0.12); --tier-2-border: rgba(245, 158, 11, 0.35);
-  --tier-3-color: #10b981; --tier-3-bg: rgba(16, 185, 129, 0.12); --tier-3-border: rgba(16, 185, 129, 0.35);
 }
+body { background-color: var(--oneui-bg); color: #fff; display: flex; justify-content: center; padding-bottom: 120px; }
 
-body {
-  min-height: 100vh;
-  color: #ffffff;
-  background-color: var(--oneui-bg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 120px;
-}
-
-/* Base Card & Page Styles */
 .desktop-wrapper { width: 100%; max-width: 1180px; padding: 20px; }
-.page { display: none; opacity: 0; }
-.page.active-page { display: block; opacity: 1; animation: fadeIn 0.3s ease; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.page { display: none; }
+.page.active-page { display: block; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-.glass-card {
-  background: var(--oneui-card); backdrop-filter: blur(28px);
-  border: 1px solid var(--oneui-card-border); border-radius: 28px; padding: 26px;
+.glass-card, .widget-card {
+  background: var(--oneui-card); border: 1px solid var(--oneui-card-border);
+  border-radius: 24px; padding: 26px;
 }
-.oneui-header-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 4px; }
-.oneui-header-sub { color: var(--oneui-text-sub); margin-bottom: 20px; }
+.home-desktop-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+.col-12 { grid-column: span 12; } .col-7 { grid-column: span 7; } .col-5 { grid-column: span 5; }
+.widget-title { display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 12px; color: var(--oneui-text-sub); }
 
-/* Inputs and Buttons */
 input, select, textarea {
-  width: 100%; padding: 12px 18px; border-radius: 16px;
-  border: 1px solid var(--oneui-card-border);
-  background: var(--oneui-pill); color: white; outline: none;
+  width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--oneui-card-border);
+  background: var(--oneui-pill); color: white;
 }
-option { background: #12141d; }
-
-button.action-btn {
-  background: var(--oneui-pill-active); color: white; padding: 10px 20px;
-  border-radius: 999px; cursor: pointer; border: none; font-weight: 700;
-}
+button.action-btn { background: var(--oneui-pill-active); color: white; padding: 10px 20px; border-radius: 20px; border: none; cursor: pointer; }
 button.action-btn.secondary { background: var(--oneui-pill); }
 
-/* Grid Layouts */
-.home-desktop-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-.widget-card {
-  background: var(--oneui-card); border: 1px solid var(--oneui-card-border);
-  border-radius: 24px; padding: 20px;
-}
-.col-12 { grid-column: span 12; } .col-7 { grid-column: span 7; } .col-5 { grid-column: span 5; }
+.task-form-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+.span-2 { grid-column: span 2; } .span-full { grid-column: span 3; }
+.task-item { background: rgba(0,0,0,0.3); padding: 14px; border-radius: 12px; margin-top: 10px; display: flex; justify-content: space-between; border: 1px solid var(--oneui-card-border); }
 
-/* New 8-Field Task Form Grid */
-.task-form-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 24px;
-  background: rgba(0,0,0,0.2); padding: 16px; border-radius: 20px;
-}
-.span-2 { grid-column: span 2; }
-.span-full { grid-column: span 3; }
+.calc-desktop-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+.calc-display { font-size: 2rem; background: #000; padding: 10px; border-radius: 12px; text-align: right; margin-bottom: 10px; }
+.calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.calc-grid button { padding: 15px; border-radius: 12px; background: var(--oneui-pill); color: white; border: none; font-size: 1.2rem; cursor: pointer; }
+.calc-grid button.op-btn { background: rgba(255,255,255,0.15); }
+.calc-history { background: rgba(0,0,0,0.2); padding: 10px; border-radius: 12px; min-height: 200px; }
 
-/* Task & History Cards */
-.task-item {
-  background: rgba(0,0,0,0.3); border: 1px solid var(--oneui-card-border);
-  padding: 14px 18px; border-radius: 18px; margin-top: 10px;
-  display: flex; justify-content: space-between; align-items: center;
-}
-.task-details { font-size: 0.85rem; color: var(--oneui-text-sub); margin-top: 6px; }
-.task-tag { background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 6px; margin-right: 6px; }
-
-/* Dock */
-.dock-wrapper { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); }
-.oneui-dock {
-  display: flex; gap: 14px; padding: 12px 18px; border-radius: 36px;
-  background: rgba(20, 22, 32, 0.85); border: 1px solid var(--oneui-card-border);
-}
+.dock-wrapper { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); }
+.oneui-dock { display: flex; gap: 14px; padding: 12px 18px; border-radius: 36px; background: rgba(20, 22, 32, 0.85); }
 .dock-tile { width: 48px; height: 48px; border-radius: 18px; background: #333; font-size: 24px; cursor: pointer; border: none; }
-.dock-tile.active { transform: scale(1.1); border: 2px solid white; }
+.dock-tile.active { border: 2px solid white; transform: scale(1.1); }
+
+.focus-nudge-banner { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #ef4444; padding: 15px 30px; border-radius: 12px; z-index: 1000; }
