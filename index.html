@@ -55,7 +55,7 @@
       padding-bottom: 110px;
     }
 
-    /* TOP HEADER USER ACCOUNT BAR */
+    /* TOP HEADER BAR */
     .top-auth-bar {
       width: 100%;
       max-width: 1180px;
@@ -72,12 +72,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-    }
-
-    .user-profile-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
 
     /* TOP CLICKABLE FOCUS ALERT POPUP */
@@ -612,23 +606,10 @@
 </head>
 <body>
 
-  <!-- TOP AUTH & GOOGLE FIREBASE SIGN-IN BAR -->
+  <!-- TOP HEADER BAR -->
   <header class="top-auth-bar">
     <div class="brand-logo">
       <span>⚡ Desk Workstation</span>
-    </div>
-    <div class="user-profile-box">
-      <!-- Firebase Login Action Button with explicit type="button" -->
-      <button type="button" class="action-btn" id="loginBtn" style="background: var(--oneui-accent); border: none;">
-        <span>🔐 Sign in with Google</span>
-      </button>
-
-      <!-- User Active Status Display -->
-      <div id="userInfo" style="display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); padding: 4px 12px 4px 6px; border-radius: 999px; border: 1px solid var(--oneui-card-border);">
-        <img id="userAvatar" src="" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;" alt="Profile Avatar" />
-        <span id="userName" style="font-weight: 700; font-size: 0.85rem; color: white;"></span>
-        <button type="button" class="action-btn" id="logoutBtn" style="padding: 2px 10px; font-size: 0.72rem; background: rgba(239,68,68,0.25); border-color: rgba(239,68,68,0.4); color: #fca5a5;">Sign Out</button>
-      </div>
     </div>
   </header>
 
@@ -787,7 +768,7 @@
     <section id="notes" class="page">
       <div class="glass-card">
         <h2 class="oneui-header-title">Cloud Notes Workspace</h2>
-        <p class="oneui-header-sub">Create, edit, and sync study notes with Firebase cloud storage</p>
+        <p class="oneui-header-sub">Create, edit, and organize study notes</p>
 
         <div class="notes-layout">
           <div class="notes-sidebar">
@@ -920,554 +901,577 @@
         <p class="oneui-header-sub">Countdown timer for study sessions</p>
         
         <div class="timer-circle-container">
-          <svg class="timer-svg" viewBox="0 0 240 240">
-            <circle class="timer-bg" cx="120" cy="120" r="95" />
-            <circle id="timer-progress" class="timer-progress" cx="120" cy="120" r="95" />
+          <svg class="timer-svg" viewBox="0 0 200 200">
+            <circle class="timer-bg" cx="100" cy="100" r="95"></circle>
+            <circle class="timer-progress" id="timer-progress-circle" cx="100" cy="100" r="95"></circle>
           </svg>
-          <div id="timer-display" class="timer-text">25:00</div>
+          <div class="timer-text" id="timer-display">25:00</div>
         </div>
 
-        <div style="display: flex; gap: 10px; max-width: 340px; margin: 0 auto 18px auto;">
-          <input type="number" id="custom-minutes" placeholder="Minutes" min="1" max="180" style="text-align: center;">
-          <button type="button" class="action-btn" onclick="setCustomTimer()" style="width: 50%;">Set Time</button>
+        <div style="display:flex; justify-content:center; gap:12px; margin-top:20px;">
+          <button type="button" class="action-btn" id="timer-start-btn" onclick="toggleTimer()">Start Focus</button>
+          <button type="button" class="action-btn" onclick="resetTimer()" style="background:var(--oneui-pill);">Reset</button>
         </div>
 
-        <div style="display: flex; gap: 10px; justify-content: center; max-width: 380px; margin: 0 auto;">
-          <button type="button" class="action-btn" onclick="startTimer()" style="flex: 1;">Start</button>
-          <button type="button" class="action-btn" onclick="pauseTimer()" style="flex: 1; background: var(--oneui-pill);">Pause</button>
-          <button type="button" class="action-btn" onclick="resetTimer()" style="flex: 1; background: var(--oneui-pill);">Reset</button>
+        <div style="display:flex; justify-content:center; gap:10px; margin-top:16px;">
+          <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(15)">15 Min</button>
+          <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(25)">25 Min</button>
+          <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(45)">45 Min</button>
+          <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(60)">60 Min</button>
         </div>
       </div>
     </section>
 
   </div>
 
-  <!-- APPLE-STYLE DOCK NAV -->
-  <nav class="apple-dock-nav" id="apple-dock">
-    <button type="button" class="nav-btn active" id="btn-home" onclick="switchPage('home')">
+  <!-- APPLE-STYLE DOCK NAV SYSTEM -->
+  <nav class="apple-dock-nav">
+    <button type="button" class="nav-btn active" onclick="switchPage('home')">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       <span>Home</span>
     </button>
-    <button type="button" class="nav-btn" id="btn-tasks" onclick="switchPage('tasks')">
+    <button type="button" class="nav-btn" onclick="switchPage('tasks')">
       <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
       <span>Tasks</span>
     </button>
-    <button type="button" class="nav-btn" id="btn-notes" onclick="switchPage('notes')">
+    <button type="button" class="nav-btn" onclick="switchPage('notes')">
       <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
       <span>Notes</span>
     </button>
-    <button type="button" class="nav-btn" id="btn-history" onclick="switchPage('history')">
+    <button type="button" class="nav-btn" onclick="switchPage('history')">
       <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
       <span>History</span>
     </button>
 
     <div style="position:relative;">
-      <button type="button" class="nav-btn" id="btn-more" onclick="toggleMoreMenu(event)">
-        <svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        <span>More</span>
+      <button type="button" class="nav-btn" onclick="toggleMoreMenu()">
+        <svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
+        <span>Apps ▾</span>
       </button>
-      <div class="more-apps-menu" id="more-menu">
-        <button type="button" class="more-menu-item" onclick="openExtraApp('timer')">⏱️ Focus Timer</button>
-        <button type="button" class="more-menu-item" onclick="openExtraApp('calc')">🧮 Calculator</button>
-        <button type="button" class="more-menu-item" onclick="openExtraApp('dict')">📚 Dictionary</button>
+
+      <div class="more-apps-menu" id="more-apps-popup">
+        <button type="button" class="more-menu-item" onclick="switchPage('calc'); hideMoreMenu();">🧮 Calculator</button>
+        <button type="button" class="more-menu-item" onclick="switchPage('dict'); hideMoreMenu();">📖 Dictionary</button>
+        <button type="button" class="more-menu-item" onclick="switchPage('timer'); hideMoreMenu();">⏱️ Study Timer</button>
       </div>
     </div>
   </nav>
 
-  <!-- FIREBASE MODULE & APPLICATION SCRIPT -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-    import { getFirestore, doc, setDoc, getDocs, collection, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-
-    // Your Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyDnVoSHckot5vVm9GOH7s8rqAhgeL_IGIM",
-      authDomain: "ultimate-tools-f8148.firebaseapp.com",
-      projectId: "ultimate-tools-f8148",
-      storageBucket: "ultimate-tools-f8148.firebasestorage.app",
-      messagingSenderId: "746537092509",
-      appId: "1:746537092509:web:c11326738729074ed55b74",
-      measurementId: "G-25ZZ8S3QG6"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
-
-    let currentUser = null;
-    let tasks = [];
-    let schedule = [];
-    let completedHistory = [];
-    let savedNotes = [];
+  <script>
+    // LOCAL DATA STORAGE SYSTEM
+    let tasks = JSON.parse(localStorage.getItem('desk_tasks')) || [];
+    let notes = JSON.parse(localStorage.getItem('desk_notes')) || [];
+    let historyLogs = JSON.parse(localStorage.getItem('desk_history')) || [];
+    let classSchedule = JSON.parse(localStorage.getItem('desk_schedule')) || [
+      { id: '1', title: 'Mathematics', time: '09:00 AM - 10:15 AM', room: 'Room 302' },
+      { id: '2', title: 'Physics & Lab', time: '11:00 AM - 12:30 PM', room: 'Science Bldg B' },
+      { id: '3', title: 'Computer Science', time: '02:00 PM - 03:30 PM', room: 'Lab 104' }
+    ];
     let activeNoteId = null;
+    let is24HourFormat = false;
 
-    // AUTH CONTROLS - FIXED EVENT HANDLING PREVENTS POPUP DISAPPEARING
-    document.getElementById("loginBtn").addEventListener("click", async (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      try {
-        await signInWithPopup(auth, provider);
-      } catch (err) {
-        console.error("Login failed:", err);
-      }
-    });
+    // AUDIO SYNTHESIZER (WHITE NOISE GENERATOR)
+    let audioCtx = null;
+    let noiseNode = null;
+    let isPlayingNoise = false;
 
-    document.getElementById("logoutBtn").addEventListener("click", (e) => {
-      e.preventDefault();
-      signOut(auth).then(() => location.reload());
-    });
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUser = user;
-        document.getElementById("loginBtn").style.display = "none";
-        document.getElementById("userInfo").style.display = "flex";
-        document.getElementById("userName").innerText = user.displayName;
-        document.getElementById("userAvatar").src = user.photoURL || '';
-
-        // Load logged-in user data from Cloud Firestore
-        await loadUserDataFromCloud();
-      } else {
-        currentUser = null;
-        document.getElementById("loginBtn").style.display = "inline-flex";
-        document.getElementById("userInfo").style.display = "none";
-        loadFromLocalStorage();
-      }
-    });
-
-    // FIRESTORE SYNC LOGIC
-    async function syncToCloud(subcollection, id, data) {
-      if (!currentUser) return;
-      try {
-        await setDoc(doc(db, "users", currentUser.uid, subcollection, String(id)), data);
-      } catch (e) {
-        console.error("Firestore sync error:", e);
-      }
-    }
-
-    async function removeFromCloud(subcollection, id) {
-      if (!currentUser) return;
-      try {
-        await deleteDoc(doc(db, "users", currentUser.uid, subcollection, String(id)));
-      } catch (e) {
-        console.error("Firestore delete error:", e);
-      }
-    }
-
-    async function loadUserDataFromCloud() {
-      if (!currentUser) return;
-
-      // Tasks
-      const tasksSnap = await getDocs(collection(db, "users", currentUser.uid, "tasks"));
-      tasks = [];
-      tasksSnap.forEach(d => tasks.push(d.data()));
-
-      // Schedule
-      const schedSnap = await getDocs(collection(db, "users", currentUser.uid, "schedule"));
-      schedule = [];
-      schedSnap.forEach(d => schedule.push(d.data()));
-
-      // History
-      const histSnap = await getDocs(collection(db, "users", currentUser.uid, "history"));
-      completedHistory = [];
-      histSnap.forEach(d => completedHistory.push(d.data()));
-
-      // Notes
-      const notesSnap = await getDocs(collection(db, "users", currentUser.uid, "notes"));
-      savedNotes = [];
-      notesSnap.forEach(d => savedNotes.push(d.data()));
-
-      activeNoteId = savedNotes[0]?.id || null;
-      renderAllUI();
-    }
-
-    function loadFromLocalStorage() {
-      tasks = JSON.parse(localStorage.getItem("ut_tasks_v4")) || [];
-      schedule = JSON.parse(localStorage.getItem("ut_schedule_v1")) || [];
-      completedHistory = JSON.parse(localStorage.getItem("ut_task_history_v2")) || [];
-      savedNotes = JSON.parse(localStorage.getItem("ut_saved_notes_v2")) || [];
-      activeNoteId = savedNotes[0]?.id || null;
-      renderAllUI();
-    }
-
-    function renderAllUI() {
-      renderTasks();
-      renderSchedule();
-      renderHistory();
-      renderNotesSidebar();
-      if (savedNotes.length > 0) selectNote(savedNotes[0].id);
-    }
-
-    // TASKS ENGINE
-    window.addTask = function() {
-      const name = document.getElementById("task-name").value.trim();
-      const subject = document.getElementById("task-subject").value;
-      const tier = document.getElementById("task-tier").value;
-      const date = document.getElementById("task-date").value || "No due date";
-      const estTime = document.getElementById("task-est-time").value || "30";
-      const type = document.getElementById("task-type").value;
-      const difficulty = document.getElementById("task-difficulty").value;
-      const specs = document.getElementById("task-specs").value.trim() || "No specific instructions provided.";
-
-      if (!name) { alert("Please enter an assignment name!"); return; }
-
-      const newTask = { id: Date.now(), name, subject, tier, date, estTime, type, difficulty, specs, createdAt: Date.now() };
-      tasks.push(newTask);
-
-      if (currentUser) syncToCloud("tasks", newTask.id, newTask);
-      else localStorage.setItem("ut_tasks_v4", JSON.stringify(tasks));
-
-      renderTasks();
-      document.getElementById("task-name").value = "";
-      document.getElementById("task-specs").value = "";
-    };
-
-    window.completeTask = function(id) {
-      const index = tasks.findIndex(t => t.id === id);
-      if (index !== -1) {
-        const item = tasks.splice(index, 1)[0];
-        item.completedAt = new Date().toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-        completedHistory.unshift(item);
-
-        if (currentUser) {
-          removeFromCloud("tasks", id);
-          syncToCloud("history", item.id, item);
-        } else {
-          localStorage.setItem("ut_tasks_v4", JSON.stringify(tasks));
-          localStorage.setItem("ut_task_history_v2", JSON.stringify(completedHistory));
+    function toggleStudyWhiteNoise() {
+      const btn = document.getElementById('sound-synth-btn');
+      if (!isPlayingNoise) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const bufferSize = audioCtx.sampleRate * 2;
+        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const output = noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          output[i] = Math.random() * 2 - 1;
         }
-
-        renderTasks();
-        renderHistory();
+        noiseNode = audioCtx.createBufferSource();
+        noiseNode.buffer = noiseBuffer;
+        noiseNode.loop = true;
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.value = 800;
+        noiseNode.connect(filter);
+        filter.connect(audioCtx.destination);
+        noiseNode.start();
+        isPlayingNoise = true;
+        btn.innerText = '⏸ Stop White Noise';
+        btn.style.background = 'rgba(239, 68, 68, 0.3)';
+      } else {
+        if (noiseNode) noiseNode.stop();
+        if (audioCtx) audioCtx.close();
+        isPlayingNoise = false;
+        btn.innerText = '▶ White Noise';
+        btn.style.background = 'var(--oneui-pill-active)';
       }
-    };
-
-    const subjectIcons = { 'Math': '📐', 'Science': '🔬', 'History': '📚', 'English': '✍️', 'Coding': '💻', 'Arts': '🎨', 'Languages': '🌐', 'General': '📌' };
-
-    function renderTasks() {
-      const board = document.getElementById("tiered-task-board");
-      const homeWidget = document.getElementById("home-priority-tasks");
-
-      if (tasks.length === 0) {
-        board.innerHTML = `<div style="text-align:center; padding:32px; color:var(--oneui-text-sub); border:1px dashed var(--oneui-card-border); border-radius:24px;"><h3>No assignments active!</h3></div>`;
-        homeWidget.innerHTML = `<p style="color:var(--oneui-text-sub); font-size:0.9rem;">No assignments pending.</p>`;
-        return;
-      }
-
-      const tiers = [
-        { name: "Tier 1", label: "🔥 Tier 1: Urgent / High Priority", class: "tier-1-badge" },
-        { name: "Tier 2", label: "⚡ Tier 2: Medium Priority", class: "tier-2-badge" },
-        { name: "Tier 3", label: "🌱 Tier 3: Low / Flexible Priority", class: "tier-3-badge" }
-      ];
-
-      board.innerHTML = tiers.map(t => {
-        const tierTasks = tasks.filter(task => task.tier === t.name);
-        if (tierTasks.length === 0) return '';
-        return `
-          <div class="tier-section">
-            <div class="tier-header-bar">
-              <span class="tier-badge ${t.class}">${t.label}</span>
-              <span style="font-size:0.8rem; color:var(--oneui-text-sub);">${tierTasks.length} task(s)</span>
-            </div>
-            ${tierTasks.map(task => `
-              <div class="task-card-enhanced ${t.name.toLowerCase().replace(' ', '-')}">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
-                  <div>
-                    <strong style="font-size:1.15rem; color:#fff;">${task.name}</strong>
-                    <div style="font-size:0.82rem; color:var(--oneui-text-sub); margin-top:2px;">Target Date: ${task.date}</div>
-                  </div>
-                  <button type="button" class="action-btn" onclick="completeTask(${task.id})" style="padding:6px 16px; font-size:0.82rem;">✓ Complete</button>
-                </div>
-                <div class="specs-grid-display">
-                  <span class="spec-pill">${subjectIcons[task.subject] || '📌'} ${task.subject}</span>
-                  <span class="spec-pill">${task.type}</span>
-                  <span class="spec-pill">⏱️ ${task.estTime} mins</span>
-                  <span class="spec-pill">${task.difficulty}</span>
-                </div>
-                <div class="specs-box"><strong>Specification:</strong> ${task.specs}</div>
-              </div>
-            `).join('')}
-          </div>
-        `;
-      }).join('');
-
-      homeWidget.innerHTML = tasks.slice(0, 3).map(t => `
-        <div class="task-card-enhanced ${t.tier.toLowerCase().replace(' ', '-')}" style="padding:14px; margin-top:8px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <span class="spec-pill" style="font-size:0.72rem;">${subjectIcons[t.subject] || '📌'} ${t.subject}</span>
-              <strong style="margin-left:8px; font-size:0.95rem;">${t.name}</strong>
-            </div>
-            <button type="button" class="action-btn" onclick="completeTask(${t.id})" style="padding:4px 12px; font-size:0.78rem;">✓ Done</button>
-          </div>
-        </div>
-      `).join('');
     }
 
-    // SCHEDULE ENGINE
-    window.promptAddSchedule = function() {
-      const className = prompt("Enter Class / Event Name:");
-      if (!className) return;
-      const room = prompt("Location:") || "Online / Desk";
-      const timeStr = prompt("Time:") || "TBD";
-      const item = { id: Date.now(), className, room, timeStr };
-      schedule.push(item);
-
-      if (currentUser) syncToCloud("schedule", item.id, item);
-      else localStorage.setItem("ut_schedule_v1", JSON.stringify(schedule));
-
-      renderSchedule();
-    };
-
-    window.deleteScheduleItem = function(id) {
-      schedule = schedule.filter(s => s.id !== id);
-      if (currentUser) removeFromCloud("schedule", id);
-      else localStorage.setItem("ut_schedule_v1", JSON.stringify(schedule));
-      renderSchedule();
-    };
-
-    function renderSchedule() {
-      const container = document.getElementById("schedule-container");
-      if (schedule.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--oneui-text-sub); font-size:0.9rem;">No classes added yet.</div>`;
-        return;
-      }
-      container.innerHTML = schedule.map(item => `
-        <div class="schedule-item">
-          <div><strong>${item.className}</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">${item.room}</div></div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">${item.timeStr}</span>
-            <button type="button" onclick="deleteScheduleItem(${item.id})" style="background:transparent; border:none; color:var(--oneui-text-sub); cursor:pointer;">✕</button>
-          </div>
-        </div>
-      `).join('');
+    // CLOCK LOGIC
+    function toggleTimeFormat() {
+      is24HourFormat = !is24HourFormat;
+      updateClock();
     }
 
-    // HISTORY LOG
-    function renderHistory() {
-      const tbody = document.getElementById("history-table-body");
-      document.getElementById("stat-total-completed").innerText = completedHistory.length;
-      document.getElementById("stat-tier1-completed").innerText = completedHistory.filter(h => h.tier === 'Tier 1').length;
-      const totalMins = completedHistory.reduce((acc, curr) => acc + (parseInt(curr.estTime) || 0), 0);
-      document.getElementById("stat-avg-time").innerText = `${totalMins}m`;
-
-      if (completedHistory.length === 0) return;
-      tbody.innerHTML = completedHistory.map(item => `
-        <tr>
-          <td><span class="spec-pill">${subjectIcons[item.subject] || '📌'} ${item.subject}</span></td>
-          <td><strong>${item.name}</strong></td>
-          <td><span class="tier-badge ${item.tier.toLowerCase().replace(' ', '-')}-badge">${item.tier}</span></td>
-          <td>⏱️ ${item.estTime || 30}m</td>
-          <td style="color:var(--oneui-text-sub);">${item.completedAt || 'Recently'}</td>
-        </tr>
-      `).join('');
-    }
-
-    // NOTES ENGINE
-    window.renderNotesSidebar = function() {
-      const list = document.getElementById("notes-file-list");
-      if (savedNotes.length === 0) {
-        list.innerHTML = `<div style="color:var(--oneui-text-sub); font-size:0.85rem; padding:8px;">No notes found.</div>`;
-        return;
-      }
-      list.innerHTML = savedNotes.map(n => `
-        <div class="note-file-item ${n.id === activeNoteId ? 'active-note' : ''}" onclick="selectNote('${n.id}')">
-          <span style="font-size:0.9rem; font-weight:600; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">📄 ${n.title || 'Untitled'}</span>
-        </div>
-      `).join('');
-    };
-
-    window.selectNote = function(id) {
-      activeNoteId = id;
-      const note = savedNotes.find(n => String(n.id) === String(id));
-      if (note) {
-        document.getElementById("note-title-input").value = note.title;
-        document.getElementById("note-body-input").value = note.content;
-      }
-      renderNotesSidebar();
-    };
-
-    window.createNewNote = function() {
-      const newNote = { id: String(Date.now()), title: 'New Note', content: '' };
-      savedNotes.unshift(newNote);
-      activeNoteId = newNote.id;
-
-      if (currentUser) syncToCloud("notes", newNote.id, newNote);
-      else localStorage.setItem("ut_saved_notes_v2", JSON.stringify(savedNotes));
-
-      selectNote(newNote.id);
-    };
-
-    window.saveCurrentNote = function() {
-      if (!activeNoteId) { createNewNote(); return; }
-      const note = savedNotes.find(n => String(n.id) === String(activeNoteId));
-      if (note) {
-        note.title = document.getElementById("note-title-input").value || 'Untitled Note';
-        note.content = document.getElementById("note-body-input").value;
-
-        if (currentUser) syncToCloud("notes", note.id, note);
-        else localStorage.setItem("ut_saved_notes_v2", JSON.stringify(savedNotes));
-
-        renderNotesSidebar();
-      }
-    };
-
-    window.deleteCurrentNote = function() {
-      if (activeNoteId && currentUser) removeFromCloud("notes", activeNoteId);
-      savedNotes = savedNotes.filter(n => String(n.id) !== String(activeNoteId));
-      
-      if (!currentUser) localStorage.setItem("ut_saved_notes_v2", JSON.stringify(savedNotes));
-
-      if (savedNotes.length > 0) selectNote(savedNotes[0].id);
-      else {
-        document.getElementById("note-title-input").value = "";
-        document.getElementById("note-body-input").value = "";
-        activeNoteId = null;
-        renderNotesSidebar();
-      }
-    };
-
-    window.exportNoteAsFile = function() {
-      const title = document.getElementById("note-title-input").value || 'Note';
-      const content = document.getElementById("note-body-input").value;
-      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`;
-      a.click();
-    };
-
-    // UTILITIES & NOTIFICATION HANDLERS
-    let currentPage = 'home', is24Hour = false;
-    window.switchPage = function(pageId) {
-      if (currentPage === pageId) return;
-      const oldPage = document.getElementById(currentPage);
-      const newPage = document.getElementById(pageId);
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      const activeBtn = document.getElementById(`btn-${pageId}`);
-      if (activeBtn) activeBtn.classList.add('active');
-
-      if (oldPage) {
-        oldPage.style.opacity = '0';
-        oldPage.style.transform = 'translateY(12px) scale(0.97)';
-        setTimeout(() => {
-          oldPage.classList.remove('active-page');
-          newPage.classList.add('active-page');
-        }, 180);
-      }
-      currentPage = pageId;
-    };
-
-    window.toggleMoreMenu = function(e) { 
-      e.stopPropagation(); 
-      document.getElementById('more-menu').classList.toggle('show'); 
-    };
-    
-    document.addEventListener('click', () => document.getElementById('more-menu')?.classList.remove('show'));
-    
-    window.openExtraApp = function(appId) { 
-      document.getElementById('more-menu').classList.remove('show'); 
-      switchPage(appId); 
-    };
-
-    window.hideNudge = function() {
-      document.getElementById('focus-nudge-popup').classList.remove('show');
-    };
-
-    window.toggleTimeFormat = function() { is24Hour = !is24Hour; updateClock(); };
     function updateClock() {
       const now = new Date();
-      document.getElementById('clock-time').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: !is24Hour });
-      document.getElementById('clock-date').innerText = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-    }
-    setInterval(updateClock, 1000); updateClock();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      let period = '';
 
-    window.toggleHabit = function(el) {
+      if (!is24HourFormat) {
+        period = hours >= 12 ? ' PM' : ' AM';
+        hours = hours % 12 || 12;
+      }
+      const formattedHours = String(hours).padStart(2, '0');
+      document.getElementById('clock-time').innerText = `${formattedHours}:${minutes}:${seconds}${period}`;
+
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      document.getElementById('clock-date').innerText = now.toLocaleDateString(undefined, options);
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // NAVIGATION SYSTEM
+    function switchPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      
+      const targetPage = document.getElementById(pageId);
+      if (targetPage) targetPage.classList.add('active-page');
+
+      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => 
+        btn.getAttribute('onclick')?.includes(pageId)
+      );
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (pageId === 'calc' || pageId === 'dict' || pageId === 'timer') {
+        showNudge(`Viewing ${pageId.toUpperCase()} app during focus session.`);
+      }
+    }
+
+    function toggleMoreMenu() {
+      document.getElementById('more-apps-popup').classList.toggle('show');
+    }
+    function hideMoreMenu() {
+      document.getElementById('more-apps-popup').classList.remove('show');
+    }
+
+    // FOCUS ALERT NUDGE
+    function showNudge(msg) {
+      document.getElementById('nudge-text').innerText = msg;
+      document.getElementById('focus-nudge-popup').classList.add('show');
+    }
+    function hideNudge() {
+      document.getElementById('focus-nudge-popup').classList.remove('show');
+    }
+
+    // TASK MANAGEMENT (8 SPECIFICATIONS)
+    function addTask() {
+      const name = document.getElementById('task-name').value.trim();
+      if (!name) return alert('Please enter an assignment name!');
+
+      const newTask = {
+        id: Date.now().toString(),
+        name: name,
+        subject: document.getElementById('task-subject').value,
+        tier: document.getElementById('task-tier').value,
+        date: document.getElementById('task-date').value || 'No Due Date',
+        estTime: document.getElementById('task-est-time').value || '30',
+        type: document.getElementById('task-type').value,
+        difficulty: document.getElementById('task-difficulty').value,
+        specs: document.getElementById('task-specs').value.trim() || 'No additional specifications provided.'
+      };
+
+      tasks.push(newTask);
+      saveAndRenderTasks();
+      
+      document.getElementById('task-name').value = '';
+      document.getElementById('task-est-time').value = '';
+      document.getElementById('task-specs').value = '';
+    }
+
+    function completeTask(id) {
+      const index = tasks.findIndex(t => t.id === id);
+      if (index !== -1) {
+        const finished = tasks.splice(index, 1)[0];
+        historyLogs.unshift({
+          ...finished,
+          completedAt: new Date().toLocaleString()
+        });
+        localStorage.setItem('desk_history', JSON.stringify(historyLogs));
+        saveAndRenderTasks();
+        renderHistory();
+      }
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      saveAndRenderTasks();
+    }
+
+    function saveAndRenderTasks() {
+      localStorage.setItem('desk_tasks', JSON.stringify(tasks));
+      renderTasks();
+      renderHomePriorityQueue();
+    }
+
+    function renderTasks() {
+      const container = document.getElementById('tiered-task-board');
+      container.innerHTML = '';
+
+      const tiers = ['Tier 1', 'Tier 2', 'Tier 3'];
+      const tierLabels = {
+        'Tier 1': '🔴 Tier 1: High Priority & Urgent',
+        'Tier 2': '🟡 Tier 2: Medium Priority',
+        'Tier 3': '🟢 Tier 3: Flexible & Low Priority'
+      };
+
+      tiers.forEach(tier => {
+        const tierTasks = tasks.filter(t => t.tier === tier);
+        const section = document.createElement('div');
+        section.className = 'tier-section';
+        
+        section.innerHTML = `
+          <div class="tier-header-bar">
+            <span class="tier-badge ${tier === 'Tier 1' ? 'tier-1-badge' : tier === 'Tier 2' ? 'tier-2-badge' : 'tier-3-badge'}">
+              ${tierLabels[tier]} (${tierTasks.length})
+            </span>
+          </div>
+          <div class="tier-task-list">
+            ${tierTasks.length === 0 ? '<div style="color:var(--oneui-text-sub); font-size:0.88rem; padding:8px 0;">No tasks in this tier.</div>' : ''}
+          </div>
+        `;
+
+        const listContainer = section.querySelector('.tier-task-list');
+        tierTasks.forEach(task => {
+          const card = document.createElement('div');
+          card.className = `task-card-enhanced ${tier === 'Tier 1' ? 'tier-1' : tier === 'Tier 2' ? 'tier-2' : 'tier-3'}`;
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <div style="font-weight:800; font-size:1.05rem;">${task.name}</div>
+              <div style="display:flex; gap:6px;">
+                <button type="button" class="action-btn" onclick="completeTask('${task.id}')" style="padding:4px 10px; font-size:0.75rem; background:rgba(16,185,129,0.25); border-color:rgba(16,185,129,0.4);">✓ Complete</button>
+                <button type="button" class="action-btn" onclick="deleteTask('${task.id}')" style="padding:4px 10px; font-size:0.75rem; background:rgba(239,68,68,0.2); border-color:rgba(239,68,68,0.4);">✕</button>
+              </div>
+            </div>
+            <div class="specs-grid-display">
+              <span class="spec-pill">🏷️ ${task.subject}</span>
+              <span class="spec-pill">📖 ${task.type}</span>
+              <span class="spec-pill">⏱️ ${task.estTime} mins</span>
+              <span class="spec-pill">📅 ${task.date}</span>
+              <span class="spec-pill">${task.difficulty}</span>
+            </div>
+            <div class="specs-box">
+              <strong style="color:white; font-size:0.78rem; text-transform:uppercase;">Specifications:</strong><br/>
+              ${task.specs}
+            </div>
+          `;
+          listContainer.appendChild(card);
+        });
+
+        container.appendChild(section);
+      });
+    }
+
+    function renderHomePriorityQueue() {
+      const container = document.getElementById('home-priority-tasks');
+      const urgentTasks = tasks.filter(t => t.tier === 'Tier 1').slice(0, 3);
+      if (urgentTasks.length === 0) {
+        container.innerHTML = `<div style="color:var(--oneui-text-sub); padding:16px 0;">🎉 No urgent Tier 1 assignments pending!</div>`;
+        return;
+      }
+      container.innerHTML = urgentTasks.map(t => `
+        <div class="schedule-item">
+          <div>
+            <div style="font-weight:700; font-size:0.92rem;">${t.name}</div>
+            <div style="font-size:0.78rem; color:var(--oneui-text-sub);">${t.subject} • ${t.estTime} mins • Due: ${t.date}</div>
+          </div>
+          <button type="button" class="action-btn" onclick="completeTask('${t.id}')" style="padding:3px 8px; font-size:0.72rem;">Done</button>
+        </div>
+      `).join('');
+    }
+
+    // SCHEDULE MANAGER
+    function renderSchedule() {
+      const container = document.getElementById('schedule-container');
+      if (classSchedule.length === 0) {
+        container.innerHTML = '<div style="color:var(--oneui-text-sub); font-size:0.88rem;">No scheduled classes.</div>';
+        return;
+      }
+      container.innerHTML = classSchedule.map(s => `
+        <div class="schedule-item">
+          <div>
+            <div style="font-weight:700; font-size:0.9rem;">${s.title}</div>
+            <div style="font-size:0.76rem; color:var(--oneui-text-sub);">${s.time} • ${s.room}</div>
+          </div>
+          <button type="button" onclick="deleteSchedule('${s.id}')" style="background:transparent; border:none; color:var(--oneui-text-sub); cursor:pointer;">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function promptAddSchedule() {
+      const title = prompt('Enter Class Title:');
+      if (!title) return;
+      const time = prompt('Enter Time (e.g. 10:00 AM - 11:30 AM):') || 'TBD';
+      const room = prompt('Enter Room/Location:') || 'Online';
+      classSchedule.push({ id: Date.now().toString(), title, time, room });
+      localStorage.setItem('desk_schedule', JSON.stringify(classSchedule));
+      renderSchedule();
+    }
+
+    function deleteSchedule(id) {
+      classSchedule = classSchedule.filter(s => s.id !== id);
+      localStorage.setItem('desk_schedule', JSON.stringify(classSchedule));
+      renderSchedule();
+    }
+
+    // HABIT TRACKER
+    function toggleHabit(el) {
       el.classList.toggle('completed');
       const total = document.querySelectorAll('.habit-pill').length;
       const done = document.querySelectorAll('.habit-pill.completed').length;
       document.getElementById('habit-counter').innerText = `${done}/${total} Done`;
-    };
+    }
 
-    // AUDIO SYNTHESIZER FOR WHITE NOISE
-    let audioCtx = null, noiseNode = null;
-    window.toggleStudyWhiteNoise = function() {
-      const btn = document.getElementById('sound-synth-btn');
-      if (noiseNode) {
-        noiseNode.stop();
-        noiseNode = null;
-        btn.innerText = "▶ White Noise";
-        btn.style.background = "var(--oneui-pill-active)";
+    // NOTES WORKSPACE
+    function renderNotesSidebar() {
+      const container = document.getElementById('notes-file-list');
+      container.innerHTML = '';
+      if (notes.length === 0) {
+        container.innerHTML = '<div style="color:var(--oneui-text-sub); font-size:0.82rem;">No saved notes.</div>';
         return;
       }
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const bufferSize = audioCtx.sampleRate * 2;
-      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
-      noiseNode = audioCtx.createBufferSource();
-      noiseNode.buffer = buffer;
-      noiseNode.loop = true;
-      const gainNode = audioCtx.createGain();
-      gainNode.gain.value = 0.04;
-      noiseNode.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-      noiseNode.start();
-      btn.innerText = "⏸️ Stop White Noise";
-      btn.style.background = "rgba(16, 185, 129, 0.3)";
-    };
-
-    // CALCULATOR CONTROLS
-    let calcVal = "0", calcHistoryList = [];
-    window.pressCalc = function(v) { calcVal = (calcVal === "0" && v !== '.') ? v : calcVal + v; document.getElementById("calc-display").innerText = calcVal; };
-    window.clearCalc = function() { calcVal = "0"; document.getElementById("calc-display").innerText = calcVal; };
-    window.backspaceCalc = function() { calcVal = calcVal.length > 1 ? calcVal.slice(0, -1) : "0"; document.getElementById("calc-display").innerText = calcVal; };
-    window.solveCalc = function() {
-      try {
-        const res = String(eval(calcVal));
-        calcHistoryList.unshift(`${calcVal} = ${res}`);
-        calcVal = res;
-        document.getElementById("calc-history").innerHTML = calcHistoryList.map(h => `<div style="font-family:monospace; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.06);">${h}</div>`).join('');
-      } catch { calcVal = "Error"; }
-      document.getElementById("calc-display").innerText = calcVal;
-    };
-
-    // DICTIONARY LOOKUP
-    window.searchAIDictionary = async function() {
-      const word = document.getElementById("dict-input").value.trim();
-      const output = document.getElementById("dict-output");
-      if (!word) return;
-      output.innerHTML = `<div style="color:var(--oneui-text-sub); padding:20px;">Searching...</div>`;
-      try {
-        const res = await fetch(`https://api.datamuse.com/words?sp=${encodeURIComponent(word)}&md=d&max=1`);
-        const data = await res.json();
-        if (data.length > 0 && data[0].defs) {
-          let html = `<h3 style="color:#fff; text-transform:capitalize; margin-bottom:12px;">${data[0].word}</h3>`;
-          data[0].defs.forEach(d => {
-            const parts = d.split('\t');
-            html += `<div style="background:rgba(0,0,0,0.3); border:1px solid var(--oneui-card-border); padding:12px; border-radius:14px; margin-bottom:8px;"><strong>${parts[0] || ''}</strong> ${parts[1] || d}</div>`;
-          });
-          output.innerHTML = html;
-        } else { output.innerHTML = `<div style="color:#fca5a5; padding:16px;">No definition found.</div>`; }
-      } catch { output.innerHTML = `<div style="color:#fca5a5; padding:16px;">Error searching dictionary.</div>`; }
-    };
-
-    // FOCUS TIMER
-    let totalSeconds = 1500, timeLeft = 1500, timerId = null;
-    function renderTimer() {
-      const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
-      const s = String(timeLeft % 60).padStart(2, '0');
-      document.getElementById("timer-display").innerText = `${m}:${s}`;
-      const progress = document.getElementById("timer-progress");
-      if(progress) progress.style.strokeDashoffset = 597 * (1 - (timeLeft / totalSeconds));
+      notes.forEach(note => {
+        const div = document.createElement('div');
+        div.className = `note-file-item ${note.id === activeNoteId ? 'active-note' : ''}`;
+        div.innerHTML = `<span style="font-size:0.88rem; font-weight:600;">${note.title || 'Untitled'}</span>`;
+        div.onclick = () => loadNote(note.id);
+        container.appendChild(div);
+      });
     }
-    window.setCustomTimer = function() { const mins = parseInt(document.getElementById("custom-minutes").value); if (mins > 0) { clearInterval(timerId); timerId = null; totalSeconds = mins * 60; timeLeft = totalSeconds; renderTimer(); } };
-    window.startTimer = function() { if (timerId) return; timerId = setInterval(() => { if (timeLeft > 0) { timeLeft--; renderTimer(); } else { clearInterval(timerId); timerId = null; renderTimer(); } }, 1000); };
-    window.pauseTimer = function() { clearInterval(timerId); timerId = null; };
-    window.resetTimer = function() { pauseTimer(); timeLeft = totalSeconds; renderTimer(); };
-    renderTimer();
+
+    function createNewNote() {
+      const newNote = { id: Date.now().toString(), title: 'Untitled Note', body: '' };
+      notes.unshift(newNote);
+      activeNoteId = newNote.id;
+      saveNotesToStorage();
+      loadNote(activeNoteId);
+    }
+
+    function loadNote(id) {
+      activeNoteId = id;
+      const note = notes.find(n => n.id === id);
+      if (note) {
+        document.getElementById('note-title-input').value = note.title;
+        document.getElementById('note-body-input').value = note.body;
+      }
+      renderNotesSidebar();
+    }
+
+    function saveCurrentNote() {
+      if (!activeNoteId) return createNewNote();
+      const note = notes.find(n => n.id === activeNoteId);
+      if (note) {
+        note.title = document.getElementById('note-title-input').value || 'Untitled Note';
+        note.body = document.getElementById('note-body-input').value;
+        saveNotesToStorage();
+        renderNotesSidebar();
+      }
+    }
+
+    function deleteCurrentNote() {
+      if (!activeNoteId) return;
+      notes = notes.filter(n => n.id !== activeNoteId);
+      activeNoteId = notes.length > 0 ? notes[0].id : null;
+      saveNotesToStorage();
+      if (activeNoteId) loadNote(activeNoteId);
+      else {
+        document.getElementById('note-title-input').value = '';
+        document.getElementById('note-body-input').value = '';
+        renderNotesSidebar();
+      }
+    }
+
+    function exportNoteAsFile() {
+      const title = document.getElementById('note-title-input').value || 'note';
+      const body = document.getElementById('note-body-input').value;
+      const blob = new Blob([body], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`;
+      a.click();
+    }
+
+    function saveNotesToStorage() {
+      localStorage.setItem('desk_notes', JSON.stringify(notes));
+    }
+
+    // HISTORY LOGS
+    function renderHistory() {
+      const tbody = document.getElementById('history-table-body');
+      document.getElementById('stat-total-completed').innerText = historyLogs.length;
+      document.getElementById('stat-tier1-completed').innerText = historyLogs.filter(h => h.tier === 'Tier 1').length;
+      
+      const totalMins = historyLogs.reduce((acc, curr) => acc + parseInt(curr.estTime || 0), 0);
+      document.getElementById('stat-avg-time').innerText = `${totalMins}m`;
+
+      if (historyLogs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--oneui-text-sub); padding:24px;">No finished task history yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = historyLogs.map(h => `
+        <tr>
+          <td><span class="spec-pill">${h.subject}</span></td>
+          <td style="font-weight:700;">${h.name}</td>
+          <td><span class="spec-pill">${h.tier}</span></td>
+          <td>${h.estTime} mins</td>
+          <td style="color:var(--oneui-text-sub); font-size:0.82rem;">${h.completedAt}</td>
+        </tr>
+      `).join('');
+    }
+
+    // CALCULATOR APP
+    let calcExpression = '';
+    function pressCalc(val) {
+      if (calcExpression === '0') calcExpression = '';
+      calcExpression += val;
+      document.getElementById('calc-display').innerText = calcExpression || '0';
+    }
+    function clearCalc() {
+      calcExpression = '';
+      document.getElementById('calc-display').innerText = '0';
+    }
+    function backspaceCalc() {
+      calcExpression = calcExpression.slice(0, -1);
+      document.getElementById('calc-display').innerText = calcExpression || '0';
+    }
+    function solveCalc() {
+      try {
+        const result = eval(calcExpression.replace(/×/g, '*').replace(/÷/g, '/'));
+        const log = `${calcExpression} = ${result}`;
+        calcExpression = String(result);
+        document.getElementById('calc-display').innerText = calcExpression;
+        
+        const hist = document.getElementById('calc-history');
+        const div = document.createElement('div');
+        div.style.cssText = 'padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08); font-size:0.9rem; font-family:monospace;';
+        div.innerText = log;
+        hist.prepend(div);
+      } catch (e) {
+        document.getElementById('calc-display').innerText = 'Error';
+      }
+    }
+
+    // DICTIONARY APP
+    async function searchAIDictionary() {
+      const term = document.getElementById('dict-input').value.trim();
+      const output = document.getElementById('dict-output');
+      if (!term) return;
+
+      output.innerHTML = `<div style="color:var(--oneui-text-sub);">Searching definition for "${term}"...</div>`;
+
+      try {
+        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(term)}`);
+        if (!res.ok) throw new Error('Word not found');
+        const data = await res.json();
+        
+        const entry = data[0];
+        const meaningsHtml = entry.meanings.map(m => `
+          <div style="margin-top:12px;">
+            <span class="spec-pill" style="margin-bottom:6px;">${m.partOfSpeech}</span>
+            <ol style="margin-left:20px; color:#cbd5e1; font-size:0.92rem; line-height:1.5;">
+              ${m.definitions.slice(0, 3).map(d => `<li>${d.definition}</li>`).join('')}
+            </ol>
+          </div>
+        `).join('');
+
+        output.innerHTML = `
+          <div style="background: rgba(0,0,0,0.3); padding:22px; border-radius:20px; border:1px solid var(--oneui-card-border);">
+            <h3 style="font-size:1.5rem; font-weight:800; color:var(--oneui-accent);">${entry.word}</h3>
+            <div style="font-size:0.85rem; color:var(--oneui-text-sub); font-style:italic;">${entry.phonetic || ''}</div>
+            ${meaningsHtml}
+          </div>
+        `;
+      } catch (err) {
+        output.innerHTML = `
+          <div style="color:#fca5a5; background:rgba(239,68,68,0.15); padding:18px; border-radius:18px; border:1px solid rgba(239,68,68,0.3);">
+            Could not find definition for "${term}". Please try another word.
+          </div>
+        `;
+      }
+    }
+
+    // STUDY FOCUS TIMER
+    let timerDuration = 25 * 60;
+    let timerTimeLeft = 25 * 60;
+    let timerInterval = null;
+    let isTimerRunning = false;
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timerTimeLeft / 60);
+      const secs = timerTimeLeft % 60;
+      document.getElementById('timer-display').innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      
+      const circle = document.getElementById('timer-progress-circle');
+      const circumference = 597;
+      const offset = circumference - (timerTimeLeft / timerDuration) * circumference;
+      circle.style.strokeDashoffset = offset;
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('timer-start-btn');
+      if (!isTimerRunning) {
+        isTimerRunning = true;
+        btn.innerText = 'Pause Focus';
+        btn.style.background = 'rgba(239, 68, 68, 0.3)';
+        timerInterval = setInterval(() => {
+          if (timerTimeLeft > 0) {
+            timerTimeLeft--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            btn.innerText = 'Start Focus';
+            btn.style.background = 'var(--oneui-pill-active)';
+            alert('🔔 Focus session complete! Time to take a break.');
+          }
+        }, 1000);
+      } else {
+        clearInterval(timerInterval);
+        isTimerRunning = false;
+        btn.innerText = 'Resume Focus';
+        btn.style.background = 'var(--oneui-pill-active)';
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      timerTimeLeft = timerDuration;
+      document.getElementById('timer-start-btn').innerText = 'Start Focus';
+      document.getElementById('timer-start-btn').style.background = 'var(--oneui-pill-active)';
+      updateTimerDisplay();
+    }
+
+    function setPresetTimer(mins) {
+      timerDuration = mins * 60;
+      timerTimeLeft = timerDuration;
+      resetTimer();
+    }
+
+    // INITIALIZATION
+    window.addEventListener('DOMContentLoaded', () => {
+      renderTasks();
+      renderHomePriorityQueue();
+      renderSchedule();
+      renderNotesSidebar();
+      renderHistory();
+      updateTimerDisplay();
+
+      if (notes.length > 0) loadNote(notes[0].id);
+    });
   </script>
 </body>
 </html>
