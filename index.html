@@ -3,66 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ultimate Desk Suite - One UI Edition</title>
-  <!-- Link to your new CSS file -->
+  <title>Ultimate Desk Suite</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- DYNAMIC TOP FOCUS NUDGE POPUP -->
-  <div id="focus-nudge-popup" class="focus-nudge-banner">
+  <!-- FOCUS NUDGE -->
+  <div id="focus-nudge-popup" class="focus-nudge-banner" style="display: none;">
     <div class="nudge-content">
       <span class="nudge-icon">🚨</span>
       <div>
         <div class="nudge-title">Focus Warning</div>
-        <div class="nudge-msg" id="nudge-text">You are off-task!</div>
+        <div class="nudge-msg">Are you still working?</div>
       </div>
     </div>
     <div class="nudge-actions">
-      <button class="action-btn" onclick="switchPage('tasks'); hideNudge();" style="padding:5px 14px; font-size:0.8rem;">Focus Now</button>
-      <button onclick="hideNudge()" style="background:transparent; border:none; color:var(--oneui-text-sub); cursor:pointer; font-size:1.1rem; padding:0 4px;">✕</button>
+      <button class="action-btn" onclick="hideNudge()">I'm Focusing</button>
     </div>
   </div>
 
   <div class="desktop-wrapper">
-
-    <!-- HOMESCREEN DASHBOARD -->
+    <!-- DASHBOARD -->
     <section id="home" class="page active-page">
       <div class="home-desktop-grid">
-        <div class="widget-card col-12" style="text-align: center; padding: 32px 20px;">
-          <div class="widget-title" style="justify-content: center; gap: 8px;">
-            <span>DESK TIME & WORKSTATION</span>
-            <span style="font-size:0.75rem; opacity:0.7; cursor:pointer;" onclick="toggleTimeFormat()">(12H / 24H)</span>
+        <div class="widget-card col-12" style="text-align: center;">
+          <div class="widget-title" style="justify-content: center;">
+            <span>DESK TIME</span>
+            <span style="font-size:0.75rem; cursor:pointer;" onclick="toggleTimeFormat()">(12H / 24H)</span>
           </div>
-          <div id="clock-time" style="font-size: clamp(3.2rem, 6vw, 4.8rem); font-weight: 800; cursor: pointer;">00:00:00</div>
-          <div id="clock-date" style="color: var(--oneui-text-sub); font-size: 1.1rem; margin-top: 4px; font-weight: 600;">Loading...</div>
+          <div id="clock-time" style="font-size: 4rem; font-weight: 800;">00:00:00</div>
+          <div id="clock-date" style="color: var(--oneui-text-sub); font-size: 1.1rem;">Loading...</div>
         </div>
+        
         <div class="widget-card col-7">
-          <div class="widget-title">
-            <span>📌 Assignment Tier Status</span>
-            <button class="action-btn" onclick="switchPage('tasks')" style="padding: 4px 14px; font-size: 0.8rem;">Planner</button>
-          </div>
-          <div id="home-priority-tasks"></div>
+          <div class="widget-title">📌 Priority Tasks</div>
+          <div id="home-priority-tasks">Loading tasks...</div>
         </div>
-        <div class="widget-card col-5" style="display: flex; flex-direction: column; justify-content: space-between;">
-          <div class="widget-title">
-            <span>⏱️ Focus Timer</span>
-            <span id="home-timer-status" class="status-badge ready">Ready</span>
-          </div>
-          <div style="text-align: center; margin: 6px 0;">
-            <div id="home-timer-val" style="font-size: 3rem; font-weight: 800;">25:00</div>
-          </div>
+
+        <div class="widget-card col-5" style="text-align: center;">
+          <div class="widget-title">⏱️ Focus Timer</div>
+          <div id="home-timer-val" style="font-size: 3rem; font-weight: 800; margin: 10px 0;">25:00</div>
           <div style="display: flex; gap: 8px; justify-content: center;">
-            <button class="action-btn" onclick="startTimer()" style="flex: 1;">Start</button>
-            <button class="action-btn secondary" onclick="pauseTimer()" style="flex: 1;">Pause</button>
-            <button class="action-btn secondary" onclick="resetTimer()" style="flex: 1;">Reset</button>
+            <button class="action-btn" onclick="startTimer()">Start</button>
+            <button class="action-btn secondary" onclick="pauseTimer()">Pause</button>
+            <button class="action-btn secondary" onclick="resetTimer()">Reset</button>
           </div>
         </div>
+
         <div class="widget-card col-12">
-          <div class="widget-title">
-            <span>📝 Desktop Scratchpad & Quick Notes</span>
-          </div>
-          <textarea id="quick-note" placeholder="Jot down quick notes here..." style="height: 90px; resize: vertical;" oninput="saveQuickNote()"></textarea>
+          <div class="widget-title">📝 Quick Notes</div>
+          <textarea id="quick-note" placeholder="Jot down notes here..." style="height: 90px;" oninput="saveQuickNote()"></textarea>
         </div>
       </div>
     </section>
@@ -75,7 +65,6 @@
           <div>
             <div id="calc-display" class="calc-display">0</div>
             <div class="calc-grid">
-              <!-- Calculator buttons omitted for brevity in reading, but fully functional in CSS/JS -->
               <button class="op-btn" onclick="clearCalc()">C</button>
               <button class="op-btn" onclick="pressCalc('(')">(</button>
               <button class="op-btn" onclick="pressCalc(')')">)</button>
@@ -99,49 +88,42 @@
             </div>
           </div>
           <div>
-            <h4>Calculation History</h4>
+            <h4>History</h4>
             <div id="calc-history" class="calc-history"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- TASKS (PLANNER) -->
+    <!-- PLANNER -->
     <section id="tasks" class="page">
       <div class="glass-card">
         <h2 class="oneui-header-title">Homework Planner</h2>
-        <p class="oneui-header-sub">Assign tasks with detailed parameters</p>
         
-        <!-- The New 8-Field Input Form -->
         <div class="task-form-grid">
-          <input type="text" id="task-name" placeholder="1. Task Name (e.g., Algebra Worksheet)" />
+          <input type="text" id="task-name" placeholder="1. Task Name" />
           <select id="task-subject">
             <option value="" disabled selected>2. Subject...</option>
             <option value="Math">Math</option><option value="Science">Science</option>
             <option value="English">English</option><option value="History">History</option>
-            <option value="Language">Language</option><option value="Arts">Arts</option>
-            <option value="Extracurricular">Extracurricular</option><option value="Other">Other</option>
+            <option value="Other">Other</option>
           </select>
           <select id="task-type">
             <option value="" disabled selected>3. Task Type...</option>
-            <option value="Problem Set">Problem Set</option><option value="Reading">Reading</option>
-            <option value="Essay">Essay</option><option value="Study/Review">Study/Review</option>
-            <option value="Project">Project</option>
+            <option value="Homework">Homework</option><option value="Study">Study</option>
           </select>
           <select id="task-tier">
             <option value="Tier 1">4. Tier 1: Urgent</option>
             <option value="Tier 2" selected>4. Tier 2: Medium</option>
             <option value="Tier 3">4. Tier 3: Low</option>
           </select>
-          <input type="date" id="task-date" title="5. Due Date" />
+          <input type="date" id="task-date" />
           <select id="task-difficulty">
             <option value="" disabled selected>6. Difficulty...</option>
-            <option value="1">1 - Very Easy</option><option value="2">2 - Easy</option>
-            <option value="3">3 - Moderate</option><option value="4">4 - Hard</option>
-            <option value="5">5 - Very Hard</option>
+            <option value="1">1 - Easy</option><option value="5">5 - Hard</option>
           </select>
-          <input type="number" id="task-est-time" placeholder="7. Est. Time (Minutes)" />
-          <input type="text" id="task-notes" placeholder="8. Assignment Notes / Links..." class="span-2" />
+          <input type="number" id="task-est-time" placeholder="7. Est. Time (Mins)" />
+          <input type="text" id="task-notes" placeholder="8. Notes" class="span-2" />
           <button class="action-btn span-full" onclick="addTask()">+ Assign Task</button>
         </div>
 
@@ -149,30 +131,26 @@
       </div>
     </section>
 
-    <!-- NEW: HISTORY TAB -->
+    <!-- HISTORY -->
     <section id="history" class="page">
       <div class="glass-card">
         <h2 class="oneui-header-title">Session History</h2>
-        <p class="oneui-header-sub">Review completed assignments and time calculations</p>
         <div id="history-board"></div>
         <button class="action-btn secondary" onclick="clearHistory()" style="margin-top: 16px;">Clear History</button>
       </div>
     </section>
-
   </div>
 
-  <!-- ONE UI SCROLL DOCK -->
+  <!-- DOCK -->
   <div class="dock-wrapper">
-    <nav class="oneui-dock" id="oneuiDock">
+    <nav class="oneui-dock">
       <button class="dock-tile tile-home active" id="btn-home" onclick="switchPage('home')">🏠</button>
       <button class="dock-tile tile-calc" id="btn-calc" onclick="switchPage('calc')">🔢</button>
       <button class="dock-tile tile-tasks" id="btn-tasks" onclick="switchPage('tasks')">📋</button>
-      <!-- New History Icon -->
       <button class="dock-tile tile-timer" id="btn-history" onclick="switchPage('history')">🕰️</button> 
     </nav>
   </div>
 
-  <!-- Link to your new Javascript file -->
   <script src="script.js"></script>
 </body>
 </html>
