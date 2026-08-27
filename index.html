@@ -27,89 +27,51 @@
       --oneui-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
       --oneui-smooth: cubic-bezier(0.16, 1, 0.3, 1);
 
-      /* Tier Colors */
-      --tier-1-color: #ef4444;
-      --tier-1-bg: rgba(239, 68, 68, 0.12);
-      --tier-1-border: rgba(239, 68, 68, 0.35);
-
-      --tier-2-color: #f59e0b;
-      --tier-2-bg: rgba(245, 158, 11, 0.12);
-      --tier-2-border: rgba(245, 158, 11, 0.35);
-
-      --tier-3-color: #10b981;
-      --tier-3-bg: rgba(16, 185, 129, 0.12);
-      --tier-3-border: rgba(16, 185, 129, 0.35);
+      /* Tier Colors (Expanded to 8) */
+      --tier-1-color: #ef4444; --tier-1-bg: rgba(239, 68, 68, 0.12); --tier-1-border: rgba(239, 68, 68, 0.35);
+      --tier-2-color: #f97316; --tier-2-bg: rgba(249, 115, 22, 0.12); --tier-2-border: rgba(249, 115, 22, 0.35);
+      --tier-3-color: #f59e0b; --tier-3-bg: rgba(245, 158, 11, 0.12); --tier-3-border: rgba(245, 158, 11, 0.35);
+      --tier-4-color: #84cc16; --tier-4-bg: rgba(132, 204, 22, 0.12); --tier-4-border: rgba(132, 204, 22, 0.35);
+      --tier-5-color: #10b981; --tier-5-bg: rgba(16, 185, 129, 0.12); --tier-5-border: rgba(16, 185, 129, 0.35);
+      --tier-6-color: #06b6d4; --tier-6-bg: rgba(6, 182, 212, 0.12); --tier-6-border: rgba(6, 182, 212, 0.35);
+      --tier-7-color: #3b82f6; --tier-7-bg: rgba(59, 130, 246, 0.12); --tier-7-border: rgba(59, 130, 246, 0.35);
+      --tier-8-color: #8b5cf6; --tier-8-bg: rgba(139, 92, 246, 0.12); --tier-8-border: rgba(139, 92, 246, 0.35);
     }
 
     body {
-      min-height: 100vh;
-      color: #ffffff;
-      background-color: var(--oneui-bg);
-      background-image: 
-        radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
-        radial-gradient(circle at 85% 80%, rgba(56, 189, 248, 0.1) 0%, transparent 40%);
-      background-attachment: fixed;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-bottom: 120px;
+      min-height: 100vh; color: #ffffff; background-color: var(--oneui-bg);
+      background-image: radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+                        radial-gradient(circle at 85% 80%, rgba(56, 189, 248, 0.1) 0%, transparent 40%);
+      background-attachment: fixed; overflow-x: hidden; display: flex; flex-direction: column;
+      align-items: center; padding-bottom: 120px;
     }
 
     /* Top Focus Nudge Popup Banner */
     .focus-nudge-banner {
-      position: fixed;
-      top: -100px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2000;
-      width: 90%;
-      max-width: 540px;
-      background: rgba(17, 24, 39, 0.94);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      box-shadow: 0 16px 36px rgba(239, 68, 68, 0.25), 0 8px 24px rgba(0, 0, 0, 0.6);
-      border-radius: 22px;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      transition: top 0.45s var(--oneui-spring), opacity 0.3s ease;
-      opacity: 0;
+      position: fixed; top: -100px; left: 50%; transform: translateX(-50%); z-index: 2000;
+      width: 90%; max-width: 540px; background: rgba(17, 24, 39, 0.94);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(239, 68, 68, 0.4); box-shadow: 0 16px 36px rgba(239, 68, 68, 0.25), 0 8px 24px rgba(0, 0, 0, 0.6);
+      border-radius: 22px; padding: 14px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      transition: top 0.45s var(--oneui-spring), opacity 0.3s ease; opacity: 0;
     }
-
     .focus-nudge-banner.show { top: 20px; opacity: 1; }
-
     .nudge-content { display: flex; align-items: center; gap: 12px; }
     .nudge-icon { font-size: 1.5rem; animation: pulseAlert 1.5s infinite; }
-
-    @keyframes pulseAlert {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
-    }
-
+    @keyframes pulseAlert { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
     .nudge-title { font-size: 0.8rem; font-weight: 800; color: var(--tier-1-color); text-transform: uppercase; letter-spacing: 0.8px; }
     .nudge-msg { font-size: 0.9rem; color: #ffffff; margin-top: 1px; }
     .nudge-actions { display: flex; align-items: center; gap: 8px; }
 
-    /* Keyframes */
     @keyframes oneUiSpringIn {
       0% { opacity: 0; transform: translateY(18px) scale(0.96); }
       60% { transform: translateY(-3px) scale(1.005); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
-
     @keyframes cardPulseGlow {
       0% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
       50% { box-shadow: 0 10px 32px rgba(99, 102, 241, 0.2); }
       100% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
-    }
-
-    @keyframes popIn {
-      0% { opacity: 0; transform: scale(0.92); }
-      100% { opacity: 1; transform: scale(1); }
     }
 
     .glass-card, .widget-card, button, input, select, textarea, .task-item, .schedule-item, .habit-pill {
@@ -117,35 +79,23 @@
     }
 
     .desktop-wrapper { width: 100%; max-width: 1180px; padding: 20px 20px; }
-
-    .page { 
-      display: none; opacity: 0;
-      transform: translateY(14px) scale(0.97);
-      transition: opacity 0.35s var(--oneui-smooth), transform 0.35s var(--oneui-smooth);
-    }
-    
+    .page { display: none; opacity: 0; transform: translateY(14px) scale(0.97); transition: opacity 0.35s var(--oneui-smooth), transform 0.35s var(--oneui-smooth); }
     .page.active-page { display: block; animation: oneUiSpringIn 0.45s var(--oneui-smooth) forwards; }
 
     .glass-card {
-      background: var(--oneui-card);
-      backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
-      border: 1px solid var(--oneui-card-border);
-      border-radius: 28px; padding: 26px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+      background: var(--oneui-card); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--oneui-card-border); border-radius: 28px; padding: 26px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
     }
     .glass-card:hover { border-color: rgba(255, 255, 255, 0.22); }
-
     .oneui-header-title { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 4px; }
     .oneui-header-sub { color: var(--oneui-text-sub); font-size: 0.95rem; margin-bottom: 20px; }
 
     input, select, textarea {
-      width: 100%; padding: 12px 18px; border-radius: 16px;
-      border: 1px solid var(--oneui-card-border);
+      width: 100%; padding: 12px 18px; border-radius: 16px; border: 1px solid var(--oneui-card-border);
       background: var(--oneui-pill); color: white; font-size: 0.95rem; outline: none;
     }
     input:focus, select:focus, textarea:focus {
-      border-color: var(--oneui-gray-border); background: var(--oneui-pill-hover);
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08); transform: translateY(-1px);
+      border-color: var(--oneui-gray-border); background: var(--oneui-pill-hover); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08); transform: translateY(-1px);
     }
     option { background: #12141d; color: white; }
 
@@ -158,7 +108,6 @@
     button.action-btn:active { transform: scale(0.95); }
 
     .home-desktop-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
-
     .widget-card {
       background: var(--oneui-card); border: 1px solid var(--oneui-card-border);
       border-radius: 24px; padding: 20px; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
@@ -166,168 +115,78 @@
     }
     .widget-card:hover { transform: translateY(-3px) scale(1.005); border-color: rgba(255, 255, 255, 0.22); box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45); }
 
-    .col-12 { grid-column: span 12; }
-    .col-8 { grid-column: span 8; }
-    .col-7 { grid-column: span 7; }
-    .col-6 { grid-column: span 6; }
-    .col-5 { grid-column: span 5; }
-    .col-4 { grid-column: span 4; }
+    .col-12 { grid-column: span 12; } .col-8 { grid-column: span 8; } .col-7 { grid-column: span 7; } .col-6 { grid-column: span 6; } .col-5 { grid-column: span 5; } .col-4 { grid-column: span 4; }
+    .widget-title { font-size: 0.82rem; font-weight: 800; color: var(--oneui-text-sub); text-transform: uppercase; letter-spacing: 1.1px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
 
-    .widget-title {
-      font-size: 0.82rem; font-weight: 800; color: var(--oneui-text-sub);
-      text-transform: uppercase; letter-spacing: 1.1px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center;
-    }
-
-    /* Calculator Desktop Side-by-Side Layout */
+    /* Calculator */
     .calc-desktop-grid { display: grid; grid-template-columns: 1fr 300px; gap: 22px; }
-    .calc-display {
-      background: rgba(0, 0, 0, 0.6); border-radius: 20px; font-size: 2.5rem; font-weight: 700; text-align: right;
-      padding: 18px; margin-bottom: 16px; min-height: 80px; border: 1px solid var(--oneui-card-border);
-      font-family: monospace; word-break: break-all; box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
-    }
+    .calc-display { background: rgba(0, 0, 0, 0.6); border-radius: 20px; font-size: 2.5rem; font-weight: 700; text-align: right; padding: 18px; margin-bottom: 16px; min-height: 80px; border: 1px solid var(--oneui-card-border); font-family: monospace; word-break: break-all; box-shadow: inset 0 4px 10px rgba(0,0,0,0.5); }
     .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
     .calc-grid button { height: 58px; font-size: 1.3rem; font-weight: 700; border-radius: 16px; background: var(--oneui-pill); border: 1px solid var(--oneui-card-border); color: white; cursor: pointer; }
     .calc-grid button:hover { transform: scale(1.04) translateY(-1px); background: var(--oneui-pill-hover); }
-    .calc-grid button:active { transform: scale(0.94); }
     .calc-grid button.op-btn { background: rgba(255, 255, 255, 0.16); }
-
     .calc-history { background: rgba(0, 0, 0, 0.4); border-radius: 20px; padding: 16px; height: 310px; overflow-y: auto; border: 1px solid var(--oneui-card-border); }
     .history-item { font-family: monospace; font-size: 0.95rem; padding: 8px 0; color: var(--oneui-text-sub); border-bottom: 1px solid rgba(255,255,255,0.06); }
 
-    /* Timer Circle */
+    /* Timer */
     .timer-circle-container { position: relative; width: 240px; height: 240px; margin: 14px auto; overflow: visible; }
     .timer-svg { transform: rotate(-90deg); width: 100%; height: 100%; overflow: visible; }
     .timer-bg { fill: none; stroke: var(--oneui-pill); stroke-width: 10; }
-    .timer-progress {
-      fill: none; stroke: #6366f1; stroke-width: 10; stroke-linecap: round;
-      stroke-dasharray: 597; stroke-dashoffset: 0; transition: stroke-dashoffset 0.8s linear, stroke 0.4s ease;
-      filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.8));
-    }
+    .timer-progress { fill: none; stroke: #6366f1; stroke-width: 10; stroke-linecap: round; stroke-dasharray: 597; stroke-dashoffset: 0; transition: stroke-dashoffset 0.8s linear, stroke 0.4s ease; filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.8)); }
     .timer-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3.2rem; font-weight: 800; letter-spacing: -1.5px; }
 
-    /* Tasks */
+    /* Tasks & Tiers */
     .tier-container { margin-top: 18px; border-radius: 22px; padding: 18px; background: rgba(0, 0, 0, 0.25); border: 1px solid var(--oneui-card-border); }
     .tier-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    
     .tier-badge { padding: 4px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; }
     .tier-1-badge { background: var(--tier-1-bg); border: 1px solid var(--tier-1-border); color: var(--tier-1-color); }
     .tier-2-badge { background: var(--tier-2-bg); border: 1px solid var(--tier-2-border); color: var(--tier-2-color); }
     .tier-3-badge { background: var(--tier-3-bg); border: 1px solid var(--tier-3-border); color: var(--tier-3-color); }
+    .tier-4-badge { background: var(--tier-4-bg); border: 1px solid var(--tier-4-border); color: var(--tier-4-color); }
+    .tier-5-badge { background: var(--tier-5-bg); border: 1px solid var(--tier-5-border); color: var(--tier-5-color); }
+    .tier-6-badge { background: var(--tier-6-bg); border: 1px solid var(--tier-6-border); color: var(--tier-6-color); }
+    .tier-7-badge { background: var(--tier-7-bg); border: 1px solid var(--tier-7-border); color: var(--tier-7-color); }
+    .tier-8-badge { background: var(--tier-8-bg); border: 1px solid var(--tier-8-border); color: var(--tier-8-color); }
 
     .task-item { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; border-radius: 18px; margin-top: 10px; position: relative; overflow: hidden; }
     .task-item.tier-1 { background: var(--tier-1-bg); border: 1px solid var(--tier-1-border); box-shadow: 0 4px 20px rgba(239, 68, 68, 0.08); }
     .task-item.tier-2 { background: var(--tier-2-bg); border: 1px solid var(--tier-2-border); }
     .task-item.tier-3 { background: var(--tier-3-bg); border: 1px solid var(--tier-3-border); }
+    .task-item.tier-4 { background: var(--tier-4-bg); border: 1px solid var(--tier-4-border); }
+    .task-item.tier-5 { background: var(--tier-5-bg); border: 1px solid var(--tier-5-border); }
+    .task-item.tier-6 { background: var(--tier-6-bg); border: 1px solid var(--tier-6-border); }
+    .task-item.tier-7 { background: var(--tier-7-bg); border: 1px solid var(--tier-7-border); }
+    .task-item.tier-8 { background: var(--tier-8-bg); border: 1px solid var(--tier-8-border); }
     .task-item:hover { transform: translateY(-2px) scale(1.005); filter: brightness(1.12); }
+    
     .task-inputs-grid { display: grid; grid-template-columns: 3fr 1.5fr 1.5fr auto; gap: 12px; margin-bottom: 16px; }
     .schedule-item { display: flex; align-items: center; justify-content: space-between; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--oneui-card-border); padding: 10px 14px; border-radius: 14px; margin-bottom: 8px; }
     .schedule-item:hover { background: var(--oneui-pill); }
-
     .habit-grid { display: flex; gap: 8px; flex-wrap: wrap; }
     .habit-pill { background: rgba(255,255,255,0.06); border: 1px solid var(--oneui-card-border); padding: 8px 14px; border-radius: 999px; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; user-select: none; }
     .habit-pill.completed { background: rgba(16, 185, 129, 0.25); border-color: rgba(16, 185, 129, 0.5); color: #a7f3d0; }
 
-    /* --- ONE UI VIVID SCROLL DOCK INTEGRATION --- */
-    .dock-wrapper {
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 9999;
-    }
-
-    .oneui-dock {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 12px 18px;
-      border-radius: 36px;
-      background: rgba(20, 22, 32, 0.65);
-      backdrop-filter: blur(30px) saturate(210%);
-      -webkit-backdrop-filter: blur(30px) saturate(210%);
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35);
-      transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.25);
-      will-change: transform, padding, border-radius;
-    }
-
-    .dock-tile {
-      width: 48px;
-      height: 48px;
-      border-radius: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.25);
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    }
-
-    .dock-tile svg {
-      width: 24px;
-      height: 24px;
-      fill: none;
-      stroke: #ffffff;
-      stroke-width: 2.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      transition: transform 0.3s ease;
-    }
-
-    /* Vivid One UI Palette */
+    /* Dock Integration */
+    .dock-wrapper { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); z-index: 9999; }
+    .oneui-dock { display: flex; align-items: center; gap: 14px; padding: 12px 18px; border-radius: 36px; background: rgba(20, 22, 32, 0.65); backdrop-filter: blur(30px) saturate(210%); -webkit-backdrop-filter: blur(30px) saturate(210%); border: 1px solid rgba(255, 255, 255, 0.28); box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35); transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.25); }
+    .dock-tile { width: 48px; height: 48px; border-radius: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; outline: none; transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.25); box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); }
+    .dock-tile svg { width: 24px; height: 24px; fill: none; stroke: #ffffff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.3s ease; }
     .tile-home  { background: linear-gradient(135deg, #00c6ff, #0072ff); box-shadow: 0 8px 20px rgba(0, 114, 255, 0.4); }
     .tile-calc  { background: linear-gradient(135deg, #00e676, #00b0ff); box-shadow: 0 8px 20px rgba(0, 230, 118, 0.4); }
     .tile-dict  { background: linear-gradient(135deg, #ff0844, #ffb199); box-shadow: 0 8px 20px rgba(255, 8, 68, 0.4); }
     .tile-timer { background: linear-gradient(135deg, #f857a6, #ff5858); box-shadow: 0 8px 20px rgba(248, 87, 166, 0.4); }
     .tile-tasks { background: linear-gradient(135deg, #b224ef, #7579ff); box-shadow: 0 8px 20px rgba(178, 36, 239, 0.4); }
-
-    .dock-tile:hover {
-      transform: translateY(-8px) scale(1.12);
-      filter: brightness(1.25);
-    }
-    .dock-tile:active {
-      transform: translateY(-2px) scale(0.95);
-    }
-
-    /* Active State Glow */
-    .dock-tile.active {
-      transform: translateY(-8px) scale(1.15);
-      box-shadow: 0 12px 28px rgba(255, 255, 255, 0.25);
-      border: 2px solid rgba(255, 255, 255, 0.8);
-      filter: brightness(1.15);
-    }
-
-    /* STATE: Collapsed (Scroll Down) */
-    .oneui-dock.is-collapsed {
-      padding: 8px 12px;
-      gap: 10px;
-      border-radius: 24px;
-      background: rgba(15, 17, 25, 0.8);
-      transform: scale(0.85);
-      opacity: 0.85;
-    }
+    .dock-tile:hover { transform: translateY(-8px) scale(1.12); filter: brightness(1.25); }
+    .dock-tile.active { transform: translateY(-8px) scale(1.15); box-shadow: 0 12px 28px rgba(255, 255, 255, 0.25); border: 2px solid rgba(255, 255, 255, 0.8); filter: brightness(1.15); }
+    .oneui-dock.is-collapsed { padding: 8px 12px; gap: 10px; border-radius: 24px; background: rgba(15, 17, 25, 0.8); transform: scale(0.85); opacity: 0.85; }
     .oneui-dock.is-collapsed .dock-tile { width: 38px; height: 38px; border-radius: 13px; }
     .oneui-dock.is-collapsed .dock-tile svg { width: 18px; height: 18px; }
-
-    /* STATE: Expanded (Scroll Up) */
-    .oneui-dock.is-expanded {
-      padding: 16px 26px;
-      gap: 18px;
-      border-radius: 46px;
-      background: rgba(26, 29, 45, 0.75);
-      transform: scale(1.08);
-      opacity: 1;
-      box-shadow: 0 28px 56px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 255, 255, 0.1);
-    }
+    .oneui-dock.is-expanded { padding: 16px 26px; gap: 18px; border-radius: 46px; background: rgba(26, 29, 45, 0.75); transform: scale(1.08); opacity: 1; box-shadow: 0 28px 56px rgba(0, 0, 0, 0.5), 0 0 24px rgba(255, 255, 255, 0.1); }
     .oneui-dock.is-expanded .dock-tile { width: 58px; height: 58px; border-radius: 22px; }
     .oneui-dock.is-expanded .dock-tile svg { width: 28px; height: 28px; }
 
-    @media (max-width: 992px) {
-      .col-8, .col-7, .col-6, .col-5, .col-4 { grid-column: span 12; }
-      .calc-desktop-grid { grid-template-columns: 1fr; }
-      .task-inputs-grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 992px) { .col-8, .col-7, .col-6, .col-5, .col-4 { grid-column: span 12; } .calc-desktop-grid { grid-template-columns: 1fr; } .task-inputs-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -338,7 +197,7 @@
       <span class="nudge-icon">🚨</span>
       <div>
         <div class="nudge-title">Focus Warning</div>
-        <div class="nudge-msg" id="nudge-text">You are off-task! Focus on: <strong>Homework Assignment</strong></div>
+        <div class="nudge-msg" id="nudge-text">You are off-task!</div>
       </div>
     </div>
     <div class="nudge-actions">
@@ -387,18 +246,9 @@
             <span>📅 Class Timetable Today</span>
             <span style="font-size:0.75rem; color:var(--oneui-text-sub);">Regular Schedule</span>
           </div>
-          <div class="schedule-item">
-            <div><strong>Period 1: Mathematics</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Algebra II & Trigonometry</div></div>
-            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">08:30 AM</span>
-          </div>
-          <div class="schedule-item">
-            <div><strong>Period 2: Physical Science</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Lab Room 204</div></div>
-            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">10:15 AM</span>
-          </div>
-          <div class="schedule-item">
-            <div><strong>Period 3: History & Literature</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Essay Review Session</div></div>
-            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">01:00 PM</span>
-          </div>
+          <div class="schedule-item"><div><strong>Period 1: Mathematics</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Algebra II & Trigonometry</div></div><span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">08:30 AM</span></div>
+          <div class="schedule-item"><div><strong>Period 2: Physical Science</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Lab Room 204</div></div><span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">10:15 AM</span></div>
+          <div class="schedule-item"><div><strong>Period 3: History & Literature</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Essay Review Session</div></div><span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">01:00 PM</span></div>
         </div>
         <div class="widget-card col-6" style="display:flex; flex-direction:column; justify-content:space-between;">
           <div>
@@ -460,9 +310,7 @@
           </div>
           <div>
             <h4 style="margin-bottom: 12px; font-weight: 700; font-size: 1.05rem; color: var(--oneui-text-sub);">Calculation History</h4>
-            <div id="calc-history" class="calc-history">
-              <div style="color:var(--oneui-text-sub); font-size:0.9rem;">No equations solved yet.</div>
-            </div>
+            <div id="calc-history" class="calc-history"><div style="color:var(--oneui-text-sub); font-size:0.9rem;">No equations solved yet.</div></div>
           </div>
         </div>
       </div>
@@ -478,9 +326,7 @@
           <button class="action-btn" onclick="searchAIDictionary()" style="padding: 0 28px;">Search</button>
         </div>
         <div id="dict-output" style="margin-top: 20px; min-height: 120px;">
-          <div style="color:var(--oneui-text-sub); background: rgba(0,0,0,0.3); padding: 22px; border-radius: 20px; border: 1px solid var(--oneui-card-border); font-size: 0.95rem;">
-            Type any term above and press search to view definitions and synonyms.
-          </div>
+          <div style="color:var(--oneui-text-sub); background: rgba(0,0,0,0.3); padding: 22px; border-radius: 20px; border: 1px solid var(--oneui-card-border); font-size: 0.95rem;">Type any term above and press search to view definitions and synonyms.</div>
         </div>
       </div>
     </section>
@@ -491,10 +337,7 @@
         <h2 class="oneui-header-title">Focus Study Timer</h2>
         <p class="oneui-header-sub">Visual real-time light countdown with icebreak chime</p>
         <div class="timer-circle-container">
-          <svg class="timer-svg" viewBox="0 0 240 240">
-            <circle class="timer-bg" cx="120" cy="120" r="95" />
-            <circle id="timer-progress" class="timer-progress" cx="120" cy="120" r="95" />
-          </svg>
+          <svg class="timer-svg" viewBox="0 0 240 240"><circle class="timer-bg" cx="120" cy="120" r="95" /><circle id="timer-progress" class="timer-progress" cx="120" cy="120" r="95" /></svg>
           <div id="timer-display" class="timer-text">25:00</div>
         </div>
         <div style="display: flex; gap: 10px; max-width: 340px; margin: 0 auto 18px auto;">
@@ -517,14 +360,25 @@
         <div class="task-inputs-grid">
           <input type="text" id="task-name" placeholder="Assignment title..." />
           <select id="task-tier">
-            <option value="Tier 1" selected>Tier 1: High / Urgent</option>
-            <option value="Tier 2">Tier 2: Medium / Standard</option>
-            <option value="Tier 3">Tier 3: Low / Flexible</option>
+            <option value="Tier 1" selected>Tier 1: SUPER PRIORITY / Urgent</option>
+            <option value="Tier 2">Tier 2: High Priority</option>
+            <option value="Tier 3">Tier 3: Medium-High Priority</option>
+            <option value="Tier 4">Tier 4: Medium Priority</option>
+            <option value="Tier 5">Tier 5: Medium-Low Priority</option>
+            <option value="Tier 6">Tier 6: Low Priority</option>
+            <option value="Tier 7">Tier 7: Very Low Priority</option>
+            <option value="Tier 8">Tier 8: Backlog / Whenever</option>
           </select>
           <input type="date" id="task-date" />
           <button class="action-btn" onclick="addTask()">Add Task</button>
         </div>
+        
         <div id="tiered-task-board"></div>
+
+        <!-- NEW COMPLETED HISTORY SECTION -->
+        <h3 class="oneui-header-sub" style="margin-top: 24px; color: #10b981; margin-bottom: 12px; font-weight: bold; border-top: 1px solid var(--oneui-card-border); padding-top: 24px;">Completed History</h3>
+        <div id="completed-task-board"></div>
+
       </div>
     </section>
 
@@ -533,25 +387,11 @@
   <!-- ONE UI SCROLL DOCK -->
   <div class="dock-wrapper">
     <nav class="oneui-dock" id="oneuiDock">
-      <button class="dock-tile tile-home active" id="btn-home" onclick="switchPage('home')" title="Home Dashboard">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      </button>
-
-      <button class="dock-tile tile-calc" id="btn-calc" onclick="switchPage('calc')" title="Calculator">
-        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-6 14h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zM7 7h2v2H7V7zm0 4h2v2H7v-2zm0 4h2v2H7v-2z"/></svg>
-      </button>
-
-      <button class="dock-tile tile-dict" id="btn-dict" onclick="switchPage('dict')" title="Dictionary">
-        <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
-      </button>
-
-      <button class="dock-tile tile-timer" id="btn-timer" onclick="switchPage('timer')" title="Timer">
-        <svg viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
-      </button>
-
-      <button class="dock-tile tile-tasks" id="btn-tasks" onclick="switchPage('tasks')" title="Tasks">
-        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-      </button>
+      <button class="dock-tile tile-home active" id="btn-home" onclick="switchPage('home')" title="Home Dashboard"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button>
+      <button class="dock-tile tile-calc" id="btn-calc" onclick="switchPage('calc')" title="Calculator"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-6 14h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zM7 7h2v2H7V7zm0 4h2v2H7v-2zm0 4h2v2H7v-2z"/></svg></button>
+      <button class="dock-tile tile-dict" id="btn-dict" onclick="switchPage('dict')" title="Dictionary"><svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg></button>
+      <button class="dock-tile tile-timer" id="btn-timer" onclick="switchPage('timer')" title="Timer"><svg viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg></button>
+      <button class="dock-tile tile-tasks" id="btn-tasks" onclick="switchPage('tasks')" title="Tasks"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></button>
     </nav>
   </div>
 
@@ -561,6 +401,7 @@
       { id: 2, name: "History Reading Assignment", tier: "Tier 2", date: "2026-08-30" },
       { id: 3, name: "Science Quiz Prep", tier: "Tier 3", date: "2026-09-02" }
     ];
+    let completedTasks = JSON.parse(localStorage.getItem("ut_tasks_completed")) || [];
     let currentPage = 'home';
     
     /* --- ONE UI SCROLL LOGIC --- */
@@ -571,21 +412,10 @@
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
       const scrollDelta = currentScrollY - lastScrollY;
-
-      if (currentScrollY < 30) {
-        dock.classList.remove('is-collapsed', 'is-expanded');
-        lastScrollY = currentScrollY;
-        return;
-      }
-
+      if (currentScrollY < 30) { dock.classList.remove('is-collapsed', 'is-expanded'); lastScrollY = currentScrollY; return; }
       if (Math.abs(scrollDelta) > scrollThreshold) {
-        if (scrollDelta > 0) {
-          dock.classList.add('is-collapsed');
-          dock.classList.remove('is-expanded');
-        } else {
-          dock.classList.add('is-expanded');
-          dock.classList.remove('is-collapsed');
-        }
+        if (scrollDelta > 0) { dock.classList.add('is-collapsed'); dock.classList.remove('is-expanded'); } 
+        else { dock.classList.add('is-expanded'); dock.classList.remove('is-collapsed'); }
         lastScrollY = currentScrollY;
       }
     }, { passive: true });
@@ -593,7 +423,6 @@
     /* PAGE SWITCHING & DOCK ACTIVE STATE */
     function switchPage(pageId) {
       if (currentPage === pageId) return;
-
       const oldPage = document.getElementById(currentPage);
       const newPage = document.getElementById(pageId);
       const activeBtn = document.getElementById(`btn-${pageId}`);
@@ -602,25 +431,20 @@
       if (activeBtn) activeBtn.classList.add('active');
 
       if (oldPage) {
-        oldPage.style.opacity = '0';
-        oldPage.style.transform = 'translateY(12px) scale(0.97)';
-        setTimeout(() => {
-          oldPage.classList.remove('active-page');
-          newPage.classList.add('active-page');
-        }, 180);
+        oldPage.style.opacity = '0'; oldPage.style.transform = 'translateY(12px) scale(0.97)';
+        setTimeout(() => { oldPage.classList.remove('active-page'); newPage.classList.add('active-page'); }, 180);
       }
-
       currentPage = pageId;
       triggerFocusNudgeCheck(pageId);
     }
 
-    /* OFF-TASK FOCUS NUDGE POPUP TRIGGER */
+    /* OFF-TASK FOCUS NUDGE POPUP TRIGGER (UPDATED SUPER PRIORITY) */
     function triggerFocusNudgeCheck(pageId) {
       if (pageId === 'calc' || pageId === 'dict') {
-        const tier1Task = tasks.find(t => t.tier === 'Tier 1');
-        const activeTask = tier1Task || tasks[0];
-
-        if (activeTask) showNudge(`Off-Task Warning! Focus on assignment: "${activeTask.name}"`);
+        const superPriorityTask = tasks.find(t => t.tier === 'Tier 1');
+        if (superPriorityTask) {
+          showNudge(`SUPER PRIORITY WARNING! You should be focusing on: "${superPriorityTask.name}"`);
+        }
       }
     }
 
@@ -633,9 +457,7 @@
 
     function hideNudge() { document.getElementById('focus-nudge-popup').classList.remove('show'); }
 
-    window.addEventListener('load', () => {
-      document.getElementById('quick-note').value = localStorage.getItem('ut_quick_note') || '';
-    });
+    window.addEventListener('load', () => { document.getElementById('quick-note').value = localStorage.getItem('ut_quick_note') || ''; });
 
     /* CLOCK */
     let is24Hour = false;
@@ -645,8 +467,7 @@
       document.getElementById('clock-time').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: !is24Hour });
       document.getElementById('clock-date').innerText = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
     }
-    setInterval(updateClock, 1000);
-    updateClock();
+    setInterval(updateClock, 1000); updateClock();
 
     /* HABIT WIDGET */
     function toggleHabit(el) {
@@ -657,168 +478,197 @@
     }
 
     /* AUDIO SYNTHESIZERS */
-    let audioCtx = null;
-    let noiseNode = null;
-
+    let audioCtx = null, noiseNode = null;
     function playIcebreakRingtone() {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
       const freqs = [1567.98, 2093.00, 2637.02, 3135.96, 4186.01];
       freqs.forEach((freq, idx) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
-        gain.gain.setValueAtTime(0.2, ctx.currentTime + idx * 0.06);
-        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.06 + 0.6);
+        const osc = ctx.createOscillator(), gain = ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
+        gain.gain.setValueAtTime(0.2, ctx.currentTime + idx * 0.06); gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.06 + 0.6);
         osc.connect(gain); gain.connect(ctx.destination);
         osc.start(ctx.currentTime + idx * 0.06); osc.stop(ctx.currentTime + idx * 0.06 + 0.65);
       });
     }
-
     function toggleStudyWhiteNoise() {
       const btn = document.getElementById('sound-synth-btn');
-      if (noiseNode) {
-        noiseNode.stop(); noiseNode = null;
-        btn.innerText = "▶ Ambient Noise"; btn.style.background = "var(--oneui-pill-active)"; return;
-      }
+      if (noiseNode) { noiseNode.stop(); noiseNode = null; btn.innerText = "▶ Ambient Noise"; btn.style.background = "var(--oneui-pill-active)"; return; }
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const bufferSize = audioCtx.sampleRate * 2;
-      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const data = buffer.getChannelData(0);
-      let lastOut = 0.0;
-      for (let i = 0; i < bufferSize; i++) {
-        const white = Math.random() * 2 - 1;
-        data[i] = (lastOut + (0.02 * white)) / 1.02; lastOut = data[i];
-      }
-      noiseNode = audioCtx.createBufferSource();
-      noiseNode.buffer = buffer; noiseNode.loop = true;
-      const gain = audioCtx.createGain(); gain.gain.value = 0.08;
-      noiseNode.connect(gain); gain.connect(audioCtx.destination); noiseNode.start();
-      btn.innerText = "⏸ Pause Noise"; btn.style.background = "rgba(16, 185, 129, 0.4)";
+      const bufferSize = audioCtx.sampleRate * 2, buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate), data = buffer.getChannelData(0);
+      let lastOut = 0;
+      for (let i = 0; i < bufferSize; i++) { const white = Math.random() * 2 - 1; data[i] = (lastOut + (0.02 * white)) / 1.02; lastOut = data[i]; data[i] *= 4.5; }
+      noiseNode = audioCtx.createBufferSource(); noiseNode.buffer = buffer; noiseNode.loop = true;
+      const biquadFilter = audioCtx.createBiquadFilter(); biquadFilter.type = "lowpass"; biquadFilter.frequency.setValueAtTime(450, audioCtx.currentTime); biquadFilter.Q.setValueAtTime(0.5, audioCtx.currentTime);
+      const gainNode = audioCtx.createGain(); gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
+      noiseNode.connect(biquadFilter); biquadFilter.connect(gainNode); gainNode.connect(audioCtx.destination); noiseNode.start();
+      btn.innerText = "⏸ Mute Noise"; btn.style.background = "#10b981";
     }
-
-    /* QUICK NOTE */
-    function saveQuickNote() {
-      localStorage.setItem('ut_quick_note', document.getElementById('quick-note').value);
-    }
-
-    /* CALCULATOR */
-    let calcVal = "0";
-    let calcHistoryList = [];
-
-    function updateCalcDisplay() { document.getElementById("calc-display").innerText = calcVal; }
-    function pressCalc(v) { if (calcVal === "0" && v !== '.') calcVal = v; else calcVal += v; updateCalcDisplay(); }
-    function clearCalc() { calcVal = "0"; updateCalcDisplay(); }
-    function backspaceCalc() { calcVal = calcVal.length > 1 ? calcVal.slice(0, -1) : "0"; updateCalcDisplay(); }
-    function solveCalc() {
-      try { const result = String(eval(calcVal)); addCalcHistory(`${calcVal} = ${result}`); calcVal = result; } catch { calcVal = "Error"; }
-      updateCalcDisplay();
-    }
-    function addCalcHistory(item) {
-      calcHistoryList.unshift(item);
-      if (calcHistoryList.length > 15) calcHistoryList.pop();
-      document.getElementById("calc-history").innerHTML = calcHistoryList.map(h => `<div class="history-item">${h}</div>`).join('');
-    }
-
-    window.addEventListener('keydown', (e) => {
-      if (currentPage !== 'calc') return;
-      if ((e.key >= '0' && e.key <= '9') || ['+', '-', '*', '/', '.', '(', ')'].includes(e.key)) { pressCalc(e.key); }
-      else if (e.key === 'Enter') { solveCalc(); } else if (e.key === 'Backspace') { backspaceCalc(); } else if (e.key === 'Escape') { clearCalc(); }
-    });
 
     /* DICTIONARY */
     async function searchAIDictionary() {
-      const word = document.getElementById("dict-input").value.trim();
-      const output = document.getElementById("dict-output");
-      if (!word) return;
-      output.innerHTML = `<div style="color:var(--oneui-text-sub); padding: 20px;">Searching definitions...</div>`;
+      const term = document.getElementById('dict-input').value.trim();
+      const out = document.getElementById('dict-output');
+      if(!term) return; out.innerHTML = `<div style="text-align:center; color:var(--oneui-text-sub); padding:30px;"><div style="font-size:1.5rem; margin-bottom:10px; animation: pulseAlert 1.2s infinite;">📚</div>Searching neural dictionary...</div>`;
       try {
-        const [defRes, synRes] = await Promise.all([ fetch(`https://api.datamuse.com/words?sp=${encodeURIComponent(word)}&md=d&max=1`), fetch(`https://api.datamuse.com/words?rel_syn=${encodeURIComponent(word)}&max=8`) ]);
-        const defData = await defRes.json(); const synData = await synRes.json();
-
-        if (defData.length > 0 && defData[0].defs) {
-          const entry = defData[0];
-          const synonyms = synData.map(s => s.word).join(", ") || "None found";
-          let html = `<h3 class="def-item" style="color:#ffffff; text-transform:capitalize; margin-bottom:14px; font-size:1.5rem;">${entry.word}</h3>`;
-          
-          entry.defs.forEach((d, index) => {
-            const parts = d.split('\t'); const pos = parts[0] ? `(${parts[0]})` : ''; const defText = parts[1] || d;
-            if (index === 0) {
-              html += `<div class="primary-def-card"><div style="font-size: 0.75rem; font-weight: 800; opacity: 0.8; letter-spacing: 0.8px; margin-bottom: 6px;">PRIMARY DEFINITION</div><div style="font-size: 1.1rem; line-height: 1.4; color: #ffffff;"><strong style="color: rgba(255,255,255,0.75);">${pos}</strong> ${defText}</div></div>`;
-            } else {
-              html += `<div class="def-item" style="background: rgba(0,0,0,0.3); border: 1px solid var(--oneui-card-border); padding: 12px 16px; border-radius: 16px; margin-bottom: 10px; font-size: 0.95rem;"><strong style="color: var(--oneui-text-sub);">${pos}</strong> ${defText}</div>`;
-            }
-          });
-          html += `<p class="def-item" style="margin-top: 12px; font-size: 0.9rem; color: var(--oneui-text-sub);"><b>Synonyms:</b> ${synonyms}</p>`;
-          output.innerHTML = html;
-        } else { output.innerHTML = `<div class="def-item" style="color:#fca5a5; padding: 20px; background: rgba(0,0,0,0.3); border-radius:20px;">No definitions found for "${word}".</div>`; }
-      } catch (err) { output.innerHTML = `<div class="def-item" style="color:#fca5a5; padding: 20px; background: rgba(0,0,0,0.3); border-radius:20px;">Network error. Please check your connection.</div>`; }
-      document.getElementById("dict-input").value = "";
+        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${term}`);
+        if (!res.ok) throw new Error("Not found"); const data = await res.json();
+        const word = data[0], phonetics = word.phonetic || '', meaning = word.meanings[0];
+        let html = `<div style="background:rgba(255,255,255,0.05); padding:24px; border-radius:22px; border:1px solid var(--oneui-card-border); animation:oneUiSpringIn 0.4s var(--oneui-smooth);"><h3 style="font-size:2.2rem; font-weight:800; color:var(--oneui-accent); margin-bottom:4px;">${word.word}</h3><p style="color:var(--oneui-text-sub); margin-bottom:16px;">${phonetics} • <i>${meaning.partOfSpeech}</i></p>`;
+        meaning.definitions.slice(0, 2).forEach((def, i) => { html += `<p style="margin-bottom:10px; font-size:1.05rem;"><strong style="color:var(--oneui-text-sub);">${i+1}.</strong> ${def.definition}</p>`; });
+        out.innerHTML = html + `</div>`;
+      } catch (e) { out.innerHTML = `<div style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); padding:18px; border-radius:18px; color:#ef4444;">Term not found in open database.</div>`; }
     }
 
-    /* TIMER */
-    let totalSeconds = 1500, timeLeft = 1500, timerId = null;
-
-    function renderTimer() {
-      const timeStr = `${String(Math.floor(timeLeft / 60)).padStart(2, '0')}:${String(timeLeft % 60).padStart(2, '0')}`;
-      document.getElementById("timer-display").innerText = timeStr;
-      document.getElementById("home-timer-val").innerText = timeStr;
-      
-      const statusTag = document.getElementById("home-timer-status");
-      if (timerId) { statusTag.innerText = "Running"; statusTag.style.background = "rgba(99,102,241,0.3)"; statusTag.style.color = "#c7d2fe"; }
-      else if (timeLeft < totalSeconds && timeLeft > 0) { statusTag.innerText = "Paused"; statusTag.style.background = "rgba(245,158,11,0.25)"; statusTag.style.color = "#fde68a"; }
-      else { statusTag.innerText = "Ready"; statusTag.style.background = "rgba(16,185,129,0.2)"; statusTag.style.color = "#a7f3d0"; }
-
-      const progressCircle = document.getElementById("timer-progress");
-      progressCircle.style.strokeDashoffset = 597 * (1 - (timeLeft / totalSeconds));
-      progressCircle.style.stroke = timeLeft <= 10 ? "#ef4444" : "#6366f1";
+    /* TASKS (UPDATED FOR 8 TIERS AND COMPLETED HISTORY) */
+    function saveTasks() { 
+      localStorage.setItem("ut_tasks_v2", JSON.stringify(tasks)); 
+      localStorage.setItem("ut_tasks_completed", JSON.stringify(completedTasks));
     }
-
-    function setCustomTimer() {
-      const mins = parseInt(document.getElementById("custom-minutes").value);
-      if (mins > 0) { pauseTimer(); totalSeconds = mins * 60; timeLeft = totalSeconds; renderTimer(); }
-    }
-    function startTimer() {
-      if (timerId) return;
-      timerId = setInterval(() => {
-        if (timeLeft > 0) { timeLeft--; renderTimer(); } 
-        else { clearInterval(timerId); timerId = null; renderTimer(); playIcebreakRingtone(); }
-      }, 1000);
-      renderTimer();
-    }
-    function pauseTimer() { clearInterval(timerId); timerId = null; renderTimer(); }
-    function resetTimer() { pauseTimer(); timeLeft = totalSeconds; renderTimer(); }
-    renderTimer();
-
-    /* TIERED TASKS SYSTEM */
-    function addTask() {
-      const name = document.getElementById("task-name").value.trim(), tier = document.getElementById("task-tier").value, date = document.getElementById("task-date").value || "No date";
-      if (!name) return;
-      tasks.push({ id: Date.now(), name, tier, date });
-      saveTasks(); renderTasks(); document.getElementById("task-name").value = "";
-    }
-    function completeTask(id) { tasks = tasks.filter(t => t.id !== id); saveTasks(); renderTasks(); }
-    function saveTasks() { localStorage.setItem("ut_tasks_v2", JSON.stringify(tasks)); }
-
+    
     function renderTasks() {
-      const board = document.getElementById("tiered-task-board"), homeWidget = document.getElementById("home-priority-tasks");
+      const board = document.getElementById("tiered-task-board");
+      const compBoard = document.getElementById("completed-task-board");
+      const homeWidget = document.getElementById("home-priority-tasks");
+      
+      const tiers = [ 
+        { name: "Tier 1", label: "🔥 Tier 1: SUPER PRIORITY", class: "tier-1-badge" }, 
+        { name: "Tier 2", label: "⚡ Tier 2: High Priority", class: "tier-2-badge" }, 
+        { name: "Tier 3", label: "🌟 Tier 3: Medium-High Priority", class: "tier-3-badge" },
+        { name: "Tier 4", label: "📘 Tier 4: Medium Priority", class: "tier-4-badge" },
+        { name: "Tier 5", label: "📗 Tier 5: Medium-Low Priority", class: "tier-5-badge" },
+        { name: "Tier 6", label: "🌱 Tier 6: Low Priority", class: "tier-6-badge" },
+        { name: "Tier 7", label: "🍃 Tier 7: Very Low Priority", class: "tier-7-badge" },
+        { name: "Tier 8", label: "🧊 Tier 8: Backlog", class: "tier-8-badge" }
+      ];
+
       if (tasks.length === 0) {
         board.innerHTML = `<p style="color:var(--oneui-text-sub); margin-top:10px; font-size:0.95rem;">No active assignments pending.</p>`;
         homeWidget.innerHTML = `<p style="color:var(--oneui-text-sub); font-size:0.9rem;">All caught up! No active tasks due.</p>`;
-        return;
+      } else {
+        board.innerHTML = tiers.map(t => {
+          const tierTasks = tasks.filter(task => task.tier === t.name);
+          if (tierTasks.length === 0) return '';
+          return `
+            <div class="tier-container">
+              <div class="tier-header">
+                <span class="tier-badge ${t.class}">${t.label}</span>
+                <span style="font-size:0.8rem; color:var(--oneui-text-sub);">${tierTasks.length} task(s)</span>
+              </div>
+              ${tierTasks.map(task => `
+                <div class="task-item tier-${t.name.split(' ')[1]}">
+                  <div>
+                    <strong style="font-size:1rem;">${task.name}</strong>
+                    <div style="font-size:0.85rem; color:var(--oneui-text-sub); margin-top:2px;">Due: ${task.date}</div>
+                  </div>
+                  <button class="action-btn" onclick="completeTask(${task.id})" style="padding: 6px 16px; font-size:0.85rem;">✓ Complete</button>
+                </div>
+              `).join('')}
+            </div>`;
+        }).join('');
+        
+        const priorityOrder = { "Tier 1":1, "Tier 2":2, "Tier 3":3, "Tier 4":4, "Tier 5":5, "Tier 6":6, "Tier 7":7, "Tier 8":8 };
+        tasks.sort((a, b) => priorityOrder[a.tier] - priorityOrder[b.tier]);
+        homeWidget.innerHTML = tasks.slice(0, 3).map(t => `
+          <div class="task-item tier-${t.tier.split(' ')[1]}" style="padding:10px 14px;">
+            <div>
+              <span class="tier-badge ${t.tier.toLowerCase().replace(' ', '-')}-badge">${t.tier}</span>
+              <span style="margin-left:8px; font-weight:600; font-size:0.95rem;">${t.name}</span>
+            </div>
+            <button class="action-btn" onclick="completeTask(${t.id})" style="padding: 4px 12px; font-size:0.8rem;">✓ Done</button>
+          </div>
+        `).join('');
       }
-      const tiers = [ { name: "Tier 1", label: "🔥 Tier 1: Urgent / High Priority", class: "tier-1-badge" }, { name: "Tier 2", label: "⚡ Tier 2: Medium Priority", class: "tier-2-badge" }, { name: "Tier 3", label: "🌱 Tier 3: Low / Flexible Priority", class: "tier-3-badge" } ];
-      board.innerHTML = tiers.map(t => {
-        const tierTasks = tasks.filter(task => task.tier === t.name);
-        if (tierTasks.length === 0) return '';
-        return `<div class="tier-container"><div class="tier-header"><span class="tier-badge ${t.class}">${t.label}</span><span style="font-size:0.8rem; color:var(--oneui-text-sub);">${tierTasks.length} task(s)</span></div>${tierTasks.map(task => `<div class="task-item ${t.name.toLowerCase().replace(' ', '-')}"><div><strong style="font-size:1rem;">${task.name}</strong><div style="font-size:0.85rem; color:var(--oneui-text-sub); margin-top:2px;">Due: ${task.date}</div></div><button class="action-btn" onclick="completeTask(${task.id})" style="padding: 6px 16px; font-size:0.85rem;">✓ Complete</button></div>`).join('')}</div>`;
-      }).join('');
-      
-      const priorityOrder = { "Tier 1": 1, "Tier 2": 2, "Tier 3": 3 };
-      tasks.sort((a, b) => priorityOrder[a.tier] - priorityOrder[b.tier]);
-      homeWidget.innerHTML = tasks.slice(0, 3).map(t => `<div class="task-item ${t.tier.toLowerCase().replace(' ', '-')}" style="padding:10px 14px;"><div><span class="tier-badge ${t.tier.toLowerCase().replace(' ', '-')}-badge">${t.tier}</span><span style="margin-left:8px; font-weight:600; font-size:0.95rem;">${t.name}</span></div><button class="action-btn" onclick="completeTask(${t.id})" style="padding: 4px 12px; font-size:0.8rem;">✓ Done</button></div>`).join('');
+
+      // Render completed tasks history
+      if (completedTasks.length === 0) {
+        compBoard.innerHTML = `<p style="color:var(--oneui-text-sub); font-size:0.95rem;">No tasks completed yet.</p>`;
+      } else {
+        compBoard.innerHTML = completedTasks.map(task => `
+          <div class="task-item" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); margin-top: 8px;">
+            <div>
+              <strong style="font-size:1rem; text-decoration: line-through; color: var(--oneui-text-sub);">${task.name}</strong>
+              <span class="tier-badge" style="margin-left: 10px; font-size: 0.7rem; background: transparent; border: 1px solid var(--oneui-text-sub); color: var(--oneui-text-sub);">${task.tier}</span>
+            </div>
+            <button class="action-btn" onclick="undoTask(${task.id})" style="padding: 4px 12px; font-size:0.75rem; background: transparent; border-color: var(--oneui-text-sub);">↩ Undo</button>
+          </div>
+        `).join('');
+      }
+    }
+
+    function addTask() {
+      const name = document.getElementById("task-name").value;
+      const tier = document.getElementById("task-tier").value;
+      const date = document.getElementById("task-date").value;
+      if (!name) return alert("Enter assignment name.");
+      tasks.push({ id: Date.now(), name, tier, date });
+      document.getElementById("task-name").value = ""; saveTasks(); renderTasks();
+    }
+    
+    function completeTask(id) { 
+      const taskToMove = tasks.find(t => t.id === id);
+      if (taskToMove) {
+        completedTasks.push(taskToMove);
+        tasks = tasks.filter(t => t.id !== id); 
+        saveTasks(); 
+        renderTasks(); 
+      }
+    }
+
+    function undoTask(id) {
+      const taskToMove = completedTasks.find(t => t.id === id);
+      if (taskToMove) {
+        tasks.push(taskToMove);
+        completedTasks = completedTasks.filter(t => t.id !== id);
+        saveTasks();
+        renderTasks();
+      }
     }
     renderTasks();
+
+    /* CALCULATOR */
+    let calcStr = "";
+    function pressCalc(v) { calcStr += v; updateCalcDisplay(); }
+    function backspaceCalc() { calcStr = calcStr.slice(0, -1); updateCalcDisplay(); }
+    function clearCalc() { calcStr = ""; updateCalcDisplay(); }
+    function updateCalcDisplay() { document.getElementById("calc-display").innerText = calcStr || "0"; }
+    function solveCalc() {
+      try {
+        if(!calcStr) return;
+        const res = new Function('return ' + calcStr)(); 
+        const hList = document.getElementById("calc-history");
+        if (hList.innerHTML.includes("No equations")) hList.innerHTML = "";
+        hList.innerHTML = `<div class="history-item">${calcStr} = <strong style="color:white; font-size:1.1rem;">${res}</strong></div>` + hList.innerHTML;
+        calcStr = String(res); updateCalcDisplay();
+      } catch (e) { document.getElementById("calc-display").innerText = "Err"; setTimeout(clearCalc, 1000); }
+    }
+
+    /* TIMER */
+    let timerInterv, time = 1500, maxTime = 1500;
+    const dp = document.getElementById("timer-display"), hp = document.getElementById("home-timer-val");
+    const prog = document.getElementById("timer-progress"), hs = document.getElementById("home-timer-status");
+    function updateTDisplay() {
+      const m = Math.floor(time/60).toString().padStart(2, '0'), s = (time%60).toString().padStart(2, '0');
+      dp.innerText = hp.innerText = `${m}:${s}`;
+      const pct = time / maxTime; prog.style.strokeDashoffset = 597 - (597 * pct);
+      prog.style.stroke = pct < 0.2 ? '#ef4444' : pct < 0.5 ? '#f59e0b' : '#6366f1';
+    }
+    function startTimer() { 
+      if (timerInterv) return; 
+      hs.innerText = "Focusing"; hs.style.background = "rgba(99,102,241,0.2)"; hs.style.color = "#818cf8";
+      timerInterv = setInterval(() => { 
+        if (time > 0) { time--; updateTDisplay(); } 
+        else { resetTimer(); playIcebreakRingtone(); showNudge("Time is up! Good work."); } 
+      }, 1000); 
+    }
+    function pauseTimer() { clearInterval(timerInterv); timerInterv = null; hs.innerText = "Paused"; hs.style.background = "rgba(245,158,11,0.2)"; hs.style.color = "#fcd34d"; }
+    function resetTimer() { clearInterval(timerInterv); timerInterv = null; time = maxTime; updateTDisplay(); hs.innerText = "Ready"; hs.style.background = "rgba(16,185,129,0.2)"; hs.style.color = "#a7f3d0"; }
+    function setCustomTimer() {
+      const mins = document.getElementById("custom-minutes").value;
+      if (mins && mins > 0) { maxTime = time = mins * 60; resetTimer(); }
+    }
+    updateTDisplay();
+    
+    function saveQuickNote() { localStorage.setItem('ut_quick_note', document.getElementById('quick-note').value); }
   </script>
 </body>
 </html>
