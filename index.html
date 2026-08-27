@@ -3,9 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ultimate Desk & Productivity Suite</title>
-  <!-- Google Sign-In SDK -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <title>Ultimate Desk Suite</title>
   <style>
     * {
       box-sizing: border-box;
@@ -29,7 +27,7 @@
       --oneui-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
       --oneui-smooth: cubic-bezier(0.16, 1, 0.3, 1);
 
-      /* Priority Tier Colors */
+      /* Tier Colors */
       --tier-1-color: #ef4444;
       --tier-1-bg: rgba(239, 68, 68, 0.12);
       --tier-1-border: rgba(239, 68, 68, 0.35);
@@ -55,35 +53,10 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-bottom: 110px;
+      padding-bottom: 90px;
     }
 
-    /* TOP HEADER USER ACCOUNT BAR */
-    .top-auth-bar {
-      width: 100%;
-      max-width: 1180px;
-      padding: 16px 20px 0 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand-logo {
-      font-weight: 800;
-      font-size: 1.1rem;
-      letter-spacing: -0.4px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .user-profile-box {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    /* TOP CLICKABLE FOCUS ALERT POPUP */
+    /* Top Focus Nudge Popup Banner */
     .focus-nudge-banner {
       position: fixed;
       top: -100px;
@@ -91,12 +64,12 @@
       transform: translateX(-50%);
       z-index: 2000;
       width: 90%;
-      max-width: 560px;
+      max-width: 540px;
       background: rgba(17, 24, 39, 0.94);
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      border: 1px solid rgba(239, 68, 68, 0.45);
-      box-shadow: 0 16px 36px rgba(239, 68, 68, 0.3), 0 8px 24px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      box-shadow: 0 16px 36px rgba(239, 68, 68, 0.25), 0 8px 24px rgba(0, 0, 0, 0.6);
       border-radius: 22px;
       padding: 14px 20px;
       display: flex;
@@ -105,7 +78,6 @@
       gap: 14px;
       transition: top 0.45s var(--oneui-spring), opacity 0.3s ease;
       opacity: 0;
-      cursor: pointer;
     }
 
     .focus-nudge-banner.show {
@@ -130,7 +102,7 @@
     }
 
     .nudge-title {
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       font-weight: 800;
       color: var(--tier-1-color);
       text-transform: uppercase;
@@ -143,10 +115,36 @@
       margin-top: 1px;
     }
 
+    .nudge-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Keyframes */
     @keyframes oneUiSpringIn {
-      0% { opacity: 0; transform: translateY(18px) scale(0.96); }
-      60% { transform: translateY(-3px) scale(1.005); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
+      0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.96);
+      }
+      60% {
+        transform: translateY(-3px) scale(1.005);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes cardPulseGlow {
+      0% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
+      50% { box-shadow: 0 10px 32px rgba(99, 102, 241, 0.2); }
+      100% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); }
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.92); }
+      100% { opacity: 1; transform: scale(1); }
     }
 
     .glass-card, .widget-card, button, input, select, textarea, .task-item, .schedule-item, .habit-pill {
@@ -160,7 +158,7 @@
     .desktop-wrapper {
       width: 100%;
       max-width: 1180px;
-      padding: 16px 20px 20px 20px;
+      padding: 20px 20px;
     }
 
     .page { 
@@ -183,6 +181,10 @@
       border-radius: 28px;
       padding: 26px;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.22);
     }
 
     .oneui-header-title {
@@ -213,6 +215,7 @@
       border-color: var(--oneui-gray-border);
       background: var(--oneui-pill-hover);
       box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+      transform: translateY(-1px);
     }
 
     option { background: #12141d; color: white; }
@@ -238,7 +241,9 @@
       box-shadow: 0 6px 18px rgba(0,0,0,0.25);
     }
 
-    button.action-btn:active { transform: scale(0.95); }
+    button.action-btn:active { 
+      transform: scale(0.95); 
+    }
 
     .home-desktop-grid {
       display: grid;
@@ -254,12 +259,21 @@
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       position: relative;
+      overflow: hidden;
+    }
+
+    .widget-card:hover {
+      transform: translateY(-3px) scale(1.005);
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
     }
 
     .col-12 { grid-column: span 12; }
+    .col-8 { grid-column: span 8; }
     .col-7 { grid-column: span 7; }
     .col-6 { grid-column: span 6; }
     .col-5 { grid-column: span 5; }
+    .col-4 { grid-column: span 4; }
 
     .widget-title {
       font-size: 0.82rem;
@@ -273,198 +287,13 @@
       align-items: center;
     }
 
-    /* DETAILED TASK SPECIFICATIONS FORM GRID */
-    .task-form-container {
-      background: rgba(0, 0, 0, 0.35);
-      padding: 20px;
-      border-radius: 24px;
-      border: 1px solid var(--oneui-card-border);
-      margin-bottom: 24px;
-    }
-
-    .form-grid-8 {
+    /* Calculator Desktop Side-by-Side Layout */
+    .calc-desktop-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+      grid-template-columns: 1fr 300px;
+      gap: 22px;
     }
 
-    .field-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .field-group label {
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--oneui-text-sub);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-    }
-
-    .tier-section {
-      margin-bottom: 22px;
-      border-radius: 24px;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid var(--oneui-card-border);
-    }
-
-    .tier-header-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .tier-badge {
-      padding: 5px 14px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.9px;
-    }
-
-    .tier-1-badge { background: var(--tier-1-bg); border: 1px solid var(--tier-1-border); color: var(--tier-1-color); }
-    .tier-2-badge { background: var(--tier-2-bg); border: 1px solid var(--tier-2-border); color: var(--tier-2-color); }
-    .tier-3-badge { background: var(--tier-3-bg); border: 1px solid var(--tier-3-border); color: var(--tier-3-color); }
-
-    .spec-pill {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 999px;
-      padding: 3px 10px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: #e2e8f0;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .task-card-enhanced {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--oneui-card-border);
-      border-radius: 20px;
-      padding: 18px;
-      margin-top: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .task-card-enhanced.tier-1 { border-left: 5px solid var(--tier-1-color); background: var(--tier-1-bg); }
-    .task-card-enhanced.tier-2 { border-left: 5px solid var(--tier-2-color); background: var(--tier-2-bg); }
-    .task-card-enhanced.tier-3 { border-left: 5px solid var(--tier-3-color); background: var(--tier-3-bg); }
-
-    .specs-grid-display {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .specs-box {
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 0.88rem;
-      line-height: 1.4;
-      color: #cbd5e1;
-      border: 1px dashed rgba(255, 255, 255, 0.15);
-    }
-
-    /* NOTES FILE MANAGER SYSTEM */
-    .notes-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 20px;
-      min-height: 480px;
-    }
-
-    .notes-sidebar {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--oneui-card-border);
-      border-radius: 22px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .note-file-item {
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: var(--oneui-pill);
-      border: 1px solid transparent;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .note-file-item.active-note {
-      background: var(--oneui-pill-active);
-      border-color: var(--oneui-gray-border);
-    }
-
-    /* PRODUCTIVITY HISTORY LOG TABLE */
-    .history-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-    }
-
-    .history-table th {
-      text-align: left;
-      padding: 12px 16px;
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--oneui-text-sub);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      border-bottom: 1px solid var(--oneui-card-border);
-    }
-
-    .history-table td {
-      padding: 14px 16px;
-      font-size: 0.9rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    /* TIMER DISPLAY */
-    .timer-circle-container {
-      position: relative;
-      width: 230px;
-      height: 230px;
-      margin: 14px auto;
-    }
-
-    .timer-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
-    .timer-bg { fill: none; stroke: var(--oneui-pill); stroke-width: 10; }
-    .timer-progress {
-      fill: none;
-      stroke: #6366f1;
-      stroke-width: 10;
-      stroke-linecap: round;
-      stroke-dasharray: 597;
-      stroke-dashoffset: 0;
-      transition: stroke-dashoffset 0.8s linear, stroke 0.4s ease;
-    }
-
-    .timer-text {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 3.2rem;
-      font-weight: 800;
-    }
-
-    /* CALCULATOR GRID */
-    .calc-desktop-grid { display: grid; grid-template-columns: 1fr 300px; gap: 22px; }
     .calc-display {
       background: rgba(0, 0, 0, 0.6);
       border-radius: 20px;
@@ -477,11 +306,13 @@
       border: 1px solid var(--oneui-card-border);
       font-family: monospace;
       word-break: break-all;
+      box-shadow: inset 0 4px 10px rgba(0,0,0,0.5);
     }
+
     .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
     .calc-grid button {
-      height: 56px;
-      font-size: 1.25rem;
+      height: 58px;
+      font-size: 1.3rem;
       font-weight: 700;
       border-radius: 16px;
       background: var(--oneui-pill);
@@ -490,101 +321,138 @@
       cursor: pointer;
     }
 
-    /* DOCK & 3-DOTS MORE MENU */
-    nav.apple-dock-nav {
-      position: fixed;
-      bottom: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(15, 17, 26, 0.9);
-      backdrop-filter: blur(32px);
-      -webkit-backdrop-filter: blur(32px);
-      border: 1px solid var(--oneui-card-border);
-      border-radius: 999px;
-      padding: 6px 10px;
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6);
+    .calc-grid button:hover {
+      transform: scale(1.04) translateY(-1px);
+      background: var(--oneui-pill-hover);
     }
 
-    .nav-btn {
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--oneui-text-sub);
-      padding: 8px 14px;
-      border-radius: 999px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      height: 38px;
-      white-space: nowrap;
-    }
+    .calc-grid button:active { transform: scale(0.94); }
+    .calc-grid button.op-btn { background: rgba(255, 255, 255, 0.16); }
 
-    .nav-btn.active {
-      color: #ffffff;
-      background: var(--oneui-pill-active);
-      border: 1px solid var(--oneui-gray-border);
-    }
-
-    .nav-btn svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-      flex-shrink: 0;
-    }
-
-    .nav-btn:hover { color: #ffffff; background: var(--oneui-pill-hover); }
-
-    /* Floating 3-Dots Apps Menu */
-    .more-apps-menu {
-      position: absolute;
-      bottom: 60px;
-      right: 0;
-      background: rgba(15, 17, 26, 0.96);
-      backdrop-filter: blur(28px);
-      border: 1px solid var(--oneui-card-border);
+    .calc-history {
+      background: rgba(0, 0, 0, 0.4);
       border-radius: 20px;
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.5);
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(10px);
-      transition: all 0.25s var(--oneui-spring);
-      min-width: 160px;
+      padding: 16px;
+      height: 310px;
+      overflow-y: auto;
+      border: 1px solid var(--oneui-card-border);
     }
 
-    .more-apps-menu.show {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
+    .history-item {
+      font-family: monospace;
+      font-size: 0.95rem;
+      padding: 8px 0;
+      color: var(--oneui-text-sub);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    .more-menu-item {
+    /* Timer Circle with Glow Safeguard */
+    .timer-circle-container {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      margin: 14px auto;
+      overflow: visible;
+    }
+
+    .timer-svg { 
+      transform: rotate(-90deg); 
+      width: 100%; 
+      height: 100%; 
+      overflow: visible;
+    }
+
+    .timer-bg { fill: none; stroke: var(--oneui-pill); stroke-width: 10; }
+    
+    .timer-progress {
+      fill: none;
+      stroke: #6366f1;
+      stroke-width: 10;
+      stroke-linecap: round;
+      stroke-dasharray: 597;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.8s linear, stroke 0.4s ease;
+      filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.8));
+    }
+
+    .timer-text {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3.2rem;
+      font-weight: 800;
+      letter-spacing: -1.5px;
+    }
+
+    /* Task Tiers & High-Visibility Color Coding */
+    .tier-container {
+      margin-top: 18px;
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(0, 0, 0, 0.25);
+      border: 1px solid var(--oneui-card-border);
+    }
+
+    .tier-header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      border-radius: 14px;
-      color: white;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      width: 100%;
-      text-align: left;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .more-menu-item:hover { background: var(--oneui-pill-hover); }
+    .tier-badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .tier-1-badge { background: var(--tier-1-bg); border: 1px solid var(--tier-1-border); color: var(--tier-1-color); }
+    .tier-2-badge { background: var(--tier-2-bg); border: 1px solid var(--tier-2-border); color: var(--tier-2-color); }
+    .tier-3-badge { background: var(--tier-3-bg); border: 1px solid var(--tier-3-border); color: var(--tier-3-color); }
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      border-radius: 18px;
+      margin-top: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .task-item.tier-1 {
+      background: var(--tier-1-bg);
+      border: 1px solid var(--tier-1-border);
+      box-shadow: 0 4px 20px rgba(239, 68, 68, 0.08);
+    }
+
+    .task-item.tier-2 {
+      background: var(--tier-2-bg);
+      border: 1px solid var(--tier-2-border);
+    }
+
+    .task-item.tier-3 {
+      background: var(--tier-3-bg);
+      border: 1px solid var(--tier-3-border);
+    }
+
+    .task-item:hover {
+      transform: translateY(-2px) scale(1.005);
+      filter: brightness(1.12);
+    }
+
+    .task-inputs-grid {
+      display: grid;
+      grid-template-columns: 3fr 1.5fr 1.5fr auto;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
 
     .schedule-item {
       display: flex;
@@ -597,7 +465,16 @@
       margin-bottom: 8px;
     }
 
-    .habit-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+    .schedule-item:hover {
+      background: var(--oneui-pill);
+    }
+
+    .habit-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     .habit-pill {
       background: rgba(255,255,255,0.06);
       border: 1px solid var(--oneui-card-border);
@@ -605,286 +482,260 @@
       border-radius: 999px;
       font-size: 0.85rem;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      user-select: none;
     }
+
     .habit-pill.completed {
       background: rgba(16, 185, 129, 0.25);
       border-color: rgba(16, 185, 129, 0.5);
       color: #a7f3d0;
     }
 
+    /* Apple-Style Dock Nav with Precision Active Alignment Fix */
+    nav.apple-dock-nav {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%) scale(1);
+      transform-origin: bottom center;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      transition: transform 0.35s var(--oneui-spring), opacity 0.25s ease;
+    }
+
+    nav.apple-dock-nav.dock-minimized {
+      transform: translateX(-50%) scale(0.85);
+      opacity: 0.85;
+    }
+
+    nav.apple-dock-nav.dock-minimized:hover {
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+    }
+
+    .nav-segment {
+      display: flex;
+      align-items: center;
+      background: rgba(15, 17, 26, 0.88);
+      backdrop-filter: blur(32px);
+      -webkit-backdrop-filter: blur(32px);
+      border: 1px solid var(--oneui-card-border);
+      border-radius: 999px;
+      padding: 5px 6px;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .tool-segment { gap: 4px; }
+
+    .nav-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--oneui-text-sub);
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      transition: padding 0.3s var(--oneui-spring), color 0.25s ease;
+      height: 38px;
+    }
+
+    .nav-btn span {
+      max-width: 100px;
+      opacity: 1;
+      display: inline-block;
+      transition: max-width 0.35s var(--oneui-smooth), opacity 0.25s ease, margin 0.35s var(--oneui-smooth);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    nav.apple-dock-nav.dock-minimized .nav-btn span {
+      max-width: 0;
+      opacity: 0;
+      margin: 0;
+    }
+
+    nav.apple-dock-nav.dock-minimized:hover .nav-btn span {
+      max-width: 100px;
+      opacity: 1;
+    }
+
+    .nav-btn svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      transition: transform 0.3s var(--oneui-spring), fill 0.25s ease;
+      flex-shrink: 0;
+    }
+
+    .nav-btn:hover { color: #ffffff; }
+    .nav-btn:hover svg { transform: scale(1.15); }
+
+    .home-segment .nav-btn.active {
+      color: #ffffff;
+      background: var(--oneui-pill-active);
+      border: 1px solid var(--oneui-gray-border);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+    }
+
+    .tool-segment .nav-btn.active { color: #ffffff; }
+
+    /* Precise Centered Indicator Pill Fix */
+    .nav-indicator {
+      position: absolute;
+      border-radius: 999px;
+      background: var(--oneui-pill-active);
+      border: 1px solid var(--oneui-gray-border);
+      transition: left 0.3s var(--oneui-spring), width 0.3s var(--oneui-spring), top 0.3s var(--oneui-spring), height 0.3s var(--oneui-spring), opacity 0.2s ease;
+      z-index: 1;
+      opacity: 0;
+      pointer-events: none;
+      box-sizing: border-box;
+    }
+
+    .primary-def-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
+      border: 1px solid rgba(255, 255, 255, 0.3) !important;
+      border-radius: 22px;
+      padding: 20px;
+      margin-bottom: 14px;
+      animation: popIn 0.35s var(--oneui-smooth) forwards;
+    }
+
+    .def-item { animation: popIn 0.35s var(--oneui-smooth) forwards; }
+
     @media (max-width: 992px) {
-      .col-7, .col-6, .col-5 { grid-column: span 12; }
-      .form-grid-8 { grid-template-columns: 1fr 1fr; }
-      .notes-layout { grid-template-columns: 1fr; }
+      .col-8, .col-7, .col-6, .col-5, .col-4 { grid-column: span 12; }
       .calc-desktop-grid { grid-template-columns: 1fr; }
+      .task-inputs-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- TOP AUTH & GOOGLE SIGN-IN BAR -->
-  <header class="top-auth-bar">
-    <div class="brand-logo">
-      <span>⚡ Desk Workstation</span>
-    </div>
-    <div class="user-profile-box">
-      <!-- Google Sign-In Mount Point -->
-      <div id="g_id_onload"
-           data-client_id="558465892112-lf25qrkn4jrupjijh5le52ok44fhkf2p.apps.googleusercontent.com"
-           data-callback="handleCredentialResponse"
-           data-auto_prompt="false">
-      </div>
-      <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="dark" data-size="medium"></div>
-
-      <!-- Active User Profile Display -->
-      <div id="user-info" style="display: none; align-items: center; gap: 10px; background: rgba(255,255,255,0.08); padding: 4px 12px 4px 6px; border-radius: 999px; border: 1px solid var(--oneui-card-border);">
-        <img id="user-avatar" src="" style="width: 28px; height: 28px; border-radius: 50%; object-fit: cover;" />
-        <span id="user-name" style="font-weight: 700; font-size: 0.85rem; color: white;"></span>
-        <button class="action-btn" onclick="googleSignOut()" style="padding: 2px 10px; font-size: 0.72rem; background: rgba(239,68,68,0.25); border-color: rgba(239,68,68,0.4); color: #fca5a5;">Sign Out</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- TOP CLICKABLE FOCUS ALERT POPUP -->
-  <div id="focus-nudge-popup" class="focus-nudge-banner" onclick="handleNudgeClick()">
+  <!-- DYNAMIC TOP FOCUS NUDGE POPUP -->
+  <div id="focus-nudge-popup" class="focus-nudge-banner">
     <div class="nudge-content">
       <span class="nudge-icon">🚨</span>
       <div>
-        <div class="nudge-title">Off-Task Focus Warning</div>
-        <div class="nudge-msg" id="nudge-text">You are browsing secondary tools!</div>
+        <div class="nudge-title">Focus Warning</div>
+        <div class="nudge-msg" id="nudge-text">You are off-task! Focus on: <strong>Homework Assignment</strong></div>
       </div>
     </div>
-    <div style="display:flex; gap:6px; align-items:center;">
-      <button class="action-btn" style="padding:4px 12px; font-size:0.78rem;">Focus Now</button>
-      <button onclick="event.stopPropagation(); hideNudge();" style="background:transparent; border:none; color:var(--oneui-text-sub); font-size:1.1rem; cursor:pointer; padding:0 4px;">✕</button>
+    <div class="nudge-actions">
+      <button class="action-btn" onclick="switchPage('tasks'); hideNudge();" style="padding:5px 14px; font-size:0.8rem;">Focus Now</button>
+      <button onclick="hideNudge()" style="background:transparent; border:none; color:var(--oneui-text-sub); cursor:pointer; font-size:1.1rem; padding:0 4px;">✕</button>
     </div>
   </div>
 
   <div class="desktop-wrapper">
 
-    <!-- 1. HOMESCREEN DASHBOARD -->
+    <!-- HOMESCREEN DASHBOARD -->
     <section id="home" class="page active-page">
       <div class="home-desktop-grid">
         
-        <!-- Hero Clock -->
-        <div class="widget-card col-12" style="text-align: center; padding: 26px 20px;">
+        <!-- WIDGET 1: Hero Clock -->
+        <div class="widget-card col-12" style="text-align: center; padding: 32px 20px; animation: cardPulseGlow 6s infinite ease-in-out;">
           <div class="widget-title" style="justify-content: center; gap: 8px;">
             <span>DESK TIME & WORKSTATION</span>
             <span style="font-size:0.75rem; opacity:0.7; cursor:pointer;" onclick="toggleTimeFormat()">(12H / 24H)</span>
           </div>
-          <div id="clock-time" style="font-size: clamp(3.2rem, 6vw, 4.8rem); font-weight: 800; letter-spacing: -2px; cursor: pointer;" onclick="toggleTimeFormat()">00:00:00</div>
-          <div id="clock-date" style="color: var(--oneui-text-sub); font-size: 1.05rem; margin-top: 4px; font-weight: 600;">Loading date...</div>
+          <div id="clock-time" style="font-size: clamp(3.2rem, 6vw, 4.8rem); font-weight: 800; letter-spacing: -2px; cursor: pointer; text-shadow: 0 8px 24px rgba(0,0,0,0.5);" onclick="toggleTimeFormat()">00:00:00</div>
+          <div id="clock-date" style="color: var(--oneui-text-sub); font-size: 1.1rem; margin-top: 4px; font-weight: 600;">Loading calendar...</div>
         </div>
 
-        <!-- Priority Assignment Queue -->
+        <!-- WIDGET 2: Homework Priority Queue -->
         <div class="widget-card col-7">
           <div class="widget-title">
-            <span>📌 Priority Assignments Queue</span>
-            <button class="action-btn" onclick="switchPage('tasks')" style="padding: 4px 12px; font-size: 0.78rem;">Open Board</button>
+            <span>📌 Assignment Tier Status</span>
+            <button class="action-btn" onclick="switchPage('tasks')" style="padding: 4px 14px; font-size: 0.8rem;">Planner</button>
           </div>
           <div id="home-priority-tasks"></div>
         </div>
 
-        <!-- Custom Class Schedule Widget -->
-        <div class="widget-card col-5">
+        <!-- WIDGET 3: Focus Timer Widget -->
+        <div class="widget-card col-5" style="display: flex; flex-direction: column; justify-content: space-between;">
           <div class="widget-title">
-            <span>📅 My Class Schedule</span>
-            <button class="action-btn" onclick="promptAddSchedule()" style="padding: 2px 10px; font-size: 0.75rem;">+ Add Class</button>
+            <span>⏱️ Focus Timer</span>
+            <span id="home-timer-status" style="font-size:0.75rem; color:#a7f3d0; background:rgba(16,185,129,0.2); padding:2px 8px; border-radius:999px;">Ready</span>
           </div>
-          <div id="schedule-container"></div>
+          <div style="text-align: center; margin: 6px 0;">
+            <div style="font-size: 3rem; font-weight: 800; letter-spacing: -1px; font-family: monospace;" id="home-timer-val">25:00</div>
+            <p style="color: var(--oneui-text-sub); font-size: 0.85rem; margin-top: 2px;">Pomodoro Focus Session</p>
+          </div>
+          <div style="display: flex; gap: 8px; justify-content: center;">
+            <button class="action-btn" id="home-start-btn" onclick="startTimer()" style="flex: 1; padding: 8px 12px; font-size: 0.85rem;">Start</button>
+            <button class="action-btn" onclick="pauseTimer()" style="flex: 1; padding: 8px 12px; font-size: 0.85rem; background: var(--oneui-pill);">Pause</button>
+            <button class="action-btn" onclick="resetTimer()" style="flex: 1; padding: 8px 12px; font-size: 0.85rem; background: var(--oneui-pill);">Reset</button>
+          </div>
         </div>
 
-        <!-- Study Habits & Ambient Noise -->
-        <div class="widget-card col-12" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+        <!-- WIDGET 4: Class Timetable Today -->
+        <div class="widget-card col-6">
+          <div class="widget-title">
+            <span>📅 Class Timetable Today</span>
+            <span style="font-size:0.75rem; color:var(--oneui-text-sub);">Regular Schedule</span>
+          </div>
+          <div class="schedule-item">
+            <div><strong>Period 1: Mathematics</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Algebra II & Trigonometry</div></div>
+            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">08:30 AM</span>
+          </div>
+          <div class="schedule-item">
+            <div><strong>Period 2: Physical Science</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Lab Room 204</div></div>
+            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">10:15 AM</span>
+          </div>
+          <div class="schedule-item">
+            <div><strong>Period 3: History & Literature</strong><div style="font-size:0.8rem; color:var(--oneui-text-sub);">Essay Review Session</div></div>
+            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">01:00 PM</span>
+          </div>
+        </div>
+
+        <!-- WIDGET 5: Study Habit Tracker & Audio Synth -->
+        <div class="widget-card col-6" style="display:flex; flex-direction:column; justify-content:space-between;">
           <div>
-            <div class="widget-title" style="margin-bottom:8px;">
-              <span>⚡ Daily Habit Tracker</span>
-              <span id="habit-counter" style="font-size:0.75rem; color:var(--oneui-text-sub); margin-left:10px;">0/4 Done</span>
+            <div class="widget-title">
+              <span>⚡ Daily Study Habits</span>
+              <span id="habit-counter" style="font-size:0.75rem; color:var(--oneui-text-sub);">0/4 Done</span>
             </div>
             <div class="habit-grid">
-              <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> Review Class Notes</div>
-              <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> 30m Deep Reading</div>
+              <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> Review Notes</div>
+              <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> 30m Reading</div>
               <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> Hydrate Water</div>
-              <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> Clean Workstation</div>
+              <div class="habit-pill" onclick="toggleHabit(this)"><span>✓</span> Clean Desk</div>
             </div>
           </div>
-          <button class="action-btn" id="sound-synth-btn" onclick="toggleStudyWhiteNoise()" style="padding: 10px 20px; font-size: 0.85rem;">▶ White Noise</button>
+          
+          <div style="margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--oneui-card-border); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.82rem; font-weight: 800; color: var(--oneui-text-sub);">AUDIO FOCUS SOUND</span>
+            <button class="action-btn" id="sound-synth-btn" onclick="toggleStudyWhiteNoise()" style="padding: 6px 16px; font-size: 0.8rem;">▶ Ambient Noise</button>
+          </div>
+        </div>
+
+        <!-- WIDGET 6: Desktop Scratchpad -->
+        <div class="widget-card col-12">
+          <div class="widget-title">
+            <span>📝 Desktop Scratchpad & Quick Notes</span>
+          </div>
+          <textarea id="quick-note" placeholder="Jot down quick homework notes, formulas, or reminders here..." style="height: 90px; resize: vertical; font-size: 0.95rem;" oninput="saveQuickNote()"></textarea>
         </div>
 
       </div>
     </section>
 
-    <!-- 2. TASKS (ENHANCED 8-SPECIFICATION ASSIGNMENT SHEET) -->
-    <section id="tasks" class="page">
-      <div class="glass-card">
-        <h2 class="oneui-header-title">Tiered Assignment Sheet</h2>
-        <p class="oneui-header-sub">Complete 8-point specification builder for clear assignment management</p>
-        
-        <div class="task-form-container">
-          <div style="font-weight:800; font-size:0.9rem; color:var(--oneui-accent); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:14px;">
-            📝 Add Detailed Specification Task
-          </div>
-          <div class="form-grid-8">
-            
-            <!-- 1. Name -->
-            <div class="field-group">
-              <label>1. Assignment Name</label>
-              <input type="text" id="task-name" placeholder="Title..." />
-            </div>
-
-            <!-- 2. Subject -->
-            <div class="field-group">
-              <label>2. Subject / Category</label>
-              <select id="task-subject">
-                <option value="Math">📐 Math</option>
-                <option value="Science">🔬 Science</option>
-                <option value="History">📚 History</option>
-                <option value="English">✍️ English</option>
-                <option value="Coding">💻 Coding</option>
-                <option value="Arts">🎨 Arts & Music</option>
-                <option value="Languages">🌐 Languages</option>
-                <option value="General" selected>📌 General</option>
-              </select>
-            </div>
-
-            <!-- 3. Priority Tier -->
-            <div class="field-group">
-              <label>3. Priority Tier</label>
-              <select id="task-tier">
-                <option value="Tier 1" selected>Tier 1: Urgent / High</option>
-                <option value="Tier 2">Tier 2: Medium</option>
-                <option value="Tier 3">Tier 3: Flexible</option>
-              </select>
-            </div>
-
-            <!-- 4. Due Date -->
-            <div class="field-group">
-              <label>4. Target Due Date</label>
-              <input type="date" id="task-date" />
-            </div>
-
-            <!-- 5. Estimated Duration -->
-            <div class="field-group">
-              <label>5. Est. Time (Minutes)</label>
-              <input type="number" id="task-est-time" placeholder="e.g. 45" min="5" step="5" />
-            </div>
-
-            <!-- 6. Assignment Type -->
-            <div class="field-group">
-              <label>6. Assignment Type</label>
-              <select id="task-type">
-                <option value="Homework">📖 Homework</option>
-                <option value="Exam Prep">✏️ Exam Study</option>
-                <option value="Project">🔬 Major Project</option>
-                <option value="Essay">📝 Essay / Paper</option>
-                <option value="Reading">📚 Reading</option>
-                <option value="Presentation">🎤 Presentation</option>
-              </select>
-            </div>
-
-            <!-- 7. Difficulty Level -->
-            <div class="field-group">
-              <label>7. Difficulty Rating</label>
-              <select id="task-difficulty">
-                <option value="🟢 Easy">🟢 Easy</option>
-                <option value="🟡 Moderate" selected>🟡 Moderate</option>
-                <option value="🔴 Hard">🔴 Hard</option>
-                <option value="🔥 Extreme">🔥 Extreme</option>
-              </select>
-            </div>
-
-            <!-- 8. Detailed Specifications / Requirements -->
-            <div class="field-group" style="grid-column: span 4;">
-              <label>8. Detailed Specifications & Instructions</label>
-              <textarea id="task-specs" rows="2" placeholder="Write rubrics, page numbers, sub-tasks, required resources, or specific teacher criteria..."></textarea>
-            </div>
-
-          </div>
-
-          <div style="text-align:right; margin-top:14px;">
-            <button class="action-btn" onclick="addTask()" style="padding: 10px 28px;">+ Save Assignment</button>
-          </div>
-        </div>
-
-        <div id="tiered-task-board"></div>
-      </div>
-    </section>
-
-    <!-- 3. NOTES FILE MANAGER (LOCAL DISK WORKSPACE) -->
-    <section id="notes" class="page">
-      <div class="glass-card">
-        <h2 class="oneui-header-title">Local Notes & Workspace</h2>
-        <p class="oneui-header-sub">Create, edit, and save study notes locally on your device</p>
-
-        <div class="notes-layout">
-          <div class="notes-sidebar">
-            <button class="action-btn" onclick="createNewNote()" style="width:100%;">+ New Note</button>
-            <div style="font-size:0.75rem; font-weight:800; color:var(--oneui-text-sub); text-transform:uppercase; margin-top:8px;">Saved Notes</div>
-            <div id="notes-file-list" style="display:flex; flex-direction:column; gap:6px; overflow-y:auto; max-height:360px;"></div>
-          </div>
-
-          <div style="display:flex; flex-direction:column; gap:12px;">
-            <input type="text" id="note-title-input" placeholder="Note Title..." style="font-weight:700; font-size:1.1rem;"/>
-            <textarea id="note-body-input" placeholder="Start typing note content here..." style="height:320px; resize:vertical; font-size:1rem; line-height:1.5;"></textarea>
-            
-            <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;">
-              <div style="display:flex; gap:8px;">
-                <button class="action-btn" onclick="saveCurrentNote()">💾 Save Note</button>
-                <button class="action-btn" onclick="exportNoteAsFile()" style="background:var(--oneui-pill);">📁 Download File (.txt)</button>
-                <label class="action-btn" style="background:var(--oneui-pill); cursor:pointer;">
-                  📂 Open Local File <input type="file" id="import-file-input" accept=".txt,.md,.json" onchange="importFileNote(event)" style="display:none;"/>
-                </label>
-              </div>
-              <button class="action-btn" onclick="deleteCurrentNote()" style="background:rgba(239,68,68,0.2); border-color:rgba(239,68,68,0.4); color:#fca5a5;">🗑️ Delete</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 4. PRODUCTIVITY HISTORY -->
-    <section id="history" class="page">
-      <div class="glass-card">
-        <h2 class="oneui-header-title">Productivity History Log</h2>
-        <p class="oneui-header-sub">Track completed tasks and detailed statistics</p>
-        
-        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-bottom:20px;">
-          <div class="widget-card" style="text-align:center;">
-            <div style="font-size:2rem; font-weight:800;" id="stat-total-completed">0</div>
-            <div style="font-size:0.8rem; color:var(--oneui-text-sub);">Tasks Completed</div>
-          </div>
-          <div class="widget-card" style="text-align:center;">
-            <div style="font-size:2rem; font-weight:800; color:#a7f3d0;" id="stat-tier1-completed">0</div>
-            <div style="font-size:0.8rem; color:var(--oneui-text-sub);">High Priority Cleared</div>
-          </div>
-          <div class="widget-card" style="text-align:center;">
-            <div style="font-size:2rem; font-weight:800; color:var(--oneui-accent);" id="stat-avg-time">0m</div>
-            <div style="font-size:0.8rem; color:var(--oneui-text-sub);">Est Time Cleared</div>
-          </div>
-        </div>
-
-        <div style="overflow-x:auto;">
-          <table class="history-table">
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Assignment Title</th>
-                <th>Priority</th>
-                <th>Est Duration</th>
-                <th>Completed At</th>
-              </tr>
-            </thead>
-            <tbody id="history-table-body">
-              <tr>
-                <td colspan="5" style="text-align:center; color:var(--oneui-text-sub); padding:24px;">No finished task history yet. Complete tasks from the assignment board to log them here.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. EXTRA APPS (CALCULATOR, DICTIONARY, TIMER) -->
+    <!-- CALCULATOR -->
     <section id="calc" class="page">
       <div class="glass-card">
         <h2 class="oneui-header-title">Calculator</h2>
@@ -894,22 +745,22 @@
           <div>
             <div id="calc-display" class="calc-display">0</div>
             <div class="calc-grid">
-              <button onclick="clearCalc()">C</button>
-              <button onclick="pressCalc('(')">(</button>
-              <button onclick="pressCalc(')')">)</button>
-              <button onclick="pressCalc('/')">÷</button>
+              <button class="op-btn" onclick="clearCalc()">C</button>
+              <button class="op-btn" onclick="pressCalc('(')">(</button>
+              <button class="op-btn" onclick="pressCalc(')')">)</button>
+              <button class="op-btn" onclick="pressCalc('/')">÷</button>
               <button onclick="pressCalc('7')">7</button>
               <button onclick="pressCalc('8')">8</button>
               <button onclick="pressCalc('9')">9</button>
-              <button onclick="pressCalc('*')">×</button>
+              <button class="op-btn" onclick="pressCalc('*')">×</button>
               <button onclick="pressCalc('4')">4</button>
               <button onclick="pressCalc('5')">5</button>
               <button onclick="pressCalc('6')">6</button>
-              <button onclick="pressCalc('-')">-</button>
+              <button class="op-btn" onclick="pressCalc('-')">-</button>
               <button onclick="pressCalc('1')">1</button>
               <button onclick="pressCalc('2')">2</button>
               <button onclick="pressCalc('3')">3</button>
-              <button onclick="pressCalc('+')">+</button>
+              <button class="op-btn" onclick="pressCalc('+')">+</button>
               <button onclick="pressCalc('0')">0</button>
               <button onclick="pressCalc('.')">.</button>
               <button onclick="backspaceCalc()">⌫</button>
@@ -917,37 +768,39 @@
             </div>
           </div>
           <div>
-            <h4 style="margin-bottom: 12px; font-weight: 700; color: var(--oneui-text-sub);">History</h4>
-            <div id="calc-history" style="background: rgba(0,0,0,0.4); border-radius: 20px; padding: 16px; height: 310px; overflow-y: auto; border: 1px solid var(--oneui-card-border);">
-              <div style="color:var(--oneui-text-sub); font-size:0.9rem;">No calculations logged.</div>
+            <h4 style="margin-bottom: 12px; font-weight: 700; font-size: 1.05rem; color: var(--oneui-text-sub);">Calculation History</h4>
+            <div id="calc-history" class="calc-history">
+              <div style="color:var(--oneui-text-sub); font-size:0.9rem;">No equations solved yet.</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- DICTIONARY -->
     <section id="dict" class="page">
       <div class="glass-card">
-        <h2 class="oneui-header-title">Dictionary</h2>
-        <p class="oneui-header-sub">Instant definition lookup for research</p>
+        <h2 class="oneui-header-title">Dictionary & Thesaurus</h2>
+        <p class="oneui-header-sub">Instant definition lookup for study research</p>
 
         <div style="display: flex; gap: 12px; max-width: 750px;">
-          <input type="text" id="dict-input" placeholder="Type a word..." onkeydown="if(event.key==='Enter') searchAIDictionary()"/>
+          <input type="text" id="dict-input" placeholder="Type a word to define..." onkeydown="if(event.key==='Enter') searchAIDictionary()"/>
           <button class="action-btn" onclick="searchAIDictionary()" style="padding: 0 28px;">Search</button>
         </div>
 
         <div id="dict-output" style="margin-top: 20px; min-height: 120px;">
           <div style="color:var(--oneui-text-sub); background: rgba(0,0,0,0.3); padding: 22px; border-radius: 20px; border: 1px solid var(--oneui-card-border); font-size: 0.95rem;">
-            Enter a term above to define it.
+            Type any term above and press search to view definitions and synonyms.
           </div>
         </div>
       </div>
     </section>
 
+    <!-- TIMER -->
     <section id="timer" class="page">
       <div class="glass-card" style="text-align: center; max-width: 640px; margin: 0 auto;">
         <h2 class="oneui-header-title">Focus Study Timer</h2>
-        <p class="oneui-header-sub">Countdown timer for study sessions</p>
+        <p class="oneui-header-sub">Visual real-time light countdown with icebreak chime</p>
         
         <div class="timer-circle-container">
           <svg class="timer-svg" viewBox="0 0 240 240">
@@ -970,123 +823,120 @@
       </div>
     </section>
 
+    <!-- TASKS (TIERED HIGH VISIBILITY PLANNER) -->
+    <section id="tasks" class="page">
+      <div class="glass-card">
+        <h2 class="oneui-header-title">Tiered Homework Planner</h2>
+        <p class="oneui-header-sub">Color-coded tier assignment priority board</p>
+        
+        <div class="task-inputs-grid">
+          <input type="text" id="task-name" placeholder="Assignment title..." />
+          <select id="task-tier">
+            <option value="Tier 1" selected>Tier 1: High / Urgent</option>
+            <option value="Tier 2">Tier 2: Medium / Standard</option>
+            <option value="Tier 3">Tier 3: Low / Flexible</option>
+          </select>
+          <input type="date" id="task-date" />
+          <button class="action-btn" onclick="addTask()">Add Task</button>
+        </div>
+
+        <div id="tiered-task-board"></div>
+      </div>
+    </section>
+
   </div>
 
-  <!-- APPLE-STYLE DOCK NAV WITH 3-DOTS EXTRA APPS MENU -->
+  <!-- APPLE-STYLE SEPARATED DOCK NAV WITH PERFECT ALIGNMENT ENGINE -->
   <nav class="apple-dock-nav" id="apple-dock">
-    <button class="nav-btn active" id="btn-home" onclick="switchPage('home')" title="Home Dashboard">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      <span>Home</span>
-    </button>
+    <div class="nav-segment home-segment">
+      <button class="nav-btn active" id="btn-home" onclick="switchPage('home')" title="Home Dashboard">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        <span>Home</span>
+      </button>
+    </div>
 
-    <button class="nav-btn" id="btn-tasks" onclick="switchPage('tasks')" title="Tasks Board">
-      <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-      <span>Tasks</span>
-    </button>
+    <div class="nav-segment tool-segment">
+      <div class="nav-indicator" id="nav-indicator"></div>
 
-    <button class="nav-btn" id="btn-notes" onclick="switchPage('notes')" title="Local Notes">
-      <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-      <span>Notes</span>
-    </button>
-
-    <button class="nav-btn" id="btn-history" onclick="switchPage('history')" title="Productivity History">
-      <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-      <span>History</span>
-    </button>
-
-    <!-- 3-Dots Button for Extra Tools -->
-    <div style="position:relative;">
-      <button class="nav-btn" id="btn-more" onclick="toggleMoreMenu(event)" title="More Tools">
-        <svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        <span>More</span>
+      <button class="nav-btn" id="btn-calc" onclick="switchPage('calc')" title="Calculator">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-6 14h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zm4 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2zM7 7h2v2H7V7zm0 4h2v2H7v-2zm0 4h2v2H7v-2z"/></svg>
+        <span>Calculator</span>
       </button>
 
-      <div class="more-apps-menu" id="more-menu">
-        <button class="more-menu-item" onclick="openExtraApp('timer')">⏱️ Focus Timer</button>
-        <button class="more-menu-item" onclick="openExtraApp('calc')">🧮 Calculator</button>
-        <button class="more-menu-item" onclick="openExtraApp('dict')">📚 Dictionary</button>
-      </div>
+      <button class="nav-btn" id="btn-dict" onclick="switchPage('dict')" title="Dictionary">
+        <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+        <span>Dictionary</span>
+      </button>
+
+      <button class="nav-btn" id="btn-timer" onclick="switchPage('timer')" title="Timer">
+        <svg viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42C16.07 4.74 14.12 4 12 4c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-2.12-.74-4.07-1.97-5.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>
+        <span>Timer</span>
+      </button>
+
+      <button class="nav-btn" id="btn-tasks" onclick="switchPage('tasks')" title="Tasks">
+        <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        <span>Tasks</span>
+      </button>
     </div>
   </nav>
 
   <script>
-    /* GOOGLE SIGN-IN DECODER ENGINE */
-    function parseJwt(token) {
-      const base64Url = token.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-      }).join(''));
-      return JSON.parse(jsonPayload);
-    }
-
-    function handleCredentialResponse(response) {
-      const responsePayload = parseJwt(response.credential);
-      const userData = {
-        name: responsePayload.name,
-        email: responsePayload.email,
-        picture: responsePayload.picture
-      };
-      localStorage.setItem("user_google_account", JSON.stringify(userData));
-      updateUserUI(userData);
-    }
-
-    function updateUserUI(user) {
-      if (user) {
-        const btn = document.querySelector('.g_id_signin');
-        if (btn) btn.style.display = 'none';
-        document.getElementById('user-info').style.display = 'flex';
-        document.getElementById('user-avatar').src = user.picture;
-        document.getElementById('user-name').innerText = user.name;
-      }
-    }
-
-    function googleSignOut() {
-      localStorage.removeItem("user_google_account");
-      location.reload();
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      const savedUser = JSON.parse(localStorage.getItem("user_google_account"));
-      if (savedUser) {
-        updateUserUI(savedUser);
-      }
-    });
-
-    /* APP STORAGE STATE */
-    let tasks = JSON.parse(localStorage.getItem("ut_tasks_v4")) || [];
-    let schedule = JSON.parse(localStorage.getItem("ut_schedule_v1")) || [];
-    let completedHistory = JSON.parse(localStorage.getItem("ut_task_history_v2")) || [];
-    let savedNotes = JSON.parse(localStorage.getItem("ut_saved_notes_v2")) || [];
-    let activeNoteId = savedNotes[0]?.id || null;
-
+    let tasks = JSON.parse(localStorage.getItem("ut_tasks_v2")) || [
+      { id: 1, name: "Math Chapter 4 Problems", tier: "Tier 1", date: "2026-08-28" },
+      { id: 2, name: "History Reading Assignment", tier: "Tier 2", date: "2026-08-30" },
+      { id: 3, name: "Science Quiz Prep", tier: "Tier 3", date: "2026-09-02" }
+    ];
     let currentPage = 'home';
     let is24Hour = false;
+    let lastScrollY = window.scrollY;
 
-    const subjectIcons = {
-      'Math': '📐',
-      'Science': '🔬',
-      'History': '📚',
-      'English': '✍️',
-      'Coding': '💻',
-      'Arts': '🎨',
-      'Languages': '🌐',
-      'General': '📌'
-    };
+    /* Unscaled Bounding Engine Fixing Pill Alignment Glitch */
+    function updateNavIndicator(btn) {
+      const indicator = document.getElementById('nav-indicator');
+      const segment = document.querySelector('.tool-segment');
+      if (!indicator || !segment) return;
 
-    /* NAV & MORE MENU ENGINE */
-    function toggleMoreMenu(e) {
-      e.stopPropagation();
-      document.getElementById('more-menu').classList.toggle('show');
+      if (btn && btn.parentElement === segment) {
+        const btnRect = btn.getBoundingClientRect();
+        const segRect = segment.getBoundingClientRect();
+        
+        // Normalize against potential dock CSS scale transforms
+        const scale = segRect.width / segment.offsetWidth || 1;
+        const leftOffset = (btnRect.left - segRect.left) / scale;
+        const topOffset = (btnRect.top - segRect.top) / scale;
+        const width = btnRect.width / scale;
+        const height = btnRect.height / scale;
+
+        indicator.style.opacity = '1';
+        indicator.style.left = `${leftOffset}px`;
+        indicator.style.top = `${topOffset}px`;
+        indicator.style.width = `${width}px`;
+        indicator.style.height = `${height}px`;
+      } else {
+        indicator.style.opacity = '0';
+      }
     }
 
-    document.addEventListener('click', () => {
-      document.getElementById('more-menu')?.classList.remove('show');
+    /* Scroll Dock State Sync */
+    window.addEventListener('scroll', () => {
+      const dock = document.getElementById('apple-dock');
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 30) {
+        dock.classList.add('dock-minimized');
+      } else if (currentScrollY < lastScrollY) {
+        dock.classList.remove('dock-minimized');
+      }
+      
+      lastScrollY = currentScrollY;
+      realignActiveIndicator();
     });
 
-    function openExtraApp(appId) {
-      document.getElementById('more-menu').classList.remove('show');
-      switchPage(appId);
+    function realignActiveIndicator() {
+      requestAnimationFrame(() => {
+        const activeBtn = document.getElementById(`btn-${currentPage}`);
+        if (activeBtn) updateNavIndicator(activeBtn);
+      });
     }
 
     function switchPage(pageId) {
@@ -1097,7 +947,10 @@
       const activeBtn = document.getElementById(`btn-${pageId}`);
 
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      if (activeBtn) activeBtn.classList.add('active');
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        updateNavIndicator(activeBtn);
+      }
 
       if (oldPage) {
         oldPage.style.opacity = '0';
@@ -1112,11 +965,14 @@
       triggerFocusNudgeCheck(pageId);
     }
 
+    /* OFF-TASK FOCUS NUDGE POPUP TRIGGER */
     function triggerFocusNudgeCheck(pageId) {
       if (pageId === 'calc' || pageId === 'dict') {
         const tier1Task = tasks.find(t => t.tier === 'Tier 1');
-        if (tier1Task) {
-          showNudge(`Off-Task Warning! Switch back to: "${tier1Task.name}"`);
+        const activeTask = tier1Task || tasks[0];
+
+        if (activeTask) {
+          showNudge(`Off-Task Warning! Focus on assignment: "${activeTask.name}"`);
         }
       }
     }
@@ -1125,17 +981,37 @@
       const banner = document.getElementById('focus-nudge-popup');
       document.getElementById('nudge-text').innerHTML = msg;
       banner.classList.add('show');
+
+      // Auto dismiss after 6 seconds
+      setTimeout(() => {
+        hideNudge();
+      }, 6000);
     }
 
-    function hideNudge() { document.getElementById('focus-nudge-popup').classList.remove('show'); }
-    function handleNudgeClick() { switchPage('tasks'); hideNudge(); }
+    function hideNudge() {
+      document.getElementById('focus-nudge-popup').classList.remove('show');
+    }
 
-    /* CLOCK ENGINE */
-    function toggleTimeFormat() { is24Hour = !is24Hour; updateClock(); }
+    window.addEventListener('load', () => {
+      realignActiveIndicator();
+      document.getElementById('quick-note').value = localStorage.getItem('ut_quick_note') || '';
+    });
+
+    window.addEventListener('resize', realignActiveIndicator);
+
+    /* CLOCK */
+    function toggleTimeFormat() {
+      is24Hour = !is24Hour;
+      updateClock();
+    }
+
     function updateClock() {
       const now = new Date();
       document.getElementById('clock-time').innerText = now.toLocaleTimeString([], { 
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: !is24Hour 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit',
+        hour12: !is24Hour 
       });
       document.getElementById('clock-date').innerText = now.toLocaleDateString(undefined, {
         weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
@@ -1144,49 +1020,7 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    /* CUSTOM USER SCHEDULE SYSTEM */
-    function promptAddSchedule() {
-      const className = prompt("Enter Class / Event Name (e.g. Physics Lab):");
-      if (!className) return;
-      const room = prompt("Enter Room / Location (optional):") || "Online / Desk";
-      const timeStr = prompt("Enter Time (e.g. 10:30 AM):") || "TBD";
-
-      schedule.push({ id: Date.now(), className, room, timeStr });
-      localStorage.setItem("ut_schedule_v1", JSON.stringify(schedule));
-      renderSchedule();
-    }
-
-    function deleteScheduleItem(id) {
-      schedule = schedule.filter(s => s.id !== id);
-      localStorage.setItem("ut_schedule_v1", JSON.stringify(schedule));
-      renderSchedule();
-    }
-
-    function renderSchedule() {
-      const container = document.getElementById("schedule-container");
-      if (schedule.length === 0) {
-        container.innerHTML = `
-          <div style="text-align:center; padding:20px; color:var(--oneui-text-sub); font-size:0.9rem;">
-            No classes listed. Click <strong>+ Add Class</strong> to set up your schedule!
-          </div>`;
-        return;
-      }
-
-      container.innerHTML = schedule.map(item => `
-        <div class="schedule-item">
-          <div>
-            <strong>${item.className}</strong>
-            <div style="font-size:0.8rem; color:var(--oneui-text-sub);">${item.room}</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:0.85rem; font-weight:700; color:var(--oneui-accent);">${item.timeStr}</span>
-            <button onclick="deleteScheduleItem(${item.id})" style="background:transparent; border:none; color:var(--oneui-text-sub); cursor:pointer;">✕</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    /* HABIT TRACKER */
+    /* HABIT WIDGET */
     function toggleHabit(el) {
       el.classList.toggle('completed');
       const total = document.querySelectorAll('.habit-pill').length;
@@ -1194,153 +1028,281 @@
       document.getElementById('habit-counter').innerText = `${done}/${total} Done`;
     }
 
-    /* AUDIO NOISE SYNTH */
-    let audioCtx = null, noiseNode = null;
+    /* AUDIO SYNTHESIZERS */
+    let audioCtx = null;
+    let noiseNode = null;
+
+    function playIcebreakRingtone() {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const freqs = [1567.98, 2093.00, 2637.02, 3135.96, 4186.01];
+      
+      freqs.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.06);
+        
+        gain.gain.setValueAtTime(0.2, ctx.currentTime + idx * 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.06 + 0.6);
+        
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        
+        osc.start(ctx.currentTime + idx * 0.06);
+        osc.stop(ctx.currentTime + idx * 0.06 + 0.65);
+      });
+    }
+
     function toggleStudyWhiteNoise() {
       const btn = document.getElementById('sound-synth-btn');
-      if (noiseNode) { noiseNode.stop(); noiseNode = null; btn.innerText = "▶ White Noise"; return; }
+      if (noiseNode) {
+        noiseNode.stop();
+        noiseNode = null;
+        btn.innerText = "▶ Ambient Noise";
+        btn.style.background = "var(--oneui-pill-active)";
+        return;
+      }
+
       audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       const bufferSize = audioCtx.sampleRate * 2;
       const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
       const data = buffer.getChannelData(0);
+      
       let lastOut = 0.0;
       for (let i = 0; i < bufferSize; i++) {
         const white = Math.random() * 2 - 1;
         data[i] = (lastOut + (0.02 * white)) / 1.02;
         lastOut = data[i];
       }
+
       noiseNode = audioCtx.createBufferSource();
-      noiseNode.buffer = buffer; noiseNode.loop = true;
-      const gain = audioCtx.createGain(); gain.gain.value = 0.08;
-      noiseNode.connect(gain); gain.connect(audioCtx.destination); noiseNode.start();
+      noiseNode.buffer = buffer;
+      noiseNode.loop = true;
+
+      const gain = audioCtx.createGain();
+      gain.gain.value = 0.08;
+
+      noiseNode.connect(gain);
+      gain.connect(audioCtx.destination);
+      noiseNode.start();
+
       btn.innerText = "⏸ Pause Noise";
+      btn.style.background = "rgba(16, 185, 129, 0.4)";
     }
 
-    /* CALCULATOR ENGINE */
-    let calcVal = "0", calcHistoryList = [];
+    /* QUICK NOTE */
+    function saveQuickNote() {
+      const val = document.getElementById('quick-note').value;
+      localStorage.setItem('ut_quick_note', val);
+    }
+
+    /* CALCULATOR */
+    let calcVal = "0";
+    let calcHistoryList = [];
+
     function updateCalcDisplay() { document.getElementById("calc-display").innerText = calcVal; }
-    function pressCalc(v) { calcVal = (calcVal === "0" && v !== '.') ? v : calcVal + v; updateCalcDisplay(); }
+    function pressCalc(v) {
+      if (calcVal === "0" && v !== '.') calcVal = v;
+      else calcVal += v;
+      updateCalcDisplay();
+    }
     function clearCalc() { calcVal = "0"; updateCalcDisplay(); }
-    function backspaceCalc() { calcVal = calcVal.length > 1 ? calcVal.slice(0, -1) : "0"; updateCalcDisplay(); }
+    function backspaceCalc() {
+      calcVal = calcVal.length > 1 ? calcVal.slice(0, -1) : "0";
+      updateCalcDisplay();
+    }
     function solveCalc() {
       try {
-        const res = String(eval(calcVal));
-        calcHistoryList.unshift(`${calcVal} = ${res}`);
-        calcVal = res;
-        document.getElementById("calc-history").innerHTML = calcHistoryList.map(h => `<div style="font-family:monospace; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.06);">${h}</div>`).join('');
-      } catch { calcVal = "Error"; }
+        const result = String(eval(calcVal));
+        addCalcHistory(`${calcVal} = ${result}`);
+        calcVal = result;
+      } catch {
+        calcVal = "Error";
+      }
       updateCalcDisplay();
     }
 
-    /* DICTIONARY ENGINE */
+    function addCalcHistory(item) {
+      calcHistoryList.unshift(item);
+      if (calcHistoryList.length > 15) calcHistoryList.pop();
+      document.getElementById("calc-history").innerHTML = calcHistoryList.map(h => `<div class="history-item">${h}</div>`).join('');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (currentPage !== 'calc') return;
+      if ((e.key >= '0' && e.key <= '9') || ['+', '-', '*', '/', '.', '(', ')'].includes(e.key)) {
+        pressCalc(e.key);
+      } else if (e.key === 'Enter') { solveCalc(); }
+      else if (e.key === 'Backspace') { backspaceCalc(); }
+      else if (e.key === 'Escape') { clearCalc(); }
+    });
+
+    /* DICTIONARY */
     async function searchAIDictionary() {
       const word = document.getElementById("dict-input").value.trim();
       const output = document.getElementById("dict-output");
+
       if (!word) return;
-      output.innerHTML = `<div style="color:var(--oneui-text-sub); padding:20px;">Searching definition...</div>`;
+      output.innerHTML = `<div style="color:var(--oneui-text-sub); padding: 20px;">Searching definitions...</div>`;
+
       try {
-        const res = await fetch(`https://api.datamuse.com/words?sp=${encodeURIComponent(word)}&md=d&max=1`);
-        const data = await res.json();
-        if (data.length > 0 && data[0].defs) {
-          const entry = data[0];
-          let html = `<h3 style="color:#ffffff; text-transform:capitalize; margin-bottom:12px;">${entry.word}</h3>`;
-          entry.defs.forEach(d => {
+        const [defRes, synRes] = await Promise.all([
+          fetch(`https://api.datamuse.com/words?sp=${encodeURIComponent(word)}&md=d&max=1`),
+          fetch(`https://api.datamuse.com/words?rel_syn=${encodeURIComponent(word)}&max=8`)
+        ]);
+
+        const defData = await defRes.json();
+        const synData = await synRes.json();
+
+        if (defData.length > 0 && defData[0].defs) {
+          const entry = defData[0];
+          const synonyms = synData.map(s => s.word).join(", ") || "None found";
+
+          let html = `<h3 class="def-item" style="color:#ffffff; text-transform:capitalize; margin-bottom:14px; font-size:1.5rem;">${entry.word}</h3>`;
+          
+          entry.defs.forEach((d, index) => {
             const parts = d.split('\t');
-            html += `<div style="background:rgba(0,0,0,0.3); border:1px solid var(--oneui-card-border); padding:12px; border-radius:14px; margin-bottom:8px;">
-              <strong>${parts[0] || ''}</strong> ${parts[1] || d}
-            </div>`;
+            const pos = parts[0] ? `(${parts[0]})` : '';
+            const defText = parts[1] || d;
+
+            if (index === 0) {
+              html += `
+                <div class="primary-def-card">
+                  <div style="font-size: 0.75rem; font-weight: 800; opacity: 0.8; letter-spacing: 0.8px; margin-bottom: 6px;">PRIMARY DEFINITION</div>
+                  <div style="font-size: 1.1rem; line-height: 1.4; color: #ffffff;">
+                    <strong style="color: rgba(255,255,255,0.75);">${pos}</strong> ${defText}
+                  </div>
+                </div>`;
+            } else {
+              html += `
+                <div class="def-item" style="background: rgba(0,0,0,0.3); border: 1px solid var(--oneui-card-border); padding: 12px 16px; border-radius: 16px; margin-bottom: 10px; font-size: 0.95rem;">
+                  <strong style="color: var(--oneui-text-sub);">${pos}</strong> ${defText}
+                </div>`;
+            }
           });
+          
+          html += `<p class="def-item" style="margin-top: 12px; font-size: 0.9rem; color: var(--oneui-text-sub);"><b>Synonyms:</b> ${synonyms}</p>`;
+
           output.innerHTML = html;
-        } else { output.innerHTML = `<div style="color:#fca5a5; padding:16px;">No definition found for "${word}".</div>`; }
-      } catch { output.innerHTML = `<div style="color:#fca5a5; padding:16px;">Network error.</div>`; }
+        } else {
+          output.innerHTML = `<div class="def-item" style="color:#fca5a5; padding: 20px; background: rgba(0,0,0,0.3); border-radius:20px;">No definitions found for "${word}".</div>`;
+        }
+      } catch (err) {
+        output.innerHTML = `<div class="def-item" style="color:#fca5a5; padding: 20px; background: rgba(0,0,0,0.3); border-radius:20px;">Network error. Please check your connection.</div>`;
+      }
+
+      document.getElementById("dict-input").value = "";
     }
 
-    /* TIMER ENGINE */
-    let totalSeconds = 1500, timeLeft = 1500, timerId = null;
+    /* TIMER */
+    let totalSeconds = 1500;
+    let timeLeft = 1500;
+    let timerId = null;
+
     function renderTimer() {
       const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
       const s = String(timeLeft % 60).padStart(2, '0');
-      document.getElementById("timer-display").innerText = `${m}:${s}`;
-      const progress = document.getElementById("timer-progress");
-      if(progress) progress.style.strokeDashoffset = 597 * (1 - (timeLeft / totalSeconds));
-    }
-    function setCustomTimer() {
-      const mins = parseInt(document.getElementById("custom-minutes").value);
-      if (mins > 0) { pauseTimer(); totalSeconds = mins * 60; timeLeft = totalSeconds; renderTimer(); }
-    }
-    function startTimer() {
-      if (timerId) return;
-      timerId = setInterval(() => {
-        if (timeLeft > 0) { timeLeft--; renderTimer(); }
-        else { clearInterval(timerId); timerId = null; renderTimer(); }
-      }, 1000);
-    }
-    function pauseTimer() { clearInterval(timerId); timerId = null; renderTimer(); }
-    function resetTimer() { pauseTimer(); timeLeft = totalSeconds; renderTimer(); }
-    renderTimer();
+      const timeStr = `${m}:${s}`;
+      
+      document.getElementById("timer-display").innerText = timeStr;
+      document.getElementById("home-timer-val").innerText = timeStr;
+      
+      const statusTag = document.getElementById("home-timer-status");
+      if (timerId) {
+        statusTag.innerText = "Running";
+        statusTag.style.background = "rgba(99,102,241,0.3)";
+        statusTag.style.color = "#c7d2fe";
+      } else if (timeLeft < totalSeconds && timeLeft > 0) {
+        statusTag.innerText = "Paused";
+        statusTag.style.background = "rgba(245,158,11,0.25)";
+        statusTag.style.color = "#fde68a";
+      } else {
+        statusTag.innerText = "Ready";
+        statusTag.style.background = "rgba(16,185,129,0.2)";
+        statusTag.style.color = "#a7f3d0";
+      }
 
-    /* 8-SPECIFICATION ASSIGNMENT BOARD ENGINE */
-    function addTask() {
-      const name = document.getElementById("task-name").value.trim();
-      const subject = document.getElementById("task-subject").value;
-      const tier = document.getElementById("task-tier").value;
-      const date = document.getElementById("task-date").value || "No due date";
-      const estTime = document.getElementById("task-est-time").value || "30";
-      const type = document.getElementById("task-type").value;
-      const difficulty = document.getElementById("task-difficulty").value;
-      const specs = document.getElementById("task-specs").value.trim() || "No specific instructions provided.";
+      const circumference = 597;
+      const progressCircle = document.getElementById("timer-progress");
+      const lightOffset = circumference * (1 - (timeLeft / totalSeconds));
+      progressCircle.style.strokeDashoffset = lightOffset;
 
-      if (!name) { alert("Please enter an assignment name!"); return; }
-
-      tasks.push({
-        id: Date.now(),
-        name,
-        subject,
-        tier,
-        date,
-        estTime,
-        type,
-        difficulty,
-        specs,
-        createdAt: Date.now()
-      });
-
-      saveTasks();
-      renderTasks();
-
-      // Clear form
-      document.getElementById("task-name").value = "";
-      document.getElementById("task-specs").value = "";
-      document.getElementById("task-est-time").value = "";
-    }
-
-    function completeTask(id) {
-      const taskIndex = tasks.findIndex(t => t.id === id);
-      if (taskIndex !== -1) {
-        const completedItem = tasks.splice(taskIndex, 1)[0];
-        completedItem.completedAt = new Date().toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-        completedHistory.unshift(completedItem);
-        
-        localStorage.setItem("ut_task_history_v2", JSON.stringify(completedHistory));
-        saveTasks();
-        renderTasks();
-        renderHistory();
+      if (timeLeft <= 10) {
+        progressCircle.style.stroke = "#ef4444";
+      } else {
+        progressCircle.style.stroke = "#6366f1";
       }
     }
 
-    function saveTasks() { localStorage.setItem("ut_tasks_v4", JSON.stringify(tasks)); }
+    function setCustomTimer() {
+      const mins = parseInt(document.getElementById("custom-minutes").value);
+      if (mins > 0) {
+        pauseTimer();
+        totalSeconds = mins * 60;
+        timeLeft = totalSeconds;
+        renderTimer();
+      }
+    }
+
+    function startTimer() {
+      if (timerId) return;
+      timerId = setInterval(() => {
+        if (timeLeft > 0) {
+          timeLeft--;
+          renderTimer();
+        } else {
+          clearInterval(timerId);
+          timerId = null;
+          renderTimer();
+          playIcebreakRingtone();
+        }
+      }, 1000);
+      renderTimer();
+    }
+
+    function pauseTimer() { 
+      clearInterval(timerId); 
+      timerId = null; 
+      renderTimer();
+    }
+
+    function resetTimer() { 
+      pauseTimer(); 
+      timeLeft = totalSeconds; 
+      renderTimer(); 
+    }
+    
+    renderTimer();
+
+    /* TIERED TASKS SYSTEM */
+    function addTask() {
+      const name = document.getElementById("task-name").value.trim();
+      const tier = document.getElementById("task-tier").value;
+      const date = document.getElementById("task-date").value || "No date";
+      
+      if (!name) return;
+
+      tasks.push({ id: Date.now(), name, tier, date });
+      saveTasks();
+      renderTasks();
+      document.getElementById("task-name").value = "";
+    }
+
+    function completeTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      saveTasks();
+      renderTasks();
+    }
+
+    function saveTasks() { localStorage.setItem("ut_tasks_v2", JSON.stringify(tasks)); }
 
     function renderTasks() {
       const board = document.getElementById("tiered-task-board");
       const homeWidget = document.getElementById("home-priority-tasks");
 
       if (tasks.length === 0) {
-        board.innerHTML = `
-          <div style="text-align:center; padding:32px; color:var(--oneui-text-sub); border:1px dashed var(--oneui-card-border); border-radius:24px;">
-            <h3>No assignments active!</h3>
-            <p style="font-size:0.9rem; margin-top:4px;">Fill out the 8 specifications above to log a new task.</p>
-          </div>`;
-        homeWidget.innerHTML = `<p style="color:var(--oneui-text-sub); font-size:0.9rem;">No assignments pending.</p>`;
+        board.innerHTML = `<p style="color:var(--oneui-text-sub); margin-top:10px; font-size:0.95rem;">No active assignments pending.</p>`;
+        homeWidget.innerHTML = `<p style="color:var(--oneui-text-sub); font-size:0.9rem;">All caught up! No active tasks due.</p>`;
         return;
       }
 
@@ -1355,171 +1317,41 @@
         if (tierTasks.length === 0) return '';
 
         return `
-          <div class="tier-section">
-            <div class="tier-header-bar">
+          <div class="tier-container">
+            <div class="tier-header">
               <span class="tier-badge ${t.class}">${t.label}</span>
               <span style="font-size:0.8rem; color:var(--oneui-text-sub);">${tierTasks.length} task(s)</span>
             </div>
             ${tierTasks.map(task => `
-              <div class="task-card-enhanced ${t.name.toLowerCase().replace(' ', '-')}">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
-                  <div>
-                    <strong style="font-size:1.15rem; color:#fff;">${task.name}</strong>
-                    <div style="font-size:0.82rem; color:var(--oneui-text-sub); margin-top:2px;">Target Date: ${task.date}</div>
+              <div class="task-item ${t.name.toLowerCase().replace(' ', '-')}">
+                <div>
+                  <strong style="font-size:1rem;">${task.name}</strong>
+                  <div style="font-size:0.85rem; color:var(--oneui-text-sub); margin-top:2px;">
+                    Due: ${task.date}
                   </div>
-                  <button class="action-btn" onclick="completeTask(${task.id})" style="padding:6px 16px; font-size:0.82rem;">✓ Complete</button>
                 </div>
-
-                <!-- 8-SPECIFICATION BADGES & TAGS DISPLAY -->
-                <div class="specs-grid-display">
-                  <span class="spec-pill">${subjectIcons[task.subject] || '📌'} ${task.subject}</span>
-                  <span class="spec-pill">${task.type}</span>
-                  <span class="spec-pill">⏱️ ${task.estTime} mins</span>
-                  <span class="spec-pill">${task.difficulty}</span>
-                  <span class="spec-pill" style="border-color:var(--oneui-gray-border);">${task.tier}</span>
-                </div>
-
-                <!-- Detailed Specifications Content Box -->
-                <div class="specs-box">
-                  <strong>Specification & Notes:</strong> ${task.specs}
-                </div>
+                <button class="action-btn" onclick="completeTask(${task.id})" style="padding: 6px 16px; font-size:0.85rem;">✓ Complete</button>
               </div>
             `).join('')}
           </div>
         `;
       }).join('');
 
-      // Top priority widgets on dashboard
       const priorityOrder = { "Tier 1": 1, "Tier 2": 2, "Tier 3": 3 };
-      const sorted = [...tasks].sort((a, b) => priorityOrder[a.tier] - priorityOrder[b.tier]);
+      tasks.sort((a, b) => priorityOrder[a.tier] - priorityOrder[b.tier]);
 
-      homeWidget.innerHTML = sorted.slice(0, 3).map(t => `
-        <div class="task-card-enhanced ${t.tier.toLowerCase().replace(' ', '-')}" style="padding:14px; margin-top:8px;">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <span class="spec-pill" style="font-size:0.72rem;">${subjectIcons[t.subject] || '📌'} ${t.subject}</span>
-              <strong style="margin-left:8px; font-size:0.95rem;">${t.name}</strong>
-            </div>
-            <button class="action-btn" onclick="completeTask(${t.id})" style="padding:4px 12px; font-size:0.78rem;">✓ Done</button>
+      homeWidget.innerHTML = tasks.slice(0, 3).map(t => `
+        <div class="task-item ${t.tier.toLowerCase().replace(' ', '-')}" style="padding:10px 14px;">
+          <div>
+            <span class="tier-badge ${t.tier.toLowerCase().replace(' ', '-')}-badge">${t.tier}</span>
+            <span style="margin-left:8px; font-weight:600; font-size:0.95rem;">${t.name}</span>
           </div>
+          <button class="action-btn" onclick="completeTask(${t.id})" style="padding: 4px 12px; font-size:0.8rem;">✓ Done</button>
         </div>
       `).join('');
     }
 
-    /* HISTORY LOG */
-    function renderHistory() {
-      const tbody = document.getElementById("history-table-body");
-      document.getElementById("stat-total-completed").innerText = completedHistory.length;
-      document.getElementById("stat-tier1-completed").innerText = completedHistory.filter(h => h.tier === 'Tier 1').length;
-      
-      const totalMins = completedHistory.reduce((acc, curr) => acc + (parseInt(curr.estTime) || 0), 0);
-      document.getElementById("stat-avg-time").innerText = `${totalMins}m`;
-
-      if (completedHistory.length === 0) return;
-
-      tbody.innerHTML = completedHistory.map(item => `
-        <tr>
-          <td><span class="spec-pill">${subjectIcons[item.subject] || '📌'} ${item.subject}</span></td>
-          <td><strong>${item.name}</strong></td>
-          <td><span class="tier-badge ${item.tier.toLowerCase().replace(' ', '-')}-badge">${item.tier}</span></td>
-          <td>⏱️ ${item.estTime || 30}m</td>
-          <td style="color:var(--oneui-text-sub);">${item.completedAt || 'Recently'}</td>
-        </tr>
-      `).join('');
-    }
-
-    /* NOTES FILE MANAGER ENGINE */
-    function renderNotesSidebar() {
-      const list = document.getElementById("notes-file-list");
-      if (savedNotes.length === 0) {
-        list.innerHTML = `<div style="color:var(--oneui-text-sub); font-size:0.85rem; padding:8px;">No local notes found.</div>`;
-        return;
-      }
-
-      list.innerHTML = savedNotes.map(n => `
-        <div class="note-file-item ${n.id === activeNoteId ? 'active-note' : ''}" onclick="selectNote('${n.id}')">
-          <span style="font-size:0.9rem; font-weight:600; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">📄 ${n.title || 'Untitled'}</span>
-        </div>
-      `).join('');
-    }
-
-    function selectNote(id) {
-      activeNoteId = id;
-      const note = savedNotes.find(n => n.id === id);
-      if (note) {
-        document.getElementById("note-title-input").value = note.title;
-        document.getElementById("note-body-input").value = note.content;
-      }
-      renderNotesSidebar();
-    }
-
-    function createNewNote() {
-      const newNote = { id: String(Date.now()), title: 'New Note', content: '' };
-      savedNotes.unshift(newNote);
-      activeNoteId = newNote.id;
-      saveNotesToStorage();
-      selectNote(newNote.id);
-    }
-
-    function saveCurrentNote() {
-      if (!activeNoteId) { createNewNote(); return; }
-      const note = savedNotes.find(n => n.id === activeNoteId);
-      if (note) {
-        note.title = document.getElementById("note-title-input").value || 'Untitled Note';
-        note.content = document.getElementById("note-body-input").value;
-        saveNotesToStorage();
-        renderNotesSidebar();
-      }
-    }
-
-    function deleteCurrentNote() {
-      savedNotes = savedNotes.filter(n => n.id !== activeNoteId);
-      saveNotesToStorage();
-      if (savedNotes.length > 0) selectNote(savedNotes[0].id);
-      else {
-        document.getElementById("note-title-input").value = "";
-        document.getElementById("note-body-input").value = "";
-        activeNoteId = null;
-        renderNotesSidebar();
-      }
-    }
-
-    function saveNotesToStorage() { localStorage.setItem("ut_saved_notes_v2", JSON.stringify(savedNotes)); }
-
-    function exportNoteAsFile() {
-      const title = document.getElementById("note-title-input").value || 'Note';
-      const content = document.getElementById("note-body-input").value;
-      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`;
-      a.click();
-    }
-
-    function importFileNote(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const importedNote = {
-          id: String(Date.now()),
-          title: file.name.replace(/\.[^/.]+$/, ""),
-          content: e.target.result
-        };
-        savedNotes.unshift(importedNote);
-        activeNoteId = importedNote.id;
-        saveNotesToStorage();
-        selectNote(importedNote.id);
-      };
-      reader.readAsText(file);
-    }
-
-    /* INITIALIZATION */
     renderTasks();
-    renderSchedule();
-    renderHistory();
-    renderNotesSidebar();
-    if (savedNotes.length > 0) selectNote(savedNotes[0].id);
   </script>
 </body>
 </html>
