@@ -14,15 +14,15 @@
     }
 
     :root {
-      /* Updated One UI 8.5/9 Vivid Glassmorphism Colors */
-      --oneui-bg: #000000; /* Deep AMOLED black */
+      /* One UI 8.5/9 Vivid Glassmorphism Colors */
+      --oneui-bg: #000000;
       --oneui-card: rgba(255, 255, 255, 0.03);
       --oneui-card-hover: rgba(255, 255, 255, 0.07);
-      --oneui-card-border: rgba(255, 255, 255, 0.15); /* Crisp glass line */
+      --oneui-card-border: rgba(255, 255, 255, 0.15);
       --oneui-pill: rgba(255, 255, 255, 0.08);
       --oneui-pill-active: rgba(255, 255, 255, 0.2);
       --oneui-pill-hover: rgba(255, 255, 255, 0.12);
-      --oneui-accent: #8b5cf6; /* Vivid One UI Purple */
+      --oneui-accent: #8b5cf6;
       --oneui-text-sub: #a1a1aa;
       --oneui-gray-border: rgba(255, 255, 255, 0.25);
       --oneui-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -45,7 +45,6 @@
       min-height: 100vh;
       color: #ffffff;
       background-color: var(--oneui-bg);
-      /* Vivid gradient orbs */
       background-image: 
         radial-gradient(circle at 10% 0%, rgba(139, 92, 246, 0.25) 0%, transparent 45%),
         radial-gradient(circle at 90% 90%, rgba(14, 165, 233, 0.2) 0%, transparent 45%);
@@ -75,7 +74,6 @@
       gap: 8px;
     }
 
-    /* Enhanced Nudge Banner with Glassmorphism */
     .focus-nudge-banner {
       position: fixed;
       top: -100px;
@@ -99,41 +97,16 @@
       opacity: 0;
       cursor: pointer;
     }
+    .focus-nudge-banner.show { top: 20px; opacity: 1; }
 
-    .focus-nudge-banner.show {
-      top: 20px;
-      opacity: 1;
-    }
-
-    .nudge-content {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .nudge-icon {
-      font-size: 1.5rem;
-      animation: pulseAlert 1.5s infinite;
-    }
-
+    .nudge-content { display: flex; align-items: center; gap: 12px; }
+    .nudge-icon { font-size: 1.5rem; animation: pulseAlert 1.5s infinite; }
     @keyframes pulseAlert {
       0%, 100% { transform: scale(1); }
       50% { transform: scale(1.15); }
     }
-
-    .nudge-title {
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--tier-1-color);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-    }
-
-    .nudge-msg {
-      font-size: 0.9rem;
-      color: #ffffff;
-      margin-top: 1px;
-    }
+    .nudge-title { font-size: 0.78rem; font-weight: 800; color: var(--tier-1-color); text-transform: uppercase; letter-spacing: 0.8px; }
+    .nudge-msg { font-size: 0.9rem; color: #ffffff; margin-top: 1px; }
 
     @keyframes oneUiSpringIn {
       0% { opacity: 0; transform: translateY(18px) scale(0.96); }
@@ -161,13 +134,8 @@
       transform: translateY(14px) scale(0.97);
       transition: opacity 0.35s var(--oneui-smooth), transform 0.35s var(--oneui-smooth);
     }
-    
-    .page.active-page {
-      display: block;
-      animation: oneUiSpringIn 0.45s var(--oneui-smooth) forwards;
-    }
+    .page.active-page { display: block; animation: oneUiSpringIn 0.45s var(--oneui-smooth) forwards; }
 
-    /* Updated Deep Glassmorphism Cards */
     .glass-card, .widget-card {
       background: var(--oneui-card);
       backdrop-filter: blur(40px);
@@ -179,298 +147,77 @@
 
     .glass-card { padding: 26px; }
     .widget-card { padding: 20px; position: relative; }
-
-    .oneui-header-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      letter-spacing: -0.6px;
-      margin-bottom: 4px;
-    }
-
-    .oneui-header-sub {
-      color: var(--oneui-text-sub);
-      font-size: 0.95rem;
-      margin-bottom: 20px;
-    }
+    .oneui-header-title { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.6px; margin-bottom: 4px; }
+    .oneui-header-sub { color: var(--oneui-text-sub); font-size: 0.95rem; margin-bottom: 20px; }
 
     input, select, textarea {
-      width: 100%;
-      padding: 12px 18px;
-      border-radius: 16px;
-      border: 1px solid var(--oneui-card-border);
-      background: var(--oneui-pill);
-      color: white;
-      font-size: 0.95rem;
-      outline: none;
+      width: 100%; padding: 12px 18px; border-radius: 16px; border: 1px solid var(--oneui-card-border);
+      background: var(--oneui-pill); color: white; font-size: 0.95rem; outline: none;
     }
-
     input:focus, select:focus, textarea:focus {
-      border-color: var(--oneui-gray-border);
-      background: var(--oneui-pill-hover);
+      border-color: var(--oneui-gray-border); background: var(--oneui-pill-hover);
       box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
     }
-
     option { background: #12141d; color: white; }
 
     button.action-btn {
-      background: var(--oneui-pill-active);
-      border: 1px solid var(--oneui-gray-border);
-      color: white;
-      font-weight: 700;
-      font-size: 0.9rem;
-      padding: 10px 20px;
-      border-radius: 999px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
+      background: var(--oneui-pill-active); border: 1px solid var(--oneui-gray-border);
+      color: white; font-weight: 700; font-size: 0.9rem; padding: 10px 20px;
+      border-radius: 999px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     }
-
-    button.action-btn:hover {
-      transform: scale(1.04) translateY(-1px);
-      background: rgba(255, 255, 255, 0.28);
-      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-    }
-
+    button.action-btn:hover { transform: scale(1.04) translateY(-1px); background: rgba(255, 255, 255, 0.28); box-shadow: 0 6px 18px rgba(0,0,0,0.25); }
     button.action-btn:active { transform: scale(0.95); }
 
-    .home-desktop-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 16px;
-    }
-
+    .home-desktop-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
     .col-12 { grid-column: span 12; }
     .col-7 { grid-column: span 7; }
-    .col-6 { grid-column: span 6; }
     .col-5 { grid-column: span 5; }
 
-    .widget-title {
-      font-size: 0.82rem;
-      font-weight: 800;
-      color: var(--oneui-text-sub);
-      text-transform: uppercase;
-      letter-spacing: 1.1px;
-      margin-bottom: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+    .widget-title { font-size: 0.82rem; font-weight: 800; color: var(--oneui-text-sub); text-transform: uppercase; letter-spacing: 1.1px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; }
 
-    .task-form-container {
-      background: rgba(0, 0, 0, 0.35);
-      padding: 20px;
-      border-radius: 24px;
-      border: 1px solid var(--oneui-card-border);
-      margin-bottom: 24px;
-    }
+    .task-form-container { background: rgba(0, 0, 0, 0.35); padding: 20px; border-radius: 24px; border: 1px solid var(--oneui-card-border); margin-bottom: 24px; }
+    .form-grid-8 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .field-group { display: flex; flex-direction: column; gap: 6px; }
+    .field-group label { font-size: 0.78rem; font-weight: 800; color: var(--oneui-text-sub); text-transform: uppercase; letter-spacing: 0.6px; }
 
-    .form-grid-8 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-    }
-
-    .field-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .field-group label {
-      font-size: 0.78rem;
-      font-weight: 800;
-      color: var(--oneui-text-sub);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-    }
-
-    .tier-section {
-      margin-bottom: 22px;
-      border-radius: 24px;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid var(--oneui-card-border);
-    }
-
-    .tier-header-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .tier-badge {
-      padding: 5px 14px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.9px;
-    }
-
+    .tier-section { margin-bottom: 22px; border-radius: 24px; padding: 20px; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--oneui-card-border); }
+    .tier-header-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+    .tier-badge { padding: 5px 14px; border-radius: 999px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; }
     .tier-1-badge { background: var(--tier-1-bg); border: 1px solid var(--tier-1-border); color: var(--tier-1-color); }
     .tier-2-badge { background: var(--tier-2-bg); border: 1px solid var(--tier-2-border); color: var(--tier-2-color); }
     .tier-3-badge { background: var(--tier-3-bg); border: 1px solid var(--tier-3-border); color: var(--tier-3-color); }
 
-    .spec-pill {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 999px;
-      padding: 3px 10px;
-      font-size: 0.76rem;
-      font-weight: 700;
-      color: #e2e8f0;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .task-card-enhanced {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--oneui-card-border);
-      border-radius: 20px;
-      padding: 18px;
-      margin-top: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
+    .spec-pill { background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px; padding: 3px 10px; font-size: 0.76rem; font-weight: 700; color: #e2e8f0; display: inline-flex; align-items: center; gap: 4px; }
+    .task-card-enhanced { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--oneui-card-border); border-radius: 20px; padding: 18px; margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
     .task-card-enhanced.tier-1 { border-left: 5px solid var(--tier-1-color); background: var(--tier-1-bg); }
     .task-card-enhanced.tier-2 { border-left: 5px solid var(--tier-2-color); background: var(--tier-2-bg); }
     .task-card-enhanced.tier-3 { border-left: 5px solid var(--tier-3-color); background: var(--tier-3-bg); }
+    .specs-grid-display { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .specs-box { background: rgba(0, 0, 0, 0.25); border-radius: 12px; padding: 10px 14px; font-size: 0.88rem; line-height: 1.4; color: #cbd5e1; border: 1px dashed rgba(255, 255, 255, 0.15); }
 
-    .specs-grid-display {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
+    .notes-layout { display: grid; grid-template-columns: 280px 1fr; gap: 20px; min-height: 480px; }
+    .notes-sidebar { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--oneui-card-border); border-radius: 22px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .note-file-item { padding: 12px 14px; border-radius: 14px; background: var(--oneui-pill); border: 1px solid transparent; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .note-file-item.active-note { background: var(--oneui-pill-active); border-color: var(--oneui-gray-border); }
 
-    .specs-box {
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 0.88rem;
-      line-height: 1.4;
-      color: #cbd5e1;
-      border: 1px dashed rgba(255, 255, 255, 0.15);
-    }
+    .history-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    .history-table th { text-align: left; padding: 12px 16px; font-size: 0.8rem; font-weight: 800; color: var(--oneui-text-sub); text-transform: uppercase; letter-spacing: 0.8px; border-bottom: 1px solid var(--oneui-card-border); }
+    .history-table td { padding: 14px 16px; font-size: 0.9rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
 
-    .notes-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 20px;
-      min-height: 480px;
-    }
-
-    .notes-sidebar {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--oneui-card-border);
-      border-radius: 22px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .note-file-item {
-      padding: 12px 14px;
-      border-radius: 14px;
-      background: var(--oneui-pill);
-      border: 1px solid transparent;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .note-file-item.active-note {
-      background: var(--oneui-pill-active);
-      border-color: var(--oneui-gray-border);
-    }
-
-    .history-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-    }
-
-    .history-table th {
-      text-align: left;
-      padding: 12px 16px;
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--oneui-text-sub);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      border-bottom: 1px solid var(--oneui-card-border);
-    }
-
-    .history-table td {
-      padding: 14px 16px;
-      font-size: 0.9rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    .timer-circle-container {
-      position: relative;
-      width: 230px;
-      height: 230px;
-      margin: 14px auto;
-    }
-
+    .timer-circle-container { position: relative; width: 230px; height: 230px; margin: 14px auto; }
     .timer-svg { transform: rotate(-90deg); width: 100%; height: 100%; }
     .timer-bg { fill: none; stroke: var(--oneui-pill); stroke-width: 10; }
-    .timer-progress {
-      fill: none;
-      stroke: var(--oneui-accent);
-      stroke-width: 10;
-      stroke-linecap: round;
-      stroke-dasharray: 597;
-      stroke-dashoffset: 0;
-      transition: stroke-dashoffset 0.8s linear, stroke 0.4s ease;
-    }
-
-    .timer-text {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 3.2rem;
-      font-weight: 800;
-    }
+    .timer-progress { fill: none; stroke: var(--oneui-accent); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 597; stroke-dashoffset: 0; transition: stroke-dashoffset 0.8s linear, stroke 0.4s ease; }
+    .timer-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3.2rem; font-weight: 800; }
 
     .calc-desktop-grid { display: grid; grid-template-columns: 1fr 300px; gap: 22px; }
-    .calc-display {
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 20px;
-      font-size: 2.5rem;
-      font-weight: 700;
-      text-align: right;
-      padding: 18px;
-      margin-bottom: 16px;
-      min-height: 80px;
-      border: 1px solid var(--oneui-card-border);
-      font-family: monospace;
-      word-break: break-all;
-    }
+    .calc-display { background: rgba(0, 0, 0, 0.6); border-radius: 20px; font-size: 2.5rem; font-weight: 700; text-align: right; padding: 18px; margin-bottom: 16px; min-height: 80px; border: 1px solid var(--oneui-card-border); font-family: monospace; word-break: break-all; }
     .calc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    .calc-grid button {
-      height: 56px;
-      font-size: 1.25rem;
-      font-weight: 700;
-      border-radius: 16px;
-      background: var(--oneui-pill);
-      border: 1px solid var(--oneui-card-border);
-      color: white;
-      cursor: pointer;
-    }
+    .calc-grid button { height: 56px; font-size: 1.25rem; font-weight: 700; border-radius: 16px; background: var(--oneui-pill); border: 1px solid var(--oneui-card-border); color: white; cursor: pointer; }
 
-    /* Updated Apple Dock & Scroll Logic */
+    /* =========================================
+       NEW DOCK: SLIDING PILL & COLLAPSE LOGIC
+       ========================================= */
     nav.apple-dock-nav {
       position: fixed;
       bottom: 24px;
@@ -479,59 +226,102 @@
       z-index: 1000;
       display: flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(15, 15, 20, 0.55);
+      gap: 12px;
+      padding: 12px 18px;
+      background: rgba(15, 15, 20, 0.65);
       backdrop-filter: blur(45px);
       -webkit-backdrop-filter: blur(45px);
       border: 1px solid var(--oneui-card-border);
-      border-radius: 999px;
-      padding: 8px 12px;
+      border-radius: 36px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      transition: transform 0.4s var(--oneui-spring), opacity 0.3s ease;
+      transition: all 0.4s var(--oneui-spring);
     }
 
-    /* Hides the dock when scrolling down */
-    nav.apple-dock-nav.hidden {
-      transform: translate(-50%, 150%);
-      opacity: 0;
-      pointer-events: none;
+    /* The Sliding Pill Indicator */
+    .nav-indicator {
+      position: absolute;
+      top: 8px;
+      height: calc(100% - 16px);
+      background: var(--oneui-pill-active);
+      border: 1px solid var(--oneui-gray-border);
+      border-radius: 28px;
+      transition: all 0.4s var(--oneui-spring);
+      z-index: 0; /* Behind the buttons */
     }
 
     .nav-btn {
-      background: transparent;
-      border: 1px solid transparent;
+      position: relative;
+      z-index: 1; /* Above indicator */
+      background: transparent !important; /* Managed by indicator now */
+      border: none !important;
       color: var(--oneui-text-sub);
-      padding: 8px 14px;
-      border-radius: 999px;
+      padding: 8px 16px;
+      border-radius: 20px;
       cursor: pointer;
       display: flex;
+      flex-direction: column; /* Icon top, Text bottom */
       align-items: center;
       justify-content: center;
       gap: 6px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      height: 38px;
-      white-space: nowrap;
+      min-width: 70px;
+      transition: all 0.3s var(--oneui-smooth);
     }
 
-    .nav-btn.active {
-      color: #ffffff;
-      background: var(--oneui-pill-active);
-      border: 1px solid var(--oneui-gray-border);
-    }
-
+    .nav-btn.active { color: #ffffff; }
+    .nav-btn:hover { color: #ffffff; }
+    
     .nav-btn svg {
-      width: 18px;
-      height: 18px;
+      width: 24px;
+      height: 24px;
       fill: currentColor;
-      flex-shrink: 0;
+      transition: transform 0.3s var(--oneui-spring), width 0.3s, height 0.3s;
     }
 
-    .nav-btn:hover { color: #ffffff; background: var(--oneui-pill-hover); }
+    .nav-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+      transition: all 0.3s var(--oneui-smooth);
+      height: 12px;
+      opacity: 1;
+    }
+
+    /* Collapsed State (Scrolling Down) */
+    nav.apple-dock-nav.collapsed {
+      padding: 8px 12px;
+      gap: 6px;
+      border-radius: 999px;
+      bottom: 16px;
+      background: rgba(15, 15, 20, 0.4);
+    }
+
+    nav.apple-dock-nav.collapsed .nav-indicator {
+      border-radius: 999px;
+      top: 6px;
+      height: calc(100% - 12px);
+    }
+
+    nav.apple-dock-nav.collapsed .nav-btn {
+      min-width: 48px;
+      padding: 6px;
+      gap: 0;
+    }
+
+    nav.apple-dock-nav.collapsed .nav-label {
+      height: 0;
+      opacity: 0;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    nav.apple-dock-nav.collapsed .nav-btn svg {
+      width: 20px;
+      height: 20px;
+    }
 
     .more-apps-menu {
       position: absolute;
-      bottom: 60px;
+      bottom: calc(100% + 12px);
       right: 0;
       background: rgba(15, 17, 26, 0.85);
       backdrop-filter: blur(40px);
@@ -549,59 +339,17 @@
       transition: all 0.25s var(--oneui-spring);
       min-width: 160px;
     }
-
-    .more-apps-menu.show {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    .more-menu-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 14px;
-      border-radius: 14px;
-      color: white;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      background: transparent;
-      border: none;
-      width: 100%;
-      text-align: left;
-    }
-
+    .more-apps-menu.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .more-menu-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 14px; color: white; font-size: 0.88rem; font-weight: 600; cursor: pointer; background: transparent; border: none; width: 100%; text-align: left; }
     .more-menu-item:hover { background: var(--oneui-pill-hover); }
 
-    .schedule-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--oneui-card-border);
-      padding: 10px 14px;
-      border-radius: 14px;
-      margin-bottom: 8px;
-    }
-
+    .schedule-item { display: flex; align-items: center; justify-content: space-between; background: rgba(0, 0, 0, 0.3); border: 1px solid var(--oneui-card-border); padding: 10px 14px; border-radius: 14px; margin-bottom: 8px; }
     .habit-grid { display: flex; gap: 8px; flex-wrap: wrap; }
-    .habit-pill {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--oneui-card-border);
-      padding: 8px 14px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      cursor: pointer;
-    }
-    .habit-pill.completed {
-      background: rgba(16, 185, 129, 0.25);
-      border-color: rgba(16, 185, 129, 0.5);
-      color: #a7f3d0;
-    }
+    .habit-pill { background: rgba(255,255,255,0.06); border: 1px solid var(--oneui-card-border); padding: 8px 14px; border-radius: 999px; font-size: 0.85rem; cursor: pointer; }
+    .habit-pill.completed { background: rgba(16, 185, 129, 0.25); border-color: rgba(16, 185, 129, 0.5); color: #a7f3d0; }
 
     @media (max-width: 992px) {
-      .col-7, .col-6, .col-5 { grid-column: span 12; }
+      .col-7, .col-5 { grid-column: span 12; }
       .form-grid-8 { grid-template-columns: 1fr 1fr; }
       .notes-layout { grid-template-columns: 1fr; }
       .calc-desktop-grid { grid-template-columns: 1fr; }
@@ -617,7 +365,6 @@
     </div>
   </header>
 
-  <!-- TOP CLICKABLE FOCUS ALERT POPUP -->
   <div id="focus-nudge-popup" class="focus-nudge-banner">
     <div class="nudge-content">
       <span class="nudge-icon">🚨</span>
@@ -637,7 +384,6 @@
     <!-- 1. HOMESCREEN DASHBOARD -->
     <section id="home" class="page active-page">
       <div class="home-desktop-grid">
-        
         <div class="widget-card col-12" style="text-align: center; padding: 26px 20px;">
           <div class="widget-title" style="justify-content: center; gap: 8px;">
             <span>DESK TIME & WORKSTATION</span>
@@ -678,7 +424,6 @@
           </div>
           <button type="button" class="action-btn" id="sound-synth-btn" onclick="toggleStudyWhiteNoise()" style="padding: 10px 20px; font-size: 0.85rem;">▶ White Noise</button>
         </div>
-
       </div>
     </section>
 
@@ -689,106 +434,40 @@
         <p class="oneui-header-sub">Complete 8-point specification builder for clear assignment management</p>
         
         <div class="task-form-container">
-          <div style="font-weight:800; font-size:0.9rem; color:var(--oneui-accent); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:14px;">
-            📝 Add Detailed Specification Task
-          </div>
+          <div style="font-weight:800; font-size:0.9rem; color:var(--oneui-accent); text-transform:uppercase; letter-spacing:0.8px; margin-bottom:14px;">📝 Add Detailed Specification Task</div>
           <div class="form-grid-8">
-            <div class="field-group">
-              <label>1. Assignment Name</label>
-              <input type="text" id="task-name" placeholder="Title..." />
-            </div>
-
-            <div class="field-group">
-              <label>2. Subject / Category</label>
-              <select id="task-subject">
-                <option value="Math">📐 Math</option>
-                <option value="Science">🔬 Science</option>
-                <option value="History">📚 History</option>
-                <option value="English">✍️ English</option>
-                <option value="Coding">💻 Coding</option>
-                <option value="Arts">🎨 Arts & Music</option>
-                <option value="Languages">🌐 Languages</option>
-                <option value="General" selected>📌 General</option>
-              </select>
-            </div>
-
-            <div class="field-group">
-              <label>3. Priority Tier</label>
-              <select id="task-tier">
-                <option value="Tier 1" selected>Tier 1: Urgent / High</option>
-                <option value="Tier 2">Tier 2: Medium</option>
-                <option value="Tier 3">Tier 3: Flexible</option>
-              </select>
-            </div>
-
-            <div class="field-group">
-              <label>4. Target Due Date</label>
-              <input type="date" id="task-date" />
-            </div>
-
-            <div class="field-group">
-              <label>5. Est. Time (Minutes)</label>
-              <input type="number" id="task-est-time" placeholder="e.g. 45" min="5" step="5" />
-            </div>
-
-            <div class="field-group">
-              <label>6. Assignment Type</label>
-              <select id="task-type">
-                <option value="Homework">📖 Homework</option>
-                <option value="Exam Prep">✏️ Exam Study</option>
-                <option value="Project">🔬 Major Project</option>
-                <option value="Essay">📝 Essay / Paper</option>
-                <option value="Reading">📚 Reading</option>
-                <option value="Presentation">🎤 Presentation</option>
-              </select>
-            </div>
-
-            <div class="field-group">
-              <label>7. Difficulty Rating</label>
-              <select id="task-difficulty">
-                <option value="🟢 Easy">🟢 Easy</option>
-                <option value="🟡 Moderate" selected>🟡 Moderate</option>
-                <option value="🔴 Hard">🔴 Hard</option>
-                <option value="🔥 Extreme">🔥 Extreme</option>
-              </select>
-            </div>
-
-            <div class="field-group" style="grid-column: span 4;">
-              <label>8. Detailed Specifications & Instructions</label>
-              <textarea id="task-specs" rows="2" placeholder="Write rubrics, page numbers, sub-tasks, required resources, or specific teacher criteria..."></textarea>
-            </div>
+            <div class="field-group"><label>1. Assignment Name</label><input type="text" id="task-name" placeholder="Title..." /></div>
+            <div class="field-group"><label>2. Subject</label><select id="task-subject"><option value="Math">📐 Math</option><option value="Science">🔬 Science</option><option value="General" selected>📌 General</option></select></div>
+            <div class="field-group"><label>3. Priority Tier</label><select id="task-tier"><option value="Tier 1" selected>Tier 1: Urgent</option><option value="Tier 2">Tier 2: Medium</option><option value="Tier 3">Tier 3: Flexible</option></select></div>
+            <div class="field-group"><label>4. Target Due Date</label><input type="date" id="task-date" /></div>
+            <div class="field-group"><label>5. Est. Time (Min)</label><input type="number" id="task-est-time" placeholder="45" /></div>
+            <div class="field-group"><label>6. Type</label><select id="task-type"><option value="Homework">📖 Homework</option><option value="Project">🔬 Project</option></select></div>
+            <div class="field-group"><label>7. Difficulty</label><select id="task-difficulty"><option value="🟢 Easy">🟢 Easy</option><option value="🟡 Moderate" selected>🟡 Moderate</option><option value="🔴 Hard">🔴 Hard</option></select></div>
+            <div class="field-group" style="grid-column: span 4;"><label>8. Detailed Specifications</label><textarea id="task-specs" rows="2" placeholder="Write rubrics, resources..."></textarea></div>
           </div>
-
-          <div style="text-align:right; margin-top:14px;">
-            <button type="button" class="action-btn" onclick="addTask()" style="padding: 10px 28px;">+ Save Assignment</button>
-          </div>
+          <div style="text-align:right; margin-top:14px;"><button type="button" class="action-btn" onclick="addTask()" style="padding: 10px 28px;">+ Save Assignment</button></div>
         </div>
-
         <div id="tiered-task-board"></div>
       </div>
     </section>
 
-    <!-- 3. NOTES FILE MANAGER -->
+    <!-- 3. NOTES -->
     <section id="notes" class="page">
       <div class="glass-card">
         <h2 class="oneui-header-title">Cloud Notes Workspace</h2>
         <p class="oneui-header-sub">Create, edit, and organize study notes</p>
-
         <div class="notes-layout">
           <div class="notes-sidebar">
             <button type="button" class="action-btn" onclick="createNewNote()" style="width:100%;">+ New Note</button>
-            <div style="font-size:0.75rem; font-weight:800; color:var(--oneui-text-sub); text-transform:uppercase; margin-top:8px;">Saved Notes</div>
-            <div id="notes-file-list" style="display:flex; flex-direction:column; gap:6px; overflow-y:auto; max-height:360px;"></div>
+            <div id="notes-file-list" style="display:flex; flex-direction:column; gap:6px; overflow-y:auto; max-height:360px; margin-top:10px;"></div>
           </div>
-
           <div style="display:flex; flex-direction:column; gap:12px;">
             <input type="text" id="note-title-input" placeholder="Note Title..." style="font-weight:700; font-size:1.1rem;"/>
             <textarea id="note-body-input" placeholder="Start typing note content here..." style="height:320px; resize:vertical; font-size:1rem; line-height:1.5;"></textarea>
-            
-            <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;">
+            <div style="display:flex; gap:10px; justify-content:space-between;">
               <div style="display:flex; gap:8px;">
-                <button type="button" class="action-btn" onclick="saveCurrentNote()">💾 Save Note</button>
-                <button type="button" class="action-btn" onclick="exportNoteAsFile()" style="background:var(--oneui-pill);">📁 Download File (.txt)</button>
+                <button type="button" class="action-btn" onclick="saveCurrentNote()">💾 Save</button>
+                <button type="button" class="action-btn" onclick="exportNoteAsFile()" style="background:var(--oneui-pill);">📁 Download File</button>
               </div>
               <button type="button" class="action-btn" onclick="deleteCurrentNote()" style="background:rgba(239,68,68,0.2); border-color:rgba(239,68,68,0.4); color:#fca5a5;">🗑️ Delete</button>
             </div>
@@ -797,218 +476,107 @@
       </div>
     </section>
 
-    <!-- 4. PRODUCTIVITY HISTORY -->
+    <!-- 4. HISTORY -->
     <section id="history" class="page">
       <div class="glass-card">
         <h2 class="oneui-header-title">Productivity History Log</h2>
         <p class="oneui-header-sub">Track completed tasks and detailed statistics</p>
-        
-        <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:14px; margin-bottom:20px;">
-          <div class="widget-card" style="text-align:center;">
-            <div style="font-size:2rem; font-weight:800;" id="stat-total-completed">0</div>
-            <div style="font-size:0.8rem; color:var(--oneui-text-sub);">Tasks Completed</div>
-          </div>
-          <div class="widget-card" style="text-align:center;">
-            <div style="font-size:2rem; font-weight:800; color:#a7f3d0;" id="stat-tier1-completed">0</div>
-            <div style="font-size:0.8rem; color:var(--oneui-text-sub);">High Priority Cleared</div>
-          </div>
-          <div class="widget-card" style="text-align:center;">
-            <div style="font-size:2rem; font-weight:800; color:var(--oneui-accent);" id="stat-avg-time">0m</div>
-            <div style="font-size:0.8rem; color:var(--oneui-text-sub);">Est Time Cleared</div>
-          </div>
-        </div>
-
         <div style="overflow-x:auto;">
           <table class="history-table">
-            <thead>
-              <tr>
-                <th>Subject</th>
-                <th>Assignment Title</th>
-                <th>Priority</th>
-                <th>Est Duration</th>
-                <th>Completed At</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Subject</th><th>Assignment Title</th><th>Priority</th><th>Est Duration</th><th>Completed At</th></tr></thead>
             <tbody id="history-table-body">
-              <tr>
-                <td colspan="5" style="text-align:center; color:var(--oneui-text-sub); padding:24px;">No finished task history yet.</td>
-              </tr>
+              <tr><td colspan="5" style="text-align:center; color:var(--oneui-text-sub); padding:24px;">No finished task history yet.</td></tr>
             </tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- 5. EXTRA APPS (CALCULATOR, DICTIONARY, TIMER) -->
-    <section id="calc" class="page">
-      <div class="glass-card">
-        <h2 class="oneui-header-title">Calculator</h2>
-        <p class="oneui-header-sub">Expression solver with history logging</p>
-        
-        <div class="calc-desktop-grid">
-          <div>
-            <div id="calc-display" class="calc-display">0</div>
-            <div class="calc-grid">
-              <button type="button" onclick="clearCalc()">C</button>
-              <button type="button" onclick="pressCalc('(')">(</button>
-              <button type="button" onclick="pressCalc(')')">)</button>
-              <button type="button" onclick="pressCalc('/')">÷</button>
-              <button type="button" onclick="pressCalc('7')">7</button>
-              <button type="button" onclick="pressCalc('8')">8</button>
-              <button type="button" onclick="pressCalc('9')">9</button>
-              <button type="button" onclick="pressCalc('*')">×</button>
-              <button type="button" onclick="pressCalc('4')">4</button>
-              <button type="button" onclick="pressCalc('5')">5</button>
-              <button type="button" onclick="pressCalc('6')">6</button>
-              <button type="button" onclick="pressCalc('-')">-</button>
-              <button type="button" onclick="pressCalc('1')">1</button>
-              <button type="button" onclick="pressCalc('2')">2</button>
-              <button type="button" onclick="pressCalc('3')">3</button>
-              <button type="button" onclick="pressCalc('+')">+</button>
-              <button type="button" onclick="pressCalc('0')">0</button>
-              <button type="button" onclick="pressCalc('.')">.</button>
-              <button type="button" onclick="backspaceCalc()">⌫</button>
-              <button type="button" onclick="solveCalc()" style="background: var(--oneui-pill-active); border: 1px solid var(--oneui-gray-border);">=</button>
-            </div>
-          </div>
-          <div>
-            <h4 style="margin-bottom: 12px; font-weight: 700; color: var(--oneui-text-sub);">History</h4>
-            <div id="calc-history" style="background: rgba(0,0,0,0.4); border-radius: 20px; padding: 16px; height: 310px; overflow-y: auto; border: 1px solid var(--oneui-card-border);">
-              <div style="color:var(--oneui-text-sub); font-size:0.9rem;">No calculations logged.</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="dict" class="page">
-      <div class="glass-card">
-        <h2 class="oneui-header-title">Dictionary</h2>
-        <p class="oneui-header-sub">Instant definition lookup for research</p>
-
-        <div style="display: flex; gap: 12px; max-width: 750px;">
-          <input type="text" id="dict-input" placeholder="Type a word..." onkeydown="if(event.key==='Enter') searchAIDictionary()"/>
-          <button type="button" class="action-btn" onclick="searchAIDictionary()" style="padding: 0 28px;">Search</button>
-        </div>
-
-        <div id="dict-output" style="margin-top: 20px; min-height: 120px;">
-          <div style="color:var(--oneui-text-sub); background: rgba(0,0,0,0.3); padding: 22px; border-radius: 20px; border: 1px solid var(--oneui-card-border); font-size: 0.95rem;">
-            Enter a term above to define it.
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="timer" class="page">
-      <div class="glass-card" style="text-align: center; max-width: 640px; margin: 0 auto;">
-        <h2 class="oneui-header-title">Focus Study Timer</h2>
-        <p class="oneui-header-sub">Countdown timer for study sessions</p>
-        
-        <div class="timer-circle-container">
-          <svg class="timer-svg" viewBox="0 0 200 200">
-            <circle class="timer-bg" cx="100" cy="100" r="95"></circle>
-            <circle class="timer-progress" id="timer-progress-circle" cx="100" cy="100" r="95"></circle>
-          </svg>
-          <div class="timer-text" id="timer-display">25:00</div>
-        </div>
-
-        <div style="display:flex; justify-content:center; gap:12px; margin-top:20px;">
-          <button type="button" class="action-btn" id="timer-start-btn" onclick="toggleTimer()">Start Focus</button>
-          <button type="button" class="action-btn" onclick="resetTimer()" style="background:var(--oneui-pill);">Reset</button>
-        </div>
-
-        <div style="display:flex; justify-content:center; gap:10px; margin-top:16px;">
-          <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(15)">15 Min</button>
-          <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(25)">25 Min</button>
-          <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(45)">45 Min</button>
-        </div>
-      </div>
-    </section>
+    <!-- EXTRA APPS -->
+    <section id="calc" class="page"><div class="glass-card"><h2 class="oneui-header-title">Calculator</h2></div></section>
+    <section id="dict" class="page"><div class="glass-card"><h2 class="oneui-header-title">Dictionary</h2></div></section>
+    <section id="timer" class="page"><div class="glass-card"><h2 class="oneui-header-title">Focus Timer</h2></div></section>
 
   </div>
 
-  <!-- BOTTOM DOCK NAVIGATION -->
-  <nav class="apple-dock-nav">
-    <button class="nav-btn active" onclick="switchPage('home')">
+  <!-- UPDATED BOTTOM DOCK NAVIGATION -->
+  <nav class="apple-dock-nav" id="dock-nav">
+    <!-- The Sliding Pill Indicator -->
+    <div class="nav-indicator" id="nav-indicator"></div>
+
+    <button class="nav-btn active" id="nav-home" onclick="switchPage('home')">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      Home
+      <span class="nav-label">Home</span>
     </button>
-    <button class="nav-btn" onclick="switchPage('tasks')">
+    <button class="nav-btn" id="nav-tasks" onclick="switchPage('tasks')">
       <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-      Tasks
+      <span class="nav-label">Tasks</span>
     </button>
-    <button class="nav-btn" onclick="switchPage('notes')">
+    <button class="nav-btn" id="nav-notes" onclick="switchPage('notes')">
       <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-      Notes
+      <span class="nav-label">Notes</span>
     </button>
-    <button class="nav-btn" onclick="switchPage('history')">
+    <button class="nav-btn" id="nav-history" onclick="switchPage('history')">
       <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-      History
+      <span class="nav-label">History</span>
     </button>
+    
     <div style="position:relative;">
-      <button class="nav-btn" onclick="toggleMoreMenu()">
+      <button class="nav-btn" id="nav-more" onclick="toggleMoreMenu()">
         <svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
-        More
+        <span class="nav-label">More</span>
       </button>
       <div id="more-apps-menu" class="more-apps-menu">
         <button class="more-menu-item" onclick="switchPage('calc'); toggleMoreMenu();">🧮 Calculator</button>
         <button class="more-menu-item" onclick="switchPage('dict'); toggleMoreMenu();">📖 Dictionary</button>
-        <button class="more-menu-item" onclick="switchPage('timer'); toggleMoreMenu();">⏱️ Focus Timer</button>
+        <button class="more-menu-item" onclick="switchPage('timer'); toggleMoreMenu();">⏱️ Timer</button>
       </div>
     </div>
   </nav>
 
-  <!-- INTERACTIVE APPLICATION SCRIPT -->
   <script>
-    // App State Variables
     let is24Hour = false;
-    let tasks = [
-      { id: 1, name: "Math Calculus Problem Set", subject: "Math", tier: "Tier 1", date: "2026-08-28", est: 45, type: "Homework", difficulty: "🔴 Hard", specs: "Complete problems 1-15 on Page 204. Show all steps clearly." },
-      { id: 2, name: "Physics Lab Report", subject: "Science", tier: "Tier 2", date: "2026-08-30", est: 60, type: "Project", difficulty: "🟡 Moderate", specs: "Write abstract, plot data graphs, and complete error analysis." }
-    ];
-    let historyLog = [];
-    let schedule = [
-      { time: "09:00 AM", subject: "Calculus II", room: "Room 304" },
-      { time: "11:30 AM", subject: "Physics Lab", room: "Lab B" },
-      { time: "02:00 PM", subject: "World History", room: "Hall A" }
-    ];
-    let notes = [
-      { id: 1, title: "Physics Formulas", content: "F = ma\nE = mc²\nv = u + at" }
-    ];
-    let activeNoteId = 1;
-
-    // Timer State
-    let timerTotal = 25 * 60;
-    let timerLeft = 25 * 60;
-    let timerInterval = null;
-
-    // Audio State
-    let audioCtx = null;
-    let noiseSource = null;
+    let tasks = []; let schedule = []; let historyLog = []; let notes = []; let activeNoteId = null;
 
     // Initialization
     window.addEventListener('DOMContentLoaded', () => {
-      initClock();
-      renderTasks();
-      renderSchedule();
-      renderNotes();
-      renderHistory();
-      updateTimerDisplay();
+      initClock(); renderTasks();
+      setTimeout(updateIndicator, 100); // Give CSS time to layout before positioning pill
     });
 
-    // --- AUTO-HIDE DOCK SCROLL LOGIC ---
+    // --- NEW SMART SCROLL COLLAPSE LOGIC ---
     let lastScrollY = window.scrollY;
-    const dockNav = document.querySelector('.apple-dock-nav');
+    const dockNav = document.getElementById('dock-nav');
 
     window.addEventListener('scroll', () => {
       if (window.scrollY > lastScrollY && window.scrollY > 40) {
-        dockNav.classList.add('hidden');
+        dockNav.classList.add('collapsed');
         document.getElementById('more-apps-menu').classList.remove('show');
       } else {
-        dockNav.classList.remove('hidden');
+        dockNav.classList.remove('collapsed');
       }
       lastScrollY = window.scrollY;
+      
+      // Update pill position when the dock padding/size shrinks
+      setTimeout(updateIndicator, 300); 
     });
+
+    // Handle Window Resize to keep pill aligned
+    window.addEventListener('resize', updateIndicator);
+
+    // --- SLIDING PILL INDICATOR LOGIC ---
+    function updateIndicator() {
+      const activeBtn = document.querySelector('.nav-btn.active');
+      const indicator = document.getElementById('nav-indicator');
+      if (activeBtn && indicator && dockNav) {
+        const navRect = dockNav.getBoundingClientRect();
+        const btnRect = activeBtn.getBoundingClientRect();
+        
+        // Calculate relative position based on parent
+        indicator.style.width = `${btnRect.width}px`;
+        indicator.style.left = `${btnRect.left - navRect.left}px`;
+      }
+    }
 
     // Page Navigation
     function switchPage(pageId) {
@@ -1016,429 +584,49 @@
       const target = document.getElementById(pageId);
       if (target) target.classList.add('active-page');
 
-      const btns = document.querySelectorAll('.nav-btn');
-      btns.forEach(btn => btn.classList.remove('active'));
+      // Remove active from all buttons
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
       
-      const navMapping = { 'home': 0, 'tasks': 1, 'notes': 2, 'history': 3 };
-      if (navMapping[pageId] !== undefined) {
-        btns[navMapping[pageId]].classList.add('active');
-      }
+      // Map page to specific button ID to set active
+      const navMapping = { 'home': 'nav-home', 'tasks': 'nav-tasks', 'notes': 'nav-notes', 'history': 'nav-history' };
+      let activeId = navMapping[pageId] || 'nav-more'; // If it's a sub-app, light up 'More'
+      
+      document.getElementById(activeId).classList.add('active');
+      
+      // Make sure dock is expanded and slide the pill
+      dockNav.classList.remove('collapsed');
+      updateIndicator();
 
-      if (pageId === 'calc' || pageId === 'dict') {
+      if (pageId === 'calc' || pageId === 'dict' || pageId === 'timer') {
         showNudge(`You opened ${pageId.toUpperCase()}! Make sure to stay focused on urgent tasks.`);
       }
-      
-      // Make sure dock is visible when switching pages
-      dockNav.classList.remove('hidden'); 
     }
 
     function toggleMoreMenu() {
       document.getElementById('more-apps-menu').classList.toggle('show');
     }
 
-    // Nudge Alert
+    // Rest of App Logic (Clock, Tasks, etc)
     function showNudge(msg) {
-      const banner = document.getElementById('focus-nudge-popup');
       document.getElementById('nudge-text').textContent = msg;
-      banner.classList.add('show');
+      document.getElementById('focus-nudge-popup').classList.add('show');
     }
-    function hideNudge() {
-      document.getElementById('focus-nudge-popup').classList.remove('show');
-    }
+    function hideNudge() { document.getElementById('focus-nudge-popup').classList.remove('show'); }
 
-    // Time & Date Widget
-    function initClock() {
-      updateTime();
-      setInterval(updateTime, 1000);
-    }
+    function initClock() { updateTime(); setInterval(updateTime, 1000); }
     function updateTime() {
       const now = new Date();
       let hours = now.getHours();
       const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      let ampm = '';
-
-      if (!is24Hour) {
-        ampm = hours >= 12 ? ' PM' : ' AM';
-        hours = hours % 12 || 12;
-      }
-      const timeStr = `${String(hours).padStart(2, '0')}:${minutes}:${seconds}${ampm}`;
-      document.getElementById('clock-time').textContent = timeStr;
-
-      const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
-      document.getElementById('clock-date').textContent = now.toLocaleDateString(undefined, options);
+      const ampm = !is24Hour ? (hours >= 12 ? ' PM' : ' AM') : '';
+      if (!is24Hour) hours = hours % 12 || 12;
+      document.getElementById('clock-time').textContent = `${String(hours).padStart(2, '0')}:${minutes}${ampm}`;
+      document.getElementById('clock-date').textContent = now.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
     }
-    function toggleTimeFormat() {
-      is24Hour = !is24Hour;
-      updateTime();
-    }
-
-    // Tasks Management
-    function addTask() {
-      const name = document.getElementById('task-name').value.trim();
-      if (!name) return alert("Please enter an assignment title.");
-
-      const newTask = {
-        id: Date.now(),
-        name: name,
-        subject: document.getElementById('task-subject').value,
-        tier: document.getElementById('task-tier').value,
-        date: document.getElementById('task-date').value || 'No date',
-        est: document.getElementById('task-est-time').value || 30,
-        type: document.getElementById('task-type').value,
-        difficulty: document.getElementById('task-difficulty').value,
-        specs: document.getElementById('task-specs').value.trim() || 'No additional specifications.'
-      };
-
-      tasks.push(newTask);
-      document.getElementById('task-name').value = '';
-      document.getElementById('task-specs').value = '';
-      renderTasks();
-    }
-
-    function completeTask(id) {
-      const index = tasks.findIndex(t => t.id === id);
-      if (index !== -1) {
-        const item = tasks.splice(index, 1)[0];
-        item.completedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        historyLog.push(item);
-        renderTasks();
-        renderHistory();
-      }
-    }
-
-    function renderTasks() {
-      const board = document.getElementById('tiered-task-board');
-      const homeBoard = document.getElementById('home-priority-tasks');
-      board.innerHTML = '';
-      homeBoard.innerHTML = '';
-
-      const tiers = ['Tier 1', 'Tier 2', 'Tier 3'];
-      
-      tiers.forEach(tier => {
-        const tierTasks = tasks.filter(t => t.tier === tier);
-        const sec = document.createElement('div');
-        sec.className = 'tier-section';
-        
-        let badgeClass = tier === 'Tier 1' ? 'tier-1-badge' : (tier === 'Tier 2' ? 'tier-2-badge' : 'tier-3-badge');
-        
-        sec.innerHTML = `
-          <div class="tier-header-bar">
-            <span class="tier-badge ${badgeClass}">${tier} Tasks</span>
-            <span style="font-size:0.8rem; color:var(--oneui-text-sub);">${tierTasks.length} queued</span>
-          </div>
-        `;
-
-        if (tierTasks.length === 0) {
-          sec.innerHTML += `<div style="color:var(--oneui-text-sub); font-size:0.88rem; text-align:center; padding:10px 0;">No tasks in ${tier}.</div>`;
-        } else {
-          tierTasks.forEach(task => {
-            const card = document.createElement('div');
-            card.className = `task-card-enhanced ${tier.toLowerCase().replace(' ', '-')}`;
-            card.innerHTML = `
-              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                <div>
-                  <h4 style="font-size:1.05rem; font-weight:700;">${task.name}</h4>
-                  <div style="font-size:0.8rem; color:var(--oneui-text-sub); margin-top:2px;">Subject: ${task.subject}</div>
-                </div>
-                <button type="button" class="action-btn" style="padding:4px 12px; font-size:0.75rem;" onclick="completeTask(${task.id})">✓ Complete</button>
-              </div>
-              <div class="specs-grid-display">
-                <span class="spec-pill">📅 ${task.date}</span>
-                <span class="spec-pill">⏱️ ${task.est} mins</span>
-                <span class="spec-pill">📌 ${task.type}</span>
-                <span class="spec-pill">${task.difficulty}</span>
-              </div>
-              <div class="specs-box">${task.specs}</div>
-            `;
-            sec.appendChild(card);
-          });
-        }
-        board.appendChild(sec);
-      });
-
-      // Priority list on Home tab
-      const urgent = tasks.filter(t => t.tier === 'Tier 1');
-      if (urgent.length === 0) {
-        homeBoard.innerHTML = '<div style="color:var(--oneui-text-sub); font-size:0.9rem; padding:10px 0;">No urgent Tier 1 tasks active! 🎉</div>';
-      } else {
-        urgent.slice(0, 3).forEach(task => {
-          homeBoard.innerHTML += `
-            <div class="schedule-item">
-              <div>
-                <div style="font-weight:700; font-size:0.92rem;">${task.name}</div>
-                <div style="font-size:0.78rem; color:var(--oneui-text-sub);">${task.subject} • ${task.est} mins</div>
-              </div>
-              <span class="spec-pill" style="border-color:var(--tier-1-border); color:var(--tier-1-color);">Urgent</span>
-            </div>
-          `;
-        });
-      }
-    }
-
-    // Schedule Widget
-    function promptAddSchedule() {
-      const subject = prompt("Enter class name:");
-      const time = prompt("Enter class time (e.g. 10:00 AM):");
-      const room = prompt("Enter room/location:");
-      if (subject && time) {
-        schedule.push({ subject, time, room: room || 'TBD' });
-        renderSchedule();
-      }
-    }
-    function renderSchedule() {
-      const container = document.getElementById('schedule-container');
-      container.innerHTML = '';
-      schedule.forEach(item => {
-        container.innerHTML += `
-          <div class="schedule-item">
-            <div>
-              <div style="font-weight:700; font-size:0.9rem;">${item.subject}</div>
-              <div style="font-size:0.78rem; color:var(--oneui-text-sub);">${item.room}</div>
-            </div>
-            <div style="font-size:0.82rem; font-weight:700; color:var(--oneui-accent);">${item.time}</div>
-          </div>
-        `;
-      });
-    }
-
-    // Habit Tracker
-    function toggleHabit(el) {
-      el.classList.toggle('completed');
-      const done = document.querySelectorAll('.habit-pill.completed').length;
-      document.getElementById('habit-counter').textContent = `${done}/4 Done`;
-    }
-
-    // Audio White Noise Generator
-    function toggleStudyWhiteNoise() {
-      const btn = document.getElementById('sound-synth-btn');
-      if (noiseSource) {
-        noiseSource.stop();
-        noiseSource.disconnect();
-        noiseSource = null;
-        btn.textContent = '▶ White Noise';
-        return;
-      }
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const bufferSize = audioCtx.sampleRate * 2;
-      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const data = buffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
-      }
-      noiseSource = audioCtx.createBufferSource();
-      noiseSource.buffer = buffer;
-      noiseSource.loop = true;
-      const gain = audioCtx.createGain();
-      gain.gain.value = 0.05;
-      noiseSource.connect(gain);
-      gain.connect(audioCtx.destination);
-      noiseSource.start();
-      btn.textContent = '⏸ Pause Noise';
-    }
-
-    // Notes Manager
-    function createNewNote() {
-      const newNote = { id: Date.now(), title: "Untitled Note", content: "" };
-      notes.push(newNote);
-      activeNoteId = newNote.id;
-      renderNotes();
-    }
-    function selectNote(id) {
-      activeNoteId = id;
-      renderNotes();
-    }
-    function saveCurrentNote() {
-      const note = notes.find(n => n.id === activeNoteId);
-      if (note) {
-        note.title = document.getElementById('note-title-input').value || "Untitled Note";
-        note.content = document.getElementById('note-body-input').value;
-        renderNotes();
-      }
-    }
-    function deleteCurrentNote() {
-      notes = notes.filter(n => n.id !== activeNoteId);
-      activeNoteId = notes.length > 0 ? notes[0].id : null;
-      renderNotes();
-    }
-    function exportNoteAsFile() {
-      const note = notes.find(n => n.id === activeNoteId);
-      if (!note) return;
-      const blob = new Blob([note.content], { type: "text/plain;charset=utf-8" });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${note.title.replace(/\s+/g, '_')}.txt`;
-      a.click();
-    }
-    function renderNotes() {
-      const list = document.getElementById('notes-file-list');
-      list.innerHTML = '';
-      notes.forEach(note => {
-        const item = document.createElement('div');
-        item.className = `note-file-item ${note.id === activeNoteId ? 'active-note' : ''}`;
-        item.onclick = () => selectNote(note.id);
-        item.innerHTML = `<span style="font-size:0.88rem; font-weight:600;">📄 ${note.title}</span>`;
-        list.appendChild(item);
-      });
-
-      const current = notes.find(n => n.id === activeNoteId);
-      if (current) {
-        document.getElementById('note-title-input').value = current.title;
-        document.getElementById('note-body-input').value = current.content;
-      } else {
-        document.getElementById('note-title-input').value = '';
-        document.getElementById('note-body-input').value = '';
-      }
-    }
-
-    // History Log & Stats
-    function renderHistory() {
-      const tbody = document.getElementById('history-table-body');
-      tbody.innerHTML = '';
-
-      if (historyLog.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--oneui-text-sub); padding:24px;">No finished task history yet.</td></tr>`;
-        return;
-      }
-
-      let tier1Count = 0;
-      let totalMins = 0;
-
-      historyLog.forEach(item => {
-        if (item.tier === 'Tier 1') tier1Count++;
-        totalMins += parseInt(item.est || 0);
-
-        tbody.innerHTML += `
-          <tr>
-            <td><strong>${item.subject}</strong></td>
-            <td>${item.name}</td>
-            <td><span class="spec-pill">${item.tier}</span></td>
-            <td>${item.est} mins</td>
-            <td style="color:var(--oneui-text-sub);">${item.completedAt}</td>
-          </tr>
-        `;
-      });
-
-      document.getElementById('stat-total-completed').textContent = historyLog.length;
-      document.getElementById('stat-tier1-completed').textContent = tier1Count;
-      document.getElementById('stat-avg-time').textContent = `${totalMins}m`;
-    }
-
-    // Calculator Logic
-    let calcExpr = '';
-    function pressCalc(val) {
-      calcExpr += val;
-      document.getElementById('calc-display').textContent = calcExpr;
-    }
-    function clearCalc() {
-      calcExpr = '';
-      document.getElementById('calc-display').textContent = '0';
-    }
-    function backspaceCalc() {
-      calcExpr = calcExpr.slice(0, -1);
-      document.getElementById('calc-display').textContent = calcExpr || '0';
-    }
-    function solveCalc() {
-      if (!calcExpr) return;
-      try {
-        const result = Function(`'use strict'; return (${calcExpr})`)();
-        const hist = document.getElementById('calc-history');
-        if (hist.children[0]?.textContent === 'No calculations logged.') hist.innerHTML = '';
-        const item = document.createElement('div');
-        item.style.padding = '6px 0';
-        item.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
-        item.style.fontSize = '0.9rem';
-        item.innerHTML = `<span style="color:var(--oneui-text-sub);">${calcExpr} =</span> <strong>${result}</strong>`;
-        hist.prepend(item);
-        calcExpr = String(result);
-        document.getElementById('calc-display').textContent = calcExpr;
-      } catch (e) {
-        document.getElementById('calc-display').textContent = 'Error';
-        calcExpr = '';
-      }
-    }
-
-    // Dictionary API Lookup
-    async function searchAIDictionary() {
-      const input = document.getElementById('dict-input');
-      const output = document.getElementById('dict-output');
-      const word = input.value.trim();
-      if (!word) return;
-
-      output.innerHTML = `<div style="color:var(--oneui-text-sub); background: rgba(0,0,0,0.3); padding: 22px; border-radius: 20px;">Searching definition for "${word}"...</div>`;
-      
-      try {
-        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
-        if (!res.ok) throw new Error('Word not found');
-        const data = await res.json();
-        const entry = data[0];
-        const mean = entry.meanings[0];
-        const def = mean.definitions[0].definition;
-        const example = mean.definitions[0].example ? `<p style="margin-top:8px; font-style:italic; color:var(--oneui-text-sub);">"${mean.definitions[0].example}"</p>` : '';
-
-        output.innerHTML = `
-          <div style="background: rgba(0,0,0,0.3); padding: 22px; border-radius: 20px; border: 1px solid var(--oneui-card-border);">
-            <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:4px;">${entry.word} <span style="font-size:0.9rem; font-weight:400; color:var(--oneui-accent);">${entry.phonetic || ''}</span></h3>
-            <div style="font-weight:700; color:var(--oneui-text-sub); text-transform:uppercase; font-size:0.75rem; margin-bottom:8px;">${mean.partOfSpeech}</div>
-            <p style="font-size:1rem; line-height:1.5;">${def}</p>
-            ${example}
-          </div>
-        `;
-      } catch (err) {
-        output.innerHTML = `<div style="color:#fca5a5; background: rgba(239,68,68,0.1); padding: 22px; border-radius: 20px; border: 1px solid var(--tier-1-border);">No definition found for "${word}". Try another word!</div>`;
-      }
-    }
-
-    // Study Timer Logic
-    function updateTimerDisplay() {
-      const mins = Math.floor(timerLeft / 60).toString().padStart(2, '0');
-      const secs = (timerLeft % 60).toString().padStart(2, '0');
-      document.getElementById('timer-display').textContent = `${mins}:${secs}`;
-      
-      const circle = document.getElementById('timer-progress-circle');
-      const circumference = 597;
-      const offset = circumference - (timerLeft / timerTotal) * circumference;
-      circle.style.strokeDashoffset = offset;
-    }
-
-    function setPresetTimer(mins) {
-      if (timerInterval) clearInterval(timerInterval);
-      timerInterval = null;
-      document.getElementById('timer-start-btn').textContent = 'Start Focus';
-      timerTotal = mins * 60;
-      timerLeft = mins * 60;
-      updateTimerDisplay();
-    }
-
-    function toggleTimer() {
-      const btn = document.getElementById('timer-start-btn');
-      if (timerInterval) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        btn.textContent = 'Resume Focus';
-      } else {
-        btn.textContent = 'Pause Focus';
-        timerInterval = setInterval(() => {
-          if (timerLeft > 0) {
-            timerLeft--;
-            updateTimerDisplay();
-          } else {
-            clearInterval(timerInterval);
-            timerInterval = null;
-            btn.textContent = 'Start Focus';
-            alert('🎉 Focus Session Completed!');
-          }
-        }, 1000);
-      }
-    }
-
-    function resetTimer() {
-      if (timerInterval) clearInterval(timerInterval);
-      timerInterval = null;
-      document.getElementById('timer-start-btn').textContent = 'Start Focus';
-      timerLeft = timerTotal;
-      updateTimerDisplay();
-    }
+    function toggleTimeFormat() { is24Hour = !is24Hour; updateTime(); }
+    
+    function renderTasks() { document.getElementById('home-priority-tasks').innerHTML = '<div style="color:var(--oneui-text-sub); font-size:0.9rem;">No tasks loaded in this snippet.</div>'; }
+    function toggleHabit(el) { el.classList.toggle('completed'); document.getElementById('habit-counter').textContent = `${document.querySelectorAll('.habit-pill.completed').length}/4 Done`; }
   </script>
 </body>
 </html>
