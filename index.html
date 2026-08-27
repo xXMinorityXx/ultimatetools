@@ -55,7 +55,6 @@
       padding-bottom: 110px;
     }
 
-    /* TOP HEADER BAR */
     .top-auth-bar {
       width: 100%;
       max-width: 1180px;
@@ -74,7 +73,6 @@
       gap: 8px;
     }
 
-    /* TOP CLICKABLE FOCUS ALERT POPUP */
     .focus-nudge-banner {
       position: fixed;
       top: -100px;
@@ -917,561 +915,507 @@
           <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(15)">15 Min</button>
           <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(25)">25 Min</button>
           <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(45)">45 Min</button>
-          <button type="button" class="action-btn" style="padding:4px 14px; font-size:0.8rem;" onclick="setPresetTimer(60)">60 Min</button>
         </div>
       </div>
     </section>
 
   </div>
 
-  <!-- APPLE-STYLE DOCK NAV SYSTEM -->
+  <!-- BOTTOM DOCK NAVIGATION -->
   <nav class="apple-dock-nav">
-    <button type="button" class="nav-btn active" onclick="switchPage('home')">
+    <button class="nav-btn active" onclick="switchPage('home')">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-      <span>Home</span>
+      Home
     </button>
-    <button type="button" class="nav-btn" onclick="switchPage('tasks')">
+    <button class="nav-btn" onclick="switchPage('tasks')">
       <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-      <span>Tasks</span>
+      Tasks
     </button>
-    <button type="button" class="nav-btn" onclick="switchPage('notes')">
+    <button class="nav-btn" onclick="switchPage('notes')">
       <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
-      <span>Notes</span>
+      Notes
     </button>
-    <button type="button" class="nav-btn" onclick="switchPage('history')">
+    <button class="nav-btn" onclick="switchPage('history')">
       <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
-      <span>History</span>
+      History
     </button>
-
     <div style="position:relative;">
-      <button type="button" class="nav-btn" onclick="toggleMoreMenu()">
-        <svg viewBox="0 0 24 24"><path d="M4 8h4V4H4v4zm6 12h4v-4h-4v4zm-6 0h4v-4H4v4zm0-6h4v-4H4v4zm6 0h4v-4h-4v4zm6-10v4h4V4h-4zm-6 4h4V4h-4v4zm6 6h4v-4h-4v4zm0 6h4v-4h-4v4z"/></svg>
-        <span>Apps ▾</span>
+      <button class="nav-btn" onclick="toggleMoreMenu()">
+        <svg viewBox="0 0 24 24"><path d="M6 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm12 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+        More
       </button>
-
-      <div class="more-apps-menu" id="more-apps-popup">
-        <button type="button" class="more-menu-item" onclick="switchPage('calc'); hideMoreMenu();">🧮 Calculator</button>
-        <button type="button" class="more-menu-item" onclick="switchPage('dict'); hideMoreMenu();">📖 Dictionary</button>
-        <button type="button" class="more-menu-item" onclick="switchPage('timer'); hideMoreMenu();">⏱️ Study Timer</button>
+      <div id="more-apps-menu" class="more-apps-menu">
+        <button class="more-menu-item" onclick="switchPage('calc'); toggleMoreMenu();">🧮 Calculator</button>
+        <button class="more-menu-item" onclick="switchPage('dict'); toggleMoreMenu();">📖 Dictionary</button>
+        <button class="more-menu-item" onclick="switchPage('timer'); toggleMoreMenu();">⏱️ Focus Timer</button>
       </div>
     </div>
   </nav>
 
+  <!-- INTERACTIVE APPLICATION SCRIPT -->
   <script>
-    // LOCAL DATA STORAGE SYSTEM
-    let tasks = JSON.parse(localStorage.getItem('desk_tasks')) || [];
-    let notes = JSON.parse(localStorage.getItem('desk_notes')) || [];
-    let historyLogs = JSON.parse(localStorage.getItem('desk_history')) || [];
-    let classSchedule = JSON.parse(localStorage.getItem('desk_schedule')) || [
-      { id: '1', title: 'Mathematics', time: '09:00 AM - 10:15 AM', room: 'Room 302' },
-      { id: '2', title: 'Physics & Lab', time: '11:00 AM - 12:30 PM', room: 'Science Bldg B' },
-      { id: '3', title: 'Computer Science', time: '02:00 PM - 03:30 PM', room: 'Lab 104' }
+    // App State Variables
+    let is24Hour = false;
+    let tasks = [
+      { id: 1, name: "Math Calculus Problem Set", subject: "Math", tier: "Tier 1", date: "2026-08-28", est: 45, type: "Homework", difficulty: "🔴 Hard", specs: "Complete problems 1-15 on Page 204. Show all steps clearly." },
+      { id: 2, name: "Physics Lab Report", subject: "Science", tier: "Tier 2", date: "2026-08-30", est: 60, type: "Project", difficulty: "🟡 Moderate", specs: "Write abstract, plot data graphs, and complete error analysis." }
     ];
-    let activeNoteId = null;
-    let is24HourFormat = false;
+    let historyLog = [];
+    let schedule = [
+      { time: "09:00 AM", subject: "Calculus II", room: "Room 304" },
+      { time: "11:30 AM", subject: "Physics Lab", room: "Lab B" },
+      { time: "02:00 PM", subject: "World History", room: "Hall A" }
+    ];
+    let notes = [
+      { id: 1, title: "Physics Formulas", content: "F = ma\nE = mc²\nv = u + at" }
+    ];
+    let activeNoteId = 1;
 
-    // AUDIO SYNTHESIZER (WHITE NOISE GENERATOR)
+    // Timer State
+    let timerTotal = 25 * 60;
+    let timerLeft = 25 * 60;
+    let timerInterval = null;
+
+    // Audio State
     let audioCtx = null;
-    let noiseNode = null;
-    let isPlayingNoise = false;
+    let noiseSource = null;
 
-    function toggleStudyWhiteNoise() {
-      const btn = document.getElementById('sound-synth-btn');
-      if (!isPlayingNoise) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const bufferSize = audioCtx.sampleRate * 2;
-        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          output[i] = Math.random() * 2 - 1;
-        }
-        noiseNode = audioCtx.createBufferSource();
-        noiseNode.buffer = noiseBuffer;
-        noiseNode.loop = true;
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.value = 800;
-        noiseNode.connect(filter);
-        filter.connect(audioCtx.destination);
-        noiseNode.start();
-        isPlayingNoise = true;
-        btn.innerText = '⏸ Stop White Noise';
-        btn.style.background = 'rgba(239, 68, 68, 0.3)';
-      } else {
-        if (noiseNode) noiseNode.stop();
-        if (audioCtx) audioCtx.close();
-        isPlayingNoise = false;
-        btn.innerText = '▶ White Noise';
-        btn.style.background = 'var(--oneui-pill-active)';
-      }
-    }
+    // Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      initClock();
+      renderTasks();
+      renderSchedule();
+      renderNotes();
+      renderHistory();
+      updateTimerDisplay();
+    });
 
-    // CLOCK LOGIC
-    function toggleTimeFormat() {
-      is24HourFormat = !is24HourFormat;
-      updateClock();
-    }
-
-    function updateClock() {
-      const now = new Date();
-      let hours = now.getHours();
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      let period = '';
-
-      if (!is24HourFormat) {
-        period = hours >= 12 ? ' PM' : ' AM';
-        hours = hours % 12 || 12;
-      }
-      const formattedHours = String(hours).padStart(2, '0');
-      document.getElementById('clock-time').innerText = `${formattedHours}:${minutes}:${seconds}${period}`;
-
-      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-      document.getElementById('clock-date').innerText = now.toLocaleDateString(undefined, options);
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // NAVIGATION SYSTEM
+    // Page Navigation
     function switchPage(pageId) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active-page'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      const target = document.getElementById(pageId);
+      if (target) target.classList.add('active-page');
+
+      const btns = document.querySelectorAll('.nav-btn');
+      btns.forEach(btn => btn.classList.remove('active'));
       
-      const targetPage = document.getElementById(pageId);
-      if (targetPage) targetPage.classList.add('active-page');
+      const navMapping = { 'home': 0, 'tasks': 1, 'notes': 2, 'history': 3 };
+      if (navMapping[pageId] !== undefined) {
+        btns[navMapping[pageId]].classList.add('active');
+      }
 
-      const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => 
-        btn.getAttribute('onclick')?.includes(pageId)
-      );
-      if (activeBtn) activeBtn.classList.add('active');
-
-      if (pageId === 'calc' || pageId === 'dict' || pageId === 'timer') {
-        showNudge(`Viewing ${pageId.toUpperCase()} app during focus session.`);
+      if (pageId === 'calc' || pageId === 'dict') {
+        showNudge(`You opened ${pageId.toUpperCase()}! Make sure to stay focused on urgent tasks.`);
       }
     }
 
     function toggleMoreMenu() {
-      document.getElementById('more-apps-popup').classList.toggle('show');
-    }
-    function hideMoreMenu() {
-      document.getElementById('more-apps-popup').classList.remove('show');
+      document.getElementById('more-apps-menu').classList.toggle('show');
     }
 
-    // FOCUS ALERT NUDGE
+    // Nudge Alert
     function showNudge(msg) {
-      document.getElementById('nudge-text').innerText = msg;
-      document.getElementById('focus-nudge-popup').classList.add('show');
+      const banner = document.getElementById('focus-nudge-popup');
+      document.getElementById('nudge-text').textContent = msg;
+      banner.classList.add('show');
     }
     function hideNudge() {
       document.getElementById('focus-nudge-popup').classList.remove('show');
     }
 
-    // TASK MANAGEMENT (8 SPECIFICATIONS)
+    // Time & Date Widget
+    function initClock() {
+      updateTime();
+      setInterval(updateTime, 1000);
+    }
+    function updateTime() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      let ampm = '';
+
+      if (!is24Hour) {
+        ampm = hours >= 12 ? ' PM' : ' AM';
+        hours = hours % 12 || 12;
+      }
+      const timeStr = `${String(hours).padStart(2, '0')}:${minutes}:${seconds}${ampm}`;
+      document.getElementById('clock-time').textContent = timeStr;
+
+      const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+      document.getElementById('clock-date').textContent = now.toLocaleDateString(undefined, options);
+    }
+    function toggleTimeFormat() {
+      is24Hour = !is24Hour;
+      updateTime();
+    }
+
+    // Tasks Management
     function addTask() {
       const name = document.getElementById('task-name').value.trim();
-      if (!name) return alert('Please enter an assignment name!');
+      if (!name) return alert("Please enter an assignment title.");
 
       const newTask = {
-        id: Date.now().toString(),
+        id: Date.now(),
         name: name,
         subject: document.getElementById('task-subject').value,
         tier: document.getElementById('task-tier').value,
-        date: document.getElementById('task-date').value || 'No Due Date',
-        estTime: document.getElementById('task-est-time').value || '30',
+        date: document.getElementById('task-date').value || 'No date',
+        est: document.getElementById('task-est-time').value || 30,
         type: document.getElementById('task-type').value,
         difficulty: document.getElementById('task-difficulty').value,
-        specs: document.getElementById('task-specs').value.trim() || 'No additional specifications provided.'
+        specs: document.getElementById('task-specs').value.trim() || 'No additional specifications.'
       };
 
       tasks.push(newTask);
-      saveAndRenderTasks();
-      
       document.getElementById('task-name').value = '';
-      document.getElementById('task-est-time').value = '';
       document.getElementById('task-specs').value = '';
+      renderTasks();
     }
 
     function completeTask(id) {
       const index = tasks.findIndex(t => t.id === id);
       if (index !== -1) {
-        const finished = tasks.splice(index, 1)[0];
-        historyLogs.unshift({
-          ...finished,
-          completedAt: new Date().toLocaleString()
-        });
-        localStorage.setItem('desk_history', JSON.stringify(historyLogs));
-        saveAndRenderTasks();
+        const item = tasks.splice(index, 1)[0];
+        item.completedAt = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        historyLog.push(item);
+        renderTasks();
         renderHistory();
       }
     }
 
-    function deleteTask(id) {
-      tasks = tasks.filter(t => t.id !== id);
-      saveAndRenderTasks();
-    }
-
-    function saveAndRenderTasks() {
-      localStorage.setItem('desk_tasks', JSON.stringify(tasks));
-      renderTasks();
-      renderHomePriorityQueue();
-    }
-
     function renderTasks() {
-      const container = document.getElementById('tiered-task-board');
-      container.innerHTML = '';
+      const board = document.getElementById('tiered-task-board');
+      const homeBoard = document.getElementById('home-priority-tasks');
+      board.innerHTML = '';
+      homeBoard.innerHTML = '';
 
       const tiers = ['Tier 1', 'Tier 2', 'Tier 3'];
-      const tierLabels = {
-        'Tier 1': '🔴 Tier 1: High Priority & Urgent',
-        'Tier 2': '🟡 Tier 2: Medium Priority',
-        'Tier 3': '🟢 Tier 3: Flexible & Low Priority'
-      };
-
+      
       tiers.forEach(tier => {
         const tierTasks = tasks.filter(t => t.tier === tier);
-        const section = document.createElement('div');
-        section.className = 'tier-section';
+        const sec = document.createElement('div');
+        sec.className = 'tier-section';
         
-        section.innerHTML = `
+        let badgeClass = tier === 'Tier 1' ? 'tier-1-badge' : (tier === 'Tier 2' ? 'tier-2-badge' : 'tier-3-badge');
+        
+        sec.innerHTML = `
           <div class="tier-header-bar">
-            <span class="tier-badge ${tier === 'Tier 1' ? 'tier-1-badge' : tier === 'Tier 2' ? 'tier-2-badge' : 'tier-3-badge'}">
-              ${tierLabels[tier]} (${tierTasks.length})
-            </span>
-          </div>
-          <div class="tier-task-list">
-            ${tierTasks.length === 0 ? '<div style="color:var(--oneui-text-sub); font-size:0.88rem; padding:8px 0;">No tasks in this tier.</div>' : ''}
+            <span class="tier-badge ${badgeClass}">${tier} Tasks</span>
+            <span style="font-size:0.8rem; color:var(--oneui-text-sub);">${tierTasks.length} queued</span>
           </div>
         `;
 
-        const listContainer = section.querySelector('.tier-task-list');
-        tierTasks.forEach(task => {
-          const card = document.createElement('div');
-          card.className = `task-card-enhanced ${tier === 'Tier 1' ? 'tier-1' : tier === 'Tier 2' ? 'tier-2' : 'tier-3'}`;
-          card.innerHTML = `
-            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-              <div style="font-weight:800; font-size:1.05rem;">${task.name}</div>
-              <div style="display:flex; gap:6px;">
-                <button type="button" class="action-btn" onclick="completeTask('${task.id}')" style="padding:4px 10px; font-size:0.75rem; background:rgba(16,185,129,0.25); border-color:rgba(16,185,129,0.4);">✓ Complete</button>
-                <button type="button" class="action-btn" onclick="deleteTask('${task.id}')" style="padding:4px 10px; font-size:0.75rem; background:rgba(239,68,68,0.2); border-color:rgba(239,68,68,0.4);">✕</button>
+        if (tierTasks.length === 0) {
+          sec.innerHTML += `<div style="color:var(--oneui-text-sub); font-size:0.88rem; text-align:center; padding:10px 0;">No tasks in ${tier}.</div>`;
+        } else {
+          tierTasks.forEach(task => {
+            const card = document.createElement('div');
+            card.className = `task-card-enhanced ${tier.toLowerCase().replace(' ', '-')}`;
+            card.innerHTML = `
+              <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                  <h4 style="font-size:1.05rem; font-weight:700;">${task.name}</h4>
+                  <div style="font-size:0.8rem; color:var(--oneui-text-sub); margin-top:2px;">Subject: ${task.subject}</div>
+                </div>
+                <button type="button" class="action-btn" style="padding:4px 12px; font-size:0.75rem;" onclick="completeTask(${task.id})">✓ Complete</button>
               </div>
-            </div>
-            <div class="specs-grid-display">
-              <span class="spec-pill">🏷️ ${task.subject}</span>
-              <span class="spec-pill">📖 ${task.type}</span>
-              <span class="spec-pill">⏱️ ${task.estTime} mins</span>
-              <span class="spec-pill">📅 ${task.date}</span>
-              <span class="spec-pill">${task.difficulty}</span>
-            </div>
-            <div class="specs-box">
-              <strong style="color:white; font-size:0.78rem; text-transform:uppercase;">Specifications:</strong><br/>
-              ${task.specs}
+              <div class="specs-grid-display">
+                <span class="spec-pill">📅 ${task.date}</span>
+                <span class="spec-pill">⏱️ ${task.est} mins</span>
+                <span class="spec-pill">📌 ${task.type}</span>
+                <span class="spec-pill">${task.difficulty}</span>
+              </div>
+              <div class="specs-box">${task.specs}</div>
+            `;
+            sec.appendChild(card);
+          });
+        }
+        board.appendChild(sec);
+      });
+
+      // Priority list on Home tab
+      const urgent = tasks.filter(t => t.tier === 'Tier 1');
+      if (urgent.length === 0) {
+        homeBoard.innerHTML = '<div style="color:var(--oneui-text-sub); font-size:0.9rem; padding:10px 0;">No urgent Tier 1 tasks active! 🎉</div>';
+      } else {
+        urgent.slice(0, 3).forEach(task => {
+          homeBoard.innerHTML += `
+            <div class="schedule-item">
+              <div>
+                <div style="font-weight:700; font-size:0.92rem;">${task.name}</div>
+                <div style="font-size:0.78rem; color:var(--oneui-text-sub);">${task.subject} • ${task.est} mins</div>
+              </div>
+              <span class="spec-pill" style="border-color:var(--tier-1-border); color:var(--tier-1-color);">Urgent</span>
             </div>
           `;
-          listContainer.appendChild(card);
         });
-
-        container.appendChild(section);
-      });
-    }
-
-    function renderHomePriorityQueue() {
-      const container = document.getElementById('home-priority-tasks');
-      const urgentTasks = tasks.filter(t => t.tier === 'Tier 1').slice(0, 3);
-      if (urgentTasks.length === 0) {
-        container.innerHTML = `<div style="color:var(--oneui-text-sub); padding:16px 0;">🎉 No urgent Tier 1 assignments pending!</div>`;
-        return;
       }
-      container.innerHTML = urgentTasks.map(t => `
-        <div class="schedule-item">
-          <div>
-            <div style="font-weight:700; font-size:0.92rem;">${t.name}</div>
-            <div style="font-size:0.78rem; color:var(--oneui-text-sub);">${t.subject} • ${t.estTime} mins • Due: ${t.date}</div>
-          </div>
-          <button type="button" class="action-btn" onclick="completeTask('${t.id}')" style="padding:3px 8px; font-size:0.72rem;">Done</button>
-        </div>
-      `).join('');
     }
 
-    // SCHEDULE MANAGER
+    // Schedule Widget
+    function promptAddSchedule() {
+      const subject = prompt("Enter class name:");
+      const time = prompt("Enter class time (e.g. 10:00 AM):");
+      const room = prompt("Enter room/location:");
+      if (subject && time) {
+        schedule.push({ subject, time, room: room || 'TBD' });
+        renderSchedule();
+      }
+    }
     function renderSchedule() {
       const container = document.getElementById('schedule-container');
-      if (classSchedule.length === 0) {
-        container.innerHTML = '<div style="color:var(--oneui-text-sub); font-size:0.88rem;">No scheduled classes.</div>';
-        return;
-      }
-      container.innerHTML = classSchedule.map(s => `
-        <div class="schedule-item">
-          <div>
-            <div style="font-weight:700; font-size:0.9rem;">${s.title}</div>
-            <div style="font-size:0.76rem; color:var(--oneui-text-sub);">${s.time} • ${s.room}</div>
-          </div>
-          <button type="button" onclick="deleteSchedule('${s.id}')" style="background:transparent; border:none; color:var(--oneui-text-sub); cursor:pointer;">✕</button>
-        </div>
-      `).join('');
-    }
-
-    function promptAddSchedule() {
-      const title = prompt('Enter Class Title:');
-      if (!title) return;
-      const time = prompt('Enter Time (e.g. 10:00 AM - 11:30 AM):') || 'TBD';
-      const room = prompt('Enter Room/Location:') || 'Online';
-      classSchedule.push({ id: Date.now().toString(), title, time, room });
-      localStorage.setItem('desk_schedule', JSON.stringify(classSchedule));
-      renderSchedule();
-    }
-
-    function deleteSchedule(id) {
-      classSchedule = classSchedule.filter(s => s.id !== id);
-      localStorage.setItem('desk_schedule', JSON.stringify(classSchedule));
-      renderSchedule();
-    }
-
-    // HABIT TRACKER
-    function toggleHabit(el) {
-      el.classList.toggle('completed');
-      const total = document.querySelectorAll('.habit-pill').length;
-      const done = document.querySelectorAll('.habit-pill.completed').length;
-      document.getElementById('habit-counter').innerText = `${done}/${total} Done`;
-    }
-
-    // NOTES WORKSPACE
-    function renderNotesSidebar() {
-      const container = document.getElementById('notes-file-list');
       container.innerHTML = '';
-      if (notes.length === 0) {
-        container.innerHTML = '<div style="color:var(--oneui-text-sub); font-size:0.82rem;">No saved notes.</div>';
-        return;
-      }
-      notes.forEach(note => {
-        const div = document.createElement('div');
-        div.className = `note-file-item ${note.id === activeNoteId ? 'active-note' : ''}`;
-        div.innerHTML = `<span style="font-size:0.88rem; font-weight:600;">${note.title || 'Untitled'}</span>`;
-        div.onclick = () => loadNote(note.id);
-        container.appendChild(div);
+      schedule.forEach(item => {
+        container.innerHTML += `
+          <div class="schedule-item">
+            <div>
+              <div style="font-weight:700; font-size:0.9rem;">${item.subject}</div>
+              <div style="font-size:0.78rem; color:var(--oneui-text-sub);">${item.room}</div>
+            </div>
+            <div style="font-size:0.82rem; font-weight:700; color:var(--oneui-accent);">${item.time}</div>
+          </div>
+        `;
       });
     }
 
-    function createNewNote() {
-      const newNote = { id: Date.now().toString(), title: 'Untitled Note', body: '' };
-      notes.unshift(newNote);
-      activeNoteId = newNote.id;
-      saveNotesToStorage();
-      loadNote(activeNoteId);
+    // Habit Tracker
+    function toggleHabit(el) {
+      el.classList.toggle('completed');
+      const done = document.querySelectorAll('.habit-pill.completed').length;
+      document.getElementById('habit-counter').textContent = `${done}/4 Done`;
     }
 
-    function loadNote(id) {
-      activeNoteId = id;
-      const note = notes.find(n => n.id === id);
-      if (note) {
-        document.getElementById('note-title-input').value = note.title;
-        document.getElementById('note-body-input').value = note.body;
+    // Audio White Noise Generator
+    function toggleStudyWhiteNoise() {
+      const btn = document.getElementById('sound-synth-btn');
+      if (noiseSource) {
+        noiseSource.stop();
+        noiseSource.disconnect();
+        noiseSource = null;
+        btn.textContent = '▶ White Noise';
+        return;
       }
-      renderNotesSidebar();
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const bufferSize = audioCtx.sampleRate * 2;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = buffer;
+      noiseSource.loop = true;
+      const gain = audioCtx.createGain();
+      gain.gain.value = 0.05;
+      noiseSource.connect(gain);
+      gain.connect(audioCtx.destination);
+      noiseSource.start();
+      btn.textContent = '⏸ Pause Noise';
     }
 
+    // Notes Manager
+    function createNewNote() {
+      const newNote = { id: Date.now(), title: "Untitled Note", content: "" };
+      notes.push(newNote);
+      activeNoteId = newNote.id;
+      renderNotes();
+    }
+    function selectNote(id) {
+      activeNoteId = id;
+      renderNotes();
+    }
     function saveCurrentNote() {
-      if (!activeNoteId) return createNewNote();
       const note = notes.find(n => n.id === activeNoteId);
       if (note) {
-        note.title = document.getElementById('note-title-input').value || 'Untitled Note';
-        note.body = document.getElementById('note-body-input').value;
-        saveNotesToStorage();
-        renderNotesSidebar();
+        note.title = document.getElementById('note-title-input').value || "Untitled Note";
+        note.content = document.getElementById('note-body-input').value;
+        renderNotes();
       }
     }
-
     function deleteCurrentNote() {
-      if (!activeNoteId) return;
       notes = notes.filter(n => n.id !== activeNoteId);
       activeNoteId = notes.length > 0 ? notes[0].id : null;
-      saveNotesToStorage();
-      if (activeNoteId) loadNote(activeNoteId);
-      else {
+      renderNotes();
+    }
+    function exportNoteAsFile() {
+      const note = notes.find(n => n.id === activeNoteId);
+      if (!note) return;
+      const blob = new Blob([note.content], { type: "text/plain;charset=utf-8" });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${note.title.replace(/\s+/g, '_')}.txt`;
+      a.click();
+    }
+    function renderNotes() {
+      const list = document.getElementById('notes-file-list');
+      list.innerHTML = '';
+      notes.forEach(note => {
+        const item = document.createElement('div');
+        item.className = `note-file-item ${note.id === activeNoteId ? 'active-note' : ''}`;
+        item.onclick = () => selectNote(note.id);
+        item.innerHTML = `<span style="font-size:0.88rem; font-weight:600;">📄 ${note.title}</span>`;
+        list.appendChild(item);
+      });
+
+      const current = notes.find(n => n.id === activeNoteId);
+      if (current) {
+        document.getElementById('note-title-input').value = current.title;
+        document.getElementById('note-body-input').value = current.content;
+      } else {
         document.getElementById('note-title-input').value = '';
         document.getElementById('note-body-input').value = '';
-        renderNotesSidebar();
       }
     }
 
-    function exportNoteAsFile() {
-      const title = document.getElementById('note-title-input').value || 'note';
-      const body = document.getElementById('note-body-input').value;
-      const blob = new Blob([body], { type: 'text/plain;charset=utf-8' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = `${title.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.txt`;
-      a.click();
-    }
-
-    function saveNotesToStorage() {
-      localStorage.setItem('desk_notes', JSON.stringify(notes));
-    }
-
-    // HISTORY LOGS
+    // History Log & Stats
     function renderHistory() {
       const tbody = document.getElementById('history-table-body');
-      document.getElementById('stat-total-completed').innerText = historyLogs.length;
-      document.getElementById('stat-tier1-completed').innerText = historyLogs.filter(h => h.tier === 'Tier 1').length;
-      
-      const totalMins = historyLogs.reduce((acc, curr) => acc + parseInt(curr.estTime || 0), 0);
-      document.getElementById('stat-avg-time').innerText = `${totalMins}m`;
+      tbody.innerHTML = '';
 
-      if (historyLogs.length === 0) {
+      if (historyLog.length === 0) {
         tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--oneui-text-sub); padding:24px;">No finished task history yet.</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = historyLogs.map(h => `
-        <tr>
-          <td><span class="spec-pill">${h.subject}</span></td>
-          <td style="font-weight:700;">${h.name}</td>
-          <td><span class="spec-pill">${h.tier}</span></td>
-          <td>${h.estTime} mins</td>
-          <td style="color:var(--oneui-text-sub); font-size:0.82rem;">${h.completedAt}</td>
-        </tr>
-      `).join('');
+      let tier1Count = 0;
+      let totalMins = 0;
+
+      historyLog.forEach(item => {
+        if (item.tier === 'Tier 1') tier1Count++;
+        totalMins += parseInt(item.est || 0);
+
+        tbody.innerHTML += `
+          <tr>
+            <td><strong>${item.subject}</strong></td>
+            <td>${item.name}</td>
+            <td><span class="spec-pill">${item.tier}</span></td>
+            <td>${item.est} mins</td>
+            <td style="color:var(--oneui-text-sub);">${item.completedAt}</td>
+          </tr>
+        `;
+      });
+
+      document.getElementById('stat-total-completed').textContent = historyLog.length;
+      document.getElementById('stat-tier1-completed').textContent = tier1Count;
+      document.getElementById('stat-avg-time').textContent = `${totalMins}m`;
     }
 
-    // CALCULATOR APP
-    let calcExpression = '';
+    // Calculator Logic
+    let calcExpr = '';
     function pressCalc(val) {
-      if (calcExpression === '0') calcExpression = '';
-      calcExpression += val;
-      document.getElementById('calc-display').innerText = calcExpression || '0';
+      calcExpr += val;
+      document.getElementById('calc-display').textContent = calcExpr;
     }
     function clearCalc() {
-      calcExpression = '';
-      document.getElementById('calc-display').innerText = '0';
+      calcExpr = '';
+      document.getElementById('calc-display').textContent = '0';
     }
     function backspaceCalc() {
-      calcExpression = calcExpression.slice(0, -1);
-      document.getElementById('calc-display').innerText = calcExpression || '0';
+      calcExpr = calcExpr.slice(0, -1);
+      document.getElementById('calc-display').textContent = calcExpr || '0';
     }
     function solveCalc() {
+      if (!calcExpr) return;
       try {
-        const result = eval(calcExpression.replace(/×/g, '*').replace(/÷/g, '/'));
-        const log = `${calcExpression} = ${result}`;
-        calcExpression = String(result);
-        document.getElementById('calc-display').innerText = calcExpression;
-        
+        const result = Function(`'use strict'; return (${calcExpr})`)();
         const hist = document.getElementById('calc-history');
-        const div = document.createElement('div');
-        div.style.cssText = 'padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08); font-size:0.9rem; font-family:monospace;';
-        div.innerText = log;
-        hist.prepend(div);
+        if (hist.children[0]?.textContent === 'No calculations logged.') hist.innerHTML = '';
+        const item = document.createElement('div');
+        item.style.padding = '6px 0';
+        item.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+        item.style.fontSize = '0.9rem';
+        item.innerHTML = `<span style="color:var(--oneui-text-sub);">${calcExpr} =</span> <strong>${result}</strong>`;
+        hist.prepend(item);
+        calcExpr = String(result);
+        document.getElementById('calc-display').textContent = calcExpr;
       } catch (e) {
-        document.getElementById('calc-display').innerText = 'Error';
+        document.getElementById('calc-display').textContent = 'Error';
+        calcExpr = '';
       }
     }
 
-    // DICTIONARY APP
+    // Dictionary API Lookup
     async function searchAIDictionary() {
-      const term = document.getElementById('dict-input').value.trim();
+      const input = document.getElementById('dict-input');
       const output = document.getElementById('dict-output');
-      if (!term) return;
+      const word = input.value.trim();
+      if (!word) return;
 
-      output.innerHTML = `<div style="color:var(--oneui-text-sub);">Searching definition for "${term}"...</div>`;
-
+      output.innerHTML = `<div style="color:var(--oneui-text-sub); background: rgba(0,0,0,0.3); padding: 22px; border-radius: 20px;">Searching definition for "${word}"...</div>`;
+      
       try {
-        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(term)}`);
+        const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`);
         if (!res.ok) throw new Error('Word not found');
         const data = await res.json();
-        
         const entry = data[0];
-        const meaningsHtml = entry.meanings.map(m => `
-          <div style="margin-top:12px;">
-            <span class="spec-pill" style="margin-bottom:6px;">${m.partOfSpeech}</span>
-            <ol style="margin-left:20px; color:#cbd5e1; font-size:0.92rem; line-height:1.5;">
-              ${m.definitions.slice(0, 3).map(d => `<li>${d.definition}</li>`).join('')}
-            </ol>
-          </div>
-        `).join('');
+        const mean = entry.meanings[0];
+        const def = mean.definitions[0].definition;
+        const example = mean.definitions[0].example ? `<p style="margin-top:8px; font-style:italic; color:var(--oneui-text-sub);">"${mean.definitions[0].example}"</p>` : '';
 
         output.innerHTML = `
-          <div style="background: rgba(0,0,0,0.3); padding:22px; border-radius:20px; border:1px solid var(--oneui-card-border);">
-            <h3 style="font-size:1.5rem; font-weight:800; color:var(--oneui-accent);">${entry.word}</h3>
-            <div style="font-size:0.85rem; color:var(--oneui-text-sub); font-style:italic;">${entry.phonetic || ''}</div>
-            ${meaningsHtml}
+          <div style="background: rgba(0,0,0,0.3); padding: 22px; border-radius: 20px; border: 1px solid var(--oneui-card-border);">
+            <h3 style="font-size:1.4rem; font-weight:800; margin-bottom:4px;">${entry.word} <span style="font-size:0.9rem; font-weight:400; color:var(--oneui-accent);">${entry.phonetic || ''}</span></h3>
+            <div style="font-weight:700; color:var(--oneui-text-sub); text-transform:uppercase; font-size:0.75rem; margin-bottom:8px;">${mean.partOfSpeech}</div>
+            <p style="font-size:1rem; line-height:1.5;">${def}</p>
+            ${example}
           </div>
         `;
       } catch (err) {
-        output.innerHTML = `
-          <div style="color:#fca5a5; background:rgba(239,68,68,0.15); padding:18px; border-radius:18px; border:1px solid rgba(239,68,68,0.3);">
-            Could not find definition for "${term}". Please try another word.
-          </div>
-        `;
+        output.innerHTML = `<div style="color:#fca5a5; background: rgba(239,68,68,0.1); padding: 22px; border-radius: 20px; border: 1px solid var(--tier-1-border);">No definition found for "${word}". Try another word!</div>`;
       }
     }
 
-    // STUDY FOCUS TIMER
-    let timerDuration = 25 * 60;
-    let timerTimeLeft = 25 * 60;
-    let timerInterval = null;
-    let isTimerRunning = false;
-
+    // Study Timer Logic
     function updateTimerDisplay() {
-      const mins = Math.floor(timerTimeLeft / 60);
-      const secs = timerTimeLeft % 60;
-      document.getElementById('timer-display').innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      const mins = Math.floor(timerLeft / 60).toString().padStart(2, '0');
+      const secs = (timerLeft % 60).toString().padStart(2, '0');
+      document.getElementById('timer-display').textContent = `${mins}:${secs}`;
       
       const circle = document.getElementById('timer-progress-circle');
       const circumference = 597;
-      const offset = circumference - (timerTimeLeft / timerDuration) * circumference;
+      const offset = circumference - (timerLeft / timerTotal) * circumference;
       circle.style.strokeDashoffset = offset;
+    }
+
+    function setPresetTimer(mins) {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+      document.getElementById('timer-start-btn').textContent = 'Start Focus';
+      timerTotal = mins * 60;
+      timerLeft = mins * 60;
+      updateTimerDisplay();
     }
 
     function toggleTimer() {
       const btn = document.getElementById('timer-start-btn');
-      if (!isTimerRunning) {
-        isTimerRunning = true;
-        btn.innerText = 'Pause Focus';
-        btn.style.background = 'rgba(239, 68, 68, 0.3)';
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        btn.textContent = 'Resume Focus';
+      } else {
+        btn.textContent = 'Pause Focus';
         timerInterval = setInterval(() => {
-          if (timerTimeLeft > 0) {
-            timerTimeLeft--;
+          if (timerLeft > 0) {
+            timerLeft--;
             updateTimerDisplay();
           } else {
             clearInterval(timerInterval);
-            isTimerRunning = false;
-            btn.innerText = 'Start Focus';
-            btn.style.background = 'var(--oneui-pill-active)';
-            alert('🔔 Focus session complete! Time to take a break.');
+            timerInterval = null;
+            btn.textContent = 'Start Focus';
+            alert('🎉 Focus Session Completed!');
           }
         }, 1000);
-      } else {
-        clearInterval(timerInterval);
-        isTimerRunning = false;
-        btn.innerText = 'Resume Focus';
-        btn.style.background = 'var(--oneui-pill-active)';
       }
     }
 
     function resetTimer() {
-      clearInterval(timerInterval);
-      isTimerRunning = false;
-      timerTimeLeft = timerDuration;
-      document.getElementById('timer-start-btn').innerText = 'Start Focus';
-      document.getElementById('timer-start-btn').style.background = 'var(--oneui-pill-active)';
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+      document.getElementById('timer-start-btn').textContent = 'Start Focus';
+      timerLeft = timerTotal;
       updateTimerDisplay();
     }
-
-    function setPresetTimer(mins) {
-      timerDuration = mins * 60;
-      timerTimeLeft = timerDuration;
-      resetTimer();
-    }
-
-    // INITIALIZATION
-    window.addEventListener('DOMContentLoaded', () => {
-      renderTasks();
-      renderHomePriorityQueue();
-      renderSchedule();
-      renderNotesSidebar();
-      renderHistory();
-      updateTimerDisplay();
-
-      if (notes.length > 0) loadNote(notes[0].id);
-    });
   </script>
 </body>
 </html>
