@@ -8,11 +8,16 @@
 </head>
 <body>
 
+    <!-- Ambient Glowing Background Bubbles for Depth -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+
     <main class="dashboard-grid">
-        <!-- Panel 1: Live Clock & Greeting -->
+        <!-- Panel 1: Live Clock & Dynamic Greeting -->
         <section class="glass-panel panel-clock" data-panel="clock">
+            <div class="panel-tag">Overview</div>
             <h3 id="greeting-display" class="greeting-text">Welcome back</h3>
-            <h1 id="time-display">00:00</h1>
+            <h1 id="time-display" class="gradient-text">00:00</h1>
             <p id="date-display">Loading date...</p>
         </section>
 
@@ -22,9 +27,9 @@
                 <h2>Focus Timer</h2>
                 <span class="stats-badge">Today: <strong id="stats-time">0</strong>m</span>
             </div>
-            <div id="timer-display">25:00</div>
+            <div id="timer-display" class="gradient-text-alt">25:00</div>
             <div class="timer-controls">
-                <button id="start-btn" class="vivid-btn blue">Start</button>
+                <button id="start-btn" class="vivid-btn blue">Start Focus</button>
                 <button id="reset-btn" class="vivid-btn pink">Reset</button>
             </div>
         </section>
@@ -33,7 +38,7 @@
         <section class="glass-panel panel-links" data-panel="links">
             <div class="panel-header">
                 <h2>School Hub</h2>
-                <button id="add-link-btn" class="icon-btn" title="Add Link">+</button>
+                <button id="add-link-btn" class="icon-btn" title="Add Custom Link">+</button>
             </div>
             <div id="link-buttons" class="link-buttons"></div>
         </section>
@@ -44,7 +49,7 @@
                 <h2>Cloud Scratchpad</h2>
                 <span id="save-status" class="status-tag">Synced</span>
             </div>
-            <textarea id="scratchpad-input" placeholder="Jot down quick thoughts, links, or homework codes... (Auto-syncs to cloud)"></textarea>
+            <textarea id="scratchpad-input" placeholder="Type notes, links, or homework codes here... (Auto-saves to cloud)"></textarea>
         </section>
 
         <!-- Panel 5 & 6: Task Tracker & Categorization -->
@@ -52,27 +57,27 @@
             <div class="panel-header">
                 <h2>Task Tracker</h2>
                 <div class="task-filters">
-                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn active" data-filter="all">All Tasks</button>
                     <button class="filter-btn" data-filter="active">Active</button>
-                    <button class="filter-btn" data-filter="done">Done</button>
+                    <button class="filter-btn" data-filter="done">Completed</button>
                 </div>
             </div>
 
             <div class="task-input-area">
-                <input type="text" id="task-input" placeholder="New assignment or goal...">
+                <input type="text" id="task-input" placeholder="What assignment is due next?">
                 <select id="task-category">
                     <option value="School">School</option>
                     <option value="Coding">Coding</option>
                     <option value="Personal">Personal</option>
                 </select>
-                <button id="add-task-btn" class="vivid-btn green">Add</button>
+                <button id="add-task-btn" class="vivid-btn green">+ Add Task</button>
             </div>
 
             <ul id="task-list"></ul>
         </section>
     </main>
 
-    <!-- Floating One UI / iOS Bottom Navigation Pill -->
+    <!-- Floating One UI / iOS Style Navigation Dock -->
     <nav class="bottom-dock">
         <button class="dock-tab active" data-tab="all">
             <span class="dock-icon">🏠</span>

@@ -27,14 +27,12 @@ function updateClock() {
     const now = new Date();
     const hours = now.getHours();
     
-    // Dynamic Greeting
     let greeting = "Good Morning";
     if (hours >= 12 && hours < 17) greeting = "Good Afternoon";
     else if (hours >= 17 && hours < 22) greeting = "Good Evening";
-    else if (hours >= 22 || hours < 5) greeting = "Night Owls Focus";
+    else if (hours >= 22 || hours < 5) greeting = "Night Owl Mode";
     document.getElementById('greeting-display').innerText = greeting;
 
-    // Time & Date
     document.getElementById('time-display').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     document.getElementById('date-display').innerText = now.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' });
 }
@@ -63,7 +61,7 @@ function updateTimerDisplay() {
 startBtn.addEventListener('click', () => {
     if (isRunning) {
         clearInterval(timerInterval);
-        startBtn.innerText = "Start";
+        startBtn.innerText = "Start Focus";
         isRunning = false;
     } else {
         startBtn.innerText = "Pause";
@@ -75,9 +73,9 @@ startBtn.addEventListener('click', () => {
             } else {
                 clearInterval(timerInterval);
                 logStudySession(25);
-                alert("Pomodoro complete! Great focus session.");
+                alert("Pomodoro complete! Outstanding focus session.");
                 timeLeft = 25 * 60;
-                startBtn.innerText = "Start";
+                startBtn.innerText = "Start Focus";
                 isRunning = false;
                 updateTimerDisplay();
             }
@@ -89,11 +87,10 @@ resetBtn.addEventListener('click', () => {
     clearInterval(timerInterval);
     timeLeft = 25 * 60;
     isRunning = false;
-    startBtn.innerText = "Start";
+    startBtn.innerText = "Start Focus";
     updateTimerDisplay();
 });
 
-// Save completed session to Firestore
 async function logStudySession(minutes) {
     await addDoc(collection(db, 'study_logs'), {
         duration: minutes,
@@ -101,7 +98,6 @@ async function logStudySession(minutes) {
     });
 }
 
-// Calculate total focus minutes for today
 onSnapshot(collection(db, 'study_logs'), (snapshot) => {
     let totalMinutes = 0;
     const todayStr = new Date().toDateString();
@@ -124,14 +120,12 @@ const scratchpad = document.getElementById('scratchpad-input');
 const saveStatus = document.getElementById('save-status');
 let saveTimeout = null;
 
-// Listen to changes in Cloud
 onSnapshot(doc(db, 'scratchpad', 'main_note'), (docSnap) => {
     if (docSnap.exists() && document.activeElement !== scratchpad) {
         scratchpad.value = docSnap.data().content || "";
     }
 });
 
-// Save to Cloud when user types
 scratchpad.addEventListener('input', () => {
     saveStatus.innerText = "Typing...";
     clearTimeout(saveTimeout);
@@ -211,15 +205,13 @@ function renderTasks(snapshot) {
                 <span class="task-text">${task.text}</span>
                 <span class="task-tag">${task.category}</span>
             </div>
-            <button class="delete-link" title="Delete">✕</button>
+            <button class="delete-link" title="Delete Task">✕</button>
         `;
 
-        // Toggle Done
         li.querySelector('.task-check').addEventListener('change', async (e) => {
             await updateDoc(doc(db, 'tasks', id), { completed: e.target.checked });
         });
 
-        // Delete Task
         li.querySelector('.delete-link').addEventListener('click', async () => {
             await deleteDoc(doc(db, 'tasks', id));
         });
@@ -243,7 +235,6 @@ const defaultLinks = [
 ];
 
 onSnapshot(collection(db, 'quick_links'), async (snapshot) => {
-    // Initialize default links if collection is brand new
     if (snapshot.empty) {
         for (let l of defaultLinks) {
             await addDoc(collection(db, 'quick_links'), l);
