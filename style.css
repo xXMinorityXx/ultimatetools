@@ -1,0 +1,109 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #0f172a, #000000, #1e1b4b);
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Responsive Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    width: 100%;
+    max-width: 900px;
+}
+
+/* Liquid Glass Panels */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+h1 { font-size: 3.5rem; font-weight: 300; margin-bottom: 5px; }
+h2 { font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; color: #e2e8f0; }
+#timer-display { font-size: 3rem; font-weight: 300; margin-bottom: 20px; text-align: center; }
+
+/* One UI Vivid Accent Buttons */
+.vivid-btn {
+    text-decoration: none;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 14px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.vivid-btn:hover { transform: scale(1.03); opacity: 0.9; }
+
+.blue { background-color: #3874ff; }
+.pink { background-color: #ff3b6b; }
+.orange { background-color: #ff8c00; }
+.green { background-color: #00c853; }
+
+.link-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Task Input & List */
+.task-input-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#task-input {
+    flex-grow: 1;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: white;
+    padding: 10px 15px;
+    outline: none;
+}
+
+#task-input:focus { border-color: #3874ff; }
+
+ul { list-style: none; }
+li {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: #ff3b6b;
+    cursor: pointer;
+    font-weight: bold;
+}
