@@ -13,7 +13,7 @@ import {
   serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-// Firebase Config
+// Firebase Setup
 const firebaseConfig = {
   apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3goBKm87go",
   authDomain: "student-dashboard-41b98.firebaseapp.com",
@@ -27,18 +27,35 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// 1. Live Clock & Class Schedule Engine
-const schoolSchedule = [
-  { name: "Period 1: CS / Tech", start: "08:00", end: "09:15" },
-  { name: "Period 2: Math", start: "09:20", end: "10:35" },
-  { name: "Period 3: Science", start: "10:40", end: "11:55" },
-  { name: "Lunch Break", start: "11:55", end: "12:40" },
-  { name: "Period 4: English", start: "12:45", end: "14:00" },
-  { name: "Focus & Self Study", start: "14:00", end: "17:00" }
+// 1. Precise ODD / EVEN Schedule Radar Engine
+// Schedule breakdown according to provided table:
+// ODD (Mon/Wed/Fri): Per 1, Recess, Per 3, Per 5, Lunch, Per 7
+// EVEN (Tue/Thu):    Per 2, Recess, Per 4, Adv, Lunch, Per 6
+
+const oddSchedule = [
+  { name: "Passing Period", start: "07:55", end: "08:00" },
+  { name: "Period 1", start: "08:00", end: "09:17" },
+  { name: "Recess", start: "09:17", end: "09:27" },
+  { name: "Period 3", start: "09:32", end: "10:47" },
+  { name: "Period 5", start: "10:52", end: "12:07" },
+  { name: "Lunch", start: "12:07", end: "12:37" },
+  { name: "Period 7", start: "12:42", end: "13:57" }
+];
+
+const evenSchedule = [
+  { name: "Passing Period", start: "07:55", end: "08:00" },
+  { name: "Period 2", start: "08:00", end: "09:17" },
+  { name: "Recess", start: "09:17", end: "09:27" },
+  { name: "Period 4", start: "09:32", end: "10:47" },
+  { name: "Advisory", start: "10:52", end: "12:07" },
+  { name: "Lunch", start: "12:07", end: "12:37" },
+  { name: "Period 6", start: "12:42", end: "13:57" }
 ];
 
 function updateClockAndSchedule() {
   const now = new Date();
+  const day = now.getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
+  
   document.getElementById("clock").textContent = now.toLocaleTimeString();
   document.getElementById("date").textContent = now.toLocaleDateString(undefined, { 
     weekday: 'short', month: 'short', day: 'numeric' 
@@ -50,44 +67,65 @@ function updateClockAndSchedule() {
   else if (hours < 18) greeting = "Good Afternoon";
   document.getElementById("greeting").textContent = greeting;
 
-  // Calculate Schedule Position
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
-  let activePeriod = null;
 
-  for (let p of schoolSchedule) {
-    const [sH, sM] = p.start.split(":").map(Number);
-    const [eH, eM] = p.end.split(":").map(Number);
+  // Weekend Mode (Sat / Sun)
+  if (day === 0 || day === 6) {
+    document.getElementById("schedule-day-type").textContent = "Weekend";
+    document.getElementById("current-period").textContent = "Weekend Mode - Recharge & Review";
+    document.getElementById("period-time-remaining").textContent = "Free Time";
+    document.getElementById("schedule-progress").style.width = "100%";
+    return;
+  }
+
+  // Determine ODD vs EVEN Day
+  const isOddDay = (day === 1 || day === 3 || day === 5); // Mon, Wed, Fri
+  const activeSchedule = isOddDay ? oddSchedule : evenSchedule;
+  
+  document.getElementById("schedule-day-type").textContent = isOddDay ? "ODD Day" : "EVEN Day";
+
+  let currentBlock = null;
+
+  for (let block of activeSchedule) {
+    const [sH, sM] = block.start.split(":").map(Number);
+    const [eH, eM] = block.end.split(":").map(Number);
     const startMins = sH * 60 + sM;
     const endMins = eH * 60 + eM;
 
     if (currentMinutes >= startMins && currentMinutes < endMins) {
-      activePeriod = p;
-      const totalDuration = endMins - startMins;
+      currentBlock = block;
+      const duration = endMins - startMins;
       const elapsed = currentMinutes - startMins;
-      const progressPercent = (elapsed / totalDuration) * 100;
+      const percent = (elapsed / duration) * 100;
 
-      document.getElementById("current-period").textContent = p.name;
-      document.getElementById("period-time-remaining").textContent = `${endMins - currentMinutes}m left`;
-      document.getElementById("schedule-progress").style.width = `${progressPercent}%`;
+      document.getElementById("current-period").textContent = block.name;
+      document.getElementById("period-time-remaining").textContent = `${endMins - currentMinutes}m remaining`;
+      document.getElementById("schedule-progress").style.width = `${percent}%`;
       break;
     }
   }
 
-  if (!activePeriod) {
-    document.getElementById("current-period").textContent = "Classes Done for Today";
-    document.getElementById("period-time-remaining").textContent = "Free Time";
-    document.getElementById("schedule-progress").style.width = "100%";
+  if (!currentBlock) {
+    if (currentMinutes < 475) { // Before 7:55 AM
+      document.getElementById("current-period").textContent = "Before School";
+      document.getElementById("period-time-remaining").textContent = "Starts at 7:55 AM";
+      document.getElementById("schedule-progress").style.width = "0%";
+    } else { // After 1:57 PM
+      document.getElementById("current-period").textContent = "School Dismissed";
+      document.getElementById("period-time-remaining").textContent = "Free Time";
+      document.getElementById("schedule-progress").style.width = "100%";
+    }
   }
 }
+
 setInterval(updateClockAndSchedule, 1000);
 updateClockAndSchedule();
 
-// 2. Liquid Proximity Dock Magnification Effect (macOS style)
+// 2. Apple Magnifying Proximity Dock Logic
 const dock = document.getElementById("liquid-dock");
 const dockItems = document.querySelectorAll(".dock-item");
 
 dock.addEventListener("mousemove", (e) => {
-  const dockRect = dock.getBoundingClientRect();
   const mouseX = e.clientX;
 
   dockItems.forEach((item) => {
@@ -95,9 +133,8 @@ dock.addEventListener("mousemove", (e) => {
     const itemCenter = itemRect.left + itemRect.width / 2;
     const distance = Math.abs(mouseX - itemCenter);
     
-    // Proximity scaling formula
-    const maxScale = 1.45;
-    const effectRange = 120;
+    const maxScale = 1.4;
+    const effectRange = 110;
     
     if (distance < effectRange) {
       const scale = 1 + (maxScale - 1) * Math.cos((distance / effectRange) * (Math.PI / 2));
@@ -112,7 +149,6 @@ dock.addEventListener("mouseleave", () => {
   dockItems.forEach(item => item.style.transform = "scale(1)");
 });
 
-// View Toggle Engine
 dockItems.forEach(item => {
   item.addEventListener("click", (e) => {
     dockItems.forEach(i => i.classList.remove("active"));
@@ -122,10 +158,10 @@ dockItems.forEach(item => {
   });
 });
 
-// 3. Web Audio Synth Noise Generator (Ambient Audio Player)
+// 3. Web Audio Synth Ambient Noise Generator
 let audioCtx, noiseNode;
 
-function playWhiteNoise(type = "white") {
+function playNoise(type = "white") {
   if (noiseNode) {
     noiseNode.stop();
     noiseNode = null;
@@ -138,7 +174,7 @@ function playWhiteNoise(type = "white") {
   const output = buffer.getChannelData(0);
 
   for (let i = 0; i < bufferSize; i++) {
-    output[i] = type === "white" ? Math.random() * 2 - 1 : (Math.random() * 2 - 1) * 0.3;
+    output[i] = type === "white" ? Math.random() * 2 - 1 : (Math.random() * 2 - 1) * 0.35;
   }
 
   noiseNode = audioCtx.createBufferSource();
@@ -146,7 +182,7 @@ function playWhiteNoise(type = "white") {
   noiseNode.loop = true;
   
   const gainNode = audioCtx.createGain();
-  gainNode.gain.value = 0.05; // Low comfortable volume
+  gainNode.gain.value = 0.04;
   
   noiseNode.connect(gainNode);
   gainNode.connect(audioCtx.destination);
@@ -155,16 +191,16 @@ function playWhiteNoise(type = "white") {
 }
 
 document.getElementById("audio-white-noise").addEventListener("click", (e) => {
-  const playing = playWhiteNoise("white");
-  e.target.classList.toggle("active", playing);
+  const active = playNoise("white");
+  e.target.classList.toggle("active", active);
 });
 
 document.getElementById("audio-pink-noise").addEventListener("click", (e) => {
-  const playing = playWhiteNoise("pink");
-  e.target.classList.toggle("active", playing);
+  const active = playNoise("pink");
+  e.target.classList.toggle("active", active);
 });
 
-// 4. Focus Timer Engine
+// 4. Focus Timer & Study Log Sync
 let timerInterval = null;
 let timeRemaining = 1500;
 
@@ -206,47 +242,25 @@ onSnapshot(collection(db, "study_logs"), (snapshot) => {
   let total = 0;
   snapshot.forEach(doc => total += (doc.data().durationMinutes || 0));
   document.getElementById("total-focus-time").textContent = total;
+  document.getElementById("stat-weekly-focus").textContent = total;
 });
 
-// 5. Cloud Scratchpad with Word Counter
-const scratchpad = document.getElementById("scratchpad");
-const wordCountEl = document.getElementById("word-count");
-const scratchpadRef = doc(db, "scratchpad", "main_note");
-
-onSnapshot(scratchpadRef, (snapshot) => {
-  if (snapshot.exists() && document.activeElement !== scratchpad) {
-    scratchpad.value = snapshot.data().content || "";
-    updateWordCount();
-  }
-});
-
-function updateWordCount() {
-  const text = scratchpad.value.trim();
-  const words = text ? text.split(/\s+/).length : 0;
-  wordCountEl.textContent = `${words} words`;
-}
-
-let saveDebounce;
-scratchpad.addEventListener("input", () => {
-  updateWordCount();
-  document.getElementById("scratchpad-status").textContent = "Saving...";
-  clearTimeout(saveDebounce);
-  saveDebounce = setTimeout(async () => {
-    await setDoc(scratchpadRef, { content: scratchpad.value, updatedAt: serverTimestamp() }, { merge: true });
-    document.getElementById("scratchpad-status").textContent = "Synced";
-  }, 1000);
-});
-
-// 6. Firestore Task Tracker & Quick Links
+// 5. Cloud Task Tracker & Weekly Overview Intelligence
 const taskForm = document.getElementById("add-task-form");
 const taskList = document.getElementById("task-list");
 let activeFilter = "all";
 
 onSnapshot(query(collection(db, "tasks"), orderBy("createdAt", "desc")), (snapshot) => {
   taskList.innerHTML = "";
+  let doneCount = 0;
+  let pendingCount = 0;
+
   snapshot.forEach((docSnap) => {
     const task = docSnap.data();
     const id = docSnap.id;
+
+    if (task.completed) doneCount++;
+    else pendingCount++;
 
     if (activeFilter === "active" && task.completed) return;
     if (activeFilter === "completed" && !task.completed) return;
@@ -257,11 +271,15 @@ onSnapshot(query(collection(db, "tasks"), orderBy("createdAt", "desc")), (snapsh
       <div>
         <input type="checkbox" ${task.completed ? "checked" : ""} class="toggle-task" data-id="${id}">
         <span>${task.text}</span>
+        <span class="task-tag">${task.category || 'General'}</span>
       </div>
       <button class="delete-btn" data-id="${id}">×</button>
     `;
     taskList.appendChild(li);
   });
+
+  document.getElementById("stat-completed-tasks").textContent = doneCount;
+  document.getElementById("stat-pending-tasks").textContent = pendingCount;
 
   document.querySelectorAll(".toggle-task").forEach(chk => {
     chk.addEventListener("change", async (e) => {
@@ -269,7 +287,7 @@ onSnapshot(query(collection(db, "tasks"), orderBy("createdAt", "desc")), (snapsh
     });
   });
 
-  document.querySelectorAll(".delete-btn").forEach(btn => {
+  document.querySelectorAll(".task-item .delete-btn").forEach(btn => {
     btn.addEventListener("click", async (e) => {
       await deleteDoc(doc(db, "tasks", e.target.dataset.id));
     });
@@ -289,7 +307,16 @@ taskForm.addEventListener("submit", async (e) => {
   input.value = "";
 });
 
-// Quick Links
+// Task Filter Buttons
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+    activeFilter = e.target.dataset.filter;
+  });
+});
+
+// 6. Quick Links Portal Deck
 const linksGrid = document.getElementById("links-grid");
 onSnapshot(collection(db, "quick_links"), (snapshot) => {
   linksGrid.innerHTML = "";
@@ -317,4 +344,33 @@ document.getElementById("add-link-form").addEventListener("submit", async (e) =>
   const url = document.getElementById("link-url").value;
   await addDoc(collection(db, "quick_links"), { title, url });
   e.target.reset();
+});
+
+// 7. Cloud Scratchpad with Realtime Debounce
+const scratchpad = document.getElementById("scratchpad");
+const wordCountEl = document.getElementById("word-count");
+const scratchpadRef = doc(db, "scratchpad", "main_note");
+
+onSnapshot(scratchpadRef, (snapshot) => {
+  if (snapshot.exists() && document.activeElement !== scratchpad) {
+    scratchpad.value = snapshot.data().content || "";
+    updateWordCount();
+  }
+});
+
+function updateWordCount() {
+  const text = scratchpad.value.trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  wordCountEl.textContent = `${words} words`;
+}
+
+let saveDebounce;
+scratchpad.addEventListener("input", () => {
+  updateWordCount();
+  document.getElementById("scratchpad-status").textContent = "Saving...";
+  clearTimeout(saveDebounce);
+  saveDebounce = setTimeout(async () => {
+    await setDoc(scratchpadRef, { content: scratchpad.value, updatedAt: serverTimestamp() }, { merge: true });
+    document.getElementById("scratchpad-status").textContent = "Synced";
+  }, 1000);
 });

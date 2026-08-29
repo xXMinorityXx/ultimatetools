@@ -15,11 +15,11 @@
   </div>
 
   <div class="dashboard-container view-all" id="dashboard">
-    <!-- Panel 1: Live Clock & Schedule Radar -->
+    <!-- Panel 1: Live ODD/EVEN Schedule Radar & Clock -->
     <div class="glass-panel panel-clock">
       <div class="panel-header">
-        <span class="badge liquid-pill">Live Radar</span>
-        <span id="date" class="muted-text">...</span>
+        <span class="badge liquid-pill" id="schedule-day-type">ODD Day</span>
+        <span id="date" class="muted-text">--</span>
       </div>
       <h1 id="clock">00:00:00</h1>
       <h3 id="greeting">Good Day</h3>
@@ -37,7 +37,10 @@
     <!-- Panel 2: Focus Engine & Ambient Audio -->
     <div class="glass-panel panel-timer">
       <div class="panel-header">
-        <h3>⏱️ Focus & Atmosphere</h3>
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0 2C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm1-10h4v2h-6V7h2v5z"/></svg>
+          <h3>Focus Studio</h3>
+        </div>
         <span class="stats-badge"><span id="total-focus-time">0</span>m Today</span>
       </div>
       <div id="timer-display">25:00</div>
@@ -47,39 +50,45 @@
         <button id="reset-timer-btn" class="btn btn-glass">Reset</button>
       </div>
       <div class="ambient-sound-bar">
-        <span>🔊 Ambient sound:</span>
+        <svg class="svg-icon-sm" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+        <span>Ambient Sound:</span>
         <button id="audio-white-noise" class="sound-chip">White Noise</button>
         <button id="audio-pink-noise" class="sound-chip">Deep Pink</button>
       </div>
     </div>
 
-    <!-- Panel 3: Quick Portals -->
-    <div class="glass-panel panel-links">
-      <h3>🚀 Portal Deck</h3>
-      <div id="links-grid" class="links-grid"></div>
-      <form id="add-link-form" class="inline-form">
-        <input type="text" id="link-title" placeholder="Portal Name" required />
-        <input type="url" id="link-url" placeholder="https://..." required />
-        <button type="submit" class="btn btn-accent">+</button>
-      </form>
-    </div>
-
-    <!-- Panel 4: Liquid Cloud Notes -->
-    <div class="glass-panel panel-notes">
+    <!-- Panel 3: Weekly Catch-Up & Cloud Overview -->
+    <div class="glass-panel panel-weekly">
       <div class="panel-header">
-        <h3>📝 Liquid Scratchpad</h3>
-        <span id="scratchpad-status" class="status-indicator">Synced</span>
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+          <h3>Weekly Intelligence</h3>
+        </div>
+        <span class="muted-text">Live Sync</span>
       </div>
-      <textarea id="scratchpad" placeholder="Jot down notes, class codes, or links... (Live Cloud Sync)"></textarea>
-      <div class="note-footer">
-        <span id="word-count">0 words</span>
+      <div class="weekly-stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" id="stat-completed-tasks">0</span>
+          <span class="stat-label">Tasks Done</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-pending-tasks">0</span>
+          <span class="stat-label">Assignments Left</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-weekly-focus">0</span>
+          <span class="stat-label">Focus Mins</span>
+        </div>
       </div>
     </div>
 
-    <!-- Panel 5: Task Matrix -->
+    <!-- Panel 4: Mission Control (Tasks) -->
     <div class="glass-panel panel-tasks">
       <div class="panel-header">
-        <h3>✅ Mission Control</h3>
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          <h3>Mission Control</h3>
+        </div>
         <div class="task-filters">
           <button class="filter-btn active" data-filter="all">All</button>
           <button class="filter-btn" data-filter="active">Active</button>
@@ -89,41 +98,62 @@
       <form id="add-task-form" class="inline-form">
         <input type="text" id="task-input" placeholder="Add assignment..." required />
         <select id="task-category-select">
-          <option value="Math">Math</option>
-          <option value="CS">CS</option>
-          <option value="Science">Science</option>
-          <option value="English">English</option>
+          <option value="Per 1/2">Per 1 / Per 2</option>
+          <option value="Per 3/4">Per 3 / Per 4</option>
+          <option value="Per 5/Adv">Per 5 / Adv</option>
+          <option value="Per 7/6">Per 7 / Per 6</option>
           <option value="Personal">Personal</option>
         </select>
-        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="submit" class="btn btn-primary">Add Task</button>
       </form>
       <ul id="task-list" class="task-list"></ul>
     </div>
 
-    <!-- Panel 6: Habit Streaks -->
-    <div class="glass-panel panel-habits">
-      <h3>🔥 Daily Ecosystem Streaks</h3>
-      <div class="habits-list">
-        <label class="habit-item"><input type="checkbox" id="habit-1"> Review Today's Notes</label>
-        <label class="habit-item"><input type="checkbox" id="habit-2"> Clear Homework Inbox</label>
-        <label class="habit-item"><input type="checkbox" id="habit-3"> 25-Min Deep Work Session</label>
+    <!-- Panel 5: Quick Portals Deck -->
+    <div class="glass-panel panel-links">
+      <div class="panel-header">
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z"/></svg>
+          <h3>Portal Deck</h3>
+        </div>
+      </div>
+      <div id="links-grid" class="links-grid"></div>
+      <form id="add-link-form" class="inline-form">
+        <input type="text" id="link-title" placeholder="Site Name" required />
+        <input type="url" id="link-url" placeholder="https://..." required />
+        <button type="submit" class="btn btn-accent">+</button>
+      </form>
+    </div>
+
+    <!-- Panel 6: Liquid Scratchpad -->
+    <div class="glass-panel panel-notes">
+      <div class="panel-header">
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          <h3>Cloud Scratchpad</h3>
+        </div>
+        <span id="scratchpad-status" class="status-indicator">Synced</span>
+      </div>
+      <textarea id="scratchpad" placeholder="Jot down notes, class codes, or links... (Auto-saves live)"></textarea>
+      <div class="note-footer">
+        <span id="word-count">0 words</span>
       </div>
     </div>
   </div>
 
-  <!-- Interactive Magnifying Liquid Dock -->
+  <!-- Interactive Apple Liquid Magnifying Dock -->
   <nav class="floating-dock" id="liquid-dock">
     <button class="dock-item active" data-view="view-all" data-tooltip="Overview">
-      <span class="icon">🏠</span>
+      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     </button>
-    <button class="dock-item" data-view="view-focus" data-tooltip="Focus Mode">
-      <span class="icon">⏱️</span>
+    <button class="dock-item" data-view="view-focus" data-tooltip="Focus Studio">
+      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0 2C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm1-10h4v2h-6V7h2v5z"/></svg>
     </button>
     <button class="dock-item" data-view="view-tasks" data-tooltip="Tasks">
-      <span class="icon">✅</span>
+      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
     </button>
     <button class="dock-item" data-view="view-notes" data-tooltip="Scratchpad">
-      <span class="icon">📝</span>
+      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
     </button>
   </nav>
 
