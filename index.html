@@ -3,61 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>High School Command Center Pro</title>
+  <title>Liquid Glass Study Command Center</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Liquid Ambient Background -->
+  <!-- Liquid Ambient Background Mesh -->
   <div class="liquid-bg">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
+    <div class="liquid-shimmer-overlay"></div>
   </div>
 
   <div class="dashboard-container view-all" id="dashboard">
     
     <!-- Panel 1: Bell Schedule Radar & Live Clock -->
-    <div class="glass-panel panel-clock">
+    <div class="glass-panel panel-clock animated-card">
       <div class="panel-header">
         <div class="header-title">
           <svg class="svg-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
           <h3>Schedule Radar</h3>
         </div>
-        <span class="badge liquid-pill" id="schedule-day-type">ODD Day</span>
+        <span class="badge liquid-pill" id="schedule-day-type">ODD DAY</span>
       </div>
       
       <div class="clock-display-group">
         <h1 id="clock">00:00:00</h1>
         <span id="date" class="muted-text">--</span>
       </div>
-      
-      <h4 id="greeting" class="sub-greeting">Good Day</h4>
 
       <div class="schedule-box">
         <div class="schedule-info">
-          <span id="current-period" class="period-title">Class: Standby</span>
-          <span id="period-time-remaining" class="accent-text">--:--</span>
+          <span id="current-period" class="period-title">Class: AP European History</span>
+          <span id="period-time-remaining" class="accent-text">24m remaining</span>
         </div>
         <div class="progress-bar-track">
-          <div id="schedule-progress" class="progress-bar-fill"></div>
-        </div>
-        <div class="schedule-footer">
-          <span class="muted-text-sm" id="next-period-preview">Next: Loading...</span>
+          <div id="schedule-progress" class="progress-bar-fill" style="width: 65%;"></div>
         </div>
       </div>
     </div>
 
-    <!-- Panel 2: Adjustable Focus Studio (No Ambient Audio) -->
-    <div class="glass-panel panel-timer">
+    <!-- Panel 2: Adjustable Focus Studio -->
+    <div class="glass-panel panel-timer animated-card">
       <div class="panel-header">
         <div class="header-title">
           <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-          <h3>Custom Focus Studio</h3>
+          <h3>Focus Studio</h3>
         </div>
-        <span class="stats-badge"><span id="total-focus-time">0</span>m Focused</span>
+        <span class="stats-badge"><span id="total-focus-time">45</span>m Focused Today</span>
       </div>
 
-      <!-- Quick Preset Selector -->
       <div class="timer-presets">
         <button class="preset-btn active" data-mins="25">25m</button>
         <button class="preset-btn" data-mins="45">45m</button>
@@ -65,11 +60,10 @@
         <button class="preset-btn" data-mins="5">5m Break</button>
       </div>
 
-      <!-- Manual Minute Adjuster -->
       <div class="custom-timer-input-row">
-        <label for="custom-minutes-input">Set Custom Minutes:</label>
+        <label for="custom-minutes-input">Custom Time:</label>
         <input type="number" id="custom-minutes-input" min="1" max="180" value="25" />
-        <button id="apply-custom-time-btn" class="btn btn-secondary">Apply</button>
+        <button id="apply-custom-time-btn" class="btn btn-secondary">Set</button>
       </div>
 
       <div id="timer-display">25:00</div>
@@ -81,18 +75,86 @@
       </div>
     </div>
 
-    <!-- Panel 3: FUNCTION 1 - Exam & Test Countdown Radar -->
-    <div class="glass-panel panel-exams">
+    <!-- Panel 3: High School Function 1 - Gamified Streak & XP Level System -->
+    <div class="glass-panel panel-streak animated-card">
+      <div class="panel-header">
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M13.5 0.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8c0-6.04-4.5-10.89-6.5-13.33zM12 20c-3.31 0-6-2.69-6-6 0-1.53.58-3.03 1.58-4.14.28 1.48 1.48 2.64 3.01 2.64 1.72 0 3.08-1.42 3.08-3.14 0-.81-.29-1.58-.78-2.18C15.22 9.17 18 11.87 18 14c0 3.31-2.69 6-6 6z"/></svg>
+          <h3>Study Arena & Streak</h3>
+        </div>
+        <div class="streak-badge-animated">
+          <span class="flame-icon">🔥</span>
+          <span id="streak-count">5</span> Day Streak
+        </div>
+      </div>
+
+      <div class="xp-level-container">
+        <div class="level-info">
+          <span id="rank-badge" class="rank-title">Scholar Elite</span>
+          <span id="xp-text" class="accent-text">350 / 500 XP</span>
+        </div>
+        <div class="progress-bar-track">
+          <div id="xp-progress-bar" class="progress-bar-fill xp-fill" style="width: 70%;"></div>
+        </div>
+      </div>
+
+      <div class="daily-quests-box">
+        <h4 class="quest-heading">Daily Quests (+50 XP Each)</h4>
+        <div class="quests-list">
+          <label class="quest-item">
+            <input type="checkbox" class="quest-check" data-xp="50" checked />
+            <span>Complete 1 Focus Session</span>
+          </label>
+          <label class="quest-item">
+            <input type="checkbox" class="quest-check" data-xp="50" />
+            <span>Review Flashcard Deck</span>
+          </label>
+          <label class="quest-item">
+            <input type="checkbox" class="quest-check" data-xp="50" />
+            <span>Finish 3 Homework Tasks</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 4: Advanced Multi-Note Glass Hub -->
+    <div class="glass-panel panel-notes animated-card">
+      <div class="panel-header">
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          <h3>Multi-Note Vault</h3>
+        </div>
+        <button id="create-new-note-btn" class="btn btn-primary btn-sm">+ New Note</button>
+      </div>
+
+      <!-- Quick Home Cards Carousel / Selector -->
+      <div class="notes-selector-strip" id="notes-tab-strip">
+        <!-- Dynamically rendered note pills -->
+      </div>
+
+      <div class="note-editor-wrapper">
+        <input type="text" id="active-note-title" placeholder="Note Title (e.g., Chemistry Quiz Review)" class="note-title-input" />
+        <textarea id="active-note-body" placeholder="Write class notes, formula cheat sheets, or zoom links..."></textarea>
+      </div>
+
+      <div class="note-footer">
+        <button id="delete-active-note-btn" class="btn-xs btn-danger">Delete Note</button>
+        <span id="note-auto-save-status" class="muted-text-sm">Auto-synced</span>
+      </div>
+    </div>
+
+    <!-- Panel 5: High School Function 2 - Exam & AP Countdown -->
+    <div class="glass-panel panel-exams animated-card">
       <div class="panel-header">
         <div class="header-title">
           <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
-          <h3>Exam & AP Countdown</h3>
+          <h3>Exam Radar</h3>
         </div>
-        <span class="badge liquid-pill">Target Dates</span>
+        <span class="badge liquid-pill">Countdown</span>
       </div>
 
       <form id="add-exam-form" class="inline-form flex-wrap">
-        <input type="text" id="exam-title-input" placeholder="AP Chem Final, SAT..." required class="flex-grow" />
+        <input type="text" id="exam-title-input" placeholder="AP Bio Midterm..." required class="flex-grow" />
         <input type="date" id="exam-date-input" required />
         <button type="submit" class="btn btn-primary">+</button>
       </form>
@@ -100,124 +162,62 @@
       <div id="exams-list" class="exams-list"></div>
     </div>
 
-    <!-- Panel 4: FUNCTION 2 - Active Recall Flashcard Deck -->
-    <div class="glass-panel panel-flashcards">
+    <!-- Panel 6: High School Function 3 - Active Recall Flashcards -->
+    <div class="glass-panel panel-flashcards animated-card">
       <div class="panel-header">
         <div class="header-title">
           <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
           <h3>Active Recall Flashcards</h3>
         </div>
-        <span class="muted-text-sm" id="card-counter">0 / 0</span>
+        <span class="muted-text-sm" id="card-counter">1 / 2</span>
       </div>
 
       <div class="flashcard-wrapper">
         <div class="flashcard" id="flashcard">
-          <div class="card-face card-front" id="card-front">Add a flashcard to start!</div>
-          <div class="card-face card-back" id="card-back">Flip to see the answer.</div>
+          <div class="card-face card-front" id="card-front">Mitochondria Function</div>
+          <div class="card-face card-back" id="card-back">Powerhouse of the cell; produces ATP via respiration.</div>
         </div>
       </div>
 
       <div class="flashcard-controls">
         <button id="prev-card-btn" class="btn btn-glass">‹ Prev</button>
-        <button id="flip-card-btn" class="btn btn-primary">Flip Card</button>
+        <button id="flip-card-btn" class="btn btn-primary">Flip</button>
         <button id="next-card-btn" class="btn btn-glass">Next ›</button>
       </div>
-
-      <form id="add-card-form" class="inline-form flex-wrap">
-        <input type="text" id="card-front-input" placeholder="Question / Concept" required class="flex-grow" />
-        <input type="text" id="card-back-input" placeholder="Answer / Formula" required class="flex-grow" />
-        <button type="submit" class="btn btn-secondary">Add Card</button>
-      </form>
     </div>
 
-    <!-- Panel 5: FUNCTION 3 - Daily Hydration & Habit Streak Tracker -->
-    <div class="glass-panel panel-habits">
-      <div class="panel-header">
-        <div class="header-title">
-          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-          <h3>Habit & Hydration Tracker</h3>
-        </div>
-        <span class="stats-badge">Streak: <span id="study-streak">0</span> Days 🔥</span>
-      </div>
-
-      <div class="hydration-box">
-        <div class="hydration-header">
-          <span>Water Goal (8 Cups)</span>
-          <span id="water-count-text">0 / 8 Cups</span>
-        </div>
-        <div class="water-cups-row" id="water-cups-container">
-          <!-- Dynamically generated water cups -->
-        </div>
-      </div>
-
-      <div class="daily-checkins">
-        <label class="habit-check-row">
-          <input type="checkbox" id="check-homework" />
-          <span>Completed all daily homework</span>
-        </label>
-        <label class="habit-check-row">
-          <input type="checkbox" id="check-backpack" />
-          <span>Packed backpack & device charged for tomorrow</span>
-        </label>
-        <label class="habit-check-row">
-          <input type="checkbox" id="check-reading" />
-          <span>30 Minutes textbook / required reading</span>
-        </label>
-      </div>
-    </div>
-
-    <!-- Panel 6: Mission Control (Tasks & Homework) -->
-    <div class="glass-panel panel-tasks">
+    <!-- Panel 7: Mission Control (Tasks & Homework) -->
+    <div class="glass-panel panel-tasks animated-card">
       <div class="panel-header">
         <div class="header-title">
           <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-          <h3>Mission Control</h3>
-        </div>
-        <div class="task-filters">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="active">Active</button>
-          <button class="filter-btn" data-filter="completed">Done</button>
+          <h3>Mission Control Tasks</h3>
         </div>
       </div>
 
       <form id="add-task-form" class="inline-form flex-wrap">
-        <input type="text" id="task-input" placeholder="Assignment name..." required class="flex-grow" />
-        <select id="task-priority-select">
-          <option value="high">High Priority</option>
-          <option value="medium" selected>Med Priority</option>
-          <option value="low">Low Priority</option>
-        </select>
-        <button type="submit" class="btn btn-primary">Add Task</button>
+        <input type="text" id="task-input" placeholder="New homework task..." required class="flex-grow" />
+        <button type="submit" class="btn btn-primary">Add</button>
       </form>
 
       <ul id="task-list" class="task-list"></ul>
     </div>
 
-    <!-- Panel 7: Cloud Scratchpad -->
-    <div class="glass-panel panel-notes">
-      <div class="panel-header">
-        <div class="header-title">
-          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
-          <h3>Cloud Scratchpad</h3>
-        </div>
-        <span id="scratchpad-status" class="status-indicator">Synced</span>
-      </div>
-      <textarea id="scratchpad" placeholder="Quick notes, Zoom links, class codes..."></textarea>
-      <div class="note-footer">
-        <button id="clear-scratchpad-btn" class="btn-xs">Clear</button>
-        <span id="word-count">0 words</span>
-      </div>
-    </div>
-
   </div>
 
-  <!-- Apple Magnifying Floating Dock (Pure White Glowing Icons) -->
+  <!-- Floating Dock -->
   <nav class="floating-dock" id="liquid-dock">
     <button class="dock-item active" data-view="view-all" data-tooltip="Overview">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
     </button>
+    <button class="dock-item" data-view="view-notes" data-tooltip="Multi-Notes">
+      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+    </button>
     <button class="dock-item" data-view="view-focus" data-tooltip="Focus Studio">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0 2C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm1-10h4v2h-6V7h2v5z"/></svg>
+    </button>
+    <button class="dock-item" data-view="view-streak" data-tooltip="Streak & Quests">
+      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M13.5 0.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8c0-6.04-4.5-10.89-6.5-13.33z"/></svg>
     </button>
     <button class="dock-item" data-view="view-exams" data-tooltip="Exams">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
@@ -225,14 +225,8 @@
     <button class="dock-item" data-view="view-flashcards" data-tooltip="Flashcards">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
     </button>
-    <button class="dock-item" data-view="view-habits" data-tooltip="Habits & Water">
-      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-    </button>
     <button class="dock-item" data-view="view-tasks" data-tooltip="Tasks">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-    </button>
-    <button class="dock-item" data-view="view-notes" data-tooltip="Scratchpad">
-      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
     </button>
   </nav>
 

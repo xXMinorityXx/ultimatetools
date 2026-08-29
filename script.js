@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { 
-  getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc, query, orderBy, serverTimestamp 
+  getFirestore, collection, addDoc, onSnapshot, doc, setDoc, deleteDoc 
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -15,7 +15,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// 1. Clock & Schedule Engine
+// 1. Clock Engine
 function updateClock() {
   const now = new Date();
   document.getElementById("clock").textContent = now.toLocaleTimeString();
@@ -24,9 +24,122 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-// 2. Adjustable Custom Focus Timer
+// 2. Multi-Note Hub Engine (Create, Switch, Edit & Delete Notes)
+let notesList = JSON.parse(localStorage.getItem("liquid_multi_notes") || "null") || [
+  { id: "note_1", title: "AP Chem Cheat Sheet", body: "PV = nRT\nMolarity = moles / liters\npH = -log[H+]" },
+  { id: "note_2", title: "History Essay Outline", body: "1. Thesis statement\n2. Industrial revolution impacts\n3. Primary source quotes" }
+];
+let activeNoteId = notesList[0]?.id || "note_1";
+
+const tabStrip = document.getElementById("notes-tab-strip");
+const noteTitleInput = document.getElementById("active-note-title");
+const noteBodyInput = document.getElementById("active-note-body");
+
+function saveNotesToStorage() {
+  localStorage.setItem("liquid_multi_notes", JSON.stringify(notesList));
+}
+
+function renderNotesHub() {
+  tabStrip.innerHTML = "";
+  notesList.forEach(note => {
+    const pill = document.createElement("button");
+    pill.className = `note-pill ${note.id === activeNoteId ? "active" : ""}`;
+    pill.textContent = note.title || "Untitled Note";
+    pill.addEventListener("click", () => {
+      activeNoteId = note.id;
+      renderNotesHub();
+    });
+    tabStrip.appendChild(pill);
+  });
+
+  const activeNote = notesList.find(n => n.id === activeNoteId);
+  if (activeNote) {
+    noteTitleInput.value = activeNote.title;
+    noteBodyInput.value = activeNote.body;
+  } else {
+    noteTitleInput.value = "";
+    noteBodyInput.value = "";
+  }
+}
+
+document.getElementById("create-new-note-btn").addEventListener("click", () => {
+  const newId = "note_" + Date.now();
+  const newNote = { id: newId, title: "New Note", body: "" };
+  notesList.push(newNote);
+  activeNoteId = newId;
+  saveNotesToStorage();
+  renderNotesHub();
+});
+
+noteTitleInput.addEventListener("input", (e) => {
+  const activeNote = notesList.find(n => n.id === activeNoteId);
+  if (activeNote) {
+    activeNote.title = e.target.value;
+    saveNotesToStorage();
+    // Update strip pill without full re-render
+    const activePill = tabStrip.querySelector(".note-pill.active");
+    if (activePill) activePill.textContent = e.target.value || "Untitled Note";
+  }
+});
+
+noteBodyInput.addEventListener("input", (e) => {
+  const activeNote = notesList.find(n => n.id === activeNoteId);
+  if (activeNote) {
+    activeNote.body = e.target.value;
+    saveNotesToStorage();
+  }
+});
+
+document.getElementById("delete-active-note-btn").addEventListener("click", () => {
+  if (notesList.length <= 1) {
+    alert("You must keep at least one note.");
+    return;
+  }
+  notesList = notesList.filter(n => n.id !== activeNoteId);
+  activeNoteId = notesList[0].id;
+  saveNotesToStorage();
+  renderNotesHub();
+});
+
+renderNotesHub();
+
+// 3. XP & Gamified Streak System
+let userXP = parseInt(localStorage.getItem("user_xp") || "350");
+
+function updateXP(amount) {
+  userXP += amount;
+  localStorage.setItem("user_xp", userXP);
+  
+  const xpBar = document.getElementById("xp-progress-bar");
+  const xpText = document.getElementById("xp-text");
+  const rankBadge = document.getElementById("rank-badge");
+
+  const levelXP = 500;
+  const currentLevelProgress = userXP % levelXP;
+  const percentage = (currentLevelProgress / levelXP) * 100;
+  
+  xpBar.style.width = `${percentage}%`;
+  xpText.textContent = `${currentLevelProgress} / ${levelXP} XP`;
+
+  if (userXP >= 1000) rankBadge.textContent = "Academic Legend 👑";
+  else if (userXP >= 500) rankBadge.textContent = "Grindmaster ⚡";
+  else rankBadge.textContent = "Scholar Elite 🎓";
+}
+
+document.querySelectorAll(".quest-check").forEach(chk => {
+  chk.addEventListener("change", (e) => {
+    const xpVal = parseInt(e.target.dataset.xp || "50");
+    if (e.target.checked) {
+      updateXP(xpVal);
+    } else {
+      updateXP(-xpVal);
+    }
+  });
+});
+
+// 4. Adjustable Custom Timer Logic
 let timerInterval = null;
-let timeRemaining = 1500; // default 25m
+let timeRemaining = 1500;
 
 function renderTimer() {
   const mins = Math.floor(timeRemaining / 60).toString().padStart(2, "0");
@@ -65,7 +178,8 @@ document.getElementById("start-timer-btn").addEventListener("click", () => {
     } else {
       clearInterval(timerInterval);
       timerInterval = null;
-      alert("Focus Session Complete!");
+      updateXP(100); // Reward XP on completion
+      alert("Focus Session Complete! +100 XP Earned ⚡");
     }
   }, 1000);
 });
@@ -80,7 +194,7 @@ document.getElementById("reset-timer-btn").addEventListener("click", () => {
   setTimerMinutes(mins);
 });
 
-// 3. FUNCTION 1: Exam & Test Countdown Radar
+// 5. Exam Countdown Radar
 const examForm = document.getElementById("add-exam-form");
 const examsList = document.getElementById("exams-list");
 
@@ -100,7 +214,7 @@ onSnapshot(collection(db, "exams"), (snapshot) => {
         <strong>${exam.title}</strong>
         <div class="muted-text-sm">${exam.date}</div>
       </div>
-      <div class="exam-days-badge">${diffDays >= 0 ? `${diffDays} Days Left` : 'Passed'}</div>
+      <span class="liquid-pill">${diffDays >= 0 ? `${diffDays} Days` : 'Passed'}</span>
     `;
     examsList.appendChild(div);
   });
@@ -114,84 +228,12 @@ examForm.addEventListener("submit", async (e) => {
   e.target.reset();
 });
 
-// 4. FUNCTION 2: Active Recall Flashcards Deck
-let flashcards = [
-  { front: "Quadratic Formula", back: "x = (-b ± √(b² - 4ac)) / 2a" },
-  { front: "Cellular Respiration Equation", back: "C6H12O6 + 6O2 → 6CO2 + 6H2O + ATP" }
-];
-let currentCardIndex = 0;
-
+// 6. Flashcard Deck
 const flashcard = document.getElementById("flashcard");
-const cardFront = document.getElementById("card-front");
-const cardBack = document.getElementById("card-back");
-const cardCounter = document.getElementById("card-counter");
-
-function renderCard() {
-  if (flashcards.length === 0) {
-    cardFront.textContent = "No cards added yet.";
-    cardBack.textContent = "Add a card below!";
-    cardCounter.textContent = "0 / 0";
-    return;
-  }
-  flashcard.classList.remove("flipped");
-  setTimeout(() => {
-    cardFront.textContent = flashcards[currentCardIndex].front;
-    cardBack.textContent = flashcards[currentCardIndex].back;
-    cardCounter.textContent = `${currentCardIndex + 1} / ${flashcards.length}`;
-  }, 150);
-}
-
 document.getElementById("flip-card-btn").addEventListener("click", () => flashcard.classList.toggle("flipped"));
 flashcard.addEventListener("click", () => flashcard.classList.toggle("flipped"));
 
-document.getElementById("next-card-btn").addEventListener("click", () => {
-  if (flashcards.length > 0) {
-    currentCardIndex = (currentCardIndex + 1) % flashcards.length;
-    renderCard();
-  }
-});
-
-document.getElementById("prev-card-btn").addEventListener("click", () => {
-  if (flashcards.length > 0) {
-    currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
-    renderCard();
-  }
-});
-
-document.getElementById("add-card-form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const front = document.getElementById("card-front-input").value;
-  const back = document.getElementById("card-back-input").value;
-  flashcards.push({ front, back });
-  currentCardIndex = flashcards.length - 1;
-  renderCard();
-  e.target.reset();
-});
-
-renderCard();
-
-// 5. FUNCTION 3: Daily Hydration & Habit Tracker
-const waterContainer = document.getElementById("water-cups-container");
-let filledCups = parseInt(localStorage.getItem("water_count") || "0");
-
-function renderWaterCups() {
-  waterContainer.innerHTML = "";
-  for (let i = 0; i < 8; i++) {
-    const cup = document.createElement("div");
-    cup.className = `water-cup ${i < filledCups ? "filled" : ""}`;
-    cup.addEventListener("click", () => {
-      filledCups = (i + 1 === filledCups) ? i : i + 1;
-      localStorage.setItem("water_count", filledCups);
-      document.getElementById("water-count-text").textContent = `${filledCups} / 8 Cups`;
-      renderWaterCups();
-    });
-    waterContainer.appendChild(cup);
-  }
-  document.getElementById("water-count-text").textContent = `${filledCups} / 8 Cups`;
-}
-renderWaterCups();
-
-// 6. Dock View Controller
+// 7. Dock View Controller
 const dockItems = document.querySelectorAll(".dock-item");
 dockItems.forEach(item => {
   item.addEventListener("click", (e) => {
