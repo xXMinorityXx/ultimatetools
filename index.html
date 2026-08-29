@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Liquid Command Center</title>
+  <title>Liquid Command Center Pro</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -15,78 +15,100 @@
   </div>
 
   <div class="dashboard-container view-all" id="dashboard">
+    
     <!-- Panel 1: Live ODD/EVEN Schedule Radar & Clock -->
     <div class="glass-panel panel-clock">
       <div class="panel-header">
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+          <h3>Schedule Radar</h3>
+        </div>
         <span class="badge liquid-pill" id="schedule-day-type">ODD Day</span>
+      </div>
+      
+      <div class="clock-display-group">
+        <h1 id="clock">00:00:00</h1>
         <span id="date" class="muted-text">--</span>
       </div>
-      <h1 id="clock">00:00:00</h1>
-      <h3 id="greeting">Good Day</h3>
+      
+      <h4 id="greeting" class="sub-greeting">Good Day</h4>
+
       <div class="schedule-box">
         <div class="schedule-info">
-          <span id="current-period">Class: Standby</span>
+          <span id="current-period" class="period-title">Class: Standby</span>
           <span id="period-time-remaining" class="accent-text">--:--</span>
         </div>
         <div class="progress-bar-track">
           <div id="schedule-progress" class="progress-bar-fill"></div>
         </div>
+        <div class="schedule-footer">
+          <span class="muted-text-sm" id="next-period-preview">Next: Loading...</span>
+        </div>
       </div>
     </div>
 
-    <!-- Panel 2: Focus Engine & Ambient Audio -->
+    <!-- Panel 2: Focus Studio Pro (Pomodoro & Ambient Audio) -->
     <div class="glass-panel panel-timer">
       <div class="panel-header">
         <div class="header-title">
-          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0 2C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm1-10h4v2h-6V7h2v5z"/></svg>
-          <h3>Focus Studio</h3>
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          <h3>Focus Studio Pro</h3>
         </div>
         <span class="stats-badge"><span id="total-focus-time">0</span>m Today</span>
       </div>
+
+      <!-- Mode Selector Pills -->
+      <div class="timer-modes">
+        <button class="mode-btn active" data-time="1500">Pomodoro (25m)</button>
+        <button class="mode-btn" data-time="300">Short Break (5m)</button>
+        <button class="mode-btn" data-time="900">Long Break (15m)</button>
+      </div>
+
       <div id="timer-display">25:00</div>
+
       <div class="timer-controls">
         <button id="start-timer-btn" class="btn btn-primary">Start Focus</button>
         <button id="pause-timer-btn" class="btn btn-secondary">Pause</button>
         <button id="reset-timer-btn" class="btn btn-glass">Reset</button>
       </div>
+
+      <!-- Ambient Sound Engine -->
       <div class="ambient-sound-bar">
-        <svg class="svg-icon-sm" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
-        <span>Ambient Sound:</span>
-        <button id="audio-white-noise" class="sound-chip">White Noise</button>
-        <button id="audio-pink-noise" class="sound-chip">Deep Pink</button>
+        <div class="ambient-header">
+          <svg class="svg-icon-sm" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          <span>Ambient Audio Engine</span>
+        </div>
+        <div class="sound-controls-row">
+          <button id="audio-white-noise" class="sound-chip">White Noise</button>
+          <button id="audio-pink-noise" class="sound-chip">Deep Pink</button>
+          <div class="volume-slider-wrap">
+            <svg class="svg-icon-sm" viewBox="0 0 24 24"><path d="M7 9v6h4l5 5V4l-5 5H7z"/></svg>
+            <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.2" />
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Panel 3: Weekly Catch-Up & Cloud Overview -->
-    <div class="glass-panel panel-weekly">
+    <!-- Panel 3: Grade Hub & Unweighted GPA Engine -->
+    <div class="glass-panel panel-grades">
       <div class="panel-header">
         <div class="header-title">
-          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
-          <h3>Weekly Intelligence</h3>
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
+          <h3>Grade Hub & GPA Engine</h3>
         </div>
-        <span class="muted-text">Live Sync</span>
+        <span class="gpa-pill">GPA: <span id="gpa-val">4.00</span></span>
       </div>
-      <div class="weekly-stats-grid">
-        <div class="stat-card">
-          <span class="stat-number" id="stat-completed-tasks">0</span>
-          <span class="stat-label">Tasks Done</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-number" id="stat-pending-tasks">0</span>
-          <span class="stat-label">Assignments Left</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-number" id="stat-weekly-focus">0</span>
-          <span class="stat-label">Focus Mins</span>
-        </div>
+
+      <div class="grades-grid" id="grades-grid">
+        <!-- Dynamically rendered class grade rows -->
       </div>
     </div>
 
-    <!-- Panel 4: Mission Control (Tasks) -->
+    <!-- Panel 4: Mission Control Pro (Tasks & Assignments) -->
     <div class="glass-panel panel-tasks">
       <div class="panel-header">
         <div class="header-title">
-          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
           <h3>Mission Control</h3>
         </div>
         <div class="task-filters">
@@ -95,8 +117,13 @@
           <button class="filter-btn" data-filter="completed">Done</button>
         </div>
       </div>
-      <form id="add-task-form" class="inline-form">
-        <input type="text" id="task-input" placeholder="Add assignment..." required />
+
+      <div class="task-search-row">
+        <input type="text" id="task-search-input" placeholder="Search assignments..." />
+      </div>
+
+      <form id="add-task-form" class="inline-form flex-wrap">
+        <input type="text" id="task-input" placeholder="Assignment name..." required class="flex-grow" />
         <select id="task-category-select">
           <option value="Per 1/2">Per 1 / Per 2</option>
           <option value="Per 3/4">Per 3 / Per 4</option>
@@ -104,12 +131,54 @@
           <option value="Per 7/6">Per 7 / Per 6</option>
           <option value="Personal">Personal</option>
         </select>
-        <button type="submit" class="btn btn-primary">Add Task</button>
+        <select id="task-priority-select">
+          <option value="high">High Priority</option>
+          <option value="medium" selected>Med Priority</option>
+          <option value="low">Low Priority</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Add</button>
       </form>
+
       <ul id="task-list" class="task-list"></ul>
     </div>
 
-    <!-- Panel 5: Quick Portals Deck -->
+    <!-- Panel 5: Weekly Intelligence Analytics -->
+    <div class="glass-panel panel-weekly">
+      <div class="panel-header">
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+          <h3>Weekly Intelligence</h3>
+        </div>
+        <span class="muted-text">Cloud Sync</span>
+      </div>
+
+      <div class="weekly-stats-grid">
+        <div class="stat-card">
+          <span class="stat-number" id="stat-completed-tasks">0</span>
+          <span class="stat-label">Tasks Completed</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-pending-tasks">0</span>
+          <span class="stat-label">Pending Assignments</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number" id="stat-weekly-focus">0</span>
+          <span class="stat-label">Focus Minutes</span>
+        </div>
+      </div>
+
+      <div class="completion-meter-box">
+        <div class="meter-label">
+          <span>Weekly Target Progress</span>
+          <span id="target-percentage-text">0%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div id="weekly-progress-fill" class="progress-bar-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 6: Quick Portals Deck -->
     <div class="glass-panel panel-links">
       <div class="panel-header">
         <div class="header-title">
@@ -119,13 +188,13 @@
       </div>
       <div id="links-grid" class="links-grid"></div>
       <form id="add-link-form" class="inline-form">
-        <input type="text" id="link-title" placeholder="Site Name" required />
+        <input type="text" id="link-title" placeholder="Portal Title" required />
         <input type="url" id="link-url" placeholder="https://..." required />
         <button type="submit" class="btn btn-accent">+</button>
       </form>
     </div>
 
-    <!-- Panel 6: Liquid Scratchpad -->
+    <!-- Panel 7: Smart Cloud Scratchpad -->
     <div class="glass-panel panel-notes">
       <div class="panel-header">
         <div class="header-title">
@@ -134,11 +203,13 @@
         </div>
         <span id="scratchpad-status" class="status-indicator">Synced</span>
       </div>
-      <textarea id="scratchpad" placeholder="Jot down notes, class codes, or links... (Auto-saves live)"></textarea>
+      <textarea id="scratchpad" placeholder="Jot down notes, class codes, zoom links... (Auto-saves live)"></textarea>
       <div class="note-footer">
+        <button id="clear-scratchpad-btn" class="btn-xs">Clear</button>
         <span id="word-count">0 words</span>
       </div>
     </div>
+
   </div>
 
   <!-- Interactive Apple Liquid Magnifying Dock -->
@@ -148,6 +219,9 @@
     </button>
     <button class="dock-item" data-view="view-focus" data-tooltip="Focus Studio">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0 2C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm1-10h4v2h-6V7h2v5z"/></svg>
+    </button>
+    <button class="dock-item" data-view="view-grades" data-tooltip="Grades">
+      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/></svg>
     </button>
     <button class="dock-item" data-view="view-tasks" data-tooltip="Tasks">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>

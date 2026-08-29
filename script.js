@@ -13,25 +13,20 @@ import {
   serverTimestamp 
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-// Firebase Setup
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3goBKm87go",
   authDomain: "student-dashboard-41b98.firebaseapp.com",
   projectId: "student-dashboard-41b98",
   storageBucket: "student-dashboard-41b98.firebasestorage.app",
   messagingSenderId: "908791794286",
-  appId: "1:908791794286:web:1a432119daf9d61772f47f",
-  measurementId: "G-Y39RMFW2W9"
+  appId: "1:908791794286:web:1a432119daf9d61772f47f"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// 1. Precise ODD / EVEN Schedule Radar Engine
-// Schedule breakdown according to provided table:
-// ODD (Mon/Wed/Fri): Per 1, Recess, Per 3, Per 5, Lunch, Per 7
-// EVEN (Tue/Thu):    Per 2, Recess, Per 4, Adv, Lunch, Per 6
-
+// 1. ODD / EVEN Bell Schedule Engine
 const oddSchedule = [
   { name: "Passing Period", start: "07:55", end: "08:00" },
   { name: "Period 1", start: "08:00", end: "09:17" },
@@ -54,7 +49,7 @@ const evenSchedule = [
 
 function updateClockAndSchedule() {
   const now = new Date();
-  const day = now.getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
+  const day = now.getDay();
   
   document.getElementById("clock").textContent = now.toLocaleTimeString();
   document.getElementById("date").textContent = now.toLocaleDateString(undefined, { 
@@ -69,51 +64,59 @@ function updateClockAndSchedule() {
 
   const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
-  // Weekend Mode (Sat / Sun)
   if (day === 0 || day === 6) {
     document.getElementById("schedule-day-type").textContent = "Weekend";
-    document.getElementById("current-period").textContent = "Weekend Mode - Recharge & Review";
-    document.getElementById("period-time-remaining").textContent = "Free Time";
+    document.getElementById("current-period").textContent = "Weekend Mode - Free Time";
+    document.getElementById("period-time-remaining").textContent = "Weekend";
     document.getElementById("schedule-progress").style.width = "100%";
+    document.getElementById("next-period-preview").textContent = "Next: Monday Period 1";
     return;
   }
 
-  // Determine ODD vs EVEN Day
-  const isOddDay = (day === 1 || day === 3 || day === 5); // Mon, Wed, Fri
+  const isOddDay = (day === 1 || day === 3 || day === 5);
   const activeSchedule = isOddDay ? oddSchedule : evenSchedule;
   
   document.getElementById("schedule-day-type").textContent = isOddDay ? "ODD Day" : "EVEN Day";
 
-  let currentBlock = null;
+  let currentBlockIndex = -1;
 
-  for (let block of activeSchedule) {
+  for (let i = 0; i < activeSchedule.length; i++) {
+    const block = activeSchedule[i];
     const [sH, sM] = block.start.split(":").map(Number);
     const [eH, eM] = block.end.split(":").map(Number);
     const startMins = sH * 60 + sM;
     const endMins = eH * 60 + eM;
 
     if (currentMinutes >= startMins && currentMinutes < endMins) {
-      currentBlock = block;
+      currentBlockIndex = i;
       const duration = endMins - startMins;
       const elapsed = currentMinutes - startMins;
       const percent = (elapsed / duration) * 100;
 
       document.getElementById("current-period").textContent = block.name;
-      document.getElementById("period-time-remaining").textContent = `${endMins - currentMinutes}m remaining`;
+      document.getElementById("period-time-remaining").textContent = `${endMins - currentMinutes}m left`;
       document.getElementById("schedule-progress").style.width = `${percent}%`;
+
+      if (i + 1 < activeSchedule.length) {
+        document.getElementById("next-period-preview").textContent = `Next: ${activeSchedule[i + 1].name} (${activeSchedule[i + 1].start})`;
+      } else {
+        document.getElementById("next-period-preview").textContent = "Next: Dismissal / Free Time";
+      }
       break;
     }
   }
 
-  if (!currentBlock) {
-    if (currentMinutes < 475) { // Before 7:55 AM
+  if (currentBlockIndex === -1) {
+    if (currentMinutes < 475) {
       document.getElementById("current-period").textContent = "Before School";
-      document.getElementById("period-time-remaining").textContent = "Starts at 7:55 AM";
+      document.getElementById("period-time-remaining").textContent = "Starts 7:55 AM";
       document.getElementById("schedule-progress").style.width = "0%";
-    } else { // After 1:57 PM
-      document.getElementById("current-period").textContent = "School Dismissed";
+      document.getElementById("next-period-preview").textContent = `Next: ${activeSchedule[0].name}`;
+    } else {
+      document.getElementById("current-period").textContent = "Classes Done for Today";
       document.getElementById("period-time-remaining").textContent = "Free Time";
       document.getElementById("schedule-progress").style.width = "100%";
+      document.getElementById("next-period-preview").textContent = "All classes completed";
     }
   }
 }
@@ -121,20 +124,71 @@ function updateClockAndSchedule() {
 setInterval(updateClockAndSchedule, 1000);
 updateClockAndSchedule();
 
-// 2. Apple Magnifying Proximity Dock Logic
+// 2. Grade Hub & Unweighted GPA Engine
+const defaultClasses = [
+  { name: "Period 1", grade: "A" },
+  { name: "Period 2", grade: "A-" },
+  { name: "Period 3", grade: "B+" },
+  { name: "Period 4", grade: "A" },
+  { name: "Period 5 / Adv", grade: "A" },
+  { name: "Period 6", grade: "A-" },
+  { name: "Period 7", grade: "A" }
+];
+
+const gradePoints = {
+  "A+": 4.0, "A": 4.0, "A-": 3.7,
+  "B+": 3.3, "B": 3.0, "B-": 2.7,
+  "C+": 2.3, "C": 2.0, "C-": 1.7,
+  "D": 1.0, "F": 0.0
+};
+
+function renderGrades() {
+  const container = document.getElementById("grades-grid");
+  const stored = JSON.parse(localStorage.getItem("student_grades") || JSON.stringify(defaultClasses));
+  
+  container.innerHTML = "";
+  let totalPts = 0;
+
+  stored.forEach((item, index) => {
+    totalPts += gradePoints[item.grade] || 4.0;
+    const row = document.createElement("div");
+    row.className = "grade-row";
+    row.innerHTML = `
+      <span class="grade-row-title">${item.name}</span>
+      <select class="grade-select" data-index="${index}">
+        ${Object.keys(gradePoints).map(g => `<option value="${g}" ${g === item.grade ? 'selected' : ''}>${g}</option>`).join('')}
+      </select>
+    `;
+    container.appendChild(row);
+  });
+
+  const gpa = (totalPts / stored.length).toFixed(2);
+  document.getElementById("gpa-val").textContent = gpa;
+
+  document.querySelectorAll(".grade-select").forEach(sel => {
+    sel.addEventListener("change", (e) => {
+      const idx = e.target.dataset.index;
+      stored[idx].grade = e.target.value;
+      localStorage.setItem("student_grades", JSON.stringify(stored));
+      renderGrades();
+    });
+  });
+}
+
+renderGrades();
+
+// 3. Apple Magnifying Dock Logic
 const dock = document.getElementById("liquid-dock");
 const dockItems = document.querySelectorAll(".dock-item");
 
 dock.addEventListener("mousemove", (e) => {
   const mouseX = e.clientX;
-
   dockItems.forEach((item) => {
     const itemRect = item.getBoundingClientRect();
     const itemCenter = itemRect.left + itemRect.width / 2;
     const distance = Math.abs(mouseX - itemCenter);
-    
-    const maxScale = 1.4;
-    const effectRange = 110;
+    const maxScale = 1.35;
+    const effectRange = 100;
     
     if (distance < effectRange) {
       const scale = 1 + (maxScale - 1) * Math.cos((distance / effectRange) * (Math.PI / 2));
@@ -158,8 +212,8 @@ dockItems.forEach(item => {
   });
 });
 
-// 3. Web Audio Synth Ambient Noise Generator
-let audioCtx, noiseNode;
+// 4. Ambient Web Audio Synthesizer Engine with Volume Control
+let audioCtx, noiseNode, gainNode;
 
 function playNoise(type = "white") {
   if (noiseNode) {
@@ -181,8 +235,9 @@ function playNoise(type = "white") {
   noiseNode.buffer = buffer;
   noiseNode.loop = true;
   
-  const gainNode = audioCtx.createGain();
-  gainNode.gain.value = 0.04;
+  gainNode = audioCtx.createGain();
+  const vol = document.getElementById("volume-slider").value;
+  gainNode.gain.value = parseFloat(vol);
   
   noiseNode.connect(gainNode);
   gainNode.connect(audioCtx.destination);
@@ -190,20 +245,27 @@ function playNoise(type = "white") {
   return true;
 }
 
+document.getElementById("volume-slider").addEventListener("input", (e) => {
+  if (gainNode) {
+    gainNode.gain.value = parseFloat(e.target.value);
+  }
+});
+
 document.getElementById("audio-white-noise").addEventListener("click", (e) => {
+  document.getElementById("audio-pink-noise").classList.remove("active");
   const active = playNoise("white");
   e.target.classList.toggle("active", active);
 });
 
 document.getElementById("audio-pink-noise").addEventListener("click", (e) => {
+  document.getElementById("audio-white-noise").classList.remove("active");
   const active = playNoise("pink");
   e.target.classList.toggle("active", active);
 });
 
-// 4. Focus Timer & Study Log Sync
+// 5. Pomodoro Focus Timer
 let timerInterval = null;
 let timeRemaining = 1500;
-
 const timerDisplay = document.getElementById("timer-display");
 
 function renderTimer() {
@@ -211,6 +273,17 @@ function renderTimer() {
   const secs = (timeRemaining % 60).toString().padStart(2, "0");
   timerDisplay.textContent = `${mins}:${secs}`;
 }
+
+document.querySelectorAll(".mode-btn").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timeRemaining = parseInt(e.target.dataset.time);
+    renderTimer();
+  });
+});
 
 document.getElementById("start-timer-btn").addEventListener("click", () => {
   if (timerInterval) return;
@@ -234,7 +307,8 @@ document.getElementById("pause-timer-btn").addEventListener("click", () => {
 document.getElementById("reset-timer-btn").addEventListener("click", () => {
   clearInterval(timerInterval);
   timerInterval = null;
-  timeRemaining = 1500;
+  const activeMode = document.querySelector(".mode-btn.active");
+  timeRemaining = activeMode ? parseInt(activeMode.dataset.time) : 1500;
   renderTimer();
 });
 
@@ -245,12 +319,14 @@ onSnapshot(collection(db, "study_logs"), (snapshot) => {
   document.getElementById("stat-weekly-focus").textContent = total;
 });
 
-// 5. Cloud Task Tracker & Weekly Overview Intelligence
+// 6. Mission Control Tasks & Search Engine
 const taskForm = document.getElementById("add-task-form");
 const taskList = document.getElementById("task-list");
+const searchInput = document.getElementById("task-search-input");
 let activeFilter = "all";
+let searchTerm = "";
 
-onSnapshot(query(collection(db, "tasks"), orderBy("createdAt", "desc")), (snapshot) => {
+function renderTasks(snapshot) {
   taskList.innerHTML = "";
   let doneCount = 0;
   let pendingCount = 0;
@@ -264,11 +340,13 @@ onSnapshot(query(collection(db, "tasks"), orderBy("createdAt", "desc")), (snapsh
 
     if (activeFilter === "active" && task.completed) return;
     if (activeFilter === "completed" && !task.completed) return;
+    if (searchTerm && !task.text.toLowerCase().includes(searchTerm)) return;
 
     const li = document.createElement("li");
     li.className = `task-item ${task.completed ? "completed" : ""}`;
     li.innerHTML = `
-      <div>
+      <div class="task-left">
+        <span class="priority-indicator priority-${task.priority || 'medium'}"></span>
         <input type="checkbox" ${task.completed ? "checked" : ""} class="toggle-task" data-id="${id}">
         <span>${task.text}</span>
         <span class="task-tag">${task.category || 'General'}</span>
@@ -281,6 +359,11 @@ onSnapshot(query(collection(db, "tasks"), orderBy("createdAt", "desc")), (snapsh
   document.getElementById("stat-completed-tasks").textContent = doneCount;
   document.getElementById("stat-pending-tasks").textContent = pendingCount;
 
+  const total = doneCount + pendingCount;
+  const pct = total > 0 ? Math.round((doneCount / total) * 100) : 0;
+  document.getElementById("target-percentage-text").textContent = `${pct}%`;
+  document.getElementById("weekly-progress-fill").style.width = `${pct}%`;
+
   document.querySelectorAll(".toggle-task").forEach(chk => {
     chk.addEventListener("change", async (e) => {
       await updateDoc(doc(db, "tasks", e.target.dataset.id), { completed: e.target.checked });
@@ -292,31 +375,45 @@ onSnapshot(query(collection(db, "tasks"), orderBy("createdAt", "desc")), (snapsh
       await deleteDoc(doc(db, "tasks", e.target.dataset.id));
     });
   });
+}
+
+let latestTaskSnapshot = null;
+onSnapshot(query(collection(db, "tasks"), orderBy("createdAt", "desc")), (snapshot) => {
+  latestTaskSnapshot = snapshot;
+  if (latestTaskSnapshot) renderTasks(latestTaskSnapshot);
+});
+
+searchInput.addEventListener("input", (e) => {
+  searchTerm = e.target.value.toLowerCase();
+  if (latestTaskSnapshot) renderTasks(latestTaskSnapshot);
 });
 
 taskForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const input = document.getElementById("task-input");
   const category = document.getElementById("task-category-select").value;
+  const priority = document.getElementById("task-priority-select").value;
+
   await addDoc(collection(db, "tasks"), {
     text: input.value,
     category,
+    priority,
     completed: false,
     createdAt: serverTimestamp()
   });
   input.value = "";
 });
 
-// Task Filter Buttons
 document.querySelectorAll(".filter-btn").forEach(btn => {
   btn.addEventListener("click", (e) => {
     document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
     e.target.classList.add("active");
     activeFilter = e.target.dataset.filter;
+    if (latestTaskSnapshot) renderTasks(latestTaskSnapshot);
   });
 });
 
-// 6. Quick Links Portal Deck
+// 7. Quick Link Portals
 const linksGrid = document.getElementById("links-grid");
 onSnapshot(collection(db, "quick_links"), (snapshot) => {
   linksGrid.innerHTML = "";
@@ -346,7 +443,7 @@ document.getElementById("add-link-form").addEventListener("submit", async (e) =>
   e.target.reset();
 });
 
-// 7. Cloud Scratchpad with Realtime Debounce
+// 8. Smart Cloud Scratchpad
 const scratchpad = document.getElementById("scratchpad");
 const wordCountEl = document.getElementById("word-count");
 const scratchpadRef = doc(db, "scratchpad", "main_note");
@@ -373,4 +470,10 @@ scratchpad.addEventListener("input", () => {
     await setDoc(scratchpadRef, { content: scratchpad.value, updatedAt: serverTimestamp() }, { merge: true });
     document.getElementById("scratchpad-status").textContent = "Synced";
   }, 1000);
+});
+
+document.getElementById("clear-scratchpad-btn").addEventListener("click", async () => {
+  scratchpad.value = "";
+  updateWordCount();
+  await setDoc(scratchpadRef, { content: "", updatedAt: serverTimestamp() }, { merge: true });
 });
