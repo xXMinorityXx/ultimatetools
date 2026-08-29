@@ -3,88 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Command Center</title>
+  <title>Liquid Command Center</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="background-glow"></div>
+  <!-- Liquid Dynamic Background -->
+  <div class="liquid-bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
 
   <div class="dashboard-container view-all" id="dashboard">
+    <!-- Panel 1: Live Clock & Schedule Radar -->
     <div class="glass-panel panel-clock">
-      <h2 id="greeting">Good Day</h2>
-      <div id="clock">00:00:00 AM</div>
-      <div id="date">Loading date...</div>
+      <div class="panel-header">
+        <span class="badge liquid-pill">Live Radar</span>
+        <span id="date" class="muted-text">...</span>
+      </div>
+      <h1 id="clock">00:00:00</h1>
+      <h3 id="greeting">Good Day</h3>
+      <div class="schedule-box">
+        <div class="schedule-info">
+          <span id="current-period">Class: Standby</span>
+          <span id="period-time-remaining" class="accent-text">--:--</span>
+        </div>
+        <div class="progress-bar-track">
+          <div id="schedule-progress" class="progress-bar-fill"></div>
+        </div>
+      </div>
     </div>
 
+    <!-- Panel 2: Focus Engine & Ambient Audio -->
     <div class="glass-panel panel-timer">
-      <h3>⏱️ Focus Timer</h3>
+      <div class="panel-header">
+        <h3>⏱️ Focus & Atmosphere</h3>
+        <span class="stats-badge"><span id="total-focus-time">0</span>m Today</span>
+      </div>
       <div id="timer-display">25:00</div>
       <div class="timer-controls">
-        <button id="start-timer-btn" class="btn btn-primary">Start</button>
+        <button id="start-timer-btn" class="btn btn-primary">Start Focus</button>
         <button id="pause-timer-btn" class="btn btn-secondary">Pause</button>
-        <button id="reset-timer-btn" class="btn btn-danger">Reset</button>
+        <button id="reset-timer-btn" class="btn btn-glass">Reset</button>
       </div>
-      <div class="stats-box">
-        <span>Total Focused Today: <strong id="total-focus-time">0</strong> mins</span>
+      <div class="ambient-sound-bar">
+        <span>🔊 Ambient sound:</span>
+        <button id="audio-white-noise" class="sound-chip">White Noise</button>
+        <button id="audio-pink-noise" class="sound-chip">Deep Pink</button>
       </div>
     </div>
 
+    <!-- Panel 3: Quick Portals -->
     <div class="glass-panel panel-links">
-      <h3>🔗 Quick Links</h3>
+      <h3>🚀 Portal Deck</h3>
       <div id="links-grid" class="links-grid"></div>
       <form id="add-link-form" class="inline-form">
-        <input type="text" id="link-title" placeholder="Site Title" required />
+        <input type="text" id="link-title" placeholder="Portal Name" required />
         <input type="url" id="link-url" placeholder="https://..." required />
         <button type="submit" class="btn btn-accent">+</button>
       </form>
     </div>
 
+    <!-- Panel 4: Liquid Cloud Notes -->
     <div class="glass-panel panel-notes">
-      <h3>📝 Cloud Scratchpad</h3>
-      <textarea id="scratchpad" placeholder="Type quick notes, links, or class codes... (Auto-saves to cloud)"></textarea>
-      <span id="scratchpad-status" class="status-indicator">Synced</span>
+      <div class="panel-header">
+        <h3>📝 Liquid Scratchpad</h3>
+        <span id="scratchpad-status" class="status-indicator">Synced</span>
+      </div>
+      <textarea id="scratchpad" placeholder="Jot down notes, class codes, or links... (Live Cloud Sync)"></textarea>
+      <div class="note-footer">
+        <span id="word-count">0 words</span>
+      </div>
     </div>
 
+    <!-- Panel 5: Task Matrix -->
     <div class="glass-panel panel-tasks">
-      <h3>✅ Task Tracker</h3>
+      <div class="panel-header">
+        <h3>✅ Mission Control</h3>
+        <div class="task-filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="active">Active</button>
+          <button class="filter-btn" data-filter="completed">Done</button>
+        </div>
+      </div>
       <form id="add-task-form" class="inline-form">
-        <input type="text" id="task-input" placeholder="New assignment..." required />
+        <input type="text" id="task-input" placeholder="Add assignment..." required />
         <select id="task-category-select">
-          <option value="General">General</option>
           <option value="Math">Math</option>
           <option value="CS">CS</option>
-          <option value="History">History</option>
+          <option value="Science">Science</option>
+          <option value="English">English</option>
           <option value="Personal">Personal</option>
         </select>
-        <button type="submit" class="btn btn-primary">Add Task</button>
+        <button type="submit" class="btn btn-primary">Add</button>
       </form>
-
-      <div class="task-filters">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="active">Active</button>
-        <button class="filter-btn" data-filter="completed">Completed</button>
-      </div>
-
       <ul id="task-list" class="task-list"></ul>
+    </div>
+
+    <!-- Panel 6: Habit Streaks -->
+    <div class="glass-panel panel-habits">
+      <h3>🔥 Daily Ecosystem Streaks</h3>
+      <div class="habits-list">
+        <label class="habit-item"><input type="checkbox" id="habit-1"> Review Today's Notes</label>
+        <label class="habit-item"><input type="checkbox" id="habit-2"> Clear Homework Inbox</label>
+        <label class="habit-item"><input type="checkbox" id="habit-3"> 25-Min Deep Work Session</label>
+      </div>
     </div>
   </div>
 
-  <nav class="floating-dock">
-    <button class="dock-item active" data-view="view-all">
+  <!-- Interactive Magnifying Liquid Dock -->
+  <nav class="floating-dock" id="liquid-dock">
+    <button class="dock-item active" data-view="view-all" data-tooltip="Overview">
       <span class="icon">🏠</span>
-      <span class="label">Overview</span>
     </button>
-    <button class="dock-item" data-view="view-focus">
+    <button class="dock-item" data-view="view-focus" data-tooltip="Focus Mode">
       <span class="icon">⏱️</span>
-      <span class="label">Timer</span>
     </button>
-    <button class="dock-item" data-view="view-tasks">
+    <button class="dock-item" data-view="view-tasks" data-tooltip="Tasks">
       <span class="icon">✅</span>
-      <span class="label">Tasks</span>
     </button>
-    <button class="dock-item" data-view="view-notes">
+    <button class="dock-item" data-view="view-notes" data-tooltip="Scratchpad">
       <span class="icon">📝</span>
-      <span class="label">Notes</span>
     </button>
   </nav>
 
