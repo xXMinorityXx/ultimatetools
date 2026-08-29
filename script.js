@@ -1,11 +1,19 @@
-// ==========================================
-// 1. FIREBASE INITIALIZATION
-// ==========================================
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import { 
-    getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, setDoc, updateDoc, query, orderBy 
-} from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+  getFirestore, 
+  collection, 
+  addDoc, 
+  onSnapshot, 
+  doc, 
+  setDoc, 
+  updateDoc, 
+  deleteDoc, 
+  query, 
+  orderBy, 
+  serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
+// Firebase Setup
 const firebaseConfig = {
   apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3goBKm87go",
   authDomain: "student-dashboard-41b98.firebaseapp.com",
@@ -19,281 +27,200 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-
-// ==========================================
-// 2. LIVE CLOCK & DYNAMIC GREETING ENGINE
-// ==========================================
+// 1. Live Clock Engine
 function updateClock() {
-    const now = new Date();
-    const hours = now.getHours();
-    
-    let greeting = "Good Morning";
-    if (hours >= 12 && hours < 17) greeting = "Good Afternoon";
-    else if (hours >= 17 && hours < 22) greeting = "Good Evening";
-    else if (hours >= 22 || hours < 5) greeting = "Night Owl Mode";
-    document.getElementById('greeting-display').innerText = greeting;
+  const now = new Date();
+  const hours = now.getHours();
+  
+  let greeting = "Good Evening";
+  if (hours < 12) greeting = "Good Morning";
+  else if (hours < 18) greeting = "Good Afternoon";
 
-    document.getElementById('time-display').innerText = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('date-display').innerText = now.toLocaleDateString([], { weekday: 'long', month: 'short', day: 'numeric' });
+  document.getElementById("greeting").textContent = greeting;
+  document.getElementById("clock").textContent = now.toLocaleTimeString();
+  document.getElementById("date").textContent = now.toLocaleDateString(undefined, { 
+    weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' 
+  });
 }
-updateClock();
 setInterval(updateClock, 1000);
+updateClock();
 
-
-// ==========================================
-// 3. POMODORO TIMER & STUDY STATS LOGS
-// ==========================================
+// 2. Pomodoro Focus Timer
 let timerInterval = null;
-let timeLeft = 25 * 60;
-let isRunning = false;
+let timeRemaining = 1500; // 25 minutes
 
-const timerDisplay = document.getElementById('timer-display');
-const startBtn = document.getElementById('start-btn');
-const resetBtn = document.getElementById('reset-btn');
-const statsTimeDisplay = document.getElementById('stats-time');
+const timerDisplay = document.getElementById("timer-display");
+const startBtn = document.getElementById("start-timer-btn");
+const pauseBtn = document.getElementById("pause-timer-btn");
+const resetBtn = document.getElementById("reset-timer-btn");
 
-function updateTimerDisplay() {
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
-    timerDisplay.innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+function renderTimer() {
+  const mins = Math.floor(timeRemaining / 60).toString().padStart(2, "0");
+  const secs = (timeRemaining % 60).toString().padStart(2, "0");
+  timerDisplay.textContent = `${mins}:${secs}`;
 }
 
-startBtn.addEventListener('click', () => {
-    if (isRunning) {
-        clearInterval(timerInterval);
-        startBtn.innerText = "Start Focus";
-        isRunning = false;
+startBtn.addEventListener("click", () => {
+  if (timerInterval) return;
+  timerInterval = setInterval(() => {
+    if (timeRemaining > 0) {
+      timeRemaining--;
+      renderTimer();
     } else {
-        startBtn.innerText = "Pause";
-        isRunning = true;
-        timerInterval = setInterval(() => {
-            if (timeLeft > 0) {
-                timeLeft--;
-                updateTimerDisplay();
-            } else {
-                clearInterval(timerInterval);
-                logStudySession(25);
-                alert("Pomodoro complete! Outstanding focus session.");
-                timeLeft = 25 * 60;
-                startBtn.innerText = "Start Focus";
-                isRunning = false;
-                updateTimerDisplay();
-            }
-        }, 1000);
+      clearInterval(timerInterval);
+      timerInterval = null;
+      alert("Pomodoro complete! Focus time logged.");
+      addDoc(collection(db, "study_logs"), { durationMinutes: 25, timestamp: serverTimestamp() });
     }
+  }, 1000);
 });
 
-resetBtn.addEventListener('click', () => {
-    clearInterval(timerInterval);
-    timeLeft = 25 * 60;
-    isRunning = false;
-    startBtn.innerText = "Start Focus";
-    updateTimerDisplay();
+pauseBtn.addEventListener("click", () => {
+  clearInterval(timerInterval);
+  timerInterval = null;
 });
 
-async function logStudySession(minutes) {
-    await addDoc(collection(db, 'study_logs'), {
-        duration: minutes,
-        createdAt: new Date()
+resetBtn.addEventListener("click", () => {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timeRemaining = 1500;
+  renderTimer();
+});
+
+// Sync Total Focus Minutes
+onSnapshot(collection(db, "study_logs"), (snapshot) => {
+  let total = 0;
+  snapshot.forEach(doc => total += (doc.data().durationMinutes || 0));
+  document.getElementById("total-focus-time").textContent = total;
+});
+
+// 3. Quick Links Manager
+const linksGrid = document.getElementById("links-grid");
+const linkForm = document.getElementById("add-link-form");
+
+onSnapshot(collection(db, "quick_links"), (snapshot) => {
+  linksGrid.innerHTML = "";
+  snapshot.forEach((docSnap) => {
+    const data = docSnap.data();
+    const linkEl = document.createElement("div");
+    linkEl.className = "link-tile";
+    linkEl.innerHTML = `
+      <a href="${data.url}" target="_blank" style="color: inherit; text-decoration: none;">${data.title}</a>
+      <button class="delete-link-btn" data-id="${docSnap.id}">×</button>
+    `;
+    linksGrid.appendChild(linkEl);
+  });
+
+  document.querySelectorAll(".delete-link-btn").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+      await deleteDoc(doc(db, "quick_links", e.target.dataset.id));
     });
-}
+  });
+});
 
-onSnapshot(collection(db, 'study_logs'), (snapshot) => {
-    let totalMinutes = 0;
-    const todayStr = new Date().toDateString();
+linkForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const title = document.getElementById("link-title").value;
+  const url = document.getElementById("link-url").value;
+  await addDoc(collection(db, "quick_links"), { title, url });
+  linkForm.reset();
+});
 
-    snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        if (data.createdAt && new Date(data.createdAt.toDate()).toDateString() === todayStr) {
-            totalMinutes += data.duration || 0;
-        }
+// 4. Cloud Scratchpad (Realtime + Auto-save)
+const scratchpad = document.getElementById("scratchpad");
+const scratchpadStatus = document.getElementById("scratchpad-status");
+const scratchpadRef = doc(db, "scratchpad", "main_note");
+
+onSnapshot(scratchpadRef, (snapshot) => {
+  if (snapshot.exists() && document.activeElement !== scratchpad) {
+    scratchpad.value = snapshot.data().content || "";
+  }
+});
+
+let debounceTimer;
+scratchpad.addEventListener("input", () => {
+  scratchpadStatus.textContent = "Saving...";
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(async () => {
+    await setDoc(scratchpadRef, { content: scratchpad.value, updatedAt: serverTimestamp() }, { merge: true });
+    scratchpadStatus.textContent = "Synced";
+  }, 1000);
+});
+
+// 5. Cloud Task Tracker
+const taskForm = document.getElementById("add-task-form");
+const taskList = document.getElementById("task-list");
+let activeFilter = "all";
+
+const tasksQuery = query(collection(db, "tasks"), orderBy("createdAt", "desc"));
+
+onSnapshot(tasksQuery, (snapshot) => {
+  taskList.innerHTML = "";
+  snapshot.forEach((docSnap) => {
+    const task = docSnap.data();
+    const id = docSnap.id;
+
+    if (activeFilter === "active" && task.completed) return;
+    if (activeFilter === "completed" && !task.completed) return;
+
+    const li = document.createElement("li");
+    li.className = `task-item ${task.completed ? "completed" : ""}`;
+    li.innerHTML = `
+      <div>
+        <input type="checkbox" ${task.completed ? "checked" : ""} class="toggle-task" data-id="${id}">
+        <span>${task.text}</span>
+        <span class="task-tag">${task.category}</span>
+      </div>
+      <button class="delete-btn" data-id="${id}">×</button>
+    `;
+    taskList.appendChild(li);
+  });
+
+  document.querySelectorAll(".toggle-task").forEach(chk => {
+    chk.addEventListener("change", async (e) => {
+      await updateDoc(doc(db, "tasks", e.target.dataset.id), { completed: e.target.checked });
     });
+  });
 
-    statsTimeDisplay.innerText = totalMinutes;
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+      await deleteDoc(doc(db, "tasks", e.target.dataset.id));
+    });
+  });
 });
 
+taskForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const input = document.getElementById("task-input");
+  const category = document.getElementById("task-category-select").value;
 
-// ==========================================
-// 4. CLOUD SCRATCHPAD (DEBOUNCED AUTO-SAVE)
-// ==========================================
-const scratchpad = document.getElementById('scratchpad-input');
-const saveStatus = document.getElementById('save-status');
-let saveTimeout = null;
-
-onSnapshot(doc(db, 'scratchpad', 'main_note'), (docSnap) => {
-    if (docSnap.exists() && document.activeElement !== scratchpad) {
-        scratchpad.value = docSnap.data().content || "";
-    }
+  await addDoc(collection(db, "tasks"), {
+    text: input.value,
+    category: category,
+    completed: false,
+    createdAt: serverTimestamp()
+  });
+  input.value = "";
 });
 
-scratchpad.addEventListener('input', () => {
-    saveStatus.innerText = "Typing...";
-    clearTimeout(saveTimeout);
+// Task Filter Switching
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", (e) => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    e.target.classList.add("active");
+    activeFilter = e.target.dataset.filter;
+  });
+});
+
+// 6. Navigation Dock View Manager
+const dashboard = document.getElementById("dashboard");
+document.querySelectorAll(".dock-item").forEach(item => {
+  item.addEventListener("click", (e) => {
+    const targetView = e.currentTarget.dataset.view;
     
-    saveTimeout = setTimeout(async () => {
-        saveStatus.innerText = "Saving...";
-        await setDoc(doc(db, 'scratchpad', 'main_note'), {
-            content: scratchpad.value,
-            updatedAt: new Date()
-        });
-        saveStatus.innerText = "Synced";
-    }, 800);
-});
+    document.querySelectorAll(".dock-item").forEach(i => i.classList.remove("active"));
+    e.currentTarget.classList.add("active");
 
-
-// ==========================================
-// 5. TASK TRACKER & FILTER ENGINE
-// ==========================================
-const taskInput = document.getElementById('task-input');
-const taskCategory = document.getElementById('task-category');
-const addTaskBtn = document.getElementById('add-task-btn');
-const taskList = document.getElementById('task-list');
-const filterBtns = document.querySelectorAll('.filter-btn');
-
-let currentFilter = 'all';
-
-addTaskBtn.addEventListener('click', async () => {
-    const text = taskInput.value.trim();
-    if (!text) return;
-    
-    taskInput.value = "";
-    await addDoc(collection(db, 'tasks'), {
-        text: text,
-        category: taskCategory.value,
-        completed: false,
-        createdAt: new Date()
-    });
-});
-
-taskInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') addTaskBtn.click();
-});
-
-filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentFilter = btn.dataset.filter;
-        renderTasks(latestTaskSnapshot);
-    });
-});
-
-let latestTaskSnapshot = null;
-
-onSnapshot(query(collection(db, 'tasks'), orderBy('createdAt', 'desc')), (snapshot) => {
-    latestTaskSnapshot = snapshot;
-    renderTasks(snapshot);
-});
-
-function renderTasks(snapshot) {
-    if (!snapshot) return;
-    taskList.innerHTML = "";
-
-    snapshot.forEach(docSnap => {
-        const task = docSnap.data();
-        const id = docSnap.id;
-
-        if (currentFilter === 'active' && task.completed) return;
-        if (currentFilter === 'done' && !task.completed) return;
-
-        const li = document.createElement('li');
-        if (task.completed) li.classList.add('completed');
-
-        li.innerHTML = `
-            <div class="task-left">
-                <input type="checkbox" ${task.completed ? 'checked' : ''} class="task-check">
-                <span class="task-text">${task.text}</span>
-                <span class="task-tag">${task.category}</span>
-            </div>
-            <button class="delete-link" title="Delete Task">✕</button>
-        `;
-
-        li.querySelector('.task-check').addEventListener('change', async (e) => {
-            await updateDoc(doc(db, 'tasks', id), { completed: e.target.checked });
-        });
-
-        li.querySelector('.delete-link').addEventListener('click', async () => {
-            await deleteDoc(doc(db, 'tasks', id));
-        });
-
-        taskList.appendChild(li);
-    });
-}
-
-
-// ==========================================
-// 6. DYNAMIC QUICK LINKS MANAGER
-// ==========================================
-const linkContainer = document.getElementById('link-buttons');
-const addLinkBtn = document.getElementById('add-link-btn');
-
-const defaultLinks = [
-    { title: "Classroom", url: "https://classroom.google.com", color: "blue" },
-    { title: "Docs", url: "https://docs.google.com", color: "pink" },
-    { title: "Slides", url: "https://slides.google.com", color: "orange" },
-    { title: "Gmail", url: "https://mail.google.com", color: "green" }
-];
-
-onSnapshot(collection(db, 'quick_links'), async (snapshot) => {
-    if (snapshot.empty) {
-        for (let l of defaultLinks) {
-            await addDoc(collection(db, 'quick_links'), l);
-        }
-        return;
-    }
-
-    linkContainer.innerHTML = "";
-    snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        const id = docSnap.id;
-
-        const div = document.createElement('div');
-        div.className = "link-card";
-        div.innerHTML = `
-            <a href="${data.url}" target="_blank" class="vivid-btn ${data.color || 'purple'}" style="flex:1;">${data.title}</a>
-            <button class="delete-link" title="Remove Link">✕</button>
-        `;
-
-        div.querySelector('.delete-link').addEventListener('click', async () => {
-            await deleteDoc(doc(db, 'quick_links', id));
-        });
-
-        linkContainer.appendChild(div);
-    });
-});
-
-addLinkBtn.addEventListener('click', async () => {
-    const title = prompt("Enter site name (e.g., GitHub):");
-    let url = prompt("Enter URL (e.g., https://github.com):");
-    if (!title || !url) return;
-    if (!url.startsWith('http')) url = 'https://' + url;
-
-    const colors = ["blue", "pink", "orange", "green", "purple"];
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-
-    await addDoc(collection(db, 'quick_links'), { title, url, color: randomColor });
-});
-
-
-// ==========================================
-// 7. FLOATING BOTTOM DOCK NAVIGATION
-// ==========================================
-const dockTabs = document.querySelectorAll('.dock-tab');
-const glassPanels = document.querySelectorAll('.glass-panel');
-
-dockTabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        dockTabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-
-        const selectedTab = tab.dataset.tab;
-
-        glassPanels.forEach(panel => {
-            if (selectedTab === 'all') {
-                panel.style.display = 'flex';
-            } else {
-                panel.style.display = panel.dataset.panel === selectedTab ? 'flex' : 'none';
-            }
-        });
-    });
+    dashboard.className = `dashboard-container ${targetView}`;
+  });
 });

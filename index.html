@@ -1,102 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Command Center</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Command Center</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div class="background-glow"></div>
 
-    <!-- Ambient Glowing Background Bubbles for Depth -->
-    <div class="ambient-glow glow-1"></div>
-    <div class="ambient-glow glow-2"></div>
+  <div class="dashboard-container view-all" id="dashboard">
+    <div class="glass-panel panel-clock">
+      <h2 id="greeting">Good Day</h2>
+      <div id="clock">00:00:00 AM</div>
+      <div id="date">Loading date...</div>
+    </div>
 
-    <main class="dashboard-grid">
-        <!-- Panel 1: Live Clock & Dynamic Greeting -->
-        <section class="glass-panel panel-clock" data-panel="clock">
-            <div class="panel-tag">Overview</div>
-            <h3 id="greeting-display" class="greeting-text">Welcome back</h3>
-            <h1 id="time-display" class="gradient-text">00:00</h1>
-            <p id="date-display">Loading date...</p>
-        </section>
+    <div class="glass-panel panel-timer">
+      <h3>⏱️ Focus Timer</h3>
+      <div id="timer-display">25:00</div>
+      <div class="timer-controls">
+        <button id="start-timer-btn" class="btn btn-primary">Start</button>
+        <button id="pause-timer-btn" class="btn btn-secondary">Pause</button>
+        <button id="reset-timer-btn" class="btn btn-danger">Reset</button>
+      </div>
+      <div class="stats-box">
+        <span>Total Focused Today: <strong id="total-focus-time">0</strong> mins</span>
+      </div>
+    </div>
 
-        <!-- Panel 2: Focus Timer & Analytics -->
-        <section class="glass-panel panel-timer" data-panel="focus">
-            <div class="panel-header">
-                <h2>Focus Timer</h2>
-                <span class="stats-badge">Today: <strong id="stats-time">0</strong>m</span>
-            </div>
-            <div id="timer-display" class="gradient-text-alt">25:00</div>
-            <div class="timer-controls">
-                <button id="start-btn" class="vivid-btn blue">Start Focus</button>
-                <button id="reset-btn" class="vivid-btn pink">Reset</button>
-            </div>
-        </section>
+    <div class="glass-panel panel-links">
+      <h3>🔗 Quick Links</h3>
+      <div id="links-grid" class="links-grid"></div>
+      <form id="add-link-form" class="inline-form">
+        <input type="text" id="link-title" placeholder="Site Title" required />
+        <input type="url" id="link-url" placeholder="https://..." required />
+        <button type="submit" class="btn btn-accent">+</button>
+      </form>
+    </div>
 
-        <!-- Panel 3: Quick Links Hub -->
-        <section class="glass-panel panel-links" data-panel="links">
-            <div class="panel-header">
-                <h2>School Hub</h2>
-                <button id="add-link-btn" class="icon-btn" title="Add Custom Link">+</button>
-            </div>
-            <div id="link-buttons" class="link-buttons"></div>
-        </section>
+    <div class="glass-panel panel-notes">
+      <h3>📝 Cloud Scratchpad</h3>
+      <textarea id="scratchpad" placeholder="Type quick notes, links, or class codes... (Auto-saves to cloud)"></textarea>
+      <span id="scratchpad-status" class="status-indicator">Synced</span>
+    </div>
 
-        <!-- Panel 4: Cloud Scratchpad -->
-        <section class="glass-panel panel-notes" data-panel="notes">
-            <div class="panel-header">
-                <h2>Cloud Scratchpad</h2>
-                <span id="save-status" class="status-tag">Synced</span>
-            </div>
-            <textarea id="scratchpad-input" placeholder="Type notes, links, or homework codes here... (Auto-saves to cloud)"></textarea>
-        </section>
+    <div class="glass-panel panel-tasks">
+      <h3>✅ Task Tracker</h3>
+      <form id="add-task-form" class="inline-form">
+        <input type="text" id="task-input" placeholder="New assignment..." required />
+        <select id="task-category-select">
+          <option value="General">General</option>
+          <option value="Math">Math</option>
+          <option value="CS">CS</option>
+          <option value="History">History</option>
+          <option value="Personal">Personal</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Add Task</button>
+      </form>
 
-        <!-- Panel 5 & 6: Task Tracker & Categorization -->
-        <section class="glass-panel panel-tasks" data-panel="tasks">
-            <div class="panel-header">
-                <h2>Task Tracker</h2>
-                <div class="task-filters">
-                    <button class="filter-btn active" data-filter="all">All Tasks</button>
-                    <button class="filter-btn" data-filter="active">Active</button>
-                    <button class="filter-btn" data-filter="done">Completed</button>
-                </div>
-            </div>
+      <div class="task-filters">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="active">Active</button>
+        <button class="filter-btn" data-filter="completed">Completed</button>
+      </div>
 
-            <div class="task-input-area">
-                <input type="text" id="task-input" placeholder="What assignment is due next?">
-                <select id="task-category">
-                    <option value="School">School</option>
-                    <option value="Coding">Coding</option>
-                    <option value="Personal">Personal</option>
-                </select>
-                <button id="add-task-btn" class="vivid-btn green">+ Add Task</button>
-            </div>
+      <ul id="task-list" class="task-list"></ul>
+    </div>
+  </div>
 
-            <ul id="task-list"></ul>
-        </section>
-    </main>
+  <nav class="floating-dock">
+    <button class="dock-item active" data-view="view-all">
+      <span class="icon">🏠</span>
+      <span class="label">Overview</span>
+    </button>
+    <button class="dock-item" data-view="view-focus">
+      <span class="icon">⏱️</span>
+      <span class="label">Timer</span>
+    </button>
+    <button class="dock-item" data-view="view-tasks">
+      <span class="icon">✅</span>
+      <span class="label">Tasks</span>
+    </button>
+    <button class="dock-item" data-view="view-notes">
+      <span class="icon">📝</span>
+      <span class="label">Notes</span>
+    </button>
+  </nav>
 
-    <!-- Floating One UI / iOS Style Navigation Dock -->
-    <nav class="bottom-dock">
-        <button class="dock-tab active" data-tab="all">
-            <span class="dock-icon">🏠</span>
-            <span class="dock-label">Overview</span>
-        </button>
-        <button class="dock-tab" data-tab="focus">
-            <span class="dock-icon">⏱️</span>
-            <span class="dock-label">Focus</span>
-        </button>
-        <button class="dock-tab" data-tab="tasks">
-            <span class="dock-icon">✅</span>
-            <span class="dock-label">Tasks</span>
-        </button>
-        <button class="dock-tab" data-tab="notes">
-            <span class="dock-icon">📝</span>
-            <span class="dock-label">Notes</span>
-        </button>
-    </nav>
-
-    <script type="module" src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
