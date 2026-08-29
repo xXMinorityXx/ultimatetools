@@ -7,16 +7,51 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Liquid Ambient Background Mesh -->
+  <!-- Level-Up Liquid FX Overlay -->
+  <div id="level-up-modal" class="level-up-modal hidden">
+    <div class="level-up-content glass-panel">
+      <div class="sparkles">✨ 🎉 ✨</div>
+      <h2>LEVEL UP!</h2>
+      <p id="level-up-title">You reached Grindmaster status!</p>
+      <button id="close-level-up-btn" class="btn btn-primary">Keep Crushing It</button>
+    </div>
+  </div>
+
+  <!-- Ambient Fluid Orbs -->
   <div class="liquid-bg">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
-    <div class="liquid-shimmer-overlay"></div>
   </div>
 
   <div class="dashboard-container view-all" id="dashboard">
     
+    <!-- Top Global Settings & Theme Bar -->
+    <div class="glass-panel global-topbar">
+      <div class="panel-header">
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.2 19.58 10.55 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9zm0 15c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>
+          <h3>Environment & Audio</h3>
+        </div>
+        <div class="topbar-controls">
+          <!-- Theme Selector -->
+          <div class="theme-selector-group">
+            <button class="theme-dot theme-cyber active" data-theme="cyber" title="Cyber Ocean"></button>
+            <button class="theme-dot theme-violet" data-theme="violet" title="Cosmic Violet"></button>
+            <button class="theme-dot theme-emerald" data-theme="emerald" title="Emerald Cyber"></button>
+            <button class="theme-dot theme-solar" data-theme="solar" title="Solar Flare"></button>
+          </div>
+
+          <!-- Ambient Audio Sound Generator -->
+          <div class="audio-toggle-group">
+            <button id="ambient-audio-btn" class="btn btn-glass btn-sm">
+              <span id="audio-icon">🎵</span> Ambient Rain: <span id="audio-status">OFF</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Panel 1: Bell Schedule Radar & Live Clock -->
     <div class="glass-panel panel-clock animated-card">
       <div class="panel-header">
@@ -75,7 +110,7 @@
       </div>
     </div>
 
-    <!-- Panel 3: High School Function 1 - Gamified Streak & XP Level System -->
+    <!-- Panel 3: Gamified Streak & XP System -->
     <div class="glass-panel panel-streak animated-card">
       <div class="panel-header">
         <div class="header-title">
@@ -117,24 +152,35 @@
       </div>
     </div>
 
-    <!-- Panel 4: Advanced Multi-Note Glass Hub -->
+    <!-- Panel 4: Multi-Note Vault with Search, Tags & Live Markdown -->
     <div class="glass-panel panel-notes animated-card">
       <div class="panel-header">
         <div class="header-title">
           <svg class="svg-icon" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
           <h3>Multi-Note Vault</h3>
         </div>
-        <button id="create-new-note-btn" class="btn btn-primary btn-sm">+ New Note</button>
+        <div class="notes-header-actions">
+          <button id="toggle-markdown-btn" class="btn btn-secondary btn-sm">Preview Markdown</button>
+          <button id="create-new-note-btn" class="btn btn-primary btn-sm">+ New Note</button>
+        </div>
       </div>
 
-      <!-- Quick Home Cards Carousel / Selector -->
-      <div class="notes-selector-strip" id="notes-tab-strip">
-        <!-- Dynamically rendered note pills -->
+      <!-- Note Search & Filter Controls -->
+      <div class="notes-search-row">
+        <input type="text" id="note-search-input" placeholder="🔍 Search notes or tags..." />
       </div>
+
+      <!-- Quick Tab Strip Selector -->
+      <div class="notes-selector-strip" id="notes-tab-strip"></div>
 
       <div class="note-editor-wrapper">
-        <input type="text" id="active-note-title" placeholder="Note Title (e.g., Chemistry Quiz Review)" class="note-title-input" />
-        <textarea id="active-note-body" placeholder="Write class notes, formula cheat sheets, or zoom links..."></textarea>
+        <div class="note-meta-inputs">
+          <input type="text" id="active-note-title" placeholder="Note Title (e.g., AP Chem Cheat Sheet)" class="note-title-input" />
+          <input type="text" id="active-note-tags" placeholder="#chemistry, #formulas" class="note-tags-input" />
+        </div>
+        
+        <textarea id="active-note-body" placeholder="Supports Markdown (*italic*, **bold**, # heading, - lists)..."></textarea>
+        <div id="active-note-preview" class="markdown-preview-box hidden"></div>
       </div>
 
       <div class="note-footer">
@@ -143,7 +189,55 @@
       </div>
     </div>
 
-    <!-- Panel 5: High School Function 2 - Exam & AP Countdown -->
+    <!-- Panel 5: Multi-Deck Active Recall Flashcards with Mastery Scoring -->
+    <div class="glass-panel panel-flashcards animated-card">
+      <div class="panel-header">
+        <div class="header-title">
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+          <h3>Flashcard Decks</h3>
+        </div>
+        <select id="deck-selector-dropdown" class="deck-select-input">
+          <option value="bio">Biology 101</option>
+          <option value="history">AP US History</option>
+        </select>
+      </div>
+
+      <!-- Dynamic Card Count & Mastery Score Badge -->
+      <div class="deck-meta-bar">
+        <span class="muted-text-sm" id="card-counter">Card 1 / 2</span>
+        <span class="badge liquid-pill" id="deck-mastery-badge">Mastery: 75%</span>
+      </div>
+
+      <div class="flashcard-wrapper">
+        <div class="flashcard" id="flashcard">
+          <div class="card-face card-front" id="card-front">Select or create a card</div>
+          <div class="card-face card-back" id="card-back">Flip to see answer</div>
+        </div>
+      </div>
+
+      <div class="flashcard-controls">
+        <button id="prev-card-btn" class="btn btn-glass btn-sm">‹ Prev</button>
+        <button id="flip-card-btn" class="btn btn-primary btn-sm">Flip</button>
+        <button id="next-card-btn" class="btn btn-glass btn-sm">Next ›</button>
+      </div>
+
+      <!-- Mastery Scoring Controls -->
+      <div class="mastery-scoring-row">
+        <span class="muted-text-sm">Rate Memory:</span>
+        <button class="btn btn-danger btn-xs rate-card-btn" data-rating="hard">Hard (+5 XP)</button>
+        <button class="btn btn-secondary btn-xs rate-card-btn" data-rating="good">Good (+15 XP)</button>
+        <button class="btn btn-primary btn-xs rate-card-btn" data-rating="easy">Easy (+25 XP)</button>
+      </div>
+
+      <!-- Inline Form to Add Custom Flashcards -->
+      <form id="add-card-form" class="inline-form flex-wrap">
+        <input type="text" id="new-card-front" placeholder="Question / Term" required class="flex-grow" />
+        <input type="text" id="new-card-back" placeholder="Answer / Concept" required class="flex-grow" />
+        <button type="submit" class="btn btn-primary btn-sm">+ Card</button>
+      </form>
+    </div>
+
+    <!-- Panel 6: Exam & AP Countdown Radar -->
     <div class="glass-panel panel-exams animated-card">
       <div class="panel-header">
         <div class="header-title">
@@ -162,41 +256,22 @@
       <div id="exams-list" class="exams-list"></div>
     </div>
 
-    <!-- Panel 6: High School Function 3 - Active Recall Flashcards -->
-    <div class="glass-panel panel-flashcards animated-card">
-      <div class="panel-header">
-        <div class="header-title">
-          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
-          <h3>Active Recall Flashcards</h3>
-        </div>
-        <span class="muted-text-sm" id="card-counter">1 / 2</span>
-      </div>
-
-      <div class="flashcard-wrapper">
-        <div class="flashcard" id="flashcard">
-          <div class="card-face card-front" id="card-front">Mitochondria Function</div>
-          <div class="card-face card-back" id="card-back">Powerhouse of the cell; produces ATP via respiration.</div>
-        </div>
-      </div>
-
-      <div class="flashcard-controls">
-        <button id="prev-card-btn" class="btn btn-glass">‹ Prev</button>
-        <button id="flip-card-btn" class="btn btn-primary">Flip</button>
-        <button id="next-card-btn" class="btn btn-glass">Next ›</button>
-      </div>
-    </div>
-
-    <!-- Panel 7: Mission Control (Tasks & Homework) -->
+    <!-- Panel 7: Mission Control Tasks with Drag & Drop + Priority -->
     <div class="glass-panel panel-tasks animated-card">
       <div class="panel-header">
         <div class="header-title">
-          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
           <h3>Mission Control Tasks</h3>
         </div>
       </div>
 
       <form id="add-task-form" class="inline-form flex-wrap">
         <input type="text" id="task-input" placeholder="New homework task..." required class="flex-grow" />
+        <select id="task-priority-input">
+          <option value="high">Urgent</option>
+          <option value="medium" selected>Medium</option>
+          <option value="low">Low</option>
+        </select>
         <button type="submit" class="btn btn-primary">Add</button>
       </form>
 
@@ -205,7 +280,7 @@
 
   </div>
 
-  <!-- Floating Dock -->
+  <!-- Dock Navigation -->
   <nav class="floating-dock" id="liquid-dock">
     <button class="dock-item active" data-view="view-all" data-tooltip="Overview">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
@@ -219,11 +294,11 @@
     <button class="dock-item" data-view="view-streak" data-tooltip="Streak & Quests">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M13.5 0.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8c0-6.04-4.5-10.89-6.5-13.33z"/></svg>
     </button>
-    <button class="dock-item" data-view="view-exams" data-tooltip="Exams">
-      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
-    </button>
     <button class="dock-item" data-view="view-flashcards" data-tooltip="Flashcards">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+    </button>
+    <button class="dock-item" data-view="view-exams" data-tooltip="Exams">
+      <svg class="dock-svg" viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
     </button>
     <button class="dock-item" data-view="view-tasks" data-tooltip="Tasks">
       <svg class="dock-svg" viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-9 14l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
