@@ -3,143 +3,185 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#090b12">
-  <meta name="description" content="Student Command Center — a cloud-synced student dashboard.">
+  <meta name="theme-color" content="#090b10">
+  <meta name="description" content="A personal Liquid Glass student command center.">
   <title>Student Command Center</title>
+  <link rel="preconnect" href="https://www.gstatic.com">
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <div class="ambient ambient-a"></div>
-  <div class="ambient ambient-b"></div>
-  <div class="ambient ambient-c"></div>
+  <div class="backdrop-light light-a"></div>
+  <div class="backdrop-light light-b"></div>
+  <div class="backdrop-light light-c"></div>
+  <div class="grain"></div>
 
   <main class="app-shell">
-    <header class="topbar">
-      <div>
-        <p class="eyebrow" id="dayLabel">STUDENT COMMAND CENTER</p>
-        <h1 id="greeting">Good afternoon</h1>
-        <p class="subtle" id="syncStatus">Connecting to your workspace…</p>
+    <header class="hero-bar surface-light">
+      <div class="hero-copy">
+        <div class="eyebrow-row">
+          <span class="eyebrow">COMMAND CENTER</span>
+          <span class="connection-dot" id="connectionDot"></span>
+          <span class="sync-label" id="syncStatus">Offline mode</span>
+        </div>
+        <h1 id="greeting">Good afternoon.</h1>
+        <p class="hero-subtitle" id="heroDate">Loading your day…</p>
       </div>
 
-      <div class="account-area">
-        <div class="user-chip hidden" id="userChip">
+      <div class="hero-actions">
+        <button class="glass-button compact" id="signInBtn">Sign in with Google</button>
+
+        <div class="account-chip hidden" id="userChip">
           <img id="userAvatar" alt="" referrerpolicy="no-referrer">
           <span id="userName">Student</span>
-          <button class="icon-button" id="signOutBtn" title="Sign out" aria-label="Sign out">↪</button>
+          <button class="mini-icon" id="signOutBtn" aria-label="Sign out" title="Sign out">↪</button>
         </div>
-        <button class="primary-button" id="signInBtn">Sign in with Google</button>
       </div>
     </header>
 
-    <section class="dashboard-grid" id="dashboard">
+    <section class="workspace" id="workspace">
 
-      <article class="glass-panel panel-clock view-panel" data-panel="clock">
-        <div class="panel-header">
+      <!-- CLOCK -->
+      <article class="liquid-surface widget widget-clock" data-widget-id="clock">
+        <div class="surface-shine"></div>
+
+        <div class="widget-head">
           <div>
-            <p class="panel-kicker">LOCAL TIME</p>
+            <span class="eyebrow">LOCAL TIME</span>
             <h2>Right now</h2>
           </div>
-          <span class="status-dot"></span>
+
+          <span class="live-badge">
+            <i></i> LIVE
+          </span>
         </div>
-        <div class="clock-time" id="clockTime">--:--</div>
-        <div class="clock-meta">
-          <span id="clockAmPm">--</span>
-          <span id="clockDate">Loading date…</span>
-        </div>
-        <div class="mini-stat-row">
-          <div>
-            <span class="mini-label">TODAY</span>
-            <strong id="clockToday">0 tasks</strong>
+
+        <div class="clock-block">
+          <div class="clock-time" id="clockTime">--:--</div>
+
+          <div class="clock-line">
+            <span class="clock-ampm" id="clockAmPm">--</span>
+            <span id="clockDate">Loading…</span>
           </div>
+        </div>
+
+        <div class="stat-strip">
           <div>
-            <span class="mini-label">DONE</span>
-            <strong id="clockDone">0 tasks</strong>
+            <span>OPEN</span>
+            <strong id="clockOpen">0</strong>
+          </div>
+
+          <div>
+            <span>DONE</span>
+            <strong id="clockDone">0</strong>
+          </div>
+
+          <div>
+            <span>FOCUS</span>
+            <strong id="clockFocus">0m</strong>
           </div>
         </div>
       </article>
 
-      <article class="glass-panel panel-focus view-panel" data-panel="focus">
-        <div class="panel-header">
+
+      <!-- FOCUS -->
+      <article class="liquid-surface widget widget-focus" data-widget-id="focus">
+        <div class="surface-shine"></div>
+
+        <div class="widget-head">
           <div>
-            <p class="panel-kicker">FOCUS ENGINE</p>
+            <span class="eyebrow">FOCUS ENGINE</span>
             <h2>Pomodoro</h2>
           </div>
-          <span class="mode-pill" id="timerModePill">FOCUS</span>
+
+          <span class="status-pill" id="timerPill">FOCUS</span>
         </div>
 
-        <div class="timer-ring">
-          <div class="timer-face">
-            <div class="timer-display" id="timerDisplay">25:00</div>
-            <div class="timer-caption" id="timerCaption">Deep work</div>
+        <div class="focus-layout">
+
+          <div class="timer-orb" id="timerOrb">
+            <div class="orb-inner">
+              <span class="timer-time" id="timerDisplay">25:00</span>
+              <span class="timer-caption" id="timerCaption">Deep work</span>
+            </div>
           </div>
-        </div>
 
-        <div class="timer-mode-row">
-          <button class="seg-button active" data-timer-mode="focus">Focus</button>
-          <button class="seg-button" data-timer-mode="short">Short break</button>
-          <button class="seg-button" data-timer-mode="long">Long break</button>
-        </div>
+          <div class="focus-controls">
 
-        <div class="action-row">
-          <button class="primary-button" id="timerStart">Start</button>
-          <button class="secondary-button" id="timerReset">Reset</button>
-        </div>
+            <div class="segment-group">
+              <button class="segment active" data-timer-mode="focus">
+                Focus
+              </button>
 
-        <div class="mini-stat-row">
-          <div>
-            <span class="mini-label">TODAY</span>
-            <strong id="focusToday">0 min</strong>
-          </div>
-          <div>
-            <span class="mini-label">STREAK</span>
-            <strong id="focusStreak">0 days</strong>
-          </div>
-          <div>
-            <span class="mini-label">SESSIONS</span>
-            <strong id="focusSessions">0</strong>
+              <button class="segment" data-timer-mode="short">
+                Short
+              </button>
+
+              <button class="segment" data-timer-mode="long">
+                Long
+              </button>
+            </div>
+
+            <div class="button-row">
+              <button class="accent-button" id="timerStart">
+                Start
+              </button>
+
+              <button class="glass-button" id="timerReset">
+                Reset
+              </button>
+            </div>
+
+            <div class="focus-stats">
+              <div>
+                <span>TODAY</span>
+                <strong id="focusToday">0m</strong>
+              </div>
+
+              <div>
+                <span>STREAK</span>
+                <strong id="focusStreak">0d</strong>
+              </div>
+
+              <div>
+                <span>SESSIONS</span>
+                <strong id="focusSessions">0</strong>
+              </div>
+            </div>
+
           </div>
         </div>
       </article>
 
-      <article class="glass-panel panel-links view-panel" data-panel="links">
-        <div class="panel-header">
-          <div>
-            <p class="panel-kicker">SCHOOL HUB</p>
-            <h2>Quick links</h2>
-          </div>
-          <button class="ghost-button" id="addLinkBtn">+ Add</button>
-        </div>
-        <div class="link-grid" id="linkGrid"></div>
-      </article>
 
-      <article class="glass-panel panel-notes view-panel" data-panel="notes">
-        <div class="panel-header">
-          <div>
-            <p class="panel-kicker">CLOUD SCRATCHPAD</p>
-            <h2>Notes</h2>
-          </div>
-          <span class="save-state" id="noteSaveState">Waiting for sign-in</span>
-        </div>
-        <textarea id="scratchpad" class="scratchpad" placeholder="Paste a class code, dump an idea, draft something, or leave yourself a reminder…" disabled></textarea>
-        <div class="note-footer">
-          <span id="noteCount">0 characters</span>
-          <button class="ghost-button" id="clearNotesBtn">Clear</button>
-        </div>
-      </article>
+      <!-- TASKS -->
+      <article class="liquid-surface widget widget-tasks" data-widget-id="tasks">
+        <div class="surface-shine"></div>
 
-      <article class="glass-panel panel-tasks view-panel" data-panel="tasks">
-        <div class="panel-header">
+        <div class="widget-head">
           <div>
-            <p class="panel-kicker">CLOUD TASKS</p>
+            <span class="eyebrow">CLOUD TASKS</span>
             <h2>Assignments</h2>
           </div>
-          <span class="count-badge" id="taskCountBadge">0</span>
+
+          <div class="widget-head-actions">
+            <span class="counter" id="taskCountBadge">0</span>
+          </div>
         </div>
 
-        <form class="task-form" id="taskForm">
-          <input id="taskText" class="text-input" autocomplete="off" maxlength="180" placeholder="What needs to get done?" required>
-          <div class="form-row">
-            <select id="taskCategory" class="select-input">
+        <form class="task-composer" id="taskForm">
+
+          <input
+            id="taskText"
+            class="glass-input"
+            autocomplete="off"
+            maxlength="180"
+            placeholder="What needs to get done?"
+            required
+          >
+
+          <div class="composer-row">
+
+            <select id="taskCategory" class="glass-input">
               <option value="School">School</option>
               <option value="Math">Math</option>
               <option value="Science">Science</option>
@@ -147,21 +189,47 @@
               <option value="History">History</option>
               <option value="Personal">Personal</option>
             </select>
-            <select id="taskPriority" class="select-input">
+
+            <select id="taskPriority" class="glass-input">
               <option value="medium">Medium</option>
               <option value="high">High</option>
               <option value="low">Low</option>
             </select>
-            <input id="taskDue" type="date" class="date-input" aria-label="Due date">
-            <button class="primary-button add-task-button" type="submit">Add</button>
+
+            <input
+              id="taskDue"
+              class="glass-input"
+              type="date"
+              aria-label="Due date"
+            >
+
+            <button class="accent-button" type="submit">
+              Add task
+            </button>
+
           </div>
         </form>
 
-        <div class="filter-row">
-          <button class="filter-button active" data-task-status="active">Active</button>
-          <button class="filter-button" data-task-status="completed">Completed</button>
-          <button class="filter-button" data-task-status="all">All</button>
-          <select id="categoryFilter" class="filter-select">
+        <div class="filter-bar">
+
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-task-status="active">
+              Active
+            </button>
+
+            <button class="filter-tab" data-task-status="completed">
+              Completed
+            </button>
+
+            <button class="filter-tab" data-task-status="all">
+              All
+            </button>
+          </div>
+
+          <select
+            id="categoryFilter"
+            class="glass-input compact-input"
+          >
             <option value="all">All subjects</option>
             <option value="School">School</option>
             <option value="Math">Math</option>
@@ -170,100 +238,517 @@
             <option value="History">History</option>
             <option value="Personal">Personal</option>
           </select>
+
         </div>
 
         <div class="task-list" id="taskList">
-          <div class="empty-state">Sign in to load your cloud tasks.</div>
+          <div class="empty-state">
+            Sign in to load your cloud tasks.
+          </div>
         </div>
       </article>
 
-      <article class="glass-panel panel-analytics view-panel" data-panel="analytics">
-        <div class="panel-header">
+
+      <!-- NOTES -->
+      <article class="liquid-surface widget widget-notes" data-widget-id="notes">
+
+        <div class="surface-shine"></div>
+
+        <div class="widget-head">
           <div>
-            <p class="panel-kicker">STUDY ANALYTICS</p>
-            <h2>Your momentum</h2>
+            <span class="eyebrow">CLOUD SCRATCHPAD</span>
+            <h2>Notes</h2>
           </div>
-          <span class="mode-pill">LIVE</span>
+
+          <span class="save-state" id="noteSaveState">
+            Not connected
+          </span>
+        </div>
+
+        <textarea
+          id="scratchpad"
+          class="notes-editor"
+          placeholder="Write anything… class codes, ideas, reminders, rough drafts."
+          disabled
+        ></textarea>
+
+        <div class="notes-footer">
+          <span id="noteCount">0 characters</span>
+
+          <button
+            class="glass-button compact"
+            id="clearNotesBtn"
+          >
+            Clear
+          </button>
+        </div>
+
+      </article>
+
+
+      <!-- LINKS -->
+      <article class="liquid-surface widget widget-links" data-widget-id="links">
+
+        <div class="surface-shine"></div>
+
+        <div class="widget-head">
+          <div>
+            <span class="eyebrow">LAUNCHPAD</span>
+            <h2>Quick links</h2>
+          </div>
+
+          <button
+            class="glass-button compact"
+            id="addLinkBtn"
+          >
+            + Add
+          </button>
+        </div>
+
+        <div
+          class="link-grid"
+          id="linkGrid"
+        ></div>
+
+      </article>
+
+
+      <!-- ANALYTICS -->
+      <article
+        class="liquid-surface widget widget-analytics"
+        data-widget-id="analytics"
+      >
+
+        <div class="surface-shine"></div>
+
+        <div class="widget-head">
+
+          <div>
+            <span class="eyebrow">STUDY ANALYTICS</span>
+            <h2>Momentum</h2>
+          </div>
+
+          <span class="status-pill">
+            LIVE
+          </span>
+
         </div>
 
         <div class="analytics-grid">
-          <div class="analytics-card">
-            <span class="mini-label">FOCUS TODAY</span>
-            <strong id="analyticsToday">0 min</strong>
-            <span class="subtle">Completed focus sessions</span>
+
+          <div class="metric-card">
+            <span>TODAY</span>
+            <strong id="analyticsToday">0m</strong>
+            <small>Focus time</small>
           </div>
-          <div class="analytics-card">
-            <span class="mini-label">7-DAY TOTAL</span>
-            <strong id="analyticsWeek">0 min</strong>
-            <span class="subtle">Rolling seven-day focus</span>
+
+          <div class="metric-card">
+            <span>7 DAYS</span>
+            <strong id="analyticsWeek">0m</strong>
+            <small>Rolling total</small>
           </div>
-          <div class="analytics-card">
-            <span class="mini-label">CURRENT STREAK</span>
-            <strong id="analyticsStreak">0 days</strong>
-            <span class="subtle">Consecutive study days</span>
+
+          <div class="metric-card">
+            <span>STREAK</span>
+            <strong id="analyticsStreak">0d</strong>
+            <small>Consecutive days</small>
           </div>
-          <div class="analytics-card">
-            <span class="mini-label">COMPLETION</span>
+
+          <div class="metric-card">
+            <span>DONE</span>
             <strong id="analyticsCompletion">0%</strong>
-            <span class="subtle">Tasks completed</span>
+            <small>Tasks completed</small>
           </div>
+
         </div>
 
-        <div class="analytics-footer">
+        <div class="analytics-bottom">
+
           <div>
-            <span class="mini-label">MILESTONE</span>
-            <strong id="nextMilestone">Start your first session.</strong>
+            <span class="eyebrow">NEXT MILESTONE</span>
+            <strong id="nextMilestone">
+              Start your first session.
+            </strong>
           </div>
-          <button class="ghost-button" id="clearStudyLogsBtn">Clear logs</button>
+
+          <button
+            class="glass-button compact"
+            id="clearStudyLogsBtn"
+          >
+            Clear history
+          </button>
+
         </div>
+
       </article>
 
     </section>
   </main>
 
-  <nav class="floating-nav" aria-label="Dashboard navigation">
-    <div class="nav-slider" id="navSlider"></div>
-    <button class="nav-item active" data-view="overview" title="Overview"><span>⌂</span><small>Overview</small></button>
-    <button class="nav-item" data-view="focus" title="Focus"><span>◷</span><small>Focus</small></button>
-    <button class="nav-item" data-view="tasks" title="Tasks"><span>✓</span><small>Tasks</small></button>
-    <button class="nav-item" data-view="notes" title="Notes"><span>✎</span><small>Notes</small></button>
+
+  <!-- FLOATING DOCK -->
+  <nav
+    class="liquid-dock"
+    id="liquidDock"
+    aria-label="Main navigation"
+  >
+
+    <div
+      class="dock-glide"
+      id="dockGlide"
+    ></div>
+
+    <button
+      class="dock-item active"
+      data-view="overview"
+    >
+      <span class="dock-icon">⌂</span>
+      <span>Home</span>
+    </button>
+
+    <button
+      class="dock-item"
+      data-view="focus"
+    >
+      <span class="dock-icon">◷</span>
+      <span>Focus</span>
+    </button>
+
+    <button
+      class="dock-item"
+      data-view="tasks"
+    >
+      <span class="dock-icon">✓</span>
+      <span>Tasks</span>
+    </button>
+
+    <button
+      class="dock-item"
+      data-view="notes"
+    >
+      <span class="dock-icon">✎</span>
+      <span>Notes</span>
+    </button>
+
+    <button
+      class="dock-item"
+      data-view="more"
+    >
+      <span class="dock-icon">•••</span>
+      <span>More</span>
+    </button>
+
   </nav>
 
-  <div class="modal-backdrop hidden" id="modalBackdrop">
-    <section class="modal glass-panel" id="linkModal" role="dialog" aria-modal="true" aria-labelledby="linkModalTitle">
-      <div class="panel-header">
+
+  <!-- MORE SHEET -->
+  <div
+    class="sheet-backdrop hidden"
+    id="moreBackdrop"
+  >
+
+    <section
+      class="bottom-sheet liquid-surface"
+      id="moreSheet"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="moreTitle"
+    >
+
+      <div class="sheet-handle"></div>
+
+      <div class="widget-head">
+
         <div>
-          <p class="panel-kicker">CUSTOMIZE</p>
-          <h2 id="linkModalTitle">Add a quick link</h2>
+          <span class="eyebrow">WORKSPACE</span>
+          <h2 id="moreTitle">More</h2>
         </div>
-        <button class="icon-button" id="closeLinkModal" aria-label="Close">×</button>
+
+        <button
+          class="mini-icon"
+          id="closeMore"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
       </div>
-      <form id="linkForm">
-        <label class="field-label">Name
-          <input class="text-input" id="linkTitle" maxlength="40" required placeholder="Canvas">
-        </label>
-        <label class="field-label">URL
-          <input class="text-input" id="linkUrl" type="url" required placeholder="https://example.com">
-        </label>
-        <label class="field-label">Accent
-          <select class="select-input" id="linkColor">
-            <option value="blue">Blue</option>
-            <option value="pink">Pink</option>
-            <option value="orange">Orange</option>
-            <option value="green">Green</option>
-            <option value="purple">Purple</option>
-          </select>
-        </label>
-        <div class="action-row">
-          <button type="button" class="secondary-button" id="cancelLinkBtn">Cancel</button>
-          <button type="submit" class="primary-button">Save link</button>
+
+
+      <div class="sheet-section">
+
+        <span class="section-title">
+          Workspace
+        </span>
+
+        <div class="sheet-actions">
+
+          <button
+            class="sheet-action"
+            data-sheet-view="links"
+          >
+            <b>Launchpad</b>
+            <small>Quick links</small>
+          </button>
+
+          <button
+            class="sheet-action"
+            data-sheet-view="analytics"
+          >
+            <b>Analytics</b>
+            <small>Study history</small>
+          </button>
+
         </div>
-      </form>
+      </div>
+
+
+      <div class="sheet-section">
+
+        <span class="section-title">
+          Appearance
+        </span>
+
+        <div class="setting-row">
+
+          <div>
+            <b>Theme</b>
+            <small>
+              Change the glass atmosphere
+            </small>
+          </div>
+
+          <select
+            id="themeSelect"
+            class="glass-input compact-input"
+          >
+            <option value="midnight">Midnight</option>
+            <option value="moonlight">Moonlight</option>
+            <option value="aurora">Aurora</option>
+          </select>
+
+        </div>
+
+        <div
+          class="accent-row"
+          id="accentPicker"
+        >
+          <button
+            data-accent="blue"
+            aria-label="Blue accent"
+          ></button>
+
+          <button
+            data-accent="violet"
+            aria-label="Violet accent"
+          ></button>
+
+          <button
+            data-accent="mint"
+            aria-label="Mint accent"
+          ></button>
+
+          <button
+            data-accent="rose"
+            aria-label="Rose accent"
+          ></button>
+
+          <button
+            data-accent="amber"
+            aria-label="Amber accent"
+          ></button>
+        </div>
+
+      </div>
+
+
+      <div class="sheet-section">
+
+        <div class="setting-row setting-row-head">
+
+          <div>
+            <b>Personal layout</b>
+
+            <small>
+              Firebase remembers what you choose.
+            </small>
+          </div>
+
+          <button
+            class="glass-button compact"
+            id="resetLayoutBtn"
+          >
+            Reset
+          </button>
+
+        </div>
+
+        <div
+          class="layout-manager"
+          id="layoutManager"
+        ></div>
+
+      </div>
+
+
+      <div class="sheet-section">
+
+        <span class="section-title">
+          Timer defaults
+        </span>
+
+        <div class="timer-settings">
+
+          <label>
+            Focus
+            <input
+              id="focusMinutesInput"
+              class="glass-input"
+              type="number"
+              min="1"
+              max="120"
+            >
+          </label>
+
+          <label>
+            Short break
+            <input
+              id="shortMinutesInput"
+              class="glass-input"
+              type="number"
+              min="1"
+              max="60"
+            >
+          </label>
+
+          <label>
+            Long break
+            <input
+              id="longMinutesInput"
+              class="glass-input"
+              type="number"
+              min="1"
+              max="90"
+            >
+          </label>
+
+        </div>
+
+      </div>
+
     </section>
   </div>
 
-  <div class="toast" id="toast"></div>
 
-  <script type="module" src="./script.js"></script>
+  <!-- LINK MODAL -->
+  <div
+    class="modal-backdrop hidden"
+    id="modalBackdrop"
+  >
+
+    <section
+      class="modal liquid-surface"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="linkModalTitle"
+    >
+
+      <div class="widget-head">
+
+        <div>
+          <span class="eyebrow">LAUNCHPAD</span>
+          <h2 id="linkModalTitle">
+            Add a quick link
+          </h2>
+        </div>
+
+        <button
+          class="mini-icon"
+          id="closeLinkModal"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <form
+        id="linkForm"
+        class="modal-form"
+      >
+
+        <label>
+          Name
+          <input
+            class="glass-input"
+            id="linkTitle"
+            maxlength="40"
+            required
+            placeholder="Canvas"
+          >
+        </label>
+
+        <label>
+          URL
+          <input
+            class="glass-input"
+            id="linkUrl"
+            type="url"
+            required
+            placeholder="https://example.com"
+          >
+        </label>
+
+        <label>
+          Accent
+          <select
+            class="glass-input"
+            id="linkColor"
+          >
+            <option value="blue">Blue</option>
+            <option value="violet">Violet</option>
+            <option value="mint">Mint</option>
+            <option value="rose">Rose</option>
+            <option value="amber">Amber</option>
+          </select>
+        </label>
+
+        <div class="button-row">
+
+          <button
+            type="button"
+            class="glass-button"
+            id="cancelLinkBtn"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="submit"
+            class="accent-button"
+          >
+            Save link
+          </button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+  </div>
+
+
+  <div
+    class="toast"
+    id="toast"
+  ></div>
+
+
+  <script
+    type="module"
+    src="./script.js"
+  ></script>
+
 </body>
 </html>

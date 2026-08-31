@@ -1,4 +1,6 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 
 import {
   getFirestore,
@@ -22,18 +24,12 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
-  signInWithRedirect,
-  getRedirectResult,
   signOut
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 
-// ============================================================
-// FIREBASE CONFIG
-// ============================================================
-
 const firebaseConfig = {
-  apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3goBKm87go",
+  apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3go",
   authDomain: "student-dashboard-41b98.firebaseapp.com",
   projectId: "student-dashboard-41b98",
   storageBucket: "student-dashboard-41b98.firebasestorage.app",
@@ -43,456 +39,924 @@ const firebaseConfig = {
 };
 
 
-// ============================================================
-// INITIALIZE FIREBASE
-// ============================================================
+const app =
+  initializeApp(firebaseConfig);
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+const db =
+  getFirestore(app);
+
+const auth =
+  getAuth(app);
+
+const provider =
+  new GoogleAuthProvider();
 
 
-// ============================================================
-// DOM HELPERS
-// ============================================================
+const $ =
+  selector =>
+    document.querySelector(selector);
 
-const $ = (selector) => document.querySelector(selector);
-
-const $$ = (selector) => [...document.querySelectorAll(selector)];
+const $$ =
+  selector =>
+    [...document.querySelectorAll(selector)];
 
 
 const els = {
-  dayLabel: $("#dayLabel"),
-  greeting: $("#greeting"),
-  syncStatus: $("#syncStatus"),
 
-  signInBtn: $("#signInBtn"),
-  signOutBtn: $("#signOutBtn"),
-  userChip: $("#userChip"),
-  userAvatar: $("#userAvatar"),
-  userName: $("#userName"),
+  greeting:
+    $("#greeting"),
 
-  clockTime: $("#clockTime"),
-  clockAmPm: $("#clockAmPm"),
-  clockDate: $("#clockDate"),
-  clockToday: $("#clockToday"),
-  clockDone: $("#clockDone"),
+  heroDate:
+    $("#heroDate"),
 
-  timerDisplay: $("#timerDisplay"),
-  timerCaption: $("#timerCaption"),
-  timerModePill: $("#timerModePill"),
-  timerStart: $("#timerStart"),
-  timerReset: $("#timerReset"),
+  syncStatus:
+    $("#syncStatus"),
 
-  focusToday: $("#focusToday"),
-  focusStreak: $("#focusStreak"),
-  focusSessions: $("#focusSessions"),
+  connectionDot:
+    $("#connectionDot"),
 
-  analyticsToday: $("#analyticsToday"),
-  analyticsWeek: $("#analyticsWeek"),
-  analyticsStreak: $("#analyticsStreak"),
-  analyticsCompletion: $("#analyticsCompletion"),
-  nextMilestone: $("#nextMilestone"),
-  clearStudyLogsBtn: $("#clearStudyLogsBtn"),
+  signInBtn:
+    $("#signInBtn"),
 
-  linkGrid: $("#linkGrid"),
-  addLinkBtn: $("#addLinkBtn"),
+  signOutBtn:
+    $("#signOutBtn"),
 
-  scratchpad: $("#scratchpad"),
-  noteSaveState: $("#noteSaveState"),
-  noteCount: $("#noteCount"),
-  clearNotesBtn: $("#clearNotesBtn"),
+  userChip:
+    $("#userChip"),
 
-  taskForm: $("#taskForm"),
-  taskText: $("#taskText"),
-  taskCategory: $("#taskCategory"),
-  taskPriority: $("#taskPriority"),
-  taskDue: $("#taskDue"),
-  taskList: $("#taskList"),
-  taskCountBadge: $("#taskCountBadge"),
-  categoryFilter: $("#categoryFilter"),
+  userAvatar:
+    $("#userAvatar"),
 
-  modalBackdrop: $("#modalBackdrop"),
-  linkModal: $("#linkModal"),
-  linkForm: $("#linkForm"),
-  linkTitle: $("#linkTitle"),
-  linkUrl: $("#linkUrl"),
-  linkColor: $("#linkColor"),
-  closeLinkModal: $("#closeLinkModal"),
-  cancelLinkBtn: $("#cancelLinkBtn"),
+  userName:
+    $("#userName"),
 
-  toast: $("#toast"),
-  navSlider: $("#navSlider")
+  clockTime:
+    $("#clockTime"),
+
+  clockAmPm:
+    $("#clockAmPm"),
+
+  clockDate:
+    $("#clockDate"),
+
+  clockOpen:
+    $("#clockOpen"),
+
+  clockDone:
+    $("#clockDone"),
+
+  clockFocus:
+    $("#clockFocus"),
+
+  timerOrb:
+    $("#timerOrb"),
+
+  timerDisplay:
+    $("#timerDisplay"),
+
+  timerCaption:
+    $("#timerCaption"),
+
+  timerPill:
+    $("#timerPill"),
+
+  timerStart:
+    $("#timerStart"),
+
+  timerReset:
+    $("#timerReset"),
+
+  focusToday:
+    $("#focusToday"),
+
+  focusStreak:
+    $("#focusStreak"),
+
+  focusSessions:
+    $("#focusSessions"),
+
+  analyticsToday:
+    $("#analyticsToday"),
+
+  analyticsWeek:
+    $("#analyticsWeek"),
+
+  analyticsStreak:
+    $("#analyticsStreak"),
+
+  analyticsCompletion:
+    $("#analyticsCompletion"),
+
+  nextMilestone:
+    $("#nextMilestone"),
+
+  clearStudyLogsBtn:
+    $("#clearStudyLogsBtn"),
+
+  taskForm:
+    $("#taskForm"),
+
+  taskText:
+    $("#taskText"),
+
+  taskCategory:
+    $("#taskCategory"),
+
+  taskPriority:
+    $("#taskPriority"),
+
+  taskDue:
+    $("#taskDue"),
+
+  categoryFilter:
+    $("#categoryFilter"),
+
+  taskList:
+    $("#taskList"),
+
+  taskCountBadge:
+    $("#taskCountBadge"),
+
+  scratchpad:
+    $("#scratchpad"),
+
+  noteSaveState:
+    $("#noteSaveState"),
+
+  noteCount:
+    $("#noteCount"),
+
+  clearNotesBtn:
+    $("#clearNotesBtn"),
+
+  linkGrid:
+    $("#linkGrid"),
+
+  addLinkBtn:
+    $("#addLinkBtn"),
+
+  liquidDock:
+    $("#liquidDock"),
+
+  dockGlide:
+    $("#dockGlide"),
+
+  moreBackdrop:
+    $("#moreBackdrop"),
+
+  closeMore:
+    $("#closeMore"),
+
+  themeSelect:
+    $("#themeSelect"),
+
+  accentPicker:
+    $("#accentPicker"),
+
+  layoutManager:
+    $("#layoutManager"),
+
+  resetLayoutBtn:
+    $("#resetLayoutBtn"),
+
+  focusMinutesInput:
+    $("#focusMinutesInput"),
+
+  shortMinutesInput:
+    $("#shortMinutesInput"),
+
+  longMinutesInput:
+    $("#longMinutesInput"),
+
+  modalBackdrop:
+    $("#modalBackdrop"),
+
+  closeLinkModal:
+    $("#closeLinkModal"),
+
+  cancelLinkBtn:
+    $("#cancelLinkBtn"),
+
+  linkForm:
+    $("#linkForm"),
+
+  linkTitle:
+    $("#linkTitle"),
+
+  linkUrl:
+    $("#linkUrl"),
+
+  linkColor:
+    $("#linkColor"),
+
+  toast:
+    $("#toast")
 };
 
 
-// ============================================================
-// GLOBAL STATE
-// ============================================================
+const DEFAULT_PREFERENCES = {
 
-let currentUser = null;
+  theme:
+    "midnight",
 
-let unsubscribeFns = [];
+  accent:
+    "blue",
 
-let tasks = [];
-let studyLogs = [];
-let quickLinks = [];
+  widgetOrder: [
+    "clock",
+    "focus",
+    "tasks",
+    "notes",
+    "links",
+    "analytics"
+  ],
 
-let taskStatusFilter = "active";
-let taskCategoryFilter = "all";
+  hiddenWidgets: [],
 
-let noteSaveTimer = null;
+  focusMinutes:
+    25,
+
+  shortBreakMinutes:
+    5,
+
+  longBreakMinutes:
+    15
+};
 
 
-// ============================================================
-// DEFAULT QUICK LINKS
-// ============================================================
+const DEFAULT_LINKS = [
 
-const defaultLinks = [
   {
     title: "Classroom",
     url: "https://classroom.google.com/",
     color: "blue",
     icon: "C"
   },
+
   {
     title: "Docs",
     url: "https://docs.google.com/document/",
-    color: "pink",
+    color: "rose",
     icon: "D"
   },
+
   {
     title: "Slides",
     url: "https://slides.google.com/",
-    color: "orange",
+    color: "amber",
     icon: "S"
   },
+
   {
     title: "Gmail",
     url: "https://mail.google.com/",
-    color: "green",
+    color: "mint",
     icon: "G"
   }
+
 ];
 
 
+const WIDGET_LABELS = {
+
+  clock:
+    "Clock",
+
+  focus:
+    "Focus timer",
+
+  tasks:
+    "Tasks",
+
+  notes:
+    "Notes",
+
+  links:
+    "Launchpad",
+
+  analytics:
+    "Analytics"
+
+};
+
+
+let currentUser = null;
+
+let unsubscribeFns = [];
+
+let tasks = [];
+
+let studyLogs = [];
+
+let quickLinks = [];
+
+let preferences =
+  JSON.parse(
+    JSON.stringify(
+      DEFAULT_PREFERENCES
+    )
+  );
+
+let noteContent = "";
+
+let noteSaveTimer = null;
+
+let preferencesSaveTimer =
+  null;
+
+let taskStatusFilter =
+  "active";
+
+let taskCategoryFilter =
+  "all";
+
+let currentView =
+  "overview";
+
+let moreOpen =
+  false;
+
+
+let timerMode =
+  "focus";
+
+let timerRunning =
+  false;
+
+let timerInterval =
+  null;
+
+let timerSeconds =
+  25 * 60;
+
+
 // ============================================================
-// UTILITY FUNCTIONS
+// HELPERS
 // ============================================================
 
-function showToast(message) {
-  if (!els.toast) return;
+function cloneDefaults() {
 
-  els.toast.textContent = message;
-  els.toast.classList.add("show");
-
-  clearTimeout(showToast.timer);
-
-  showToast.timer = setTimeout(() => {
-    els.toast.classList.remove("show");
-  }, 2600);
+  return JSON.parse(
+    JSON.stringify(
+      DEFAULT_PREFERENCES
+    )
+  );
 }
 
 
-function setSyncStatus(message, good = false) {
-  if (!els.syncStatus) return;
+function showToast(message) {
 
-  els.syncStatus.textContent = message;
+  els.toast.textContent =
+    message;
 
-  els.syncStatus.style.color = good
-    ? "var(--green)"
-    : "";
+  els.toast.classList.add(
+    "show"
+  );
+
+  clearTimeout(
+    showToast.timer
+  );
+
+  showToast.timer =
+    setTimeout(
+      () => {
+        els.toast.classList.remove(
+          "show"
+        );
+      },
+      2600
+    );
+}
+
+
+function setConnectionStatus(
+  message,
+  good = false
+) {
+
+  els.syncStatus.textContent =
+    message;
+
+  els.connectionDot.classList.toggle(
+    "good",
+    good
+  );
+}
+
+
+function localDateKey(
+  date = new Date()
+) {
+
+  return [
+    date.getFullYear(),
+
+    String(
+      date.getMonth() + 1
+    ).padStart(2, "0"),
+
+    String(
+      date.getDate()
+    ).padStart(2, "0")
+
+  ].join("-");
+}
+
+
+function parseStoredDate(value) {
+
+  if (!value) {
+    return null;
+  }
+
+
+  if (
+    typeof value.toDate ===
+    "function"
+  ) {
+    return value.toDate();
+  }
+
+
+  if (
+    value instanceof Date
+  ) {
+    return value;
+  }
+
+
+  const parsed =
+    new Date(value);
+
+
+  return Number.isNaN(
+    parsed.getTime()
+  )
+    ? null
+    : parsed;
+}
+
+
+function escapeHtml(value) {
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+}
+
+
+function formatDate(date) {
+
+  return new Intl.DateTimeFormat(
+    undefined,
+    {
+      weekday:
+        "long",
+
+      month:
+        "long",
+
+      day:
+        "numeric"
+    }
+  ).format(date);
 }
 
 
 function userCollection(name) {
+
   if (!currentUser) {
-    throw new Error("You must be signed in.");
+    throw new Error(
+      "Not signed in"
+    );
   }
+
 
   return collection(
     db,
+
     "users",
+
     currentUser.uid,
+
     name
   );
 }
 
 
-function userDoc(collectionName, id) {
+function userDoc(
+  collectionName,
+  id
+) {
+
   if (!currentUser) {
-    throw new Error("You must be signed in.");
+    throw new Error(
+      "Not signed in"
+    );
   }
+
 
   return doc(
     db,
+
     "users",
+
     currentUser.uid,
+
     collectionName,
+
     id
   );
 }
 
 
-function localDateKey(date = new Date()) {
-  const year = date.getFullYear();
+function prefsDoc() {
 
-  const month = String(
-    date.getMonth() + 1
-  ).padStart(2, "0");
-
-  const day = String(
-    date.getDate()
-  ).padStart(2, "0");
-
-  return `${year}-${month}-${day}`;
-}
-
-
-function parseStoredDate(value) {
-  if (!value) {
-    return null;
-  }
-
-  if (typeof value.toDate === "function") {
-    return value.toDate();
-  }
-
-  if (value instanceof Date) {
-    return value;
-  }
-
-  const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return null;
-  }
-
-  return date;
-}
-
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-
-function niceDate(date) {
-  return new Intl.DateTimeFormat(undefined, {
-    weekday: "short",
-    month: "short",
-    day: "numeric"
-  }).format(date);
+  return userDoc(
+    "settings",
+    "preferences"
+  );
 }
 
 
 // ============================================================
-// LIVE CLOCK
+// CLOCK
 // ============================================================
 
 function updateClock() {
-  const now = new Date();
 
-  const hour = now.getHours();
+  const now =
+    new Date();
 
-  const hour12 = hour % 12 || 12;
+  const hour =
+    now.getHours();
 
-  const minute = String(
-    now.getMinutes()
-  ).padStart(2, "0");
+  const hour12 =
+    hour % 12 || 12;
+
 
   els.clockTime.textContent =
-    `${hour12}:${minute}`;
+    `${hour12}:${String(
+      now.getMinutes()
+    ).padStart(2, "0")}`;
+
 
   els.clockAmPm.textContent =
-    hour >= 12 ? "PM" : "AM";
+    hour >= 12
+      ? "PM"
+      : "AM";
+
 
   els.clockDate.textContent =
-    niceDate(now);
+    new Intl.DateTimeFormat(
+      undefined,
+      {
+        weekday:
+          "short",
 
-  els.dayLabel.textContent =
-    new Intl.DateTimeFormat(undefined, {
-      weekday: "long"
-    })
-      .format(now)
-      .toUpperCase();
+        month:
+          "short",
 
-  let greeting = "Good evening";
+        day:
+          "numeric"
+      }
+    ).format(now);
 
-  if (hour < 12) {
-    greeting = "Good morning";
-  } else if (hour < 18) {
-    greeting = "Good afternoon";
-  }
 
-  els.greeting.textContent = greeting;
+  els.heroDate.textContent =
+    `${formatDate(now)} · ${
+      Intl.DateTimeFormat(
+        undefined,
+        {
+          timeZoneName:
+            "short"
+        }
+      )
+        .formatToParts(now)
+        .find(
+          part =>
+            part.type ===
+            "timeZoneName"
+        )
+        ?.value || "local time"
+    }`;
+
+
+  els.greeting.textContent =
+    hour < 12
+      ? "Good morning."
+      : hour < 18
+        ? "Good afternoon."
+        : "Good evening.";
 }
+
 
 updateClock();
 
-setInterval(updateClock, 1000);
+
+setInterval(
+  updateClock,
+  1000
+);
 
 
 // ============================================================
-// POMODORO TIMER
+// TIMER
 // ============================================================
 
-const timerConfig = {
-  focus: {
-    seconds: 25 * 60,
-    label: "Deep work",
-    pill: "FOCUS"
-  },
+function timerSecondsFor(mode) {
 
-  short: {
-    seconds: 5 * 60,
-    label: "Reset your brain",
-    pill: "SHORT BREAK"
-  },
-
-  long: {
-    seconds: 15 * 60,
-    label: "Long recovery",
-    pill: "LONG BREAK"
+  if (
+    mode === "short"
+  ) {
+    return (
+      preferences.shortBreakMinutes *
+      60
+    );
   }
-};
 
-let timerMode = "focus";
 
-let timerSeconds =
-  timerConfig.focus.seconds;
+  if (
+    mode === "long"
+  ) {
+    return (
+      preferences.longBreakMinutes *
+      60
+    );
+  }
 
-let timerRunning = false;
 
-let timerInterval = null;
+  return (
+    preferences.focusMinutes *
+    60
+  );
+}
+
+
+function timerMeta(mode) {
+
+  if (
+    mode === "short"
+  ) {
+
+    return {
+      label:
+        "Reset your brain",
+
+      pill:
+        "SHORT BREAK"
+    };
+
+  }
+
+
+  if (
+    mode === "long"
+  ) {
+
+    return {
+      label:
+        "Long recovery",
+
+      pill:
+        "LONG BREAK"
+    };
+
+  }
+
+
+  return {
+    label:
+      "Deep work",
+
+    pill:
+      "FOCUS"
+  };
+}
 
 
 function renderTimer() {
-  const minutes =
-    Math.floor(timerSeconds / 60);
 
-  const seconds =
+  const mins =
+    Math.floor(
+      timerSeconds / 60
+    );
+
+  const secs =
     timerSeconds % 60;
 
+
+  const meta =
+    timerMeta(
+      timerMode
+    );
+
+
   els.timerDisplay.textContent =
-    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    `${String(mins).padStart(
+      2,
+      "0"
+    )}:${String(secs).padStart(
+      2,
+      "0"
+    )}`;
+
 
   els.timerCaption.textContent =
-    timerConfig[timerMode].label;
+    meta.label;
 
-  els.timerModePill.textContent =
-    timerConfig[timerMode].pill;
 
-  $$("[data-timer-mode]").forEach(button => {
-    button.classList.toggle(
-      "active",
-      button.dataset.timerMode === timerMode
-    );
-  });
+  els.timerPill.textContent =
+    meta.pill;
+
 
   els.timerStart.textContent =
-    timerRunning ? "Pause" : "Start";
+    timerRunning
+      ? "Pause"
+      : "Start";
+
+
+  els.timerOrb.classList.toggle(
+    "running",
+    timerRunning
+  );
+
+
+  $$(
+    "[data-timer-mode]"
+  ).forEach(
+    button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.timerMode ===
+          timerMode
+      );
+
+    }
+  );
 }
 
 
 function setTimerMode(mode) {
+
   timerRunning = false;
 
-  clearInterval(timerInterval);
+  clearInterval(
+    timerInterval
+  );
 
-  timerInterval = null;
+  timerInterval =
+    null;
 
-  timerMode = mode;
+  timerMode =
+    mode;
 
   timerSeconds =
-    timerConfig[mode].seconds;
+    timerSecondsFor(mode);
 
   renderTimer();
 }
 
 
-async function finishTimer() {
+async function completeTimer() {
+
   timerRunning = false;
 
-  clearInterval(timerInterval);
+  clearInterval(
+    timerInterval
+  );
 
-  timerInterval = null;
+  timerInterval =
+    null;
 
   renderTimer();
 
 
-  // Only log completed Focus sessions.
   if (
-    timerMode === "focus" &&
-    currentUser
+    timerMode ===
+    "focus"
   ) {
-    try {
-      await addDoc(
-        userCollection("study_logs"),
-        {
-          duration: 25,
-          timestamp: serverTimestamp()
-        }
-      );
+
+    if (currentUser) {
+
+      try {
+
+        await addDoc(
+          userCollection(
+            "study_logs"
+          ),
+          {
+            duration:
+              preferences.focusMinutes,
+
+            timestamp:
+              serverTimestamp()
+          }
+        );
+
+        showToast(
+          "Focus session saved to your cloud history."
+        );
+
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+        showToast(
+          "Session finished, but the cloud log failed."
+        );
+      }
+
+    } else {
 
       showToast(
-        "Focus session saved to your cloud history."
-      );
-
-    } catch (error) {
-      console.error(error);
-
-      showToast(
-        "Session finished, but the cloud log failed."
+        "Focus session finished. Sign in to save study history."
       );
     }
-  }
 
 
-  // Automatically switch to a short break.
-  if (timerMode === "focus") {
-    setTimerMode("short");
+    setTimerMode(
+      "short"
+    );
+
   } else {
-    setTimerMode("focus");
+
+    setTimerMode(
+      "focus"
+    );
   }
 }
 
 
 function toggleTimer() {
-  timerRunning = !timerRunning;
 
-  clearInterval(timerInterval);
+  timerRunning =
+    !timerRunning;
 
-  timerInterval = null;
+
+  clearInterval(
+    timerInterval
+  );
+
+
+  timerInterval =
+    null;
 
 
   if (timerRunning) {
 
-    timerInterval = setInterval(() => {
+    timerInterval =
+      setInterval(
+        () => {
 
-      timerSeconds--;
+          timerSeconds -=
+            1;
 
-      if (timerSeconds <= 0) {
 
-        timerSeconds = 0;
+          if (
+            timerSeconds <=
+            0
+          ) {
 
-        renderTimer();
+            timerSeconds =
+              0;
 
-        finishTimer();
+            renderTimer();
 
-      } else {
+            completeTimer();
 
-        renderTimer();
+            return;
+          }
 
-      }
 
-    }, 1000);
+          renderTimer();
+
+        },
+        1000
+      );
   }
 
 
@@ -501,31 +965,45 @@ function toggleTimer() {
 
 
 function resetTimer() {
-  timerRunning = false;
 
-  clearInterval(timerInterval);
+  timerRunning =
+    false;
 
-  timerInterval = null;
+  clearInterval(
+    timerInterval
+  );
+
+  timerInterval =
+    null;
 
   timerSeconds =
-    timerConfig[timerMode].seconds;
+    timerSecondsFor(
+      timerMode
+    );
 
   renderTimer();
 }
 
 
-$$("[data-timer-mode]").forEach(button => {
+$$(
+  "[data-timer-mode]"
+).forEach(
+  button => {
 
-  button.addEventListener(
-    "click",
-    () => {
-      setTimerMode(
-        button.dataset.timerMode
-      );
-    }
-  );
+    button.addEventListener(
+      "click",
+      () => {
 
-});
+        setTimerMode(
+          button.dataset
+            .timerMode
+        );
+
+      }
+    );
+
+  }
+);
 
 
 els.timerStart.addEventListener(
@@ -544,545 +1022,846 @@ renderTimer();
 
 
 // ============================================================
-// BOTTOM NAVIGATION
+// PERSONALIZATION
 // ============================================================
 
-function setView(view) {
+function normalizePreferences(
+  raw
+) {
 
-  const panels = $$(".view-panel");
-
-  panels.forEach(panel => {
-
-    const panelName =
-      panel.dataset.panel;
-
-    let shouldShow = false;
+  const merged = {
+    ...cloneDefaults(),
+    ...(raw || {})
+  };
 
 
-    if (view === "overview") {
-      shouldShow = true;
-    }
+  merged.widgetOrder =
+    Array.from(
+      new Set([
+        ...(
+          Array.isArray(
+            raw?.widgetOrder
+          )
+            ? raw.widgetOrder
+            : []
+        ),
 
-
-    if (
-      view === "focus" &&
-      ["focus", "analytics"].includes(panelName)
-    ) {
-      shouldShow = true;
-    }
-
-
-    if (
-      view === "tasks" &&
-      panelName === "tasks"
-    ) {
-      shouldShow = true;
-    }
-
-
-    if (
-      view === "notes" &&
-      panelName === "notes"
-    ) {
-      shouldShow = true;
-    }
-
-
-    panel.classList.toggle(
-      "hidden",
-      !shouldShow
-    );
-  });
-
-
-  $$(".nav-item").forEach(button => {
-
-    button.classList.toggle(
-      "active",
-      button.dataset.view === view
+        ...DEFAULT_PREFERENCES
+          .widgetOrder
+      ])
+    )
+    .filter(
+      id =>
+        DEFAULT_PREFERENCES
+          .widgetOrder
+          .includes(id)
     );
 
-  });
+
+  merged.hiddenWidgets =
+    Array.isArray(
+      raw?.hiddenWidgets
+    )
+      ? raw.hiddenWidgets
+          .filter(
+            id =>
+              DEFAULT_PREFERENCES
+                .widgetOrder
+                .includes(id)
+          )
+      : [];
 
 
-  requestAnimationFrame(() => {
+  merged.focusMinutes =
+    Math.max(
+      1,
+      Math.min(
+        120,
+        Number(
+          merged.focusMinutes
+        ) || 25
+      )
+    );
 
-    const active =
-      document.querySelector(
-        ".nav-item.active"
-      );
 
-    if (!active) return;
+  merged.shortBreakMinutes =
+    Math.max(
+      1,
+      Math.min(
+        60,
+        Number(
+          merged.shortBreakMinutes
+        ) || 5
+      )
+    );
 
 
-    els.navSlider.style.left =
-      `${active.offsetLeft}px`;
+  merged.longBreakMinutes =
+    Math.max(
+      1,
+      Math.min(
+        90,
+        Number(
+          merged.longBreakMinutes
+        ) || 15
+      )
+    );
 
-    els.navSlider.style.width =
-      `${active.offsetWidth}px`;
-  });
+
+  return merged;
 }
 
 
-$$(".nav-item").forEach(button => {
+function applyAppearance() {
 
-  button.addEventListener(
-    "click",
-    () => {
-      setView(
-        button.dataset.view
+  document.documentElement.dataset.theme =
+    preferences.theme;
+
+
+  document.documentElement.dataset.accent =
+    preferences.accent;
+
+
+  els.themeSelect.value =
+    preferences.theme;
+
+
+  $$(
+    "#accentPicker button"
+  ).forEach(
+    button => {
+
+      button.style.boxShadow =
+        button.dataset.accent ===
+        preferences.accent
+
+          ? "0 0 0 3px rgba(255,255,255,.20)"
+
+          : "none";
+
+    }
+  );
+}
+
+
+function applyLayout() {
+
+  const visibleOrder =
+    preferences.widgetOrder
+      .filter(
+        id =>
+          !preferences
+            .hiddenWidgets
+            .includes(id)
       );
+
+
+  const workspace =
+    document.querySelector(
+      "#workspace"
+    );
+
+
+  for (
+    const widgetId
+    of preferences.widgetOrder
+  ) {
+
+    const node =
+      document.querySelector(
+        `[data-widget-id="${widgetId}"]`
+      );
+
+
+    if (node) {
+      workspace.appendChild(
+        node
+      );
+    }
+  }
+
+
+  $$(".widget").forEach(
+    node => {
+
+      const hidden =
+        !visibleOrder.includes(
+          node.dataset.widgetId
+        );
+
+
+      node.classList.toggle(
+        "hidden",
+        hidden
+      );
+
+    }
+  );
+}
+
+
+function renderLayoutManager() {
+
+  els.layoutManager.innerHTML =
+    preferences.widgetOrder
+      .map(
+        (
+          id,
+          index
+        ) => {
+
+          const hidden =
+            preferences.hiddenWidgets
+              .includes(id);
+
+
+          return `
+            <div
+              class="layout-row"
+              data-layout-id="${id}"
+            >
+
+              <span class="layout-name">
+                ${escapeHtml(
+                  WIDGET_LABELS[id]
+                )}
+                ${
+                  hidden
+                    ? " · hidden"
+                    : ""
+                }
+              </span>
+
+              <button
+                data-layout-action="up"
+                ${index === 0 ? "disabled" : ""}
+              >
+                ↑
+              </button>
+
+              <button
+                data-layout-action="down"
+                ${index === preferences.widgetOrder.length - 1 ? "disabled" : ""}
+              >
+                ↓
+              </button>
+
+              <button
+                data-layout-action="toggle"
+              >
+                ${
+                  hidden
+                    ? "○"
+                    : "●"
+                }
+              </button>
+
+            </div>
+          `;
+        }
+      )
+      .join("");
+}
+
+
+function savePreferencesDebounced() {
+
+  if (!currentUser) {
+    return;
+  }
+
+
+  clearTimeout(
+    preferencesSaveTimer
+  );
+
+
+  preferencesSaveTimer =
+    setTimeout(
+      async () => {
+
+        try {
+
+          await setDoc(
+            prefsDoc(),
+            {
+              ...preferences,
+
+              updatedAt:
+                serverTimestamp()
+            },
+            {
+              merge:true
+            }
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Preferences save:",
+            error
+          );
+
+          showToast(
+            "Could not save your personalization settings."
+          );
+        }
+
+      },
+      450
+    );
+}
+
+
+function updatePreference(
+  key,
+  value
+) {
+
+  preferences =
+    normalizePreferences({
+      ...preferences,
+
+      [key]:
+        value
+    });
+
+
+  applyAppearance();
+
+  applyLayout();
+
+  renderLayoutManager();
+
+  updateTimerIfIdle();
+
+  savePreferencesDebounced();
+}
+
+
+function updateTimerIfIdle() {
+
+  if (!timerRunning) {
+
+    timerSeconds =
+      timerSecondsFor(
+        timerMode
+      );
+
+    renderTimer();
+  }
+}
+
+
+els.themeSelect.addEventListener(
+  "change",
+  () => {
+
+    updatePreference(
+      "theme",
+      els.themeSelect.value
+    );
+
+  }
+);
+
+
+$$(
+  "#accentPicker button"
+).forEach(
+  button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        updatePreference(
+          "accent",
+          button.dataset.accent
+        );
+
+      }
+    );
+
+  }
+);
+
+
+els.layoutManager.addEventListener(
+  "click",
+  event => {
+
+    const button =
+      event.target.closest(
+        "button[data-layout-action]"
+      );
+
+
+    if (!button) {
+      return;
+    }
+
+
+    const row =
+      button.closest(
+        "[data-layout-id]"
+      );
+
+
+    const id =
+      row?.dataset.layoutId;
+
+
+    if (!id) {
+      return;
+    }
+
+
+    const index =
+      preferences.widgetOrder
+        .indexOf(id);
+
+
+    const action =
+      button.dataset
+        .layoutAction;
+
+
+    if (
+      action ===
+      "toggle"
+    ) {
+
+      const hidden =
+        new Set(
+          preferences.hiddenWidgets
+        );
+
+
+      if (
+        hidden.has(id)
+      ) {
+
+        hidden.delete(id);
+
+      } else {
+
+        hidden.add(id);
+      }
+
+
+      if (
+        hidden.size ===
+        preferences
+          .widgetOrder
+          .length
+      ) {
+
+        hidden.delete(id);
+      }
+
+
+      updatePreference(
+        "hiddenWidgets",
+        [...hidden]
+      );
+
+
+    } else if (
+      action === "up" &&
+      index > 0
+    ) {
+
+      const order =
+        [...preferences.widgetOrder];
+
+
+      [
+        order[index - 1],
+        order[index]
+      ] =
+        [
+          order[index],
+          order[index - 1]
+        ];
+
+
+      updatePreference(
+        "widgetOrder",
+        order
+      );
+
+
+    } else if (
+      action === "down" &&
+      index <
+        preferences
+          .widgetOrder
+          .length - 1
+    ) {
+
+      const order =
+        [...preferences.widgetOrder];
+
+
+      [
+        order[index + 1],
+        order[index]
+      ] =
+        [
+          order[index],
+          order[index + 1]
+        ];
+
+
+      updatePreference(
+        "widgetOrder",
+        order
+      );
+    }
+
+  }
+);
+
+
+els.resetLayoutBtn.addEventListener(
+  "click",
+  () => {
+
+    preferences =
+      cloneDefaults();
+
+
+    applyAppearance();
+
+    applyLayout();
+
+    renderLayoutManager();
+
+    updateTimerIfIdle();
+
+    savePreferencesDebounced();
+  }
+);
+
+
+function syncTimerInputs() {
+
+  els.focusMinutesInput.value =
+    preferences.focusMinutes;
+
+
+  els.shortMinutesInput.value =
+    preferences.shortBreakMinutes;
+
+
+  els.longMinutesInput.value =
+    preferences.longBreakMinutes;
+}
+
+
+[
+  els.focusMinutesInput,
+  els.shortMinutesInput,
+  els.longMinutesInput
+].forEach(
+  input => {
+
+    input.addEventListener(
+      "change",
+      () => {
+
+        const mapping = {
+
+          focusMinutesInput:
+            "focusMinutes",
+
+          shortMinutesInput:
+            "shortBreakMinutes",
+
+          longMinutesInput:
+            "longBreakMinutes"
+
+        };
+
+
+        const key =
+          mapping[input.id];
+
+
+        let value =
+          Number(
+            input.value
+          );
+
+
+        if (
+          key ===
+          "focusMinutes"
+        ) {
+
+          value =
+            Math.max(
+              1,
+              Math.min(
+                120,
+                value
+              )
+            );
+        }
+
+
+        if (
+          key ===
+          "shortBreakMinutes"
+        ) {
+
+          value =
+            Math.max(
+              1,
+              Math.min(
+                60,
+                value
+              )
+            );
+        }
+
+
+        if (
+          key ===
+          "longBreakMinutes"
+        ) {
+
+          value =
+            Math.max(
+              1,
+              Math.min(
+                90,
+                value
+              )
+            );
+        }
+
+
+        input.value =
+          value;
+
+
+        updatePreference(
+          key,
+          value
+        );
+
+      }
+    );
+
+  }
+);
+
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+function moveDockGlide() {
+
+  const active =
+    document.querySelector(
+      ".dock-item.active"
+    );
+
+
+  if (!active) {
+    return;
+  }
+
+
+  els.dockGlide.style.left =
+    `${active.offsetLeft}px`;
+
+
+  els.dockGlide.style.width =
+    `${active.offsetWidth}px`;
+}
+
+
+function applyViewState(
+  view
+) {
+
+  currentView =
+    view;
+
+
+  const panels =
+    $$(".widget");
+
+
+  panels.forEach(
+    panel => {
+
+      const id =
+        panel.dataset
+          .widgetId;
+
+
+      const userHidden =
+        preferences.hiddenWidgets
+          .includes(id);
+
+
+      let show =
+        !userHidden;
+
+
+      if (
+        view ===
+        "overview"
+      ) {
+
+        show =
+          !userHidden;
+
+      } else if (
+        view === "focus"
+      ) {
+
+        show =
+          !userHidden &&
+          [
+            "focus",
+            "analytics"
+          ].includes(id);
+
+      } else if (
+        view === "tasks"
+      ) {
+
+        show =
+          !userHidden &&
+          id === "tasks";
+
+      } else if (
+        view === "notes"
+      ) {
+
+        show =
+          !userHidden &&
+          id === "notes";
+
+      } else if (
+        view === "links"
+      ) {
+
+        show =
+          !userHidden &&
+          id === "links";
+
+      } else if (
+        view === "analytics"
+      ) {
+
+        show =
+          !userHidden &&
+          id === "analytics";
+
+      }
+
+
+      panel.classList.toggle(
+        "hidden",
+        !show
+      );
+
     }
   );
 
-});
+
+  $$(
+    ".dock-item"
+  ).forEach(
+    button => {
+
+      button.classList.toggle(
+        "active",
+        button.dataset.view ===
+          view
+      );
+
+    }
+  );
+
+
+  requestAnimationFrame(
+    moveDockGlide
+  );
+}
+
+
+function animateViewChange(
+  view
+) {
+
+  const run =
+    () =>
+      applyViewState(
+        view
+      );
+
+
+  if (
+    document.startViewTransition
+  ) {
+
+    document.startViewTransition(
+      run
+    );
+
+  } else {
+
+    run();
+  }
+}
+
+
+$$(
+  ".dock-item"
+).forEach(
+  button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const view =
+          button.dataset
+            .view;
+
+
+        if (
+          view ===
+          "more"
+        ) {
+
+          openMoreSheet();
+
+          return;
+        }
+
+
+        animateViewChange(
+          view
+        );
+      }
+    );
+
+  }
+);
 
 
 window.addEventListener(
   "resize",
-  () => {
-
-    const activeView =
-      document.querySelector(
-        ".nav-item.active"
-      )?.dataset.view ||
-      "overview";
-
-    setView(activeView);
-
-  }
-);
-
-
-setView("overview");
-
-
-// ============================================================
-// QUICK LINKS
-// ============================================================
-
-function renderQuickLinks() {
-
-  els.linkGrid.innerHTML = "";
-
-
-  for (const link of quickLinks) {
-
-    const card =
-      document.createElement("div");
-
-    card.className = "link-card";
-
-    card.style.position = "relative";
-
-
-    const anchor =
-      document.createElement("a");
-
-    anchor.href = link.url;
-
-    anchor.target = "_blank";
-
-    anchor.rel =
-      "noopener noreferrer";
-
-    anchor.setAttribute(
-      "aria-label",
-      `Open ${link.title}`
-    );
-
-    anchor.style.cssText = `
-      position:absolute;
-      inset:0;
-      z-index:1;
-    `;
-
-
-    const content =
-      document.createElement("div");
-
-    content.style.cssText = `
-      position:relative;
-      z-index:2;
-      pointer-events:none;
-      height:100%;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    `;
-
-
-    content.innerHTML = `
-      <div class="link-top">
-        <div class="link-icon ${escapeHtml(
-          link.color || "blue"
-        )}">
-          ${escapeHtml(
-            link.icon ||
-            link.title?.[0]?.toUpperCase() ||
-            "↗"
-          )}
-        </div>
-
-        <button
-          class="delete-link"
-          title="Delete link"
-          aria-label="Delete ${escapeHtml(link.title)}"
-          data-delete-link="${escapeHtml(link.id)}"
-          style="pointer-events:auto;"
-        >
-          ×
-        </button>
-      </div>
-
-      <div>
-        <div class="link-name">
-          ${escapeHtml(link.title)}
-        </div>
-
-        <div class="link-url">
-          ${escapeHtml(
-            link.url.replace(
-              /^https?:\/\//,
-              ""
-            )
-          )}
-        </div>
-      </div>
-    `;
-
-
-    card.appendChild(anchor);
-
-    card.appendChild(content);
-
-    els.linkGrid.appendChild(card);
-  }
-}
-
-
-els.linkGrid.addEventListener(
-  "click",
-  async (event) => {
-
-    const button =
-      event.target.closest(
-        "[data-delete-link]"
-      );
-
-    if (!button) return;
-
-    event.preventDefault();
-
-    event.stopPropagation();
-
-
-    const id =
-      button.dataset.deleteLink;
-
-
-    try {
-
-      await deleteDoc(
-        userDoc(
-          "quick_links",
-          id
-        )
-      );
-
-      showToast(
-        "Link removed."
-      );
-
-    } catch (error) {
-
-      console.error(error);
-
-      showToast(
-        "Could not remove that link."
-      );
-    }
-  }
-);
-
-
-// ============================================================
-// LINK MODAL
-// ============================================================
-
-function openLinkModal() {
-
-  els.linkForm.reset();
-
-  els.linkModal.querySelector("h2")
-    .textContent =
-    "Add a quick link";
-
-  els.modalBackdrop
-    .classList.remove("hidden");
-
-  els.linkTitle.focus();
-}
-
-
-function closeLinkModal() {
-
-  els.modalBackdrop
-    .classList.add("hidden");
-}
-
-
-els.addLinkBtn.addEventListener(
-  "click",
-  () => {
-
-    if (!currentUser) {
-
-      showToast(
-        "Sign in first to customize your cloud links."
-      );
-
-      return;
-    }
-
-    openLinkModal();
-  }
-);
-
-
-els.closeLinkModal.addEventListener(
-  "click",
-  closeLinkModal
-);
-
-
-els.cancelLinkBtn.addEventListener(
-  "click",
-  closeLinkModal
-);
-
-
-els.modalBackdrop.addEventListener(
-  "click",
-  event => {
-
-    if (
-      event.target ===
-      els.modalBackdrop
-    ) {
-      closeLinkModal();
-    }
-
-  }
-);
-
-
-els.linkForm.addEventListener(
-  "submit",
-  async event => {
-
-    event.preventDefault();
-
-
-    if (!currentUser) {
-      return;
-    }
-
-
-    const title =
-      els.linkTitle.value.trim();
-
-    const url =
-      els.linkUrl.value.trim();
-
-    const color =
-      els.linkColor.value;
-
-    const icon =
-      title[0]?.toUpperCase() ||
-      "↗";
-
-
-    if (!title || !url) {
-      return;
-    }
-
-
-    try {
-
-      await addDoc(
-        userCollection("quick_links"),
-        {
-          title,
-          url,
-          color,
-          icon,
-          createdAt:
-            serverTimestamp()
-        }
-      );
-
-
-      closeLinkModal();
-
-      showToast(
-        "Quick link saved."
-      );
-
-    } catch (error) {
-
-      console.error(error);
-
-      showToast(
-        "Could not save the link."
-      );
-    }
-
-  }
-);
-
-
-// ============================================================
-// SCRATCHPAD
-// ============================================================
-
-window._scratchpadContent = "";
-
-
-function renderScratchpad() {
-
-  const content =
-    window._scratchpadContent ||
-    "";
-
-  if (
-    els.scratchpad.value !==
-    content
-  ) {
-    els.scratchpad.value =
-      content;
-  }
-
-
-  els.noteCount.textContent =
-    `${content.length.toLocaleString()} characters`;
-}
-
-
-els.scratchpad.addEventListener(
-  "input",
-  () => {
-
-    const content =
-      els.scratchpad.value;
-
-    window._scratchpadContent =
-      content;
-
-    els.noteCount.textContent =
-      `${content.length.toLocaleString()} characters`;
-
-
-    if (!currentUser) {
-      return;
-    }
-
-
-    els.noteSaveState.textContent =
-      "Unsaved…";
-
-
-    clearTimeout(noteSaveTimer);
-
-
-    noteSaveTimer =
-      setTimeout(
-        async () => {
-
-          try {
-
-            await setDoc(
-              userDoc(
-                "scratchpad",
-                "main"
-              ),
-              {
-                content,
-                updatedAt:
-                  serverTimestamp()
-              },
-              {
-                merge: true
-              }
-            );
-
-
-            els.noteSaveState.textContent =
-              "Saved to cloud";
-
-          } catch (error) {
-
-            console.error(error);
-
-            els.noteSaveState.textContent =
-              "Save failed";
-          }
-
-        },
-        550
-      );
-  }
-);
-
-
-els.clearNotesBtn.addEventListener(
-  "click",
-  async () => {
-
-    els.scratchpad.value = "";
-
-    window._scratchpadContent = "";
-
-    els.noteCount.textContent =
-      "0 characters";
-
-
-    if (!currentUser) {
-      return;
-    }
-
-
-    try {
-
-      await setDoc(
-        userDoc(
-          "scratchpad",
-          "main"
-        ),
-        {
-          content: "",
-          updatedAt:
-            serverTimestamp()
-        },
-        {
-          merge: true
-        }
-      );
-
-
-      els.noteSaveState.textContent =
-        "Saved to cloud";
-
-    } catch (error) {
-
-      console.error(error);
-
-      showToast(
-        "Could not clear cloud notes."
-      );
-    }
-
-  }
+  moveDockGlide
 );
 
 
@@ -1094,208 +1873,206 @@ function renderTasks() {
 
   const activeCount =
     tasks.filter(
-      task => !task.completed
+      task =>
+        !task.completed
     ).length;
 
 
   const doneCount =
     tasks.filter(
-      task => task.completed
+      task =>
+        task.completed
     ).length;
 
 
-  els.taskCountBadge.textContent =
+  els.taskCountBadge
+    .textContent =
     activeCount;
 
 
-  els.clockToday.textContent =
-    `${tasks.length} ${
-      tasks.length === 1
-        ? "task"
-        : "tasks"
-    }`;
+  els.clockOpen
+    .textContent =
+    activeCount;
 
 
-  els.clockDone.textContent =
-    `${doneCount} ${
-      doneCount === 1
-        ? "task"
-        : "tasks"
-    }`;
+  els.clockDone
+    .textContent =
+    doneCount;
 
 
-  const visibleTasks =
-    tasks.filter(task => {
+  let visible =
+    tasks.filter(
+      task => {
 
-      let statusMatches = true;
+        const statusOk =
+          taskStatusFilter ===
+          "all"
 
-      let categoryMatches = true;
+            ? true
+
+            : taskStatusFilter ===
+              "active"
+
+              ? !task.completed
+
+              : task.completed;
 
 
-      if (
-        taskStatusFilter ===
-        "active"
-      ) {
-        statusMatches =
-          !task.completed;
+        const categoryOk =
+          taskCategoryFilter ===
+          "all"
+
+            ? true
+
+            : task.category ===
+              taskCategoryFilter;
+
+
+        return (
+          statusOk &&
+          categoryOk
+        );
       }
+    );
 
 
-      if (
-        taskStatusFilter ===
-        "completed"
-      ) {
-        statusMatches =
-          task.completed;
-      }
+  if (
+    !visible.length
+  ) {
 
+    els.taskList.innerHTML =
+      `
+        <div class="empty-state">
+          ${
+            currentUser
+              ? "Nothing here yet."
+              : "Sign in to load your cloud tasks."
+          }
+        </div>
+      `;
 
-      if (
-        taskCategoryFilter !==
-        "all"
-      ) {
-        categoryMatches =
-          task.category ===
-          taskCategoryFilter;
-      }
-
-
-      return (
-        statusMatches &&
-        categoryMatches
-      );
-    });
-
-
-  if (!visibleTasks.length) {
-
-    els.taskList.innerHTML = `
-      <div class="empty-state">
-        ${
-          currentUser
-            ? "Nothing here yet."
-            : "Sign in to load your cloud tasks."
-        }
-      </div>
-    `;
 
     renderAnalytics();
+
 
     return;
   }
 
 
   els.taskList.innerHTML =
-    visibleTasks
-      .map(task => {
+    visible
+      .map(
+        (
+          task,
+          index
+        ) => {
 
-        const due =
-          parseStoredDate(
-            task.dueAt
-          );
-
-
-        const dueLabel =
-          due
-            ? niceDate(due)
-            : "";
+          const due =
+            parseStoredDate(
+              task.dueAt
+            );
 
 
-        return `
-          <div
-            class="task-item ${
-              task.completed
-                ? "completed"
-                : ""
-            }"
-          >
-
-            <button
-              class="task-check"
-              data-task-toggle="${escapeHtml(
-                task.id
-              )}"
-              aria-label="${
+          return `
+            <div
+              class="task-item ${
                 task.completed
-                  ? "Mark active"
-                  : "Mark complete"
+                  ? "completed"
+                  : ""
               }"
-            ></button>
+              style="
+                animation-delay:
+                ${Math.min(
+                  index * 35,
+                  200
+                )}ms
+              "
+            >
+
+              <button
+                class="task-check"
+                data-task-toggle="${escapeHtml(
+                  task.id
+                )}"
+                aria-label="${
+                  task.completed
+                    ? "Mark active"
+                    : "Mark complete"
+                }"
+              ></button>
 
 
-            <div class="task-copy">
+              <div class="task-copy">
 
-              <div class="task-title">
-                ${escapeHtml(
-                  task.text
-                )}
+                <div class="task-title">
+                  ${escapeHtml(
+                    task.text
+                  )}
+                </div>
+
+
+                <div class="task-meta">
+
+                  <span class="task-tag">
+                    ${escapeHtml(
+                      task.category ||
+                      "School"
+                    )}
+                  </span>
+
+
+                  <span
+                    class="task-tag ${
+                      task.priority ||
+                      "medium"
+                    }"
+                  >
+                    ${escapeHtml(
+                      task.priority ||
+                      "medium"
+                    )}
+                  </span>
+
+
+                  ${
+                    due
+                      ? `
+                        <span class="task-tag task-due">
+                          ${escapeHtml(
+                            formatDate(
+                              due
+                            )
+                          )}
+                        </span>
+                      `
+                      : ""
+                  }
+
+                </div>
+
               </div>
 
 
-              <div class="task-meta">
-
-                <span class="task-tag">
-                  ${escapeHtml(
-                    task.category ||
-                    "School"
-                  )}
-                </span>
-
-
-                <span
-                  class="task-tag ${
-                    task.priority ||
-                    "medium"
-                  }"
-                >
-                  ${escapeHtml(
-                    task.priority ||
-                    "medium"
-                  )}
-                </span>
-
-
-                ${
-                  due
-                    ? `
-                      <span class="task-tag task-due">
-                        ${escapeHtml(
-                          dueLabel
-                        )}
-                      </span>
-                    `
-                    : ""
-                }
-
-              </div>
+              <button
+                class="task-delete"
+                data-task-delete="${escapeHtml(
+                  task.id
+                )}"
+                title="Delete"
+              >
+                ×
+              </button>
 
             </div>
-
-
-            <button
-              class="task-delete"
-              data-task-delete="${escapeHtml(
-                task.id
-              )}"
-              title="Delete task"
-              aria-label="Delete task"
-            >
-              ×
-            </button>
-
-          </div>
-        `;
-      })
+          `;
+        }
+      )
       .join("");
 
 
   renderAnalytics();
 }
 
-
-// ============================================================
-// TASK CLICK HANDLING
-// ============================================================
 
 els.taskList.addEventListener(
   "click",
@@ -1305,6 +2082,7 @@ els.taskList.addEventListener(
       event.target.closest(
         "[data-task-toggle]"
       );
+
 
     const del =
       event.target.closest(
@@ -1320,11 +2098,14 @@ els.taskList.addEventListener(
           tasks.find(
             item =>
               item.id ===
-              toggle.dataset.taskToggle
+              toggle.dataset
+                .taskToggle
           );
 
 
-        if (!task) return;
+        if (!task) {
+          return;
+        }
 
 
         await updateDoc(
@@ -1342,9 +2123,6 @@ els.taskList.addEventListener(
                 : null
           }
         );
-
-
-        return;
       }
 
 
@@ -1353,30 +2131,33 @@ els.taskList.addEventListener(
         await deleteDoc(
           userDoc(
             "tasks",
-            del.dataset.taskDelete
+            del.dataset
+              .taskDelete
           )
         );
-
-        return;
       }
 
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
+
 
       showToast(
-        "Task update failed."
+        error?.code ===
+          "permission-denied"
+
+          ? "Firebase blocked that change. Check Firestore rules."
+
+          : "Task update failed."
       );
     }
 
   }
 );
 
-
-// ============================================================
-// ADD TASK
-// ============================================================
 
 els.taskForm.addEventListener(
   "submit",
@@ -1405,45 +2186,51 @@ els.taskForm.addEventListener(
 
 
     const payload = {
+
       text,
 
       category:
-        els.taskCategory.value,
+        els.taskCategory
+          .value,
 
       priority:
-        els.taskPriority.value,
+        els.taskPriority
+          .value,
 
-      completed: false,
+      completed:
+        false,
+
+      completedAt:
+        null,
 
       createdAt:
         serverTimestamp(),
 
-      completedAt: null,
-
-      dueAt: null
+      dueAt:
+        els.taskDue.value
+          ? new Date(
+              `${els.taskDue.value}T23:59:59`
+            )
+          : null
     };
-
-
-    if (els.taskDue.value) {
-
-      payload.dueAt =
-        new Date(
-          `${els.taskDue.value}T23:59:59`
-        );
-    }
 
 
     try {
 
       await addDoc(
-        userCollection("tasks"),
+        userCollection(
+          "tasks"
+        ),
         payload
       );
 
 
-      els.taskText.value = "";
+      els.taskText.value =
+        "";
 
-      els.taskDue.value = "";
+      els.taskDue.value =
+        "";
+
 
       showToast(
         "Task added."
@@ -1454,10 +2241,18 @@ els.taskForm.addEventListener(
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
+
 
       showToast(
-        "Could not save task."
+        error?.code ===
+          "permission-denied"
+
+          ? "Firestore permission denied. Publish the rules file."
+
+          : "Could not save task."
       );
     }
 
@@ -1465,11 +2260,9 @@ els.taskForm.addEventListener(
 );
 
 
-// ============================================================
-// TASK FILTERS
-// ============================================================
-
-$$("[data-task-status]").forEach(
+$$(
+  "[data-task-status]"
+).forEach(
   button => {
 
     button.addEventListener(
@@ -1477,21 +2270,27 @@ $$("[data-task-status]").forEach(
       () => {
 
         taskStatusFilter =
-          button.dataset.taskStatus;
+          button.dataset
+            .taskStatus;
 
 
-        $$("[data-task-status]")
-          .forEach(other => {
+        $$(
+          "[data-task-status]"
+        ).forEach(
+          other => {
 
             other.classList.toggle(
               "active",
-              other === button
+              other ===
+                button
             );
 
-          });
+          }
+        );
 
 
         renderTasks();
+
       }
     );
 
@@ -1504,7 +2303,8 @@ els.categoryFilter.addEventListener(
   () => {
 
     taskCategoryFilter =
-      els.categoryFilter.value;
+      els.categoryFilter
+        .value;
 
     renderTasks();
   }
@@ -1512,21 +2312,472 @@ els.categoryFilter.addEventListener(
 
 
 // ============================================================
-// STUDY ANALYTICS
+// NOTES
+// ============================================================
+
+function renderNotes() {
+
+  if (
+    els.scratchpad.value !==
+    noteContent
+  ) {
+
+    els.scratchpad.value =
+      noteContent;
+  }
+
+
+  els.noteCount
+    .textContent =
+    `${noteContent.length.toLocaleString()} characters`;
+}
+
+
+els.scratchpad.addEventListener(
+  "input",
+  () => {
+
+    noteContent =
+      els.scratchpad.value;
+
+
+    els.noteCount
+      .textContent =
+      `${noteContent.length.toLocaleString()} characters`;
+
+
+    if (!currentUser) {
+      return;
+    }
+
+
+    els.noteSaveState.textContent =
+      "Saving…";
+
+
+    clearTimeout(
+      noteSaveTimer
+    );
+
+
+    noteSaveTimer =
+      setTimeout(
+        async () => {
+
+          try {
+
+            await setDoc(
+              userDoc(
+                "scratchpad",
+                "main"
+              ),
+              {
+                content:
+                  noteContent,
+
+                updatedAt:
+                  serverTimestamp()
+              },
+              {
+                merge:true
+              }
+            );
+
+
+            els.noteSaveState.textContent =
+              "Saved to cloud";
+
+          } catch (error) {
+
+            console.error(
+              error
+            );
+
+            els.noteSaveState.textContent =
+              "Save failed";
+          }
+
+        },
+        550
+      );
+  }
+);
+
+
+els.clearNotesBtn.addEventListener(
+  "click",
+  async () => {
+
+    noteContent =
+      "";
+
+
+    renderNotes();
+
+
+    if (!currentUser) {
+      return;
+    }
+
+
+    try {
+
+      await setDoc(
+        userDoc(
+          "scratchpad",
+          "main"
+        ),
+        {
+          content:
+            "",
+
+          updatedAt:
+            serverTimestamp()
+        },
+        {
+          merge:true
+        }
+      );
+
+
+      els.noteSaveState.textContent =
+        "Saved to cloud";
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      showToast(
+        "Could not clear cloud notes."
+      );
+    }
+
+  }
+);
+
+
+// ============================================================
+// LINKS
+// ============================================================
+
+function renderLinks() {
+
+  els.linkGrid.innerHTML =
+    quickLinks
+      .map(
+        link => `
+          <div class="link-card">
+
+            <a
+              href="${escapeHtml(
+                link.url
+              )}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open ${escapeHtml(
+                link.title
+              )}"
+              style="
+                position:absolute;
+                inset:0;
+                z-index:1
+              "
+            ></a>
+
+
+            <div
+              class="link-top"
+              style="
+                position:relative;
+                z-index:2;
+                pointer-events:none
+              "
+            >
+
+              <div class="link-icon">
+                ${escapeHtml(
+                  link.icon ||
+                  link.title
+                    ?. [0]
+                    ?.toUpperCase() ||
+                  "↗"
+                )}
+              </div>
+
+
+              <button
+                class="delete-link"
+                data-delete-link="${escapeHtml(
+                  link.id
+                )}"
+                style="
+                  pointer-events:auto
+                "
+              >
+                ×
+              </button>
+
+            </div>
+
+
+            <div
+              style="
+                position:relative;
+                z-index:2;
+                pointer-events:none
+              "
+            >
+
+              <div class="link-name">
+                ${escapeHtml(
+                  link.title
+                )}
+              </div>
+
+              <div class="link-url">
+                ${escapeHtml(
+                  (
+                    link.url ||
+                    ""
+                  ).replace(
+                    /^https?:\/\//,
+                    ""
+                  )
+                )}
+              </div>
+
+            </div>
+
+          </div>
+        `
+      )
+      .join("");
+}
+
+
+els.linkGrid.addEventListener(
+  "click",
+  async event => {
+
+    const button =
+      event.target.closest(
+        "[data-delete-link]"
+      );
+
+
+    if (!button) {
+      return;
+    }
+
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
+
+    try {
+
+      await deleteDoc(
+        userDoc(
+          "quick_links",
+          button.dataset
+            .deleteLink
+        )
+      );
+
+
+      showToast(
+        "Link removed."
+      );
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      showToast(
+        "Could not remove link."
+      );
+    }
+
+  }
+);
+
+
+function openLinkModal() {
+
+  els.linkForm.reset();
+
+  els.modalBackdrop
+    .classList.remove(
+      "hidden"
+    );
+
+  els.linkTitle.focus();
+}
+
+
+function closeLinkModal() {
+
+  els.modalBackdrop
+    .classList.add(
+      "hidden"
+    );
+}
+
+
+els.addLinkBtn.addEventListener(
+  "click",
+  () => {
+
+    if (!currentUser) {
+
+      showToast(
+        "Sign in first to customize cloud links."
+      );
+
+      return;
+    }
+
+
+    openLinkModal();
+  }
+);
+
+
+els.closeLinkModal
+  .addEventListener(
+    "click",
+    closeLinkModal
+  );
+
+
+els.cancelLinkBtn
+  .addEventListener(
+    "click",
+    closeLinkModal
+  );
+
+
+els.modalBackdrop.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      els.modalBackdrop
+    ) {
+
+      closeLinkModal();
+    }
+
+  }
+);
+
+
+els.linkForm.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+
+    if (!currentUser) {
+      return;
+    }
+
+
+    const title =
+      els.linkTitle.value
+        .trim();
+
+
+    const url =
+      els.linkUrl.value
+        .trim();
+
+
+    const color =
+      els.linkColor.value;
+
+
+    if (
+      !title ||
+      !url
+    ) {
+      return;
+    }
+
+
+    try {
+
+      await addDoc(
+        userCollection(
+          "quick_links"
+        ),
+        {
+          title,
+          url,
+          color,
+          icon:
+            title[0]
+              .toUpperCase(),
+
+          createdAt:
+            serverTimestamp()
+        }
+      );
+
+
+      closeLinkModal();
+
+
+      showToast(
+        "Quick link saved."
+      );
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      showToast(
+        "Could not save link."
+      );
+    }
+
+  }
+);
+
+
+// ============================================================
+// ANALYTICS
 // ============================================================
 
 function calculateAnalytics() {
 
-  const now = new Date();
-
-  const todayKey =
-    localDateKey(now);
+  const now =
+    new Date();
 
 
-  const startOfWeek =
+  const today =
+    localDateKey(
+      now
+    );
+
+
+  const start =
     new Date(now);
 
-  startOfWeek.setHours(
+
+  start.setHours(
     0,
     0,
     0,
@@ -1534,21 +2785,27 @@ function calculateAnalytics() {
   );
 
 
-  startOfWeek.setDate(
-    startOfWeek.getDate() - 6
+  start.setDate(
+    start.getDate() - 6
   );
 
 
-  let todayMinutes = 0;
+  let todayMinutes =
+    0;
 
-  let weekMinutes = 0;
+
+  let weekMinutes =
+    0;
 
 
-  const studyDays =
+  const days =
     new Set();
 
 
-  for (const log of studyLogs) {
+  for (
+    const log
+    of studyLogs
+  ) {
 
     const date =
       parseStoredDate(
@@ -1567,38 +2824,44 @@ function calculateAnalytics() {
       );
 
 
-    const dateKey =
-      localDateKey(date);
-
-
     if (
-      dateKey ===
-      todayKey
+      localDateKey(
+        date
+      ) === today
     ) {
+
       todayMinutes +=
         minutes;
     }
 
 
     if (
-      date >= startOfWeek &&
+      date >= start &&
       date <= now
     ) {
+
       weekMinutes +=
         minutes;
     }
 
 
-    if (minutes > 0) {
+    if (
+      minutes > 0
+    ) {
 
-      studyDays.add(
-        dateKey
+      days.add(
+        localDateKey(
+          date
+        )
       );
     }
+
   }
 
 
-  let streak = 0;
+  let streak =
+    0;
+
 
   const cursor =
     new Date(now);
@@ -1613,12 +2876,16 @@ function calculateAnalytics() {
 
 
   while (
-    studyDays.has(
-      localDateKey(cursor)
+    days.has(
+      localDateKey(
+        cursor
+      )
     )
   ) {
 
-    streak++;
+    streak +=
+      1;
+
 
     cursor.setDate(
       cursor.getDate() - 1
@@ -1626,31 +2893,31 @@ function calculateAnalytics() {
   }
 
 
-  const totalTasks =
-    tasks.length;
-
-
-  const completedTasks =
-    tasks.filter(
-      task => task.completed
-    ).length;
-
-
   const completion =
-    totalTasks > 0
+    tasks.length
+
       ? Math.round(
-          completedTasks /
-          totalTasks *
+          tasks.filter(
+            task =>
+              task.completed
+          ).length /
+          tasks.length *
           100
         )
+
       : 0;
 
 
   return {
+
     todayMinutes,
+
     weekMinutes,
+
     streak,
+
     completion
+
   };
 }
 
@@ -1661,69 +2928,72 @@ function renderAnalytics() {
     calculateAnalytics();
 
 
-  const sessionCount =
-    studyLogs.filter(log => {
+  const todaySessions =
+    studyLogs.filter(
+      log => {
 
-      const date =
-        parseStoredDate(
-          log.timestamp
+        const date =
+          parseStoredDate(
+            log.timestamp
+          );
+
+
+        return (
+          date &&
+          localDateKey(
+            date
+          ) ===
+            localDateKey()
         );
 
-
-      return (
-        date &&
-        localDateKey(date) ===
-          localDateKey()
-      );
-
-    }).length;
+      }
+    ).length;
 
 
   els.focusToday.textContent =
-    `${stats.todayMinutes} min`;
+    `${stats.todayMinutes}m`;
 
 
   els.focusStreak.textContent =
-    `${stats.streak} ${
-      stats.streak === 1
-        ? "day"
-        : "days"
-    }`;
+    `${stats.streak}d`;
 
 
   els.focusSessions.textContent =
-    String(sessionCount);
+    String(
+      todaySessions
+    );
 
 
   els.analyticsToday.textContent =
-    `${stats.todayMinutes} min`;
+    `${stats.todayMinutes}m`;
 
 
   els.analyticsWeek.textContent =
-    `${stats.weekMinutes} min`;
+    `${stats.weekMinutes}m`;
 
 
   els.analyticsStreak.textContent =
-    `${stats.streak} ${
-      stats.streak === 1
-        ? "day"
-        : "days"
-    }`;
+    `${stats.streak}d`;
 
 
   els.analyticsCompletion.textContent =
     `${stats.completion}%`;
 
 
-  const milestones = [
-    25,
-    50,
-    100,
-    180,
-    300,
-    500,
-    1000
-  ];
+  els.clockFocus.textContent =
+    `${stats.todayMinutes}m`;
+
+
+  const milestones =
+    [
+      25,
+      50,
+      100,
+      180,
+      300,
+      500,
+      1000
+    ];
 
 
   const next =
@@ -1734,22 +3004,14 @@ function renderAnalytics() {
     );
 
 
-  if (next) {
+  els.nextMilestone.textContent =
+    next
 
-    els.nextMilestone.textContent =
-      `${next - stats.todayMinutes} min until today's ${next}-minute milestone.`;
+      ? `${next - stats.todayMinutes}m until today's ${next}m milestone.`
 
-  } else {
-
-    els.nextMilestone.textContent =
-      "You cleared every milestone today.";
-  }
+      : "Every milestone cleared today.";
 }
 
-
-// ============================================================
-// CLEAR STUDY LOGS
-// ============================================================
 
 els.clearStudyLogsBtn.addEventListener(
   "click",
@@ -1757,19 +3019,17 @@ els.clearStudyLogsBtn.addEventListener(
 
     if (
       !currentUser ||
-      studyLogs.length === 0
+      !studyLogs.length
     ) {
       return;
     }
 
 
-    const confirmed =
-      window.confirm(
-        "Delete all study logs for this account?"
-      );
-
-
-    if (!confirmed) {
+    if (
+      !window.confirm(
+        "Delete all study history for this account?"
+      )
+    ) {
       return;
     }
 
@@ -1780,16 +3040,18 @@ els.clearStudyLogsBtn.addEventListener(
         writeBatch(db);
 
 
-      studyLogs.forEach(log => {
+      studyLogs.forEach(
+        log => {
 
-        batch.delete(
-          userDoc(
-            "study_logs",
-            log.id
-          )
-        );
+          batch.delete(
+            userDoc(
+              "study_logs",
+              log.id
+            )
+          );
 
-      });
+        }
+      );
 
 
       await batch.commit();
@@ -1799,10 +3061,12 @@ els.clearStudyLogsBtn.addEventListener(
         "Study history cleared."
       );
 
-
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
+
 
       showToast(
         "Could not clear study history."
@@ -1814,21 +3078,134 @@ els.clearStudyLogsBtn.addEventListener(
 
 
 // ============================================================
-// DEFAULT LINK SEEDING
+// MORE SHEET
 // ============================================================
 
-async function seedDefaultLinksIfNeeded() {
+function openMoreSheet() {
+
+  moreOpen =
+    true;
+
+
+  els.moreBackdrop
+    .classList.remove(
+      "hidden"
+    );
+
+
+  syncTimerInputs();
+
+  renderLayoutManager();
+
+  applyAppearance();
+}
+
+
+function closeMoreSheet() {
+
+  moreOpen =
+    false;
+
+
+  els.moreBackdrop
+    .classList.add(
+      "hidden"
+    );
+
+
+  applyViewState(
+    currentView ===
+      "more"
+
+      ? "overview"
+
+      : currentView
+  );
+}
+
+
+els.closeMore.addEventListener(
+  "click",
+  closeMoreSheet
+);
+
+
+els.moreBackdrop.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      els.moreBackdrop
+    ) {
+
+      closeMoreSheet();
+    }
+
+  }
+);
+
+
+$$(
+  "[data-sheet-view]"
+).forEach(
+  button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        const view =
+          button.dataset
+            .sheetView;
+
+
+        closeMoreSheet();
+
+
+        animateViewChange(
+          view
+        );
+      }
+    );
+
+  }
+);
+
+
+// ============================================================
+// FIREBASE
+// ============================================================
+
+function clearListeners() {
+
+  unsubscribeFns.forEach(
+    unsubscribe =>
+      unsubscribe()
+  );
+
+
+  unsubscribeFns =
+    [];
+}
+
+
+async function seedLinksIfEmpty() {
 
   const snapshot =
     await getDocs(
       query(
-        userCollection("quick_links"),
+        userCollection(
+          "quick_links"
+        ),
         limit(1)
       )
     );
 
 
-  if (!snapshot.empty) {
+  if (
+    !snapshot.empty
+  ) {
     return;
   }
 
@@ -1837,51 +3214,34 @@ async function seedDefaultLinksIfNeeded() {
     writeBatch(db);
 
 
-  for (const link of defaultLinks) {
+  DEFAULT_LINKS.forEach(
+    link => {
 
-    const reference =
-      doc(
-        userCollection(
-          "quick_links"
-        )
+      const reference =
+        doc(
+          userCollection(
+            "quick_links"
+          )
+        );
+
+
+      batch.set(
+        reference,
+        {
+          ...link,
+
+          createdAt:
+            serverTimestamp()
+        }
       );
 
-
-    batch.set(
-      reference,
-      {
-        ...link,
-        createdAt:
-          serverTimestamp()
-      }
-    );
-  }
+    }
+  );
 
 
   await batch.commit();
 }
 
-
-// ============================================================
-// FIRESTORE LISTENER CLEANUP
-// ============================================================
-
-function clearListeners() {
-
-  unsubscribeFns.forEach(
-    unsubscribe => {
-      unsubscribe();
-    }
-  );
-
-
-  unsubscribeFns = [];
-}
-
-
-// ============================================================
-// START REAL-TIME FIRESTORE LISTENERS
-// ============================================================
 
 function startRealtimeListeners() {
 
@@ -1895,7 +3255,9 @@ function startRealtimeListeners() {
 
   const taskQuery =
     query(
-      userCollection("tasks"),
+      userCollection(
+        "tasks"
+      ),
       orderBy(
         "createdAt",
         "desc"
@@ -1906,7 +3268,9 @@ function startRealtimeListeners() {
 
   const linkQuery =
     query(
-      userCollection("quick_links"),
+      userCollection(
+        "quick_links"
+      ),
       orderBy(
         "createdAt",
         "asc"
@@ -1917,7 +3281,9 @@ function startRealtimeListeners() {
 
   const logQuery =
     query(
-      userCollection("study_logs"),
+      userCollection(
+        "study_logs"
+      ),
       orderBy(
         "timestamp",
         "desc"
@@ -1925,8 +3291,6 @@ function startRealtimeListeners() {
       limit(500)
     );
 
-
-  // TASKS
 
   unsubscribeFns.push(
 
@@ -1937,9 +3301,11 @@ function startRealtimeListeners() {
 
         tasks =
           snapshot.docs.map(
-            document => ({
-              id: document.id,
-              ...document.data()
+            d => ({
+              id:
+                d.id,
+
+              ...d.data()
             })
           );
 
@@ -1950,22 +3316,22 @@ function startRealtimeListeners() {
       error => {
 
         console.error(
-          "Task listener:",
+          "Tasks:",
           error
         );
 
 
         showToast(
-          "Task listener failed. Check Firestore indexes/rules."
+          error?.code ===
+            "failed-precondition"
+
+            ? "Firestore needs an index for this query."
+
+            : "Task sync failed."
         );
       }
-    )
-  );
+    ),
 
-
-  // QUICK LINKS
-
-  unsubscribeFns.push(
 
     onSnapshot(
       linkQuery,
@@ -1974,30 +3340,26 @@ function startRealtimeListeners() {
 
         quickLinks =
           snapshot.docs.map(
-            document => ({
-              id: document.id,
-              ...document.data()
+            d => ({
+              id:
+                d.id,
+
+              ...d.data()
             })
           );
 
 
-        renderQuickLinks();
+        renderLinks();
+
       },
 
-      error => {
-
+      error =>
         console.error(
-          "Quick link listener:",
+          "Links:",
           error
-        );
-      }
-    )
-  );
+        )
+    ),
 
-
-  // STUDY LOGS
-
-  unsubscribeFns.push(
 
     onSnapshot(
       logQuery,
@@ -2006,35 +3368,33 @@ function startRealtimeListeners() {
 
         studyLogs =
           snapshot.docs.map(
-            document => ({
-              id: document.id,
-              ...document.data()
+            d => ({
+              id:
+                d.id,
+
+              ...d.data()
             })
           );
 
 
         renderAnalytics();
+
       },
 
       error => {
 
         console.error(
-          "Study log listener:",
+          "Study logs:",
           error
         );
 
 
         showToast(
-          "Study analytics listener failed."
+          "Study analytics sync failed."
         );
       }
-    )
-  );
+    ),
 
-
-  // SCRATCHPAD
-
-  unsubscribeFns.push(
 
     onSnapshot(
       userDoc(
@@ -2044,101 +3404,102 @@ function startRealtimeListeners() {
 
       snapshot => {
 
-        if (!snapshot.exists()) {
+        noteContent =
+          snapshot.exists()
 
-          window._scratchpadContent =
-            "";
+            ? (
+                snapshot
+                  .data()
+                  .content ||
+                ""
+              )
 
-          els.noteSaveState.textContent =
-            "Ready";
-
-        } else {
-
-          window._scratchpadContent =
-            snapshot.data()
-              .content || "";
-
-          els.noteSaveState.textContent =
-            "Saved to cloud";
-        }
+            : "";
 
 
-        renderScratchpad();
+        els.noteSaveState
+          .textContent =
+          snapshot.exists()
+            ? "Saved to cloud"
+            : "Ready";
+
+
+        renderNotes();
+
       },
 
       error => {
 
         console.error(
-          "Scratchpad listener:",
+          "Notes:",
           error
         );
 
 
-        els.noteSaveState.textContent =
+        els.noteSaveState
+          .textContent =
           "Unavailable";
       }
+    ),
+
+
+    onSnapshot(
+      prefsDoc(),
+
+      snapshot => {
+
+        if (
+          snapshot.exists()
+        ) {
+
+          preferences =
+            normalizePreferences(
+              snapshot.data()
+            );
+
+        } else {
+
+          preferences =
+            cloneDefaults();
+        }
+
+
+        applyAppearance();
+
+        applyLayout();
+
+        syncTimerInputs();
+
+        updateTimerIfIdle();
+
+        renderLayoutManager();
+
+        requestAnimationFrame(
+          moveDockGlide
+        );
+
+      },
+
+      error => {
+
+        console.error(
+          "Preferences:",
+          error
+        );
+
+
+        showToast(
+          "Personalization settings could not sync."
+        );
+      }
     )
+
   );
 }
 
 
 // ============================================================
-// USER WORKSPACE INITIALIZATION
-// ============================================================
-
-async function initUserWorkspace() {
-
-  try {
-
-    setSyncStatus(
-      "Loading your cloud workspace…"
-    );
-
-
-    els.scratchpad.disabled =
-      false;
-
-
-    // Seed default quick links
-    await seedDefaultLinksIfNeeded();
-
-
-    // Start Firestore listeners
-    startRealtimeListeners();
-
-
-    setSyncStatus(
-      `Synced as ${
-        currentUser.displayName ||
-        currentUser.email ||
-        "student"
-      }`,
-      true
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "Workspace initialization:",
-      error
-    );
-
-
-    setSyncStatus(
-      "Could not load your workspace."
-    );
-
-
-    showToast(
-      "Firebase is connected, but the workspace could not load."
-    );
-  }
-}
-
-
-// ============================================================
-// SIGNED-OUT UI
+// AUTH UI
 // ============================================================
 
 function setSignedOutUI() {
@@ -2146,20 +3507,43 @@ function setSignedOutUI() {
   clearListeners();
 
 
-  currentUser = null;
-
-  tasks = [];
-
-  studyLogs = [];
-
-  quickLinks = [];
+  currentUser =
+    null;
 
 
-  renderQuickLinks();
+  tasks =
+    [];
+
+
+  studyLogs =
+    [];
+
+
+  quickLinks =
+    [];
+
+
+  preferences =
+    cloneDefaults();
+
+
+  noteContent =
+    "";
+
 
   renderTasks();
 
-  renderScratchpad();
+  renderAnalytics();
+
+  renderLinks();
+
+  renderNotes();
+
+  applyAppearance();
+
+  applyLayout();
+
+  syncTimerInputs();
 
 
   els.scratchpad.disabled =
@@ -2167,12 +3551,7 @@ function setSignedOutUI() {
 
 
   els.noteSaveState.textContent =
-    "Waiting for sign-in";
-
-
-  els.userChip.classList.add(
-    "hidden"
-  );
+    "Not connected";
 
 
   els.signInBtn.classList.remove(
@@ -2180,19 +3559,24 @@ function setSignedOutUI() {
   );
 
 
-  setSyncStatus(
-    "Sign in to enable cloud sync."
+  els.userChip.classList.add(
+    "hidden"
+  );
+
+
+  setConnectionStatus(
+    "Offline mode",
+    false
   );
 }
 
 
-// ============================================================
-// SIGNED-IN UI
-// ============================================================
+async function setSignedInUI(
+  user
+) {
 
-function setSignedInUI(user) {
-
-  currentUser = user;
+  currentUser =
+    user;
 
 
   els.signInBtn.classList.add(
@@ -2215,84 +3599,127 @@ function setSignedInUI(user) {
 
     els.userAvatar.src =
       user.photoURL;
-
-  } else {
-
-    els.userAvatar.removeAttribute(
-      "src"
-    );
   }
 
 
-  initUserWorkspace();
-}
+  els.scratchpad.disabled =
+    false;
 
 
-// ============================================================
-// GOOGLE SIGN-IN
-// ============================================================
+  setConnectionStatus(
+    "Loading cloud workspace…",
+    false
+  );
 
-async function signIn() {
 
   try {
 
-    const isMobile =
-      window.matchMedia(
-        "(max-width: 768px)"
-      ).matches;
+    await seedLinksIfEmpty();
 
 
-    if (isMobile) {
+    startRealtimeListeners();
 
-      await signInWithRedirect(
-        auth,
-        googleProvider
-      );
 
-    } else {
-
-      await signInWithPopup(
-        auth,
-        googleProvider
-      );
-    }
+    setConnectionStatus(
+      `Synced as ${
+        user.displayName ||
+        user.email ||
+        "student"
+      }`,
+      true
+    );
 
 
   } catch (error) {
 
     console.error(
-      "Sign-in error:",
+      "Workspace:",
       error
     );
 
 
-    if (
-      error.code ===
-      "auth/popup-blocked"
-    ) {
-
-      await signInWithRedirect(
-        auth,
-        googleProvider
-      );
-
-      return;
-    }
+    setConnectionStatus(
+      "Firebase connected, workspace failed",
+      false
+    );
 
 
     showToast(
-      `Sign-in failed: ${
-        error.code ||
-        "unknown error"
-      }`
+      error?.code ===
+        "permission-denied"
+
+        ? "Firebase denied access. Publish the Firestore rules."
+
+        : "Could not load your cloud workspace."
     );
   }
 }
 
 
+// ============================================================
+// SIGN IN
+// ============================================================
+
 els.signInBtn.addEventListener(
   "click",
-  signIn
+  async () => {
+
+    try {
+
+      await signInWithPopup(
+        auth,
+        provider
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Sign-in:",
+        error
+      );
+
+
+      if (
+        error.code ===
+        "auth/unauthorized-domain"
+      ) {
+
+        showToast(
+          "Unauthorized domain: add this site's domain in Firebase → Authentication → Settings → Authorized domains."
+        );
+
+      } else if (
+        error.code ===
+        "auth/operation-not-allowed"
+      ) {
+
+        showToast(
+          "Google sign-in is disabled in Firebase Authentication."
+        );
+
+      } else if (
+        error.code ===
+        "auth/popup-blocked"
+      ) {
+
+        showToast(
+          "Your browser blocked the login popup."
+        );
+
+      } else if (
+        error.code !==
+        "auth/popup-closed-by-user"
+      ) {
+
+        showToast(
+          `Login failed: ${
+            error.code ||
+            "unknown error"
+          }`
+        );
+      }
+    }
+  }
 );
 
 
@@ -2306,7 +3733,10 @@ els.signOutBtn.addEventListener(
 
     try {
 
-      await signOut(auth);
+      await signOut(
+        auth
+      );
+
 
       showToast(
         "Signed out."
@@ -2314,7 +3744,10 @@ els.signOutBtn.addEventListener(
 
     } catch (error) {
 
-      console.error(error);
+      console.error(
+        error
+      );
+
 
       showToast(
         "Sign out failed."
@@ -2325,60 +3758,78 @@ els.signOutBtn.addEventListener(
 
 
 // ============================================================
-// FIREBASE REDIRECT RESULT
-// ============================================================
-
-getRedirectResult(auth)
-  .catch(error => {
-
-    if (
-      error &&
-      error.code !==
-        "auth/popup-closed-by-user"
-    ) {
-      console.error(
-        "Redirect sign-in:",
-        error
-      );
-    }
-
-  });
-
-
-// ============================================================
-// AUTH STATE LISTENER
+// AUTH STATE
 // ============================================================
 
 onAuthStateChanged(
   auth,
+
   user => {
 
     if (user) {
 
-      setSignedInUI(user);
+      setSignedInUI(
+        user
+      );
 
     } else {
 
       setSignedOutUI();
 
     }
-
   }
 );
 
 
 // ============================================================
-// KEYBOARD SHORTCUTS
+// INITIAL UI
 // ============================================================
+
+renderTasks();
+
+renderAnalytics();
+
+renderLinks();
+
+renderNotes();
+
+applyAppearance();
+
+applyLayout();
+
+syncTimerInputs();
+
+renderLayoutManager();
+
+applyViewState(
+  "overview"
+);
+
 
 window.addEventListener(
   "keydown",
   event => {
 
     if (
-      event.key === "Escape"
+      event.key ===
+      "Escape"
     ) {
-      closeLinkModal();
+
+      if (moreOpen) {
+        closeMoreSheet();
+      }
+
+
+      if (
+        !els.modalBackdrop
+          .classList
+          .contains(
+            "hidden"
+          )
+      ) {
+
+        closeLinkModal();
+      }
     }
 
   }
