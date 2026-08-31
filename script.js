@@ -34,10 +34,9 @@ const firebaseConfig = {
   projectId: "student-dashboard-41b98",
   storageBucket: "student-dashboard-41b98.firebasestorage.app",
   messagingSenderId: "908791794286",
-  appId: "1:908791794286:web:1a432119daf9d61772f47f",
-  measurementId: "G-Y39RMFW2W9"
+  appId: "1:908791794286:web:26f30e965d52fef572f47f",
+  measurementId: "G-NHXYYGMEZX"
 };
-
 
 const app =
   initializeApp(firebaseConfig);
