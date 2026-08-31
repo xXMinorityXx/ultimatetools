@@ -1,642 +1,2385 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-// =========================================================================
-// 1. DOCK VIEW NAVIGATION ENGINE
-// =========================================================================
-function initDockNavigation() {
-  const dockItems = document.querySelectorAll(".dock-item");
-  const dashboard = document.getElementById("dashboard");
-  if (!dockItems.length || !dashboard) return;
+import {
+  getFirestore,
+  collection,
+  doc,
+  addDoc,
+  setDoc,
+  updateDoc,
+  deleteDoc,
+  onSnapshot,
+  query,
+  orderBy,
+  limit,
+  serverTimestamp,
+  getDocs,
+  writeBatch
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
-  dockItems.forEach(item => {
-    item.addEventListener("click", (e) => {
-      e.preventDefault();
-      const targetBtn = e.currentTarget;
-      const targetView = targetBtn.getAttribute("data-view");
+import {
+  getAuth,
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
+  signOut
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
-      dockItems.forEach(btn => btn.classList.remove("active"));
-      targetBtn.classList.add("active");
-      dashboard.className = `dashboard-container ${targetView}`;
-    });
-  });
-}
-initDockNavigation();
 
-// =========================================================================
-// 2. THEME SWITCHER ENGINE
-// =========================================================================
-const themeDots = document.querySelectorAll(".theme-dot");
-const savedTheme = localStorage.getItem("liquid_theme") || "cyber";
-document.documentElement.setAttribute("data-theme", savedTheme);
+// ============================================================
+// FIREBASE CONFIG
+// ============================================================
 
-themeDots.forEach(dot => {
-  if (dot.dataset.theme === savedTheme) dot.classList.add("active");
-  else dot.classList.remove("active");
+const firebaseConfig = {
+  apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3goBKm87go",
+  authDomain: "student-dashboard-41b98.firebaseapp.com",
+  projectId: "student-dashboard-41b98",
+  storageBucket: "student-dashboard-41b98.firebasestorage.app",
+  messagingSenderId: "908791794286",
+  appId: "1:908791794286:web:1a432119daf9d61772f47f",
+  measurementId: "G-Y39RMFW2W9"
+};
 
-  dot.addEventListener("click", (e) => {
-    themeDots.forEach(d => d.classList.remove("active"));
-    const selectedTheme = e.target.dataset.theme;
-    e.target.classList.add("active");
-    document.documentElement.setAttribute("data-theme", selectedTheme);
-    localStorage.setItem("liquid_theme", selectedTheme);
-    playSynthSound("click");
-  });
-});
 
-// =========================================================================
-// 3. SYNTH AUDIO FX & AMBIENT NOISE GENERATOR ENGINE
-// =========================================================================
-let audioCtx = null;
-let ambientNoiseNode = null;
-let isAudioPlaying = false;
+// ============================================================
+// INITIALIZE FIREBASE
+// ============================================================
 
-function initAudioContext() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+
+
+// ============================================================
+// DOM HELPERS
+// ============================================================
+
+const $ = (selector) => document.querySelector(selector);
+
+const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+
+const els = {
+  dayLabel: $("#dayLabel"),
+  greeting: $("#greeting"),
+  syncStatus: $("#syncStatus"),
+
+  signInBtn: $("#signInBtn"),
+  signOutBtn: $("#signOutBtn"),
+  userChip: $("#userChip"),
+  userAvatar: $("#userAvatar"),
+  userName: $("#userName"),
+
+  clockTime: $("#clockTime"),
+  clockAmPm: $("#clockAmPm"),
+  clockDate: $("#clockDate"),
+  clockToday: $("#clockToday"),
+  clockDone: $("#clockDone"),
+
+  timerDisplay: $("#timerDisplay"),
+  timerCaption: $("#timerCaption"),
+  timerModePill: $("#timerModePill"),
+  timerStart: $("#timerStart"),
+  timerReset: $("#timerReset"),
+
+  focusToday: $("#focusToday"),
+  focusStreak: $("#focusStreak"),
+  focusSessions: $("#focusSessions"),
+
+  analyticsToday: $("#analyticsToday"),
+  analyticsWeek: $("#analyticsWeek"),
+  analyticsStreak: $("#analyticsStreak"),
+  analyticsCompletion: $("#analyticsCompletion"),
+  nextMilestone: $("#nextMilestone"),
+  clearStudyLogsBtn: $("#clearStudyLogsBtn"),
+
+  linkGrid: $("#linkGrid"),
+  addLinkBtn: $("#addLinkBtn"),
+
+  scratchpad: $("#scratchpad"),
+  noteSaveState: $("#noteSaveState"),
+  noteCount: $("#noteCount"),
+  clearNotesBtn: $("#clearNotesBtn"),
+
+  taskForm: $("#taskForm"),
+  taskText: $("#taskText"),
+  taskCategory: $("#taskCategory"),
+  taskPriority: $("#taskPriority"),
+  taskDue: $("#taskDue"),
+  taskList: $("#taskList"),
+  taskCountBadge: $("#taskCountBadge"),
+  categoryFilter: $("#categoryFilter"),
+
+  modalBackdrop: $("#modalBackdrop"),
+  linkModal: $("#linkModal"),
+  linkForm: $("#linkForm"),
+  linkTitle: $("#linkTitle"),
+  linkUrl: $("#linkUrl"),
+  linkColor: $("#linkColor"),
+  closeLinkModal: $("#closeLinkModal"),
+  cancelLinkBtn: $("#cancelLinkBtn"),
+
+  toast: $("#toast"),
+  navSlider: $("#navSlider")
+};
+
+
+// ============================================================
+// GLOBAL STATE
+// ============================================================
+
+let currentUser = null;
+
+let unsubscribeFns = [];
+
+let tasks = [];
+let studyLogs = [];
+let quickLinks = [];
+
+let taskStatusFilter = "active";
+let taskCategoryFilter = "all";
+
+let noteSaveTimer = null;
+
+
+// ============================================================
+// DEFAULT QUICK LINKS
+// ============================================================
+
+const defaultLinks = [
+  {
+    title: "Classroom",
+    url: "https://classroom.google.com/",
+    color: "blue",
+    icon: "C"
+  },
+  {
+    title: "Docs",
+    url: "https://docs.google.com/document/",
+    color: "pink",
+    icon: "D"
+  },
+  {
+    title: "Slides",
+    url: "https://slides.google.com/",
+    color: "orange",
+    icon: "S"
+  },
+  {
+    title: "Gmail",
+    url: "https://mail.google.com/",
+    color: "green",
+    icon: "G"
   }
+];
+
+
+// ============================================================
+// UTILITY FUNCTIONS
+// ============================================================
+
+function showToast(message) {
+  if (!els.toast) return;
+
+  els.toast.textContent = message;
+  els.toast.classList.add("show");
+
+  clearTimeout(showToast.timer);
+
+  showToast.timer = setTimeout(() => {
+    els.toast.classList.remove("show");
+  }, 2600);
 }
 
-function playSynthSound(type) {
-  try {
-    initAudioContext();
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
 
-    if (type === "click") {
-      osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-      gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.05);
-    } else if (type === "chime") {
-      osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
-      osc.frequency.exponentialRampToValueAtTime(659.25, audioCtx.currentTime + 0.15); // E5
-      gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.3);
-    } else if (type === "levelup") {
-      osc.frequency.setValueAtTime(440, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.4);
-      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.5);
-    }
-  } catch (e) {
-    console.warn("AudioContext blocked or unavailable:", e);
+function setSyncStatus(message, good = false) {
+  if (!els.syncStatus) return;
+
+  els.syncStatus.textContent = message;
+
+  els.syncStatus.style.color = good
+    ? "var(--green)"
+    : "";
+}
+
+
+function userCollection(name) {
+  if (!currentUser) {
+    throw new Error("You must be signed in.");
   }
+
+  return collection(
+    db,
+    "users",
+    currentUser.uid,
+    name
+  );
 }
 
-// Synthesized Ambient Rain (Pink/Brown Noise)
-function toggleAmbientNoise() {
-  initAudioContext();
-  const audioBtn = document.getElementById("ambient-audio-btn");
-  const audioStatus = document.getElementById("audio-status");
 
-  if (isAudioPlaying) {
-    if (ambientNoiseNode) ambientNoiseNode.stop();
-    isAudioPlaying = false;
-    audioStatus.textContent = "OFF";
-    audioBtn.classList.remove("btn-primary");
-    audioBtn.classList.add("btn-glass");
-  } else {
-    const bufferSize = audioCtx.sampleRate * 2;
-    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const output = noiseBuffer.getChannelData(0);
-    let lastOut = 0.0;
-    
-    for (let i = 0; i < bufferSize; i++) {
-      const white = Math.random() * 2 - 1;
-      output[i] = (lastOut + (0.02 * white)) / 1.02; // Brown noise filter logic
-      lastOut = output[i];
-    }
-
-    ambientNoiseNode = audioCtx.createBufferSource();
-    ambientNoiseNode.buffer = noiseBuffer;
-    ambientNoiseNode.loop = true;
-
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
-
-    ambientNoiseNode.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    ambientNoiseNode.start();
-
-    isAudioPlaying = true;
-    audioStatus.textContent = "ON";
-    audioBtn.classList.remove("btn-glass");
-    audioBtn.classList.add("btn-primary");
+function userDoc(collectionName, id) {
+  if (!currentUser) {
+    throw new Error("You must be signed in.");
   }
+
+  return doc(
+    db,
+    "users",
+    currentUser.uid,
+    collectionName,
+    id
+  );
 }
 
-document.getElementById("ambient-audio-btn")?.addEventListener("click", toggleAmbientNoise);
 
-// =========================================================================
-// 4. CLOCK ENGINE
-// =========================================================================
+function localDateKey(date = new Date()) {
+  const year = date.getFullYear();
+
+  const month = String(
+    date.getMonth() + 1
+  ).padStart(2, "0");
+
+  const day = String(
+    date.getDate()
+  ).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
+
+function parseStoredDate(value) {
+  if (!value) {
+    return null;
+  }
+
+  if (typeof value.toDate === "function") {
+    return value.toDate();
+  }
+
+  if (value instanceof Date) {
+    return value;
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return null;
+  }
+
+  return date;
+}
+
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+function niceDate(date) {
+  return new Intl.DateTimeFormat(undefined, {
+    weekday: "short",
+    month: "short",
+    day: "numeric"
+  }).format(date);
+}
+
+
+// ============================================================
+// LIVE CLOCK
+// ============================================================
+
 function updateClock() {
-  const clockEl = document.getElementById("clock");
-  const dateEl = document.getElementById("date");
-  if (!clockEl || !dateEl) return;
   const now = new Date();
-  clockEl.textContent = now.toLocaleTimeString();
-  dateEl.textContent = now.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+
+  const hour = now.getHours();
+
+  const hour12 = hour % 12 || 12;
+
+  const minute = String(
+    now.getMinutes()
+  ).padStart(2, "0");
+
+  els.clockTime.textContent =
+    `${hour12}:${minute}`;
+
+  els.clockAmPm.textContent =
+    hour >= 12 ? "PM" : "AM";
+
+  els.clockDate.textContent =
+    niceDate(now);
+
+  els.dayLabel.textContent =
+    new Intl.DateTimeFormat(undefined, {
+      weekday: "long"
+    })
+      .format(now)
+      .toUpperCase();
+
+  let greeting = "Good evening";
+
+  if (hour < 12) {
+    greeting = "Good morning";
+  } else if (hour < 18) {
+    greeting = "Good afternoon";
+  }
+
+  els.greeting.textContent = greeting;
 }
-setInterval(updateClock, 1000);
+
 updateClock();
 
-// =========================================================================
-// 5. MULTI-NOTE VAULT WITH SEARCH, TAGS & LIVE MARKDOWN
-// =========================================================================
-let notesList = JSON.parse(localStorage.getItem("liquid_multi_notes") || "null") || [
-  { id: "note_1", title: "AP Chem Cheat Sheet", tags: "#chemistry, #formulas", body: "## Ideal Gas Law\n`PV = nRT`\n- **Molarity**: moles / liters\n- **pH**: -log[H+]" },
-  { id: "note_2", title: "History Essay Outline", tags: "#history, #essay", body: "# Industrial Revolution\n1. **Thesis**: Urbanization shaped labor laws.\n2. Primary source quotes." }
-];
-let activeNoteId = notesList[0]?.id || "note_1";
+setInterval(updateClock, 1000);
 
-const tabStrip = document.getElementById("notes-tab-strip");
-const noteTitleInput = document.getElementById("active-note-title");
-const noteTagsInput = document.getElementById("active-note-tags");
-const noteBodyInput = document.getElementById("active-note-body");
-const notePreviewBox = document.getElementById("active-note-preview");
-const noteSearchInput = document.getElementById("note-search-input");
-let isMarkdownPreview = false;
 
-function parseMarkdown(text) {
-  let html = text
-    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-    .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
-    .replace(/\*(.*)\*/gim, '<em>$1</em>')
-    .replace(/`(.*)`/gim, '<code>$1</code>')
-    .replace(/^\- (.*$)/gim, '• $1<br/>');
-  return html.replace(/\n/g, '<br/>');
-}
+// ============================================================
+// POMODORO TIMER
+// ============================================================
 
-function saveNotesToStorage() {
-  localStorage.setItem("liquid_multi_notes", JSON.stringify(notesList));
-}
-
-function renderNotesHub() {
-  if (!tabStrip) return;
-  tabStrip.innerHTML = "";
-  const query = noteSearchInput?.value.toLowerCase() || "";
-
-  const filtered = notesList.filter(n => 
-    n.title.toLowerCase().includes(query) || 
-    n.tags.toLowerCase().includes(query) || 
-    n.body.toLowerCase().includes(query)
-  );
-
-  filtered.forEach(note => {
-    const pill = document.createElement("button");
-    pill.className = `note-pill ${note.id === activeNoteId ? "active" : ""}`;
-    pill.textContent = note.title || "Untitled Note";
-    pill.addEventListener("click", () => {
-      activeNoteId = note.id;
-      playSynthSound("click");
-      renderNotesHub();
-    });
-    tabStrip.appendChild(pill);
-  });
-
-  const activeNote = notesList.find(n => n.id === activeNoteId);
-  if (activeNote) {
-    if (noteTitleInput) noteTitleInput.value = activeNote.title;
-    if (noteTagsInput) noteTagsInput.value = activeNote.tags;
-    if (noteBodyInput) noteBodyInput.value = activeNote.body;
-    if (notePreviewBox) notePreviewBox.innerHTML = parseMarkdown(activeNote.body);
-  }
-}
-
-document.getElementById("toggle-markdown-btn")?.addEventListener("click", (e) => {
-  isMarkdownPreview = !isMarkdownPreview;
-  if (isMarkdownPreview) {
-    e.target.textContent = "Edit Raw";
-    noteBodyInput.classList.add("hidden");
-    notePreviewBox.classList.remove("hidden");
-    const activeNote = notesList.find(n => n.id === activeNoteId);
-    if (activeNote) notePreviewBox.innerHTML = parseMarkdown(activeNote.body);
-  } else {
-    e.target.textContent = "Preview Markdown";
-    noteBodyInput.classList.remove("hidden");
-    notePreviewBox.classList.add("hidden");
-  }
-});
-
-document.getElementById("create-new-note-btn")?.addEventListener("click", () => {
-  const newId = "note_" + Date.now();
-  notesList.push({ id: newId, title: "New Note", tags: "#general", body: "" });
-  activeNoteId = newId;
-  saveNotesToStorage();
-  renderNotesHub();
-  playSynthSound("chime");
-});
-
-noteTitleInput?.addEventListener("input", (e) => {
-  const activeNote = notesList.find(n => n.id === activeNoteId);
-  if (activeNote) {
-    activeNote.title = e.target.value;
-    saveNotesToStorage();
-    const activePill = tabStrip.querySelector(".note-pill.active");
-    if (activePill) activePill.textContent = e.target.value || "Untitled Note";
-  }
-});
-
-noteTagsInput?.addEventListener("input", (e) => {
-  const activeNote = notesList.find(n => n.id === activeNoteId);
-  if (activeNote) {
-    activeNote.tags = e.target.value;
-    saveNotesToStorage();
-  }
-});
-
-noteBodyInput?.addEventListener("input", (e) => {
-  const activeNote = notesList.find(n => n.id === activeNoteId);
-  if (activeNote) {
-    activeNote.body = e.target.value;
-    saveNotesToStorage();
-  }
-});
-
-noteSearchInput?.addEventListener("input", renderNotesHub);
-
-document.getElementById("delete-active-note-btn")?.addEventListener("click", () => {
-  if (notesList.length <= 1) {
-    alert("You must keep at least one note.");
-    return;
-  }
-  notesList = notesList.filter(n => n.id !== activeNoteId);
-  activeNoteId = notesList[0].id;
-  saveNotesToStorage();
-  renderNotesHub();
-});
-
-renderNotesHub();
-
-// =========================================================================
-// 6. MULTI-DECK FLASHCARDS WITH MASTERY SCORING
-// =========================================================================
-let decks = JSON.parse(localStorage.getItem("liquid_decks") || "null") || {
-  bio: {
-    title: "Biology 101",
-    cards: [
-      { front: "Mitochondria Function", back: "Powerhouse of the cell; produces ATP via respiration.", mastery: 80 },
-      { front: "Ribosome", back: "Site of protein synthesis.", mastery: 70 }
-    ]
+const timerConfig = {
+  focus: {
+    seconds: 25 * 60,
+    label: "Deep work",
+    pill: "FOCUS"
   },
-  history: {
-    title: "AP US History",
-    cards: [
-      { front: "19th Amendment", back: "Granted women the right to vote in 1920.", mastery: 90 },
-      { front: "New Deal", back: "FDR policies to recover from the Great Depression.", mastery: 60 }
-    ]
+
+  short: {
+    seconds: 5 * 60,
+    label: "Reset your brain",
+    pill: "SHORT BREAK"
+  },
+
+  long: {
+    seconds: 15 * 60,
+    label: "Long recovery",
+    pill: "LONG BREAK"
   }
 };
 
-let currentDeckId = "bio";
-let currentCardIndex = 0;
+let timerMode = "focus";
 
-const deckSelector = document.getElementById("deck-selector-dropdown");
-const cardFront = document.getElementById("card-front");
-const cardBack = document.getElementById("card-back");
-const cardCounter = document.getElementById("card-counter");
-const deckMasteryBadge = document.getElementById("deck-mastery-badge");
+let timerSeconds =
+  timerConfig.focus.seconds;
 
-function renderDeck() {
-  const deck = decks[currentDeckId];
-  if (!deck || !deck.cards.length) {
-    if (cardFront) cardFront.textContent = "Deck Empty";
-    if (cardBack) cardBack.textContent = "Add a new card below!";
-    if (cardCounter) cardCounter.textContent = "0 / 0";
-    if (deckMasteryBadge) deckMasteryBadge.textContent = "Mastery: 0%";
-    return;
-  }
+let timerRunning = false;
 
-  if (currentCardIndex >= deck.cards.length) currentCardIndex = 0;
-  const card = deck.cards[currentCardIndex];
-
-  if (cardFront) cardFront.textContent = card.front;
-  if (cardBack) cardBack.textContent = card.back;
-  if (cardCounter) cardCounter.textContent = `Card ${currentCardIndex + 1} / ${deck.cards.length}`;
-
-  const avgMastery = Math.round(deck.cards.reduce((acc, c) => acc + (c.mastery || 50), 0) / deck.cards.length);
-  if (deckMasteryBadge) deckMasteryBadge.textContent = `Mastery: ${avgMastery}%`;
-}
-
-deckSelector?.addEventListener("change", (e) => {
-  currentDeckId = e.target.value;
-  currentCardIndex = 0;
-  renderDeck();
-});
-
-document.getElementById("flip-card-btn")?.addEventListener("click", () => {
-  document.getElementById("flashcard")?.classList.toggle("flipped");
-  playSynthSound("click");
-});
-
-document.getElementById("next-card-btn")?.addEventListener("click", () => {
-  document.getElementById("flashcard")?.classList.remove("flipped");
-  currentCardIndex++;
-  renderDeck();
-  playSynthSound("click");
-});
-
-document.getElementById("prev-card-btn")?.addEventListener("click", () => {
-  document.getElementById("flashcard")?.classList.remove("flipped");
-  currentCardIndex = Math.max(0, currentCardIndex - 1);
-  renderDeck();
-  playSynthSound("click");
-});
-
-document.querySelectorAll(".rate-card-btn").forEach(btn => {
-  btn.addEventListener("click", (e) => {
-    const rating = e.target.dataset.rating;
-    const card = decks[currentDeckId]?.cards[currentCardIndex];
-    if (!card) return;
-
-    if (rating === "easy") { card.mastery = Math.min(100, (card.mastery || 50) + 15); updateXP(25); }
-    else if (rating === "good") { card.mastery = Math.min(100, (card.mastery || 50) + 5); updateXP(15); }
-    else { card.mastery = Math.max(0, (card.mastery || 50) - 10); updateXP(5); }
-
-    localStorage.setItem("liquid_decks", JSON.stringify(decks));
-    renderDeck();
-    playSynthSound("chime");
-  });
-});
-
-document.getElementById("add-card-form")?.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const front = document.getElementById("new-card-front")?.value;
-  const back = document.getElementById("new-card-back")?.value;
-  if (front && back && decks[currentDeckId]) {
-    decks[currentDeckId].cards.push({ front, back, mastery: 50 });
-    localStorage.setItem("liquid_decks", JSON.stringify(decks));
-    e.target.reset();
-    renderDeck();
-    playSynthSound("chime");
-  }
-});
-
-renderDeck();
-
-// =========================================================================
-// 7. TASK DRAG-AND-DROP REORDERING & PRIORITY ENGINE
-// =========================================================================
-let taskListArray = JSON.parse(localStorage.getItem("liquid_tasks") || "null") || [
-  { id: "task_1", text: "AP European History DBQ Essay", priority: "high", completed: false },
-  { id: "task_2", text: "Chemistry Lab Report", priority: "medium", completed: false },
-  { id: "task_3", text: "Math Exercises 4.1", priority: "low", completed: true }
-];
-
-const taskListContainer = document.getElementById("task-list");
-
-function saveTasks() {
-  localStorage.setItem("liquid_tasks", JSON.stringify(taskListArray));
-}
-
-function renderTasks() {
-  if (!taskListContainer) return;
-  taskListContainer.innerHTML = "";
-
-  taskListArray.forEach((task, index) => {
-    const li = document.createElement("li");
-    li.className = `task-item task-priority-${task.priority}`;
-    li.draggable = true;
-    li.dataset.index = index;
-
-    li.innerHTML = `
-      <div style="display:flex; align-items:center; gap:10px;">
-        <input type="checkbox" class="task-check" ${task.completed ? "checked" : ""} />
-        <span style="${task.completed ? "text-decoration: line-through; opacity:0.5;" : ""}">${task.text}</span>
-      </div>
-      <span class="muted-text-sm" style="cursor:grab;">⋮⋮</span>
-    `;
-
-    // Checkbox toggle
-    li.querySelector(".task-check").addEventListener("change", (e) => {
-      task.completed = e.target.checked;
-      if (task.completed) updateXP(30);
-      saveTasks();
-      renderTasks();
-    });
-
-    // Drag events
-    li.addEventListener("dragstart", (e) => {
-      li.classList.add("dragging");
-      e.dataTransfer.setData("text/plain", index);
-    });
-
-    li.addEventListener("dragend", () => li.classList.remove("dragging"));
-
-    taskListContainer.appendChild(li);
-  });
-}
-
-taskListContainer?.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  const draggingItem = taskListContainer.querySelector(".dragging");
-  const siblings = [...taskListContainer.querySelectorAll(".task-item:not(.dragging)")];
-  const nextSibling = siblings.find(sibling => e.clientY <= sibling.offsetTop + sibling.offsetHeight / 2);
-  taskListContainer.insertBefore(draggingItem, nextSibling);
-});
-
-taskListContainer?.addEventListener("drop", (e) => {
-  e.preventDefault();
-  const newOrder = [];
-  taskListContainer.querySelectorAll(".task-item").forEach(el => {
-    const oldIdx = parseInt(el.dataset.index);
-    newOrder.push(taskListArray[oldIdx]);
-  });
-  taskListArray = newOrder;
-  saveTasks();
-  renderTasks();
-});
-
-document.getElementById("add-task-form")?.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const textInput = document.getElementById("task-input");
-  const priorityInput = document.getElementById("task-priority-input");
-  if (textInput && textInput.value) {
-    taskListArray.push({ id: "task_" + Date.now(), text: textInput.value, priority: priorityInput.value, completed: false });
-    textInput.value = "";
-    saveTasks();
-    renderTasks();
-    playSynthSound("chime");
-  }
-});
-
-renderTasks();
-
-// =========================================================================
-// 8. XP, GAMIFIED STREAK & LEVEL-UP MODAL ENGINE
-// =========================================================================
-let userXP = parseInt(localStorage.getItem("user_xp") || "350");
-
-function updateXP(amount) {
-  const oldLevel = Math.floor(userXP / 500);
-  userXP += amount;
-  localStorage.setItem("user_xp", userXP);
-
-  const newLevel = Math.floor(userXP / 500);
-  const xpBar = document.getElementById("xp-progress-bar");
-  const xpText = document.getElementById("xp-text");
-  const rankBadge = document.getElementById("rank-badge");
-
-  const currentLevelProgress = userXP % 500;
-  if (xpBar) xpBar.style.width = `${(currentLevelProgress / 500) * 100}%`;
-  if (xpText) xpText.textContent = `${currentLevelProgress} / 500 XP`;
-
-  let rankName = "Scholar Elite 🎓";
-  if (userXP >= 1000) rankName = "Academic Legend 👑";
-  else if (userXP >= 500) rankName = "Grindmaster ⚡";
-  if (rankBadge) rankBadge.textContent = rankName;
-
-  if (newLevel > oldLevel) {
-    playSynthSound("levelup");
-    const modal = document.getElementById("level-up-modal");
-    const modalTitle = document.getElementById("level-up-title");
-    if (modalTitle) modalTitle.textContent = `You reached ${rankName}!`;
-    modal?.classList.remove("hidden");
-  }
-}
-
-document.getElementById("close-level-up-btn")?.addEventListener("click", () => {
-  document.getElementById("level-up-modal")?.classList.add("hidden");
-});
-
-document.querySelectorAll(".quest-check").forEach(chk => {
-  chk.addEventListener("change", (e) => {
-    const xpVal = parseInt(e.target.dataset.xp || "50");
-    updateXP(e.target.checked ? xpVal : -xpVal);
-    if (e.target.checked) playSynthSound("chime");
-  });
-});
-
-// =========================================================================
-// 9. FOCUS TIMER ENGINE
-// =========================================================================
 let timerInterval = null;
-let timeRemaining = 1500;
+
 
 function renderTimer() {
-  const timerDisplay = document.getElementById("timer-display");
-  if (!timerDisplay) return;
-  const mins = Math.floor(timeRemaining / 60).toString().padStart(2, "0");
-  const secs = (timeRemaining % 60).toString().padStart(2, "0");
-  timerDisplay.textContent = `${mins}:${secs}`;
+  const minutes =
+    Math.floor(timerSeconds / 60);
+
+  const seconds =
+    timerSeconds % 60;
+
+  els.timerDisplay.textContent =
+    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+  els.timerCaption.textContent =
+    timerConfig[timerMode].label;
+
+  els.timerModePill.textContent =
+    timerConfig[timerMode].pill;
+
+  $$("[data-timer-mode]").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.timerMode === timerMode
+    );
+  });
+
+  els.timerStart.textContent =
+    timerRunning ? "Pause" : "Start";
 }
 
-function setTimerMinutes(mins) {
+
+function setTimerMode(mode) {
+  timerRunning = false;
+
   clearInterval(timerInterval);
+
   timerInterval = null;
-  timeRemaining = Math.max(1, parseInt(mins)) * 60;
+
+  timerMode = mode;
+
+  timerSeconds =
+    timerConfig[mode].seconds;
+
   renderTimer();
 }
 
-document.querySelectorAll(".preset-btn").forEach(btn => {
-  btn.addEventListener("click", (e) => {
-    document.querySelectorAll(".preset-btn").forEach(b => b.classList.remove("active"));
-    e.target.classList.add("active");
-    const mins = parseInt(e.target.dataset.mins);
-    const customInput = document.getElementById("custom-minutes-input");
-    if (customInput) customInput.value = mins;
-    setTimerMinutes(mins);
-    playSynthSound("click");
-  });
-});
 
-document.getElementById("apply-custom-time-btn")?.addEventListener("click", () => {
-  const customMins = document.getElementById("custom-minutes-input")?.value || 25;
-  setTimerMinutes(customMins);
-});
+async function finishTimer() {
+  timerRunning = false;
 
-document.getElementById("start-timer-btn")?.addEventListener("click", () => {
-  if (timerInterval) return;
-  playSynthSound("click");
-  timerInterval = setInterval(() => {
-    if (timeRemaining > 0) {
-      timeRemaining--;
-      renderTimer();
-    } else {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      updateXP(100);
-      playSynthSound("levelup");
-      alert("Focus Session Complete! +100 XP Earned ⚡");
-    }
-  }, 1000);
-});
-
-document.getElementById("pause-timer-btn")?.addEventListener("click", () => {
   clearInterval(timerInterval);
+
   timerInterval = null;
-  playSynthSound("click");
-});
 
-document.getElementById("reset-timer-btn")?.addEventListener("click", () => {
-  const mins = document.getElementById("custom-minutes-input")?.value || 25;
-  setTimerMinutes(mins);
-  playSynthSound("click");
-});
+  renderTimer();
 
-// =========================================================================
-// 10. FIREBASE EXAM RADAR INTEGRATION
-// =========================================================================
-try {
-  const firebaseConfig = {
-    apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3goBKm87go",
-    authDomain: "student-dashboard-41b98.firebaseapp.com",
-    projectId: "student-dashboard-41b98",
-    storageBucket: "student-dashboard-41b98.firebasestorage.app",
-    messagingSenderId: "908791794286",
-    appId: "1:908791794286:web:1a432119daf9d61772f47f"
-  };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+  // Only log completed Focus sessions.
+  if (
+    timerMode === "focus" &&
+    currentUser
+  ) {
+    try {
+      await addDoc(
+        userCollection("study_logs"),
+        {
+          duration: 25,
+          timestamp: serverTimestamp()
+        }
+      );
 
-  const examForm = document.getElementById("add-exam-form");
-  const examsList = document.getElementById("exams-list");
+      showToast(
+        "Focus session saved to your cloud history."
+      );
 
-  if (examsList) {
-    onSnapshot(collection(db, "exams"), (snapshot) => {
-      examsList.innerHTML = "";
-      snapshot.forEach(docSnap => {
-        const exam = docSnap.data();
-        const today = new Date();
-        const targetDate = new Date(exam.date);
-        const diffTime = targetDate - today;
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    } catch (error) {
+      console.error(error);
 
-        const div = document.createElement("div");
-        div.className = "exam-card";
-        div.innerHTML = `
-          <div>
-            <strong>${exam.title}</strong>
-            <div class="muted-text-sm">${exam.date}</div>
-          </div>
-          <span class="liquid-pill">${diffDays >= 0 ? `${diffDays} Days` : 'Passed'}</span>
-        `;
-        examsList.appendChild(div);
-      });
-    });
+      showToast(
+        "Session finished, but the cloud log failed."
+      );
+    }
   }
 
-  examForm?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const title = document.getElementById("exam-title-input")?.value;
-    const date = document.getElementById("exam-date-input")?.value;
-    if (title && date) {
-      await addDoc(collection(db, "exams"), { title, date });
-      e.target.reset();
-      playSynthSound("chime");
-    }
-  });
-} catch (error) {
-  console.warn("Firebase offline or awaiting rules configuration:", error);
+
+  // Automatically switch to a short break.
+  if (timerMode === "focus") {
+    setTimerMode("short");
+  } else {
+    setTimerMode("focus");
+  }
 }
+
+
+function toggleTimer() {
+  timerRunning = !timerRunning;
+
+  clearInterval(timerInterval);
+
+  timerInterval = null;
+
+
+  if (timerRunning) {
+
+    timerInterval = setInterval(() => {
+
+      timerSeconds--;
+
+      if (timerSeconds <= 0) {
+
+        timerSeconds = 0;
+
+        renderTimer();
+
+        finishTimer();
+
+      } else {
+
+        renderTimer();
+
+      }
+
+    }, 1000);
+  }
+
+
+  renderTimer();
+}
+
+
+function resetTimer() {
+  timerRunning = false;
+
+  clearInterval(timerInterval);
+
+  timerInterval = null;
+
+  timerSeconds =
+    timerConfig[timerMode].seconds;
+
+  renderTimer();
+}
+
+
+$$("[data-timer-mode]").forEach(button => {
+
+  button.addEventListener(
+    "click",
+    () => {
+      setTimerMode(
+        button.dataset.timerMode
+      );
+    }
+  );
+
+});
+
+
+els.timerStart.addEventListener(
+  "click",
+  toggleTimer
+);
+
+
+els.timerReset.addEventListener(
+  "click",
+  resetTimer
+);
+
+
+renderTimer();
+
+
+// ============================================================
+// BOTTOM NAVIGATION
+// ============================================================
+
+function setView(view) {
+
+  const panels = $$(".view-panel");
+
+  panels.forEach(panel => {
+
+    const panelName =
+      panel.dataset.panel;
+
+    let shouldShow = false;
+
+
+    if (view === "overview") {
+      shouldShow = true;
+    }
+
+
+    if (
+      view === "focus" &&
+      ["focus", "analytics"].includes(panelName)
+    ) {
+      shouldShow = true;
+    }
+
+
+    if (
+      view === "tasks" &&
+      panelName === "tasks"
+    ) {
+      shouldShow = true;
+    }
+
+
+    if (
+      view === "notes" &&
+      panelName === "notes"
+    ) {
+      shouldShow = true;
+    }
+
+
+    panel.classList.toggle(
+      "hidden",
+      !shouldShow
+    );
+  });
+
+
+  $$(".nav-item").forEach(button => {
+
+    button.classList.toggle(
+      "active",
+      button.dataset.view === view
+    );
+
+  });
+
+
+  requestAnimationFrame(() => {
+
+    const active =
+      document.querySelector(
+        ".nav-item.active"
+      );
+
+    if (!active) return;
+
+
+    els.navSlider.style.left =
+      `${active.offsetLeft}px`;
+
+    els.navSlider.style.width =
+      `${active.offsetWidth}px`;
+  });
+}
+
+
+$$(".nav-item").forEach(button => {
+
+  button.addEventListener(
+    "click",
+    () => {
+      setView(
+        button.dataset.view
+      );
+    }
+  );
+
+});
+
+
+window.addEventListener(
+  "resize",
+  () => {
+
+    const activeView =
+      document.querySelector(
+        ".nav-item.active"
+      )?.dataset.view ||
+      "overview";
+
+    setView(activeView);
+
+  }
+);
+
+
+setView("overview");
+
+
+// ============================================================
+// QUICK LINKS
+// ============================================================
+
+function renderQuickLinks() {
+
+  els.linkGrid.innerHTML = "";
+
+
+  for (const link of quickLinks) {
+
+    const card =
+      document.createElement("div");
+
+    card.className = "link-card";
+
+    card.style.position = "relative";
+
+
+    const anchor =
+      document.createElement("a");
+
+    anchor.href = link.url;
+
+    anchor.target = "_blank";
+
+    anchor.rel =
+      "noopener noreferrer";
+
+    anchor.setAttribute(
+      "aria-label",
+      `Open ${link.title}`
+    );
+
+    anchor.style.cssText = `
+      position:absolute;
+      inset:0;
+      z-index:1;
+    `;
+
+
+    const content =
+      document.createElement("div");
+
+    content.style.cssText = `
+      position:relative;
+      z-index:2;
+      pointer-events:none;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    `;
+
+
+    content.innerHTML = `
+      <div class="link-top">
+        <div class="link-icon ${escapeHtml(
+          link.color || "blue"
+        )}">
+          ${escapeHtml(
+            link.icon ||
+            link.title?.[0]?.toUpperCase() ||
+            "↗"
+          )}
+        </div>
+
+        <button
+          class="delete-link"
+          title="Delete link"
+          aria-label="Delete ${escapeHtml(link.title)}"
+          data-delete-link="${escapeHtml(link.id)}"
+          style="pointer-events:auto;"
+        >
+          ×
+        </button>
+      </div>
+
+      <div>
+        <div class="link-name">
+          ${escapeHtml(link.title)}
+        </div>
+
+        <div class="link-url">
+          ${escapeHtml(
+            link.url.replace(
+              /^https?:\/\//,
+              ""
+            )
+          )}
+        </div>
+      </div>
+    `;
+
+
+    card.appendChild(anchor);
+
+    card.appendChild(content);
+
+    els.linkGrid.appendChild(card);
+  }
+}
+
+
+els.linkGrid.addEventListener(
+  "click",
+  async (event) => {
+
+    const button =
+      event.target.closest(
+        "[data-delete-link]"
+      );
+
+    if (!button) return;
+
+    event.preventDefault();
+
+    event.stopPropagation();
+
+
+    const id =
+      button.dataset.deleteLink;
+
+
+    try {
+
+      await deleteDoc(
+        userDoc(
+          "quick_links",
+          id
+        )
+      );
+
+      showToast(
+        "Link removed."
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      showToast(
+        "Could not remove that link."
+      );
+    }
+  }
+);
+
+
+// ============================================================
+// LINK MODAL
+// ============================================================
+
+function openLinkModal() {
+
+  els.linkForm.reset();
+
+  els.linkModal.querySelector("h2")
+    .textContent =
+    "Add a quick link";
+
+  els.modalBackdrop
+    .classList.remove("hidden");
+
+  els.linkTitle.focus();
+}
+
+
+function closeLinkModal() {
+
+  els.modalBackdrop
+    .classList.add("hidden");
+}
+
+
+els.addLinkBtn.addEventListener(
+  "click",
+  () => {
+
+    if (!currentUser) {
+
+      showToast(
+        "Sign in first to customize your cloud links."
+      );
+
+      return;
+    }
+
+    openLinkModal();
+  }
+);
+
+
+els.closeLinkModal.addEventListener(
+  "click",
+  closeLinkModal
+);
+
+
+els.cancelLinkBtn.addEventListener(
+  "click",
+  closeLinkModal
+);
+
+
+els.modalBackdrop.addEventListener(
+  "click",
+  event => {
+
+    if (
+      event.target ===
+      els.modalBackdrop
+    ) {
+      closeLinkModal();
+    }
+
+  }
+);
+
+
+els.linkForm.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+
+    if (!currentUser) {
+      return;
+    }
+
+
+    const title =
+      els.linkTitle.value.trim();
+
+    const url =
+      els.linkUrl.value.trim();
+
+    const color =
+      els.linkColor.value;
+
+    const icon =
+      title[0]?.toUpperCase() ||
+      "↗";
+
+
+    if (!title || !url) {
+      return;
+    }
+
+
+    try {
+
+      await addDoc(
+        userCollection("quick_links"),
+        {
+          title,
+          url,
+          color,
+          icon,
+          createdAt:
+            serverTimestamp()
+        }
+      );
+
+
+      closeLinkModal();
+
+      showToast(
+        "Quick link saved."
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      showToast(
+        "Could not save the link."
+      );
+    }
+
+  }
+);
+
+
+// ============================================================
+// SCRATCHPAD
+// ============================================================
+
+window._scratchpadContent = "";
+
+
+function renderScratchpad() {
+
+  const content =
+    window._scratchpadContent ||
+    "";
+
+  if (
+    els.scratchpad.value !==
+    content
+  ) {
+    els.scratchpad.value =
+      content;
+  }
+
+
+  els.noteCount.textContent =
+    `${content.length.toLocaleString()} characters`;
+}
+
+
+els.scratchpad.addEventListener(
+  "input",
+  () => {
+
+    const content =
+      els.scratchpad.value;
+
+    window._scratchpadContent =
+      content;
+
+    els.noteCount.textContent =
+      `${content.length.toLocaleString()} characters`;
+
+
+    if (!currentUser) {
+      return;
+    }
+
+
+    els.noteSaveState.textContent =
+      "Unsaved…";
+
+
+    clearTimeout(noteSaveTimer);
+
+
+    noteSaveTimer =
+      setTimeout(
+        async () => {
+
+          try {
+
+            await setDoc(
+              userDoc(
+                "scratchpad",
+                "main"
+              ),
+              {
+                content,
+                updatedAt:
+                  serverTimestamp()
+              },
+              {
+                merge: true
+              }
+            );
+
+
+            els.noteSaveState.textContent =
+              "Saved to cloud";
+
+          } catch (error) {
+
+            console.error(error);
+
+            els.noteSaveState.textContent =
+              "Save failed";
+          }
+
+        },
+        550
+      );
+  }
+);
+
+
+els.clearNotesBtn.addEventListener(
+  "click",
+  async () => {
+
+    els.scratchpad.value = "";
+
+    window._scratchpadContent = "";
+
+    els.noteCount.textContent =
+      "0 characters";
+
+
+    if (!currentUser) {
+      return;
+    }
+
+
+    try {
+
+      await setDoc(
+        userDoc(
+          "scratchpad",
+          "main"
+        ),
+        {
+          content: "",
+          updatedAt:
+            serverTimestamp()
+        },
+        {
+          merge: true
+        }
+      );
+
+
+      els.noteSaveState.textContent =
+        "Saved to cloud";
+
+    } catch (error) {
+
+      console.error(error);
+
+      showToast(
+        "Could not clear cloud notes."
+      );
+    }
+
+  }
+);
+
+
+// ============================================================
+// TASKS
+// ============================================================
+
+function renderTasks() {
+
+  const activeCount =
+    tasks.filter(
+      task => !task.completed
+    ).length;
+
+
+  const doneCount =
+    tasks.filter(
+      task => task.completed
+    ).length;
+
+
+  els.taskCountBadge.textContent =
+    activeCount;
+
+
+  els.clockToday.textContent =
+    `${tasks.length} ${
+      tasks.length === 1
+        ? "task"
+        : "tasks"
+    }`;
+
+
+  els.clockDone.textContent =
+    `${doneCount} ${
+      doneCount === 1
+        ? "task"
+        : "tasks"
+    }`;
+
+
+  const visibleTasks =
+    tasks.filter(task => {
+
+      let statusMatches = true;
+
+      let categoryMatches = true;
+
+
+      if (
+        taskStatusFilter ===
+        "active"
+      ) {
+        statusMatches =
+          !task.completed;
+      }
+
+
+      if (
+        taskStatusFilter ===
+        "completed"
+      ) {
+        statusMatches =
+          task.completed;
+      }
+
+
+      if (
+        taskCategoryFilter !==
+        "all"
+      ) {
+        categoryMatches =
+          task.category ===
+          taskCategoryFilter;
+      }
+
+
+      return (
+        statusMatches &&
+        categoryMatches
+      );
+    });
+
+
+  if (!visibleTasks.length) {
+
+    els.taskList.innerHTML = `
+      <div class="empty-state">
+        ${
+          currentUser
+            ? "Nothing here yet."
+            : "Sign in to load your cloud tasks."
+        }
+      </div>
+    `;
+
+    renderAnalytics();
+
+    return;
+  }
+
+
+  els.taskList.innerHTML =
+    visibleTasks
+      .map(task => {
+
+        const due =
+          parseStoredDate(
+            task.dueAt
+          );
+
+
+        const dueLabel =
+          due
+            ? niceDate(due)
+            : "";
+
+
+        return `
+          <div
+            class="task-item ${
+              task.completed
+                ? "completed"
+                : ""
+            }"
+          >
+
+            <button
+              class="task-check"
+              data-task-toggle="${escapeHtml(
+                task.id
+              )}"
+              aria-label="${
+                task.completed
+                  ? "Mark active"
+                  : "Mark complete"
+              }"
+            ></button>
+
+
+            <div class="task-copy">
+
+              <div class="task-title">
+                ${escapeHtml(
+                  task.text
+                )}
+              </div>
+
+
+              <div class="task-meta">
+
+                <span class="task-tag">
+                  ${escapeHtml(
+                    task.category ||
+                    "School"
+                  )}
+                </span>
+
+
+                <span
+                  class="task-tag ${
+                    task.priority ||
+                    "medium"
+                  }"
+                >
+                  ${escapeHtml(
+                    task.priority ||
+                    "medium"
+                  )}
+                </span>
+
+
+                ${
+                  due
+                    ? `
+                      <span class="task-tag task-due">
+                        ${escapeHtml(
+                          dueLabel
+                        )}
+                      </span>
+                    `
+                    : ""
+                }
+
+              </div>
+
+            </div>
+
+
+            <button
+              class="task-delete"
+              data-task-delete="${escapeHtml(
+                task.id
+              )}"
+              title="Delete task"
+              aria-label="Delete task"
+            >
+              ×
+            </button>
+
+          </div>
+        `;
+      })
+      .join("");
+
+
+  renderAnalytics();
+}
+
+
+// ============================================================
+// TASK CLICK HANDLING
+// ============================================================
+
+els.taskList.addEventListener(
+  "click",
+  async event => {
+
+    const toggle =
+      event.target.closest(
+        "[data-task-toggle]"
+      );
+
+    const del =
+      event.target.closest(
+        "[data-task-delete]"
+      );
+
+
+    try {
+
+      if (toggle) {
+
+        const task =
+          tasks.find(
+            item =>
+              item.id ===
+              toggle.dataset.taskToggle
+          );
+
+
+        if (!task) return;
+
+
+        await updateDoc(
+          userDoc(
+            "tasks",
+            task.id
+          ),
+          {
+            completed:
+              !task.completed,
+
+            completedAt:
+              !task.completed
+                ? serverTimestamp()
+                : null
+          }
+        );
+
+
+        return;
+      }
+
+
+      if (del) {
+
+        await deleteDoc(
+          userDoc(
+            "tasks",
+            del.dataset.taskDelete
+          )
+        );
+
+        return;
+      }
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      showToast(
+        "Task update failed."
+      );
+    }
+
+  }
+);
+
+
+// ============================================================
+// ADD TASK
+// ============================================================
+
+els.taskForm.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+
+    if (!currentUser) {
+
+      showToast(
+        "Sign in first to add cloud tasks."
+      );
+
+      return;
+    }
+
+
+    const text =
+      els.taskText.value.trim();
+
+
+    if (!text) {
+      return;
+    }
+
+
+    const payload = {
+      text,
+
+      category:
+        els.taskCategory.value,
+
+      priority:
+        els.taskPriority.value,
+
+      completed: false,
+
+      createdAt:
+        serverTimestamp(),
+
+      completedAt: null,
+
+      dueAt: null
+    };
+
+
+    if (els.taskDue.value) {
+
+      payload.dueAt =
+        new Date(
+          `${els.taskDue.value}T23:59:59`
+        );
+    }
+
+
+    try {
+
+      await addDoc(
+        userCollection("tasks"),
+        payload
+      );
+
+
+      els.taskText.value = "";
+
+      els.taskDue.value = "";
+
+      showToast(
+        "Task added."
+      );
+
+
+      els.taskText.focus();
+
+    } catch (error) {
+
+      console.error(error);
+
+      showToast(
+        "Could not save task."
+      );
+    }
+
+  }
+);
+
+
+// ============================================================
+// TASK FILTERS
+// ============================================================
+
+$$("[data-task-status]").forEach(
+  button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        taskStatusFilter =
+          button.dataset.taskStatus;
+
+
+        $$("[data-task-status]")
+          .forEach(other => {
+
+            other.classList.toggle(
+              "active",
+              other === button
+            );
+
+          });
+
+
+        renderTasks();
+      }
+    );
+
+  }
+);
+
+
+els.categoryFilter.addEventListener(
+  "change",
+  () => {
+
+    taskCategoryFilter =
+      els.categoryFilter.value;
+
+    renderTasks();
+  }
+);
+
+
+// ============================================================
+// STUDY ANALYTICS
+// ============================================================
+
+function calculateAnalytics() {
+
+  const now = new Date();
+
+  const todayKey =
+    localDateKey(now);
+
+
+  const startOfWeek =
+    new Date(now);
+
+  startOfWeek.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  startOfWeek.setDate(
+    startOfWeek.getDate() - 6
+  );
+
+
+  let todayMinutes = 0;
+
+  let weekMinutes = 0;
+
+
+  const studyDays =
+    new Set();
+
+
+  for (const log of studyLogs) {
+
+    const date =
+      parseStoredDate(
+        log.timestamp
+      );
+
+
+    if (!date) {
+      continue;
+    }
+
+
+    const minutes =
+      Number(
+        log.duration || 0
+      );
+
+
+    const dateKey =
+      localDateKey(date);
+
+
+    if (
+      dateKey ===
+      todayKey
+    ) {
+      todayMinutes +=
+        minutes;
+    }
+
+
+    if (
+      date >= startOfWeek &&
+      date <= now
+    ) {
+      weekMinutes +=
+        minutes;
+    }
+
+
+    if (minutes > 0) {
+
+      studyDays.add(
+        dateKey
+      );
+    }
+  }
+
+
+  let streak = 0;
+
+  const cursor =
+    new Date(now);
+
+
+  cursor.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  while (
+    studyDays.has(
+      localDateKey(cursor)
+    )
+  ) {
+
+    streak++;
+
+    cursor.setDate(
+      cursor.getDate() - 1
+    );
+  }
+
+
+  const totalTasks =
+    tasks.length;
+
+
+  const completedTasks =
+    tasks.filter(
+      task => task.completed
+    ).length;
+
+
+  const completion =
+    totalTasks > 0
+      ? Math.round(
+          completedTasks /
+          totalTasks *
+          100
+        )
+      : 0;
+
+
+  return {
+    todayMinutes,
+    weekMinutes,
+    streak,
+    completion
+  };
+}
+
+
+function renderAnalytics() {
+
+  const stats =
+    calculateAnalytics();
+
+
+  const sessionCount =
+    studyLogs.filter(log => {
+
+      const date =
+        parseStoredDate(
+          log.timestamp
+        );
+
+
+      return (
+        date &&
+        localDateKey(date) ===
+          localDateKey()
+      );
+
+    }).length;
+
+
+  els.focusToday.textContent =
+    `${stats.todayMinutes} min`;
+
+
+  els.focusStreak.textContent =
+    `${stats.streak} ${
+      stats.streak === 1
+        ? "day"
+        : "days"
+    }`;
+
+
+  els.focusSessions.textContent =
+    String(sessionCount);
+
+
+  els.analyticsToday.textContent =
+    `${stats.todayMinutes} min`;
+
+
+  els.analyticsWeek.textContent =
+    `${stats.weekMinutes} min`;
+
+
+  els.analyticsStreak.textContent =
+    `${stats.streak} ${
+      stats.streak === 1
+        ? "day"
+        : "days"
+    }`;
+
+
+  els.analyticsCompletion.textContent =
+    `${stats.completion}%`;
+
+
+  const milestones = [
+    25,
+    50,
+    100,
+    180,
+    300,
+    500,
+    1000
+  ];
+
+
+  const next =
+    milestones.find(
+      milestone =>
+        stats.todayMinutes <
+        milestone
+    );
+
+
+  if (next) {
+
+    els.nextMilestone.textContent =
+      `${next - stats.todayMinutes} min until today's ${next}-minute milestone.`;
+
+  } else {
+
+    els.nextMilestone.textContent =
+      "You cleared every milestone today.";
+  }
+}
+
+
+// ============================================================
+// CLEAR STUDY LOGS
+// ============================================================
+
+els.clearStudyLogsBtn.addEventListener(
+  "click",
+  async () => {
+
+    if (
+      !currentUser ||
+      studyLogs.length === 0
+    ) {
+      return;
+    }
+
+
+    const confirmed =
+      window.confirm(
+        "Delete all study logs for this account?"
+      );
+
+
+    if (!confirmed) {
+      return;
+    }
+
+
+    try {
+
+      const batch =
+        writeBatch(db);
+
+
+      studyLogs.forEach(log => {
+
+        batch.delete(
+          userDoc(
+            "study_logs",
+            log.id
+          )
+        );
+
+      });
+
+
+      await batch.commit();
+
+
+      showToast(
+        "Study history cleared."
+      );
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      showToast(
+        "Could not clear study history."
+      );
+    }
+
+  }
+);
+
+
+// ============================================================
+// DEFAULT LINK SEEDING
+// ============================================================
+
+async function seedDefaultLinksIfNeeded() {
+
+  const snapshot =
+    await getDocs(
+      query(
+        userCollection("quick_links"),
+        limit(1)
+      )
+    );
+
+
+  if (!snapshot.empty) {
+    return;
+  }
+
+
+  const batch =
+    writeBatch(db);
+
+
+  for (const link of defaultLinks) {
+
+    const reference =
+      doc(
+        userCollection(
+          "quick_links"
+        )
+      );
+
+
+    batch.set(
+      reference,
+      {
+        ...link,
+        createdAt:
+          serverTimestamp()
+      }
+    );
+  }
+
+
+  await batch.commit();
+}
+
+
+// ============================================================
+// FIRESTORE LISTENER CLEANUP
+// ============================================================
+
+function clearListeners() {
+
+  unsubscribeFns.forEach(
+    unsubscribe => {
+      unsubscribe();
+    }
+  );
+
+
+  unsubscribeFns = [];
+}
+
+
+// ============================================================
+// START REAL-TIME FIRESTORE LISTENERS
+// ============================================================
+
+function startRealtimeListeners() {
+
+  clearListeners();
+
+
+  if (!currentUser) {
+    return;
+  }
+
+
+  const taskQuery =
+    query(
+      userCollection("tasks"),
+      orderBy(
+        "createdAt",
+        "desc"
+      ),
+      limit(250)
+    );
+
+
+  const linkQuery =
+    query(
+      userCollection("quick_links"),
+      orderBy(
+        "createdAt",
+        "asc"
+      ),
+      limit(100)
+    );
+
+
+  const logQuery =
+    query(
+      userCollection("study_logs"),
+      orderBy(
+        "timestamp",
+        "desc"
+      ),
+      limit(500)
+    );
+
+
+  // TASKS
+
+  unsubscribeFns.push(
+
+    onSnapshot(
+      taskQuery,
+
+      snapshot => {
+
+        tasks =
+          snapshot.docs.map(
+            document => ({
+              id: document.id,
+              ...document.data()
+            })
+          );
+
+
+        renderTasks();
+      },
+
+      error => {
+
+        console.error(
+          "Task listener:",
+          error
+        );
+
+
+        showToast(
+          "Task listener failed. Check Firestore indexes/rules."
+        );
+      }
+    )
+  );
+
+
+  // QUICK LINKS
+
+  unsubscribeFns.push(
+
+    onSnapshot(
+      linkQuery,
+
+      snapshot => {
+
+        quickLinks =
+          snapshot.docs.map(
+            document => ({
+              id: document.id,
+              ...document.data()
+            })
+          );
+
+
+        renderQuickLinks();
+      },
+
+      error => {
+
+        console.error(
+          "Quick link listener:",
+          error
+        );
+      }
+    )
+  );
+
+
+  // STUDY LOGS
+
+  unsubscribeFns.push(
+
+    onSnapshot(
+      logQuery,
+
+      snapshot => {
+
+        studyLogs =
+          snapshot.docs.map(
+            document => ({
+              id: document.id,
+              ...document.data()
+            })
+          );
+
+
+        renderAnalytics();
+      },
+
+      error => {
+
+        console.error(
+          "Study log listener:",
+          error
+        );
+
+
+        showToast(
+          "Study analytics listener failed."
+        );
+      }
+    )
+  );
+
+
+  // SCRATCHPAD
+
+  unsubscribeFns.push(
+
+    onSnapshot(
+      userDoc(
+        "scratchpad",
+        "main"
+      ),
+
+      snapshot => {
+
+        if (!snapshot.exists()) {
+
+          window._scratchpadContent =
+            "";
+
+          els.noteSaveState.textContent =
+            "Ready";
+
+        } else {
+
+          window._scratchpadContent =
+            snapshot.data()
+              .content || "";
+
+          els.noteSaveState.textContent =
+            "Saved to cloud";
+        }
+
+
+        renderScratchpad();
+      },
+
+      error => {
+
+        console.error(
+          "Scratchpad listener:",
+          error
+        );
+
+
+        els.noteSaveState.textContent =
+          "Unavailable";
+      }
+    )
+  );
+}
+
+
+// ============================================================
+// USER WORKSPACE INITIALIZATION
+// ============================================================
+
+async function initUserWorkspace() {
+
+  try {
+
+    setSyncStatus(
+      "Loading your cloud workspace…"
+    );
+
+
+    els.scratchpad.disabled =
+      false;
+
+
+    // Seed default quick links
+    await seedDefaultLinksIfNeeded();
+
+
+    // Start Firestore listeners
+    startRealtimeListeners();
+
+
+    setSyncStatus(
+      `Synced as ${
+        currentUser.displayName ||
+        currentUser.email ||
+        "student"
+      }`,
+      true
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Workspace initialization:",
+      error
+    );
+
+
+    setSyncStatus(
+      "Could not load your workspace."
+    );
+
+
+    showToast(
+      "Firebase is connected, but the workspace could not load."
+    );
+  }
+}
+
+
+// ============================================================
+// SIGNED-OUT UI
+// ============================================================
+
+function setSignedOutUI() {
+
+  clearListeners();
+
+
+  currentUser = null;
+
+  tasks = [];
+
+  studyLogs = [];
+
+  quickLinks = [];
+
+
+  renderQuickLinks();
+
+  renderTasks();
+
+  renderScratchpad();
+
+
+  els.scratchpad.disabled =
+    true;
+
+
+  els.noteSaveState.textContent =
+    "Waiting for sign-in";
+
+
+  els.userChip.classList.add(
+    "hidden"
+  );
+
+
+  els.signInBtn.classList.remove(
+    "hidden"
+  );
+
+
+  setSyncStatus(
+    "Sign in to enable cloud sync."
+  );
+}
+
+
+// ============================================================
+// SIGNED-IN UI
+// ============================================================
+
+function setSignedInUI(user) {
+
+  currentUser = user;
+
+
+  els.signInBtn.classList.add(
+    "hidden"
+  );
+
+
+  els.userChip.classList.remove(
+    "hidden"
+  );
+
+
+  els.userName.textContent =
+    user.displayName ||
+    user.email ||
+    "Student";
+
+
+  if (user.photoURL) {
+
+    els.userAvatar.src =
+      user.photoURL;
+
+  } else {
+
+    els.userAvatar.removeAttribute(
+      "src"
+    );
+  }
+
+
+  initUserWorkspace();
+}
+
+
+// ============================================================
+// GOOGLE SIGN-IN
+// ============================================================
+
+async function signIn() {
+
+  try {
+
+    const isMobile =
+      window.matchMedia(
+        "(max-width: 768px)"
+      ).matches;
+
+
+    if (isMobile) {
+
+      await signInWithRedirect(
+        auth,
+        googleProvider
+      );
+
+    } else {
+
+      await signInWithPopup(
+        auth,
+        googleProvider
+      );
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "Sign-in error:",
+      error
+    );
+
+
+    if (
+      error.code ===
+      "auth/popup-blocked"
+    ) {
+
+      await signInWithRedirect(
+        auth,
+        googleProvider
+      );
+
+      return;
+    }
+
+
+    showToast(
+      `Sign-in failed: ${
+        error.code ||
+        "unknown error"
+      }`
+    );
+  }
+}
+
+
+els.signInBtn.addEventListener(
+  "click",
+  signIn
+);
+
+
+// ============================================================
+// SIGN OUT
+// ============================================================
+
+els.signOutBtn.addEventListener(
+  "click",
+  async () => {
+
+    try {
+
+      await signOut(auth);
+
+      showToast(
+        "Signed out."
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      showToast(
+        "Sign out failed."
+      );
+    }
+  }
+);
+
+
+// ============================================================
+// FIREBASE REDIRECT RESULT
+// ============================================================
+
+getRedirectResult(auth)
+  .catch(error => {
+
+    if (
+      error &&
+      error.code !==
+        "auth/popup-closed-by-user"
+    ) {
+      console.error(
+        "Redirect sign-in:",
+        error
+      );
+    }
+
+  });
+
+
+// ============================================================
+// AUTH STATE LISTENER
+// ============================================================
+
+onAuthStateChanged(
+  auth,
+  user => {
+
+    if (user) {
+
+      setSignedInUI(user);
+
+    } else {
+
+      setSignedOutUI();
+
+    }
+
+  }
+);
+
+
+// ============================================================
+// KEYBOARD SHORTCUTS
+// ============================================================
+
+window.addEventListener(
+  "keydown",
+  event => {
+
+    if (
+      event.key === "Escape"
+    ) {
+      closeLinkModal();
+    }
+
+  }
+);
