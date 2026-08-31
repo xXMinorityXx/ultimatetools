@@ -28,131 +28,242 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 
-/* ============================================================
-   FIREBASE
-   ============================================================ */
-
 const firebaseConfig = {
   apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3goBKm87go",
   authDomain: "student-dashboard-41b98.firebaseapp.com",
   projectId: "student-dashboard-41b98",
   storageBucket: "student-dashboard-41b98.firebasestorage.app",
   messagingSenderId: "908791794286",
-  appId: "1:908791794286:web:1a432119daf9d61772f47f",
-  measurementId: "G-Y39RMFW2W9"
+  appId: "1:908791794286:web:26f30e965d52fef572f47f",
+  measurementId: "G-NHXYYGMEZX"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+const app =
+  initializeApp(firebaseConfig);
+
+const db =
+  getFirestore(app);
+
+const auth =
+  getAuth(app);
+
+const provider =
+  new GoogleAuthProvider();
 
 
-/* ============================================================
-   DOM
-   ============================================================ */
+const $ =
+  selector =>
+    document.querySelector(selector);
 
-const $ = selector => document.querySelector(selector);
-const $$ = selector => [...document.querySelectorAll(selector)];
+const $$ =
+  selector =>
+    [...document.querySelectorAll(selector)];
+
 
 const els = {
-  dashboard: $("#dashboard"),
 
-  greeting: $("#greeting"),
-  heroDate: $("#heroDate"),
-  syncStatus: $("#syncStatus"),
-  connectionDot: $("#connectionDot"),
+  greeting:
+    $("#greeting"),
 
-  signInBtn: $("#signInBtn"),
-  signOutBtn: $("#signOutBtn"),
-  userChip: $("#userChip"),
-  userAvatar: $("#userAvatar"),
-  userName: $("#userName"),
+  heroDate:
+    $("#heroDate"),
 
-  clockTime: $("#clockTime"),
-  clockAmPm: $("#clockAmPm"),
-  clockDate: $("#clockDate"),
-  clockOpen: $("#clockOpen"),
-  clockDone: $("#clockDone"),
-  clockFocus: $("#clockFocus"),
+  syncStatus:
+    $("#syncStatus"),
 
-  timerOrb: $("#timerOrb"),
-  timerDisplay: $("#timerDisplay"),
-  timerCaption: $("#timerCaption"),
-  timerPill: $("#timerPill"),
-  timerStart: $("#timerStart"),
-  timerReset: $("#timerReset"),
+  connectionDot:
+    $("#connectionDot"),
 
-  focusToday: $("#focusToday"),
-  focusStreak: $("#focusStreak"),
-  focusSessions: $("#focusSessions"),
+  signInBtn:
+    $("#signInBtn"),
 
-  nextList: $("#nextList"),
-  goTasksBtn: $("#goTasksBtn"),
+  signOutBtn:
+    $("#signOutBtn"),
 
-  taskForm: $("#taskForm"),
-  taskText: $("#taskText"),
-  taskCategory: $("#taskCategory"),
-  taskPriority: $("#taskPriority"),
-  taskDue: $("#taskDue"),
-  taskCountBadge: $("#taskCountBadge"),
-  taskList: $("#taskList"),
-  categoryFilter: $("#categoryFilter"),
+  userChip:
+    $("#userChip"),
 
-  scratchpad: $("#scratchpad"),
-  noteSaveState: $("#noteSaveState"),
-  noteCount: $("#noteCount"),
-  clearNotesBtn: $("#clearNotesBtn"),
+  userAvatar:
+    $("#userAvatar"),
 
-  linkGrid: $("#linkGrid"),
-  addLinkBtn: $("#addLinkBtn"),
+  userName:
+    $("#userName"),
 
-  analyticsToday: $("#analyticsToday"),
-  analyticsWeek: $("#analyticsWeek"),
-  analyticsStreak: $("#analyticsStreak"),
-  analyticsCompletion: $("#analyticsCompletion"),
-  nextMilestone: $("#nextMilestone"),
-  clearStudyLogsBtn: $("#clearStudyLogsBtn"),
+  clockTime:
+    $("#clockTime"),
 
-  liquidDock: $("#liquidDock"),
-  dockGlide: $("#dockGlide"),
+  clockAmPm:
+    $("#clockAmPm"),
 
-  moreBackdrop: $("#moreBackdrop"),
-  closeMore: $("#closeMore"),
+  clockDate:
+    $("#clockDate"),
 
-  themeSelect: $("#themeSelect"),
-  accentPicker: $("#accentPicker"),
-  layoutManager: $("#layoutManager"),
-  resetLayoutBtn: $("#resetLayoutBtn"),
+  clockOpen:
+    $("#clockOpen"),
 
-  focusMinutesInput: $("#focusMinutesInput"),
-  shortMinutesInput: $("#shortMinutesInput"),
-  longMinutesInput: $("#longMinutesInput"),
+  clockDone:
+    $("#clockDone"),
 
-  modalBackdrop: $("#modalBackdrop"),
-  closeLinkModal: $("#closeLinkModal"),
-  cancelLinkBtn: $("#cancelLinkBtn"),
-  linkForm: $("#linkForm"),
-  linkTitle: $("#linkTitle"),
-  linkUrl: $("#linkUrl"),
-  linkColor: $("#linkColor"),
+  clockFocus:
+    $("#clockFocus"),
 
-  toast: $("#toast")
+  timerOrb:
+    $("#timerOrb"),
+
+  timerDisplay:
+    $("#timerDisplay"),
+
+  timerCaption:
+    $("#timerCaption"),
+
+  timerPill:
+    $("#timerPill"),
+
+  timerStart:
+    $("#timerStart"),
+
+  timerReset:
+    $("#timerReset"),
+
+  focusToday:
+    $("#focusToday"),
+
+  focusStreak:
+    $("#focusStreak"),
+
+  focusSessions:
+    $("#focusSessions"),
+
+  analyticsToday:
+    $("#analyticsToday"),
+
+  analyticsWeek:
+    $("#analyticsWeek"),
+
+  analyticsStreak:
+    $("#analyticsStreak"),
+
+  analyticsCompletion:
+    $("#analyticsCompletion"),
+
+  nextMilestone:
+    $("#nextMilestone"),
+
+  clearStudyLogsBtn:
+    $("#clearStudyLogsBtn"),
+
+  taskForm:
+    $("#taskForm"),
+
+  taskText:
+    $("#taskText"),
+
+  taskCategory:
+    $("#taskCategory"),
+
+  taskPriority:
+    $("#taskPriority"),
+
+  taskDue:
+    $("#taskDue"),
+
+  categoryFilter:
+    $("#categoryFilter"),
+
+  taskList:
+    $("#taskList"),
+
+  taskCountBadge:
+    $("#taskCountBadge"),
+
+  scratchpad:
+    $("#scratchpad"),
+
+  noteSaveState:
+    $("#noteSaveState"),
+
+  noteCount:
+    $("#noteCount"),
+
+  clearNotesBtn:
+    $("#clearNotesBtn"),
+
+  linkGrid:
+    $("#linkGrid"),
+
+  addLinkBtn:
+    $("#addLinkBtn"),
+
+  liquidDock:
+    $("#liquidDock"),
+
+  dockGlide:
+    $("#dockGlide"),
+
+  moreBackdrop:
+    $("#moreBackdrop"),
+
+  closeMore:
+    $("#closeMore"),
+
+  themeSelect:
+    $("#themeSelect"),
+
+  accentPicker:
+    $("#accentPicker"),
+
+  layoutManager:
+    $("#layoutManager"),
+
+  resetLayoutBtn:
+    $("#resetLayoutBtn"),
+
+  focusMinutesInput:
+    $("#focusMinutesInput"),
+
+  shortMinutesInput:
+    $("#shortMinutesInput"),
+
+  longMinutesInput:
+    $("#longMinutesInput"),
+
+  modalBackdrop:
+    $("#modalBackdrop"),
+
+  closeLinkModal:
+    $("#closeLinkModal"),
+
+  cancelLinkBtn:
+    $("#cancelLinkBtn"),
+
+  linkForm:
+    $("#linkForm"),
+
+  linkTitle:
+    $("#linkTitle"),
+
+  linkUrl:
+    $("#linkUrl"),
+
+  linkColor:
+    $("#linkColor"),
+
+  toast:
+    $("#toast")
 };
 
 
-/* ============================================================
-   DEFAULTS / STATE
-   ============================================================ */
-
 const DEFAULT_PREFERENCES = {
-  theme: "midnight",
-  accent: "blue",
+
+  theme:
+    "midnight",
+
+  accent:
+    "blue",
 
   widgetOrder: [
     "clock",
     "focus",
-    "next",
     "tasks",
     "notes",
     "links",
@@ -161,68 +272,109 @@ const DEFAULT_PREFERENCES = {
 
   hiddenWidgets: [],
 
-  focusMinutes: 25,
-  shortBreakMinutes: 5,
-  longBreakMinutes: 15
+  focusMinutes:
+    25,
+
+  shortBreakMinutes:
+    5,
+
+  longBreakMinutes:
+    15
 };
 
-const WIDGET_NAMES = {
-  clock: "Clock",
-  focus: "Focus",
-  next: "Next up",
-  tasks: "Tasks",
-  notes: "Notes",
-  links: "Launchpad",
-  analytics: "Analytics"
-};
 
 const DEFAULT_LINKS = [
+
   {
     title: "Classroom",
     url: "https://classroom.google.com/",
     color: "blue",
     icon: "C"
   },
+
   {
     title: "Docs",
     url: "https://docs.google.com/document/",
     color: "rose",
     icon: "D"
   },
+
   {
     title: "Slides",
     url: "https://slides.google.com/",
     color: "amber",
     icon: "S"
   },
+
   {
     title: "Gmail",
     url: "https://mail.google.com/",
     color: "mint",
     icon: "G"
   }
+
 ];
+
+
+const WIDGET_LABELS = {
+
+  clock:
+    "Clock",
+
+  focus:
+    "Focus timer",
+
+  tasks:
+    "Tasks",
+
+  notes:
+    "Notes",
+
+  links:
+    "Launchpad",
+
+  analytics:
+    "Analytics"
+
+};
+
 
 let currentUser = null;
 
 let unsubscribeFns = [];
 
 let tasks = [];
+
 let studyLogs = [];
+
 let quickLinks = [];
 
-let preferences = clone(DEFAULT_PREFERENCES);
+let preferences =
+  JSON.parse(
+    JSON.stringify(
+      DEFAULT_PREFERENCES
+    )
+  );
 
 let noteContent = "";
 
-let taskStatus =
+let noteSaveTimer = null;
+
+let preferencesSaveTimer =
+  null;
+
+let taskStatusFilter =
   "active";
 
-let taskCategory =
+let taskCategoryFilter =
   "all";
 
 let currentView =
   "overview";
+
+let moreOpen =
+  false;
+
 
 let timerMode =
   "focus";
@@ -230,115 +382,215 @@ let timerMode =
 let timerRunning =
   false;
 
-let timerSeconds =
-  25 * 60;
-
 let timerInterval =
   null;
 
-let noteTimer =
-  null;
-
-let preferenceTimer =
-  null;
+let timerSeconds =
+  25 * 60;
 
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
+// ============================================================
+// HELPERS
+// ============================================================
 
-function clone(value) {
-  return JSON.parse(JSON.stringify(value));
+function cloneDefaults() {
+
+  return JSON.parse(
+    JSON.stringify(
+      DEFAULT_PREFERENCES
+    )
+  );
 }
 
-function toast(message) {
-  els.toast.textContent = message;
-  els.toast.classList.add("show");
 
-  clearTimeout(toast.timer);
+function showToast(message) {
 
-  toast.timer = setTimeout(() => {
-    els.toast.classList.remove("show");
-  }, 2600);
+  els.toast.textContent =
+    message;
+
+  els.toast.classList.add(
+    "show"
+  );
+
+  clearTimeout(
+    showToast.timer
+  );
+
+  showToast.timer =
+    setTimeout(
+      () => {
+        els.toast.classList.remove(
+          "show"
+        );
+      },
+      2600
+    );
 }
 
-function setSync(message, good = false) {
-  els.syncStatus.textContent = message;
-  els.connectionDot.classList.toggle("good", good);
+
+function setConnectionStatus(
+  message,
+  good = false
+) {
+
+  els.syncStatus.textContent =
+    message;
+
+  els.connectionDot.classList.toggle(
+    "good",
+    good
+  );
 }
 
-function localDateKey(date = new Date()) {
+
+function localDateKey(
+  date = new Date()
+) {
+
   return [
     date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, "0"),
-    String(date.getDate()).padStart(2, "0")
+
+    String(
+      date.getMonth() + 1
+    ).padStart(2, "0"),
+
+    String(
+      date.getDate()
+    ).padStart(2, "0")
+
   ].join("-");
 }
 
-function parseDate(value) {
-  if (!value) return null;
 
-  if (typeof value.toDate === "function") {
+function parseStoredDate(value) {
+
+  if (!value) {
+    return null;
+  }
+
+
+  if (
+    typeof value.toDate ===
+    "function"
+  ) {
     return value.toDate();
   }
 
-  const date = value instanceof Date
-    ? value
-    : new Date(value);
 
-  return Number.isNaN(date.getTime())
+  if (
+    value instanceof Date
+  ) {
+    return value;
+  }
+
+
+  const parsed =
+    new Date(value);
+
+
+  return Number.isNaN(
+    parsed.getTime()
+  )
     ? null
-    : date;
+    : parsed;
 }
+
 
 function escapeHtml(value) {
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 }
 
+
 function formatDate(date) {
+
   return new Intl.DateTimeFormat(
     undefined,
     {
-      weekday: "short",
-      month: "short",
-      day: "numeric"
+      weekday:
+        "long",
+
+      month:
+        "long",
+
+      day:
+        "numeric"
     }
   ).format(date);
 }
 
+
 function userCollection(name) {
+
   if (!currentUser) {
-    throw new Error("Not signed in.");
+    throw new Error(
+      "Not signed in"
+    );
   }
+
 
   return collection(
     db,
+
     "users",
+
     currentUser.uid,
+
     name
   );
 }
 
-function userDoc(collectionName, id) {
+
+function userDoc(
+  collectionName,
+  id
+) {
+
   if (!currentUser) {
-    throw new Error("Not signed in.");
+    throw new Error(
+      "Not signed in"
+    );
   }
+
 
   return doc(
     db,
+
     "users",
+
     currentUser.uid,
+
     collectionName,
+
     id
   );
 }
 
-function preferencesDoc() {
+
+function prefsDoc() {
+
   return userDoc(
     "settings",
     "preferences"
@@ -346,48 +598,68 @@ function preferencesDoc() {
 }
 
 
-/* ============================================================
-   CLOCK
-   ============================================================ */
+// ============================================================
+// CLOCK
+// ============================================================
 
 function updateClock() {
-  const now = new Date();
-  const hour = now.getHours();
-  const h = hour % 12 || 12;
+
+  const now =
+    new Date();
+
+  const hour =
+    now.getHours();
+
+  const hour12 =
+    hour % 12 || 12;
+
 
   els.clockTime.textContent =
-    `${h}:${String(now.getMinutes()).padStart(2, "0")}`;
+    `${hour12}:${String(
+      now.getMinutes()
+    ).padStart(2, "0")}`;
+
 
   els.clockAmPm.textContent =
     hour >= 12
       ? "PM"
       : "AM";
 
+
   els.clockDate.textContent =
     new Intl.DateTimeFormat(
       undefined,
       {
-        weekday: "short",
-        month: "short",
-        day: "numeric"
+        weekday:
+          "short",
+
+        month:
+          "short",
+
+        day:
+          "numeric"
       }
     ).format(now);
 
+
   els.heroDate.textContent =
     `${formatDate(now)} · ${
-      new Intl.DateTimeFormat(
+      Intl.DateTimeFormat(
         undefined,
         {
-          timeZoneName: "short"
+          timeZoneName:
+            "short"
         }
       )
         .formatToParts(now)
         .find(
           part =>
-            part.type === "timeZoneName"
+            part.type ===
+            "timeZoneName"
         )
         ?.value || "local time"
     }`;
+
 
   els.greeting.textContent =
     hour < 12
@@ -397,119 +669,202 @@ function updateClock() {
         : "Good evening.";
 }
 
+
 updateClock();
-setInterval(updateClock, 1000);
 
 
-/* ============================================================
-   TIMER
-   ============================================================ */
+setInterval(
+  updateClock,
+  1000
+);
 
-function secondsFor(mode) {
-  if (mode === "short") {
-    return preferences.shortBreakMinutes * 60;
+
+// ============================================================
+// TIMER
+// ============================================================
+
+function timerSecondsFor(mode) {
+
+  if (
+    mode === "short"
+  ) {
+    return (
+      preferences.shortBreakMinutes *
+      60
+    );
   }
 
-  if (mode === "long") {
-    return preferences.longBreakMinutes * 60;
+
+  if (
+    mode === "long"
+  ) {
+    return (
+      preferences.longBreakMinutes *
+      60
+    );
   }
 
-  return preferences.focusMinutes * 60;
+
+  return (
+    preferences.focusMinutes *
+    60
+  );
 }
 
-function timerInfo(mode) {
-  if (mode === "short") {
+
+function timerMeta(mode) {
+
+  if (
+    mode === "short"
+  ) {
+
     return {
-      label: "Reset your brain",
-      pill: "SHORT BREAK"
+      label:
+        "Reset your brain",
+
+      pill:
+        "SHORT BREAK"
     };
+
   }
 
-  if (mode === "long") {
+
+  if (
+    mode === "long"
+  ) {
+
     return {
-      label: "Long recovery",
-      pill: "LONG BREAK"
+      label:
+        "Long recovery",
+
+      pill:
+        "LONG BREAK"
     };
+
   }
+
 
   return {
-    label: "Deep work",
-    pill: "FOCUS"
+    label:
+      "Deep work",
+
+    pill:
+      "FOCUS"
   };
 }
 
-function renderTimer() {
-  const minutes =
-    Math.floor(timerSeconds / 60);
 
-  const seconds =
+function renderTimer() {
+
+  const mins =
+    Math.floor(
+      timerSeconds / 60
+    );
+
+  const secs =
     timerSeconds % 60;
 
-  const info =
-    timerInfo(timerMode);
+
+  const meta =
+    timerMeta(
+      timerMode
+    );
+
 
   els.timerDisplay.textContent =
-    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    `${String(mins).padStart(
+      2,
+      "0"
+    )}:${String(secs).padStart(
+      2,
+      "0"
+    )}`;
+
 
   els.timerCaption.textContent =
-    info.label;
+    meta.label;
+
 
   els.timerPill.textContent =
-    info.pill;
+    meta.pill;
+
 
   els.timerStart.textContent =
     timerRunning
       ? "Pause"
       : "Start";
 
+
   els.timerOrb.classList.toggle(
     "running",
     timerRunning
   );
 
-  $$("[data-timer-mode]").forEach(
+
+  $$(
+    "[data-timer-mode]"
+  ).forEach(
     button => {
+
       button.classList.toggle(
         "active",
-        button.dataset.timerMode === timerMode
+        button.dataset.timerMode ===
+          timerMode
       );
+
     }
   );
 }
 
+
 function setTimerMode(mode) {
+
   timerRunning = false;
 
-  clearInterval(timerInterval);
+  clearInterval(
+    timerInterval
+  );
 
-  timerInterval = null;
+  timerInterval =
+    null;
 
-  timerMode = mode;
+  timerMode =
+    mode;
 
-  timerSeconds = secondsFor(mode);
+  timerSeconds =
+    timerSecondsFor(mode);
 
   renderTimer();
 }
 
-async function finishTimer() {
+
+async function completeTimer() {
+
   timerRunning = false;
 
-  clearInterval(timerInterval);
+  clearInterval(
+    timerInterval
+  );
 
-  timerInterval = null;
+  timerInterval =
+    null;
 
   renderTimer();
 
-  if (timerMode === "focus") {
 
-    if (!currentUser) {
-      toast(
-        "Focus session finished. Sign in to save study history."
-      );
-    } else {
+  if (
+    timerMode ===
+    "focus"
+  ) {
+
+    if (currentUser) {
+
       try {
+
         await addDoc(
-          userCollection("study_logs"),
+          userCollection(
+            "study_logs"
+          ),
           {
             duration:
               preferences.focusMinutes,
@@ -519,32 +874,56 @@ async function finishTimer() {
           }
         );
 
-        toast(
-          "Focus session saved."
+        showToast(
+          "Focus session saved to your cloud history."
         );
-      } catch (error) {
-        console.error(error);
 
-        toast(
+      } catch (error) {
+
+        console.error(
+          error
+        );
+
+        showToast(
           "Session finished, but the cloud log failed."
         );
       }
+
+    } else {
+
+      showToast(
+        "Focus session finished. Sign in to save study history."
+      );
     }
 
-    setTimerMode("short");
+
+    setTimerMode(
+      "short"
+    );
 
   } else {
 
-    setTimerMode("focus");
+    setTimerMode(
+      "focus"
+    );
   }
 }
 
+
 function toggleTimer() {
-  timerRunning = !timerRunning;
 
-  clearInterval(timerInterval);
+  timerRunning =
+    !timerRunning;
 
-  timerInterval = null;
+
+  clearInterval(
+    timerInterval
+  );
+
+
+  timerInterval =
+    null;
+
 
   if (timerRunning) {
 
@@ -552,108 +931,145 @@ function toggleTimer() {
       setInterval(
         () => {
 
-          timerSeconds--;
+          timerSeconds -=
+            1;
+
 
           if (
-            timerSeconds <= 0
+            timerSeconds <=
+            0
           ) {
-            timerSeconds = 0;
+
+            timerSeconds =
+              0;
+
             renderTimer();
-            finishTimer();
-          } else {
-            renderTimer();
+
+            completeTimer();
+
+            return;
           }
+
+
+          renderTimer();
 
         },
         1000
       );
   }
 
+
   renderTimer();
 }
+
 
 function resetTimer() {
-  timerRunning = false;
 
-  clearInterval(timerInterval);
+  timerRunning =
+    false;
 
-  timerInterval = null;
+  clearInterval(
+    timerInterval
+  );
+
+  timerInterval =
+    null;
 
   timerSeconds =
-    secondsFor(timerMode);
+    timerSecondsFor(
+      timerMode
+    );
 
   renderTimer();
 }
 
-$$("[data-timer-mode]").forEach(
+
+$$(
+  "[data-timer-mode]"
+).forEach(
   button => {
+
     button.addEventListener(
       "click",
-      () =>
+      () => {
+
         setTimerMode(
-          button.dataset.timerMode
-        )
+          button.dataset
+            .timerMode
+        );
+
+      }
     );
+
   }
 );
+
 
 els.timerStart.addEventListener(
   "click",
   toggleTimer
 );
 
+
 els.timerReset.addEventListener(
   "click",
   resetTimer
 );
 
+
 renderTimer();
 
 
-/* ============================================================
-   PERSONALIZATION
-   ============================================================ */
+// ============================================================
+// PERSONALIZATION
+// ============================================================
 
-function normalizePreferences(raw) {
-  const source =
-    raw || {};
+function normalizePreferences(
+  raw
+) {
 
   const merged = {
-    ...clone(DEFAULT_PREFERENCES),
-    ...source
+    ...cloneDefaults(),
+    ...(raw || {})
   };
 
-  const requestedOrder =
-    Array.isArray(
-      source.widgetOrder
-    )
-      ? source.widgetOrder
-      : [];
 
   merged.widgetOrder =
-    [
-      ...new Set([
-        ...requestedOrder,
-        ...DEFAULT_PREFERENCES.widgetOrder
+    Array.from(
+      new Set([
+        ...(
+          Array.isArray(
+            raw?.widgetOrder
+          )
+            ? raw.widgetOrder
+            : []
+        ),
+
+        ...DEFAULT_PREFERENCES
+          .widgetOrder
       ])
-    ]
+    )
     .filter(
       id =>
-        DEFAULT_PREFERENCES.widgetOrder
+        DEFAULT_PREFERENCES
+          .widgetOrder
           .includes(id)
     );
 
+
   merged.hiddenWidgets =
     Array.isArray(
-      source.hiddenWidgets
+      raw?.hiddenWidgets
     )
-      ? source.hiddenWidgets.filter(
-          id =>
-            DEFAULT_PREFERENCES
-              .widgetOrder
-              .includes(id)
-        )
+      ? raw.hiddenWidgets
+          .filter(
+            id =>
+              DEFAULT_PREFERENCES
+                .widgetOrder
+                .includes(id)
+          )
       : [];
+
 
   merged.focusMinutes =
     Math.max(
@@ -666,6 +1082,7 @@ function normalizePreferences(raw) {
       )
     );
 
+
   merged.shortBreakMinutes =
     Math.max(
       1,
@@ -676,6 +1093,7 @@ function normalizePreferences(raw) {
         ) || 5
       )
     );
+
 
   merged.longBreakMinutes =
     Math.max(
@@ -688,65 +1106,101 @@ function normalizePreferences(raw) {
       )
     );
 
+
   return merged;
 }
 
+
 function applyAppearance() {
+
   document.documentElement.dataset.theme =
     preferences.theme;
+
 
   document.documentElement.dataset.accent =
     preferences.accent;
 
+
   els.themeSelect.value =
     preferences.theme;
 
-  $$("#accentPicker button").forEach(
+
+  $$(
+    "#accentPicker button"
+  ).forEach(
     button => {
+
       button.style.boxShadow =
         button.dataset.accent ===
         preferences.accent
+
           ? "0 0 0 3px rgba(255,255,255,.20)"
+
           : "none";
+
     }
   );
 }
 
-function applyWidgetOrder() {
-  for (
-    const id of preferences.widgetOrder
-  ) {
 
-    const widget =
-      document.querySelector(
-        `[data-widget-id="${id}"]`
+function applyLayout() {
+
+  const visibleOrder =
+    preferences.widgetOrder
+      .filter(
+        id =>
+          !preferences
+            .hiddenWidgets
+            .includes(id)
       );
 
-    if (widget) {
-      els.dashboard.appendChild(
-        widget
+
+  const workspace =
+    document.querySelector(
+      "#workspace"
+    );
+
+
+  for (
+    const widgetId
+    of preferences.widgetOrder
+  ) {
+
+    const node =
+      document.querySelector(
+        `[data-widget-id="${widgetId}"]`
+      );
+
+
+    if (node) {
+      workspace.appendChild(
+        node
       );
     }
   }
 
+
   $$(".widget").forEach(
-    widget => {
+    node => {
 
       const hidden =
-        preferences.hiddenWidgets
-          .includes(
-            widget.dataset.widgetId
-          );
+        !visibleOrder.includes(
+          node.dataset.widgetId
+        );
 
-      widget.classList.toggle(
+
+      node.classList.toggle(
         "hidden",
         hidden
       );
+
     }
   );
 }
 
+
 function renderLayoutManager() {
+
   els.layoutManager.innerHTML =
     preferences.widgetOrder
       .map(
@@ -759,33 +1213,48 @@ function renderLayoutManager() {
             preferences.hiddenWidgets
               .includes(id);
 
+
           return `
             <div
               class="layout-row"
               data-layout-id="${id}"
             >
+
               <span class="layout-name">
                 ${escapeHtml(
-                  WIDGET_NAMES[id]
+                  WIDGET_LABELS[id]
                 )}
-                ${hidden ? " · hidden" : ""}
+                ${
+                  hidden
+                    ? " · hidden"
+                    : ""
+                }
               </span>
 
               <button
                 data-layout-action="up"
                 ${index === 0 ? "disabled" : ""}
-              >↑</button>
+              >
+                ↑
+              </button>
 
               <button
                 data-layout-action="down"
                 ${index === preferences.widgetOrder.length - 1 ? "disabled" : ""}
-              >↓</button>
+              >
+                ↓
+              </button>
 
               <button
                 data-layout-action="toggle"
               >
-                ${hidden ? "○" : "●"}
+                ${
+                  hidden
+                    ? "○"
+                    : "●"
+                }
               </button>
+
             </div>
           `;
         }
@@ -793,42 +1262,47 @@ function renderLayoutManager() {
       .join("");
 }
 
-function savePreferences() {
+
+function savePreferencesDebounced() {
+
   if (!currentUser) {
     return;
   }
 
+
   clearTimeout(
-    preferenceTimer
+    preferencesSaveTimer
   );
 
-  preferenceTimer =
+
+  preferencesSaveTimer =
     setTimeout(
       async () => {
 
         try {
 
           await setDoc(
-            preferencesDoc(),
+            prefsDoc(),
             {
               ...preferences,
+
               updatedAt:
                 serverTimestamp()
             },
             {
-              merge: true
+              merge:true
             }
           );
 
         } catch (error) {
 
           console.error(
-            "Preference save:",
+            "Preferences save:",
             error
           );
 
-          toast(
-            "Could not save your layout."
+          showToast(
+            "Could not save your personalization settings."
           );
         }
 
@@ -836,6 +1310,7 @@ function savePreferences() {
       450
     );
 }
+
 
 function updatePreference(
   key,
@@ -845,49 +1320,71 @@ function updatePreference(
   preferences =
     normalizePreferences({
       ...preferences,
-      [key]: value
+
+      [key]:
+        value
     });
 
+
   applyAppearance();
-  applyWidgetOrder();
+
+  applyLayout();
+
   renderLayoutManager();
+
   updateTimerIfIdle();
 
-  savePreferences();
+  savePreferencesDebounced();
 }
 
+
 function updateTimerIfIdle() {
+
   if (!timerRunning) {
+
     timerSeconds =
-      secondsFor(timerMode);
+      timerSecondsFor(
+        timerMode
+      );
 
     renderTimer();
   }
 }
 
+
 els.themeSelect.addEventListener(
   "change",
-  () =>
+  () => {
+
     updatePreference(
       "theme",
       els.themeSelect.value
-    )
+    );
+
+  }
 );
+
 
 $$(
   "#accentPicker button"
 ).forEach(
   button => {
+
     button.addEventListener(
       "click",
-      () =>
+      () => {
+
         updatePreference(
           "accent",
           button.dataset.accent
-        )
+        );
+
+      }
     );
+
   }
 );
+
 
 els.layoutManager.addEventListener(
   "click",
@@ -898,132 +1395,169 @@ els.layoutManager.addEventListener(
         "button[data-layout-action]"
       );
 
+
     if (!button) {
       return;
     }
+
 
     const row =
       button.closest(
         "[data-layout-id]"
       );
 
-    if (!row) {
+
+    const id =
+      row?.dataset.layoutId;
+
+
+    if (!id) {
       return;
     }
 
-    const id =
-      row.dataset.layoutId;
 
     const index =
       preferences.widgetOrder
         .indexOf(id);
 
-    const action =
-      button.dataset.layoutAction;
 
-    if (action === "toggle") {
+    const action =
+      button.dataset
+        .layoutAction;
+
+
+    if (
+      action ===
+      "toggle"
+    ) {
 
       const hidden =
         new Set(
           preferences.hiddenWidgets
         );
 
-      if (hidden.has(id)) {
+
+      if (
+        hidden.has(id)
+      ) {
+
         hidden.delete(id);
+
       } else {
+
         hidden.add(id);
       }
 
+
       if (
         hidden.size ===
-        preferences.widgetOrder.length
+        preferences
+          .widgetOrder
+          .length
       ) {
+
         hidden.delete(id);
       }
+
 
       updatePreference(
         "hiddenWidgets",
         [...hidden]
       );
 
-      return;
-    }
 
-    const order =
-      [...preferences.widgetOrder];
-
-    if (
+    } else if (
       action === "up" &&
       index > 0
     ) {
 
+      const order =
+        [...preferences.widgetOrder];
+
+
       [
         order[index - 1],
         order[index]
-      ] = [
-        order[index],
-        order[index - 1]
-      ];
+      ] =
+        [
+          order[index],
+          order[index - 1]
+        ];
+
 
       updatePreference(
         "widgetOrder",
         order
       );
 
-      return;
-    }
 
-    if (
+    } else if (
       action === "down" &&
       index <
-        order.length - 1
+        preferences
+          .widgetOrder
+          .length - 1
     ) {
 
+      const order =
+        [...preferences.widgetOrder];
+
+
       [
-        order[index],
-        order[index + 1]
-      ] = [
         order[index + 1],
         order[index]
-      ];
+      ] =
+        [
+          order[index],
+          order[index + 1]
+        ];
+
 
       updatePreference(
         "widgetOrder",
         order
       );
     }
+
   }
 );
+
 
 els.resetLayoutBtn.addEventListener(
   "click",
   () => {
 
     preferences =
-      clone(
-        DEFAULT_PREFERENCES
-      );
+      cloneDefaults();
+
 
     applyAppearance();
-    applyWidgetOrder();
-    renderLayoutManager();
-    updateTimerIfIdle();
-    savePreferences();
 
-    toast("Layout reset.");
+    applyLayout();
+
+    renderLayoutManager();
+
+    updateTimerIfIdle();
+
+    savePreferencesDebounced();
   }
 );
 
-const timerInputMap = {
-  focusMinutesInput:
-    "focusMinutes",
 
-  shortMinutesInput:
-    "shortBreakMinutes",
+function syncTimerInputs() {
 
-  longMinutesInput:
-    "longBreakMinutes"
-};
+  els.focusMinutesInput.value =
+    preferences.focusMinutes;
+
+
+  els.shortMinutesInput.value =
+    preferences.shortBreakMinutes;
+
+
+  els.longMinutesInput.value =
+    preferences.longBreakMinutes;
+}
+
 
 [
   els.focusMinutesInput,
@@ -1036,16 +1570,35 @@ const timerInputMap = {
       "change",
       () => {
 
+        const mapping = {
+
+          focusMinutesInput:
+            "focusMinutes",
+
+          shortMinutesInput:
+            "shortBreakMinutes",
+
+          longMinutesInput:
+            "longBreakMinutes"
+
+        };
+
+
         const key =
-          timerInputMap[input.id];
+          mapping[input.id];
+
 
         let value =
-          Number(input.value);
+          Number(
+            input.value
+          );
+
 
         if (
           key ===
           "focusMinutes"
         ) {
+
           value =
             Math.max(
               1,
@@ -1056,10 +1609,12 @@ const timerInputMap = {
             );
         }
 
+
         if (
           key ===
           "shortBreakMinutes"
         ) {
+
           value =
             Math.max(
               1,
@@ -1070,10 +1625,12 @@ const timerInputMap = {
             );
         }
 
+
         if (
           key ===
           "longBreakMinutes"
         ) {
+
           value =
             Math.max(
               1,
@@ -1084,323 +1641,26 @@ const timerInputMap = {
             );
         }
 
+
         input.value =
           value;
+
 
         updatePreference(
           key,
           value
         );
+
       }
     );
-  }
-);
 
-function syncTimerInputs() {
-  els.focusMinutesInput.value =
-    preferences.focusMinutes;
-
-  els.shortMinutesInput.value =
-    preferences.shortBreakMinutes;
-
-  els.longMinutesInput.value =
-    preferences.longBreakMinutes;
-}
-
-
-/* ============================================================
-   DRAG TO REORDER
-   Touch + mouse pointer implementation
-   ============================================================ */
-
-let dragState = null;
-
-function widgetAtPoint(
-  x,
-  y
-) {
-
-  const elements =
-    document.elementsFromPoint(
-      x,
-      y
-    );
-
-  return elements.find(
-    element =>
-      element.classList &&
-      element.classList.contains(
-        "widget"
-      ) &&
-      element !==
-        dragState?.element &&
-      !element.classList.contains(
-        "hidden"
-      )
-  );
-}
-
-function beginDrag(
-  element,
-  event
-) {
-
-  if (
-    event.pointerType ===
-    "mouse" &&
-    event.button !== 0
-  ) {
-    return;
-  }
-
-  if (
-    event.target.closest(
-      "button, input, textarea, select, a"
-    )
-  ) {
-    return;
-  }
-
-  dragState = {
-    element,
-    pointerId:
-      event.pointerId,
-
-    startX:
-      event.clientX,
-
-    startY:
-      event.clientY,
-
-    active: false
-  };
-}
-
-function activateDrag(
-  event
-) {
-
-  if (!dragState) {
-    return;
-  }
-
-  const dx =
-    event.clientX -
-    dragState.startX;
-
-  const dy =
-    event.clientY -
-    dragState.startY;
-
-  if (
-    !dragState.active &&
-    Math.hypot(dx, dy) < 8
-  ) {
-    return;
-  }
-
-  if (
-    !dragState.active
-  ) {
-
-    dragState.active = true;
-
-    dragState.element.classList.add(
-      "dragging"
-    );
-
-    dragState.element.setPointerCapture?.(
-      dragState.pointerId
-    );
-  }
-
-  const target =
-    widgetAtPoint(
-      event.clientX,
-      event.clientY
-    );
-
-  $$(".widget.drop-target")
-    .forEach(
-      item =>
-        item.classList.remove(
-          "drop-target"
-        )
-    );
-
-  if (target) {
-    target.classList.add(
-      "drop-target"
-    );
-  }
-}
-
-function finishDrag(
-  event
-) {
-
-  if (!dragState) {
-    return;
-  }
-
-  const dragged =
-    dragState.element;
-
-  const active =
-    dragState.active;
-
-  const target =
-    active
-      ? widgetAtPoint(
-          event.clientX,
-          event.clientY
-        )
-      : null;
-
-  dragged.classList.remove(
-    "dragging"
-  );
-
-  $$(".widget.drop-target")
-    .forEach(
-      item =>
-        item.classList.remove(
-          "drop-target"
-        )
-    );
-
-  if (
-    active &&
-    target
-  ) {
-
-    const draggedId =
-      dragged.dataset.widgetId;
-
-    const targetId =
-      target.dataset.widgetId;
-
-    const order =
-      [...preferences.widgetOrder];
-
-    const from =
-      order.indexOf(
-        draggedId
-      );
-
-    const to =
-      order.indexOf(
-        targetId
-      );
-
-    if (
-      from !== -1 &&
-      to !== -1 &&
-      from !== to
-    ) {
-
-      order.splice(
-        from,
-        1
-      );
-
-      const rect =
-        target.getBoundingClientRect();
-
-      const insertAfter =
-        event.clientY >
-        rect.top +
-          rect.height /
-            2;
-
-      let insertion =
-        to;
-
-      if (
-        from <
-        to
-      ) {
-        insertion =
-          insertAfter
-            ? to
-            : Math.max(
-                0,
-                to - 1
-              );
-      } else {
-        insertion =
-          insertAfter
-            ? to + 1
-            : to;
-      }
-
-      insertion =
-        Math.max(
-          0,
-          Math.min(
-            order.length,
-            insertion
-          )
-        );
-
-      order.splice(
-        insertion,
-        0,
-        draggedId
-      );
-
-      preferences =
-        normalizePreferences({
-          ...preferences,
-          widgetOrder: order
-        });
-
-      applyWidgetOrder();
-      renderLayoutManager();
-      savePreferences();
-
-      toast(
-        "Layout saved."
-      );
-    }
-  }
-
-  dragState = null;
-}
-
-$$(".widget").forEach(
-  widget => {
-
-    widget.addEventListener(
-      "pointerdown",
-      event =>
-        beginDrag(
-          widget,
-          event
-        )
-    );
-
-    widget.addEventListener(
-      "pointermove",
-      activateDrag
-    );
-
-    widget.addEventListener(
-      "pointerup",
-      finishDrag
-    );
-
-    widget.addEventListener(
-      "pointercancel",
-      finishDrag
-    );
   }
 );
 
 
-/* ============================================================
-   VIEW NAVIGATION
-   ============================================================ */
+// ============================================================
+// NAVIGATION
+// ============================================================
 
 function moveDockGlide() {
 
@@ -1409,100 +1669,116 @@ function moveDockGlide() {
       ".dock-item.active"
     );
 
+
   if (!active) {
     return;
   }
 
+
   els.dockGlide.style.left =
     `${active.offsetLeft}px`;
+
 
   els.dockGlide.style.width =
     `${active.offsetWidth}px`;
 }
 
-function showView(view) {
+
+function applyViewState(
+  view
+) {
 
   currentView =
     view;
 
-  const visible =
-    preferences.hiddenWidgets;
 
-  $$(".widget").forEach(
-    widget => {
+  const panels =
+    $$(".widget");
+
+
+  panels.forEach(
+    panel => {
 
       const id =
-        widget.dataset.widgetId;
+        panel.dataset
+          .widgetId;
 
-      const hidden =
-        visible.includes(id);
+
+      const userHidden =
+        preferences.hiddenWidgets
+          .includes(id);
+
 
       let show =
-        !hidden;
+        !userHidden;
+
 
       if (
         view ===
         "overview"
       ) {
+
         show =
-          !hidden;
+          !userHidden;
 
       } else if (
-        view ===
-        "focus"
+        view === "focus"
       ) {
+
         show =
-          !hidden &&
+          !userHidden &&
           [
             "focus",
             "analytics"
           ].includes(id);
 
       } else if (
-        view ===
-        "tasks"
+        view === "tasks"
       ) {
+
         show =
-          !hidden &&
-          [
-            "next",
-            "tasks"
-          ].includes(id);
+          !userHidden &&
+          id === "tasks";
 
       } else if (
-        view ===
-        "notes"
+        view === "notes"
       ) {
+
         show =
-          !hidden &&
-          id ===
-            "notes";
+          !userHidden &&
+          id === "notes";
+
       } else if (
-        view ===
-        "links"
+        view === "links"
       ) {
+
         show =
-          !hidden &&
-          id ===
-            "links";
+          !userHidden &&
+          id === "links";
+
       } else if (
-        view ===
-        "analytics"
+        view === "analytics"
       ) {
+
         show =
-          !hidden &&
-          id ===
-            "analytics";
+          !userHidden &&
+          id === "analytics";
+
       }
 
-      widget.classList.toggle(
+
+      panel.classList.toggle(
         "hidden",
         !show
       );
+
     }
   );
 
-  $$(".dock-item").forEach(
+
+  $$(
+    ".dock-item"
+  ).forEach(
     button => {
 
       button.classList.toggle(
@@ -1510,15 +1786,46 @@ function showView(view) {
         button.dataset.view ===
           view
       );
+
     }
   );
+
 
   requestAnimationFrame(
     moveDockGlide
   );
 }
 
-$$(".dock-item").forEach(
+
+function animateViewChange(
+  view
+) {
+
+  const run =
+    () =>
+      applyViewState(
+        view
+      );
+
+
+  if (
+    document.startViewTransition
+  ) {
+
+    document.startViewTransition(
+      run
+    );
+
+  } else {
+
+    run();
+  }
+}
+
+
+$$(
+  ".dock-item"
+).forEach(
   button => {
 
     button.addEventListener(
@@ -1526,34 +1833,30 @@ $$(".dock-item").forEach(
       () => {
 
         const view =
-          button.dataset.view;
+          button.dataset
+            .view;
+
 
         if (
           view ===
           "more"
         ) {
-          els.moreBackdrop.classList.remove(
-            "hidden"
-          );
 
-          syncTimerInputs();
-          renderLayoutManager();
-          applyAppearance();
+          openMoreSheet();
 
           return;
         }
 
-        showView(view);
+
+        animateViewChange(
+          view
+        );
       }
     );
+
   }
 );
 
-els.goTasksBtn.addEventListener(
-  "click",
-  () =>
-    showView("tasks")
-);
 
 window.addEventListener(
   "resize",
@@ -1561,65 +1864,455 @@ window.addEventListener(
 );
 
 
-/* ============================================================
-   POINTER-BASED GLASS LIGHT
-   This is intentionally broader than a hover glow:
-   every glass surface gets a slowly interpolated light field.
-   ============================================================ */
+// ============================================================
+// TASKS
+// ============================================================
 
-document.addEventListener(
-  "pointermove",
-  event => {
+function renderTasks() {
 
-    const surfaces =
-      document.elementsFromPoint(
-        event.clientX,
-        event.clientY
+  const activeCount =
+    tasks.filter(
+      task =>
+        !task.completed
+    ).length;
+
+
+  const doneCount =
+    tasks.filter(
+      task =>
+        task.completed
+    ).length;
+
+
+  els.taskCountBadge
+    .textContent =
+    activeCount;
+
+
+  els.clockOpen
+    .textContent =
+    activeCount;
+
+
+  els.clockDone
+    .textContent =
+    doneCount;
+
+
+  let visible =
+    tasks.filter(
+      task => {
+
+        const statusOk =
+          taskStatusFilter ===
+          "all"
+
+            ? true
+
+            : taskStatusFilter ===
+              "active"
+
+              ? !task.completed
+
+              : task.completed;
+
+
+        const categoryOk =
+          taskCategoryFilter ===
+          "all"
+
+            ? true
+
+            : task.category ===
+              taskCategoryFilter;
+
+
+        return (
+          statusOk &&
+          categoryOk
+        );
+      }
+    );
+
+
+  if (
+    !visible.length
+  ) {
+
+    els.taskList.innerHTML =
+      `
+        <div class="empty-state">
+          ${
+            currentUser
+              ? "Nothing here yet."
+              : "Sign in to load your cloud tasks."
+          }
+        </div>
+      `;
+
+
+    renderAnalytics();
+
+
+    return;
+  }
+
+
+  els.taskList.innerHTML =
+    visible
+      .map(
+        (
+          task,
+          index
+        ) => {
+
+          const due =
+            parseStoredDate(
+              task.dueAt
+            );
+
+
+          return `
+            <div
+              class="task-item ${
+                task.completed
+                  ? "completed"
+                  : ""
+              }"
+              style="
+                animation-delay:
+                ${Math.min(
+                  index * 35,
+                  200
+                )}ms
+              "
+            >
+
+              <button
+                class="task-check"
+                data-task-toggle="${escapeHtml(
+                  task.id
+                )}"
+                aria-label="${
+                  task.completed
+                    ? "Mark active"
+                    : "Mark complete"
+                }"
+              ></button>
+
+
+              <div class="task-copy">
+
+                <div class="task-title">
+                  ${escapeHtml(
+                    task.text
+                  )}
+                </div>
+
+
+                <div class="task-meta">
+
+                  <span class="task-tag">
+                    ${escapeHtml(
+                      task.category ||
+                      "School"
+                    )}
+                  </span>
+
+
+                  <span
+                    class="task-tag ${
+                      task.priority ||
+                      "medium"
+                    }"
+                  >
+                    ${escapeHtml(
+                      task.priority ||
+                      "medium"
+                    )}
+                  </span>
+
+
+                  ${
+                    due
+                      ? `
+                        <span class="task-tag task-due">
+                          ${escapeHtml(
+                            formatDate(
+                              due
+                            )
+                          )}
+                        </span>
+                      `
+                      : ""
+                  }
+
+                </div>
+
+              </div>
+
+
+              <button
+                class="task-delete"
+                data-task-delete="${escapeHtml(
+                  task.id
+                )}"
+                title="Delete"
+              >
+                ×
+              </button>
+
+            </div>
+          `;
+        }
+      )
+      .join("");
+
+
+  renderAnalytics();
+}
+
+
+els.taskList.addEventListener(
+  "click",
+  async event => {
+
+    const toggle =
+      event.target.closest(
+        "[data-task-toggle]"
       );
 
-    const surface =
-      surfaces.find(
-        element =>
-          element.matches?.(
-            ".glass-panel, .liquid-surface, .liquid-dock"
+
+    const del =
+      event.target.closest(
+        "[data-task-delete]"
+      );
+
+
+    try {
+
+      if (toggle) {
+
+        const task =
+          tasks.find(
+            item =>
+              item.id ===
+              toggle.dataset
+                .taskToggle
+          );
+
+
+        if (!task) {
+          return;
+        }
+
+
+        await updateDoc(
+          userDoc(
+            "tasks",
+            task.id
+          ),
+          {
+            completed:
+              !task.completed,
+
+            completedAt:
+              !task.completed
+                ? serverTimestamp()
+                : null
+          }
+        );
+      }
+
+
+      if (del) {
+
+        await deleteDoc(
+          userDoc(
+            "tasks",
+            del.dataset
+              .taskDelete
           )
+        );
+      }
+
+
+    } catch (error) {
+
+      console.error(
+        error
       );
 
-    if (!surface) {
-      return;
+
+      showToast(
+        error?.code ===
+          "permission-denied"
+
+          ? "Firebase blocked that change. Check Firestore rules."
+
+          : "Task update failed."
+      );
     }
 
-    const rect =
-      surface.getBoundingClientRect();
-
-    const x =
-      ((event.clientX -
-        rect.left) /
-        rect.width) *
-      100;
-
-    const y =
-      ((event.clientY -
-        rect.top) /
-        rect.height) *
-      100;
-
-    surface.style.setProperty(
-      "--mx",
-      `${x}%`
-    );
-
-    surface.style.setProperty(
-      "--my",
-      `${y}%`
-    );
   }
 );
 
 
-/* ============================================================
-   NOTES
-   ============================================================ */
+els.taskForm.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+
+    if (!currentUser) {
+
+      showToast(
+        "Sign in first to add cloud tasks."
+      );
+
+      return;
+    }
+
+
+    const text =
+      els.taskText.value.trim();
+
+
+    if (!text) {
+      return;
+    }
+
+
+    const payload = {
+
+      text,
+
+      category:
+        els.taskCategory
+          .value,
+
+      priority:
+        els.taskPriority
+          .value,
+
+      completed:
+        false,
+
+      completedAt:
+        null,
+
+      createdAt:
+        serverTimestamp(),
+
+      dueAt:
+        els.taskDue.value
+          ? new Date(
+              `${els.taskDue.value}T23:59:59`
+            )
+          : null
+    };
+
+
+    try {
+
+      await addDoc(
+        userCollection(
+          "tasks"
+        ),
+        payload
+      );
+
+
+      els.taskText.value =
+        "";
+
+      els.taskDue.value =
+        "";
+
+
+      showToast(
+        "Task added."
+      );
+
+
+      els.taskText.focus();
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      showToast(
+        error?.code ===
+          "permission-denied"
+
+          ? "Firestore permission denied. Publish the rules file."
+
+          : "Could not save task."
+      );
+    }
+
+  }
+);
+
+
+$$(
+  "[data-task-status]"
+).forEach(
+  button => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        taskStatusFilter =
+          button.dataset
+            .taskStatus;
+
+
+        $$(
+          "[data-task-status]"
+        ).forEach(
+          other => {
+
+            other.classList.toggle(
+              "active",
+              other ===
+                button
+            );
+
+          }
+        );
+
+
+        renderTasks();
+
+      }
+    );
+
+  }
+);
+
+
+els.categoryFilter.addEventListener(
+  "change",
+  () => {
+
+    taskCategoryFilter =
+      els.categoryFilter
+        .value;
+
+    renderTasks();
+  }
+);
+
+
+// ============================================================
+// NOTES
+// ============================================================
 
 function renderNotes() {
 
@@ -1632,9 +2325,12 @@ function renderNotes() {
       noteContent;
   }
 
-  els.noteCount.textContent =
+
+  els.noteCount
+    .textContent =
     `${noteContent.length.toLocaleString()} characters`;
 }
+
 
 els.scratchpad.addEventListener(
   "input",
@@ -1643,18 +2339,27 @@ els.scratchpad.addEventListener(
     noteContent =
       els.scratchpad.value;
 
-    renderNotes();
+
+    els.noteCount
+      .textContent =
+      `${noteContent.length.toLocaleString()} characters`;
+
 
     if (!currentUser) {
       return;
     }
 
+
     els.noteSaveState.textContent =
       "Saving…";
 
-    clearTimeout(noteTimer);
 
-    noteTimer =
+    clearTimeout(
+      noteSaveTimer
+    );
+
+
+    noteSaveTimer =
       setTimeout(
         async () => {
 
@@ -1673,9 +2378,10 @@ els.scratchpad.addEventListener(
                   serverTimestamp()
               },
               {
-                merge: true
+                merge:true
               }
             );
+
 
             els.noteSaveState.textContent =
               "Saved to cloud";
@@ -1696,6 +2402,7 @@ els.scratchpad.addEventListener(
   }
 );
 
+
 els.clearNotesBtn.addEventListener(
   "click",
   async () => {
@@ -1703,11 +2410,14 @@ els.clearNotesBtn.addEventListener(
     noteContent =
       "";
 
+
     renderNotes();
+
 
     if (!currentUser) {
       return;
     }
+
 
     try {
 
@@ -1724,9 +2434,10 @@ els.clearNotesBtn.addEventListener(
             serverTimestamp()
         },
         {
-          merge: true
+          merge:true
         }
       );
+
 
       els.noteSaveState.textContent =
         "Saved to cloud";
@@ -1737,866 +2448,114 @@ els.clearNotesBtn.addEventListener(
         error
       );
 
-      toast(
+
+      showToast(
         "Could not clear cloud notes."
       );
     }
+
   }
 );
 
 
-/* ============================================================
-   TASKS
-   ============================================================ */
-
-function renderNextTasks() {
-
-  const upcoming =
-    tasks
-      .filter(
-        task =>
-          !task.completed
-      )
-      .slice(0, 3);
-
-  if (!upcoming.length) {
-
-    els.nextList.innerHTML =
-      `
-        <div class="empty-state">
-          ${
-            currentUser
-              ? "No active tasks. You're clear."
-              : "Sign in to see what's next."
-          }
-        </div>
-      `;
-
-    return;
-  }
-
-  els.nextList.innerHTML =
-    upcoming
-      .map(
-        task => {
-
-          const due =
-            parseDate(
-              task.dueAt
-            );
-
-          return `
-            <div
-              class="next-item"
-              data-next-task="${escapeHtml(
-                task.id
-              )}"
-            >
-              <button
-                class="next-check"
-                data-next-complete="${escapeHtml(
-                  task.id
-                )}"
-              ></button>
-
-              <div>
-                <div class="next-title">
-                  ${escapeHtml(
-                    task.text
-                  )}
-                </div>
-
-                <div class="next-meta">
-                  ${escapeHtml(
-                    task.category ||
-                    "School"
-                  )}
-                  ${
-                    due
-                      ? ` · Due ${escapeHtml(
-                          formatDate(
-                            due
-                          )
-                        )}`
-                      : ""
-                  }
-                </div>
-              </div>
-
-              <span class="next-arrow">›</span>
-            </div>
-          `;
-        }
-      )
-      .join("");
-}
-
-els.nextList.addEventListener(
-  "click",
-  async event => {
-
-    const button =
-      event.target.closest(
-        "[data-next-complete]"
-      );
-
-    if (!button) {
-      return;
-    }
-
-    try {
-
-      await updateDoc(
-        userDoc(
-          "tasks",
-          button.dataset
-            .nextComplete
-        ),
-        {
-          completed:
-            true,
-
-          completedAt:
-            serverTimestamp()
-        }
-      );
-
-    } catch (error) {
-
-      console.error(
-        error
-      );
-
-      toast(
-        "Could not update that task."
-      );
-    }
-  }
-);
-
-function renderTasks() {
-
-  const activeCount =
-    tasks.filter(
-      task =>
-        !task.completed
-    ).length;
-
-  const doneCount =
-    tasks.filter(
-      task =>
-        task.completed
-    ).length;
-
-  els.taskCountBadge.textContent =
-    activeCount;
-
-  els.clockOpen.textContent =
-    activeCount;
-
-  els.clockDone.textContent =
-    doneCount;
-
-  let visible =
-    tasks.filter(
-      task => {
-
-        const statusMatches =
-          taskStatus ===
-          "all"
-            ? true
-            : taskStatus ===
-              "active"
-                ? !task.completed
-                : task.completed;
-
-        const categoryMatches =
-          taskCategory ===
-          "all"
-            ? true
-            : task.category ===
-              taskCategory;
-
-        return (
-          statusMatches &&
-          categoryMatches
-        );
-      }
-    );
-
-  if (!visible.length) {
-
-    els.taskList.innerHTML =
-      `
-        <div class="empty-state">
-          ${
-            currentUser
-              ? "Nothing here yet."
-              : "Sign in to load your cloud tasks."
-          }
-        </div>
-      `;
-
-  } else {
-
-    els.taskList.innerHTML =
-      visible
-        .map(
-          task => {
-
-            const due =
-              parseDate(
-                task.dueAt
-              );
-
-            return `
-              <div
-                class="task-item ${
-                  task.completed
-                    ? "completed"
-                    : ""
-                }"
-              >
-
-                <button
-                  class="task-check"
-                  data-task-toggle="${escapeHtml(
-                    task.id
-                  )}"
-                  aria-label="${
-                    task.completed
-                      ? "Mark active"
-                      : "Mark complete"
-                  }"
-                ></button>
-
-                <div class="task-copy">
-
-                  <div class="task-title">
-                    ${escapeHtml(
-                      task.text
-                    )}
-                  </div>
-
-                  <div class="task-meta">
-
-                    <span class="tag">
-                      ${escapeHtml(
-                        task.category ||
-                        "School"
-                      )}
-                    </span>
-
-                    <span
-                      class="tag ${
-                        task.priority ||
-                        "medium"
-                      }"
-                    >
-                      ${escapeHtml(
-                        task.priority ||
-                        "medium"
-                      )}
-                    </span>
-
-                    ${
-                      due
-                        ? `
-                          <span class="tag due">
-                            Due ${escapeHtml(
-                              formatDate(
-                                due
-                              )
-                            )}
-                          </span>
-                        `
-                        : ""
-                    }
-
-                  </div>
-                </div>
-
-                <button
-                  class="task-delete"
-                  data-task-delete="${escapeHtml(
-                    task.id
-                  )}"
-                  aria-label="Delete task"
-                >
-                  ×
-                </button>
-              </div>
-            `;
-          }
-        )
-        .join("");
-  }
-
-  renderNextTasks();
-  renderAnalytics();
-}
-
-els.taskList.addEventListener(
-  "click",
-  async event => {
-
-    const toggle =
-      event.target.closest(
-        "[data-task-toggle]"
-      );
-
-    const remove =
-      event.target.closest(
-        "[data-task-delete]"
-      );
-
-    try {
-
-      if (toggle) {
-
-        const task =
-          tasks.find(
-            item =>
-              item.id ===
-              toggle.dataset
-                .taskToggle
-          );
-
-        if (!task) {
-          return;
-        }
-
-        await updateDoc(
-          userDoc(
-            "tasks",
-            task.id
-          ),
-          {
-            completed:
-              !task.completed,
-
-            completedAt:
-              !task.completed
-                ? serverTimestamp()
-                : null
-          }
-        );
-      }
-
-      if (remove) {
-
-        await deleteDoc(
-          userDoc(
-            "tasks",
-            remove.dataset
-              .taskDelete
-          )
-        );
-      }
-
-    } catch (error) {
-
-      console.error(
-        error
-      );
-
-      toast(
-        "Task update failed."
-      );
-    }
-  }
-);
-
-els.taskForm.addEventListener(
-  "submit",
-  async event => {
-
-    event.preventDefault();
-
-    if (!currentUser) {
-
-      toast(
-        "Sign in first to add cloud tasks."
-      );
-
-      return;
-    }
-
-    const text =
-      els.taskText.value.trim();
-
-    if (!text) {
-      return;
-    }
-
-    const payload = {
-
-      text,
-
-      category:
-        els.taskCategory.value,
-
-      priority:
-        els.taskPriority.value,
-
-      completed:
-        false,
-
-      completedAt:
-        null,
-
-      createdAt:
-        serverTimestamp(),
-
-      dueAt:
-        els.taskDue.value
-          ? new Date(
-              `${els.taskDue.value}T23:59:59`
-            )
-          : null
-    };
-
-    try {
-
-      await addDoc(
-        userCollection(
-          "tasks"
-        ),
-        payload
-      );
-
-      els.taskText.value =
-        "";
-
-      els.taskDue.value =
-        "";
-
-      toast(
-        "Task added."
-      );
-
-      els.taskText.focus();
-
-    } catch (error) {
-
-      console.error(
-        error
-      );
-
-      toast(
-        "Could not save task."
-      );
-    }
-  }
-);
-
-$$("[data-status]").forEach(
-  button => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        taskStatus =
-          button.dataset.status;
-
-        $$("[data-status]")
-          .forEach(
-            item =>
-              item.classList.toggle(
-                "active",
-                item === button
-              )
-          );
-
-        renderTasks();
-      }
-    );
-  }
-);
-
-els.categoryFilter.addEventListener(
-  "change",
-  () => {
-
-    taskCategory =
-      els.categoryFilter.value;
-
-    renderTasks();
-  }
-);
-
-
-/* ============================================================
-   ANALYTICS
-   ============================================================ */
-
-function calculateAnalytics() {
-
-  const now =
-    new Date();
-
-  const today =
-    localDateKey(now);
-
-  const start =
-    new Date(now);
-
-  start.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-  start.setDate(
-    start.getDate() - 6
-  );
-
-  let todayMinutes =
-    0;
-
-  let weekMinutes =
-    0;
-
-  const days =
-    new Set();
-
-  for (
-    const log
-    of studyLogs
-  ) {
-
-    const date =
-      parseDate(
-        log.timestamp
-      );
-
-    if (!date) {
-      continue;
-    }
-
-    const minutes =
-      Number(
-        log.duration ||
-        0
-      );
-
-    const key =
-      localDateKey(
-        date
-      );
-
-    if (
-      key ===
-      today
-    ) {
-      todayMinutes +=
-        minutes;
-    }
-
-    if (
-      date >= start &&
-      date <= now
-    ) {
-      weekMinutes +=
-        minutes;
-    }
-
-    if (
-      minutes > 0
-    ) {
-      days.add(key);
-    }
-  }
-
-  let streak =
-    0;
-
-  const cursor =
-    new Date(now);
-
-  cursor.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-  while (
-    days.has(
-      localDateKey(
-        cursor
-      )
-    )
-  ) {
-
-    streak++;
-
-    cursor.setDate(
-      cursor.getDate() - 1
-    );
-  }
-
-  const completion =
-    tasks.length
-      ? Math.round(
-          tasks.filter(
-            task =>
-              task.completed
-          ).length /
-          tasks.length *
-          100
-        )
-      : 0;
-
-  return {
-    todayMinutes,
-    weekMinutes,
-    streak,
-    completion
-  };
-}
-
-function renderAnalytics() {
-
-  const stats =
-    calculateAnalytics();
-
-  const sessionsToday =
-    studyLogs.filter(
-      log => {
-
-        const date =
-          parseDate(
-            log.timestamp
-          );
-
-        return (
-          date &&
-          localDateKey(
-            date
-          ) ===
-            localDateKey()
-        );
-      }
-    ).length;
-
-  els.focusToday.textContent =
-    `${stats.todayMinutes}m`;
-
-  els.focusStreak.textContent =
-    `${stats.streak}d`;
-
-  els.focusSessions.textContent =
-    String(
-      sessionsToday
-    );
-
-  els.analyticsToday.textContent =
-    `${stats.todayMinutes}m`;
-
-  els.analyticsWeek.textContent =
-    `${stats.weekMinutes}m`;
-
-  els.analyticsStreak.textContent =
-    `${stats.streak}d`;
-
-  els.analyticsCompletion.textContent =
-    `${stats.completion}%`;
-
-  els.clockFocus.textContent =
-    `${stats.todayMinutes}m`;
-
-  const milestones =
-    [
-      25,
-      50,
-      100,
-      180,
-      300,
-      500,
-      1000
-    ];
-
-  const next =
-    milestones.find(
-      m =>
-        stats.todayMinutes <
-        m
-    );
-
-  els.nextMilestone.textContent =
-    next
-      ? `${next - stats.todayMinutes}m until today's ${next}m milestone.`
-      : "Every milestone cleared today.";
-}
-
-els.clearStudyLogsBtn.addEventListener(
-  "click",
-  async () => {
-
-    if (
-      !currentUser ||
-      !studyLogs.length
-    ) {
-      return;
-    }
-
-    if (
-      !window.confirm(
-        "Delete all study history for this account?"
-      )
-    ) {
-      return;
-    }
-
-    try {
-
-      const batch =
-        writeBatch(db);
-
-      studyLogs.forEach(
-        log =>
-          batch.delete(
-            userDoc(
-              "study_logs",
-              log.id
-            )
-          )
-      );
-
-      await batch.commit();
-
-      toast(
-        "Study history cleared."
-      );
-
-    } catch (error) {
-
-      console.error(
-        error
-      );
-
-      toast(
-        "Could not clear study history."
-      );
-    }
-  }
-);
-
-
-/* ============================================================
-   LINKS
-   ============================================================ */
-
-function accentStyle(
-  color
-) {
-  const map = {
-    blue: "121,165,255",
-    violet: "166,140,255",
-    mint: "112,232,189",
-    rose: "255,127,164",
-    amber: "255,186,105"
-  };
-
-  return (
-    map[color] ||
-    map.blue
-  );
-}
+// ============================================================
+// LINKS
+// ============================================================
 
 function renderLinks() {
 
   els.linkGrid.innerHTML =
     quickLinks
       .map(
-        link => {
+        link => `
+          <div class="link-card">
 
-          const rgb =
-            accentStyle(
-              link.color
-            );
+            <a
+              href="${escapeHtml(
+                link.url
+              )}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Open ${escapeHtml(
+                link.title
+              )}"
+              style="
+                position:absolute;
+                inset:0;
+                z-index:1
+              "
+            ></a>
 
-          return `
+
             <div
-              class="link-card"
-              style="--link-rgb:${rgb}"
+              class="link-top"
+              style="
+                position:relative;
+                z-index:2;
+                pointer-events:none
+              "
             >
 
-              <a
-                href="${escapeHtml(
-                  link.url
-                )}"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Open ${escapeHtml(
+              <div class="link-icon">
+                ${escapeHtml(
+                  link.icon ||
                   link.title
-                )}"
-                style="
-                  position:absolute;
-                  inset:0;
-                  z-index:1
-                "
-              ></a>
-
-              <div
-                class="link-top"
-              >
-                <div class="link-icon">
-                  ${escapeHtml(
-                    link.icon ||
-                    link.title
-                      ?.charAt(0)
-                      .toUpperCase() ||
-                    "↗"
-                  )}
-                </div>
-
-                <button
-                  class="delete-link"
-                  data-delete-link="${escapeHtml(
-                    link.id
-                  )}"
-                  style="
-                    position:relative;
-                    z-index:2;
-                  "
-                  aria-label="Delete ${escapeHtml(
-                    link.title
-                  )}"
-                >
-                  ×
-                </button>
+                    ?. [0]
+                    ?.toUpperCase() ||
+                  "↗"
+                )}
               </div>
 
-              <div>
-                <div class="link-name">
-                  ${escapeHtml(
-                    link.title
-                  )}
-                </div>
 
-                <div class="link-url">
-                  ${escapeHtml(
-                    (
-                      link.url ||
-                      ""
-                    ).replace(
-                      /^https?:\/\//,
-                      ""
-                    )
-                  )}
-                </div>
+              <button
+                class="delete-link"
+                data-delete-link="${escapeHtml(
+                  link.id
+                )}"
+                style="
+                  pointer-events:auto
+                "
+              >
+                ×
+              </button>
+
+            </div>
+
+
+            <div
+              style="
+                position:relative;
+                z-index:2;
+                pointer-events:none
+              "
+            >
+
+              <div class="link-name">
+                ${escapeHtml(
+                  link.title
+                )}
+              </div>
+
+              <div class="link-url">
+                ${escapeHtml(
+                  (
+                    link.url ||
+                    ""
+                  ).replace(
+                    /^https?:\/\//,
+                    ""
+                  )
+                )}
               </div>
 
             </div>
-          `;
-        }
+
+          </div>
+        `
       )
       .join("");
 }
+
 
 els.linkGrid.addEventListener(
   "click",
@@ -2607,12 +2566,16 @@ els.linkGrid.addEventListener(
         "[data-delete-link]"
       );
 
+
     if (!button) {
       return;
     }
 
+
     event.preventDefault();
+
     event.stopPropagation();
+
 
     try {
 
@@ -2624,7 +2587,8 @@ els.linkGrid.addEventListener(
         )
       );
 
-      toast(
+
+      showToast(
         "Link removed."
       );
 
@@ -2634,12 +2598,15 @@ els.linkGrid.addEventListener(
         error
       );
 
-      toast(
+
+      showToast(
         "Could not remove link."
       );
     }
+
   }
 );
+
 
 function openLinkModal() {
 
@@ -2653,6 +2620,7 @@ function openLinkModal() {
   els.linkTitle.focus();
 }
 
+
 function closeLinkModal() {
 
   els.modalBackdrop
@@ -2661,30 +2629,39 @@ function closeLinkModal() {
     );
 }
 
+
 els.addLinkBtn.addEventListener(
   "click",
   () => {
 
     if (!currentUser) {
-      toast(
-        "Sign in first to customize links."
+
+      showToast(
+        "Sign in first to customize cloud links."
       );
+
       return;
     }
+
 
     openLinkModal();
   }
 );
 
-els.closeLinkModal.addEventListener(
-  "click",
-  closeLinkModal
-);
 
-els.cancelLinkBtn.addEventListener(
-  "click",
-  closeLinkModal
-);
+els.closeLinkModal
+  .addEventListener(
+    "click",
+    closeLinkModal
+  );
+
+
+els.cancelLinkBtn
+  .addEventListener(
+    "click",
+    closeLinkModal
+  );
+
 
 els.modalBackdrop.addEventListener(
   "click",
@@ -2694,10 +2671,13 @@ els.modalBackdrop.addEventListener(
       event.target ===
       els.modalBackdrop
     ) {
+
       closeLinkModal();
     }
+
   }
 );
+
 
 els.linkForm.addEventListener(
   "submit",
@@ -2705,18 +2685,25 @@ els.linkForm.addEventListener(
 
     event.preventDefault();
 
+
     if (!currentUser) {
       return;
     }
 
+
     const title =
-      els.linkTitle.value.trim();
+      els.linkTitle.value
+        .trim();
+
 
     const url =
-      els.linkUrl.value.trim();
+      els.linkUrl.value
+        .trim();
+
 
     const color =
       els.linkColor.value;
+
 
     if (
       !title ||
@@ -2724,6 +2711,7 @@ els.linkForm.addEventListener(
     ) {
       return;
     }
+
 
     try {
 
@@ -2736,7 +2724,7 @@ els.linkForm.addEventListener(
           url,
           color,
           icon:
-            title.charAt(0)
+            title[0]
               .toUpperCase(),
 
           createdAt:
@@ -2744,9 +2732,11 @@ els.linkForm.addEventListener(
         }
       );
 
+
       closeLinkModal();
 
-      toast(
+
+      showToast(
         "Quick link saved."
       );
 
@@ -2756,68 +2746,435 @@ els.linkForm.addEventListener(
         error
       );
 
-      toast(
+
+      showToast(
         "Could not save link."
       );
     }
+
   }
 );
 
 
-/* ============================================================
-   MORE SHEET
-   ============================================================ */
+// ============================================================
+// ANALYTICS
+// ============================================================
+
+function calculateAnalytics() {
+
+  const now =
+    new Date();
+
+
+  const today =
+    localDateKey(
+      now
+    );
+
+
+  const start =
+    new Date(now);
+
+
+  start.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  start.setDate(
+    start.getDate() - 6
+  );
+
+
+  let todayMinutes =
+    0;
+
+
+  let weekMinutes =
+    0;
+
+
+  const days =
+    new Set();
+
+
+  for (
+    const log
+    of studyLogs
+  ) {
+
+    const date =
+      parseStoredDate(
+        log.timestamp
+      );
+
+
+    if (!date) {
+      continue;
+    }
+
+
+    const minutes =
+      Number(
+        log.duration || 0
+      );
+
+
+    if (
+      localDateKey(
+        date
+      ) === today
+    ) {
+
+      todayMinutes +=
+        minutes;
+    }
+
+
+    if (
+      date >= start &&
+      date <= now
+    ) {
+
+      weekMinutes +=
+        minutes;
+    }
+
+
+    if (
+      minutes > 0
+    ) {
+
+      days.add(
+        localDateKey(
+          date
+        )
+      );
+    }
+
+  }
+
+
+  let streak =
+    0;
+
+
+  const cursor =
+    new Date(now);
+
+
+  cursor.setHours(
+    0,
+    0,
+    0,
+    0
+  );
+
+
+  while (
+    days.has(
+      localDateKey(
+        cursor
+      )
+    )
+  ) {
+
+    streak +=
+      1;
+
+
+    cursor.setDate(
+      cursor.getDate() - 1
+    );
+  }
+
+
+  const completion =
+    tasks.length
+
+      ? Math.round(
+          tasks.filter(
+            task =>
+              task.completed
+          ).length /
+          tasks.length *
+          100
+        )
+
+      : 0;
+
+
+  return {
+
+    todayMinutes,
+
+    weekMinutes,
+
+    streak,
+
+    completion
+
+  };
+}
+
+
+function renderAnalytics() {
+
+  const stats =
+    calculateAnalytics();
+
+
+  const todaySessions =
+    studyLogs.filter(
+      log => {
+
+        const date =
+          parseStoredDate(
+            log.timestamp
+          );
+
+
+        return (
+          date &&
+          localDateKey(
+            date
+          ) ===
+            localDateKey()
+        );
+
+      }
+    ).length;
+
+
+  els.focusToday.textContent =
+    `${stats.todayMinutes}m`;
+
+
+  els.focusStreak.textContent =
+    `${stats.streak}d`;
+
+
+  els.focusSessions.textContent =
+    String(
+      todaySessions
+    );
+
+
+  els.analyticsToday.textContent =
+    `${stats.todayMinutes}m`;
+
+
+  els.analyticsWeek.textContent =
+    `${stats.weekMinutes}m`;
+
+
+  els.analyticsStreak.textContent =
+    `${stats.streak}d`;
+
+
+  els.analyticsCompletion.textContent =
+    `${stats.completion}%`;
+
+
+  els.clockFocus.textContent =
+    `${stats.todayMinutes}m`;
+
+
+  const milestones =
+    [
+      25,
+      50,
+      100,
+      180,
+      300,
+      500,
+      1000
+    ];
+
+
+  const next =
+    milestones.find(
+      milestone =>
+        stats.todayMinutes <
+        milestone
+    );
+
+
+  els.nextMilestone.textContent =
+    next
+
+      ? `${next - stats.todayMinutes}m until today's ${next}m milestone.`
+
+      : "Every milestone cleared today.";
+}
+
+
+els.clearStudyLogsBtn.addEventListener(
+  "click",
+  async () => {
+
+    if (
+      !currentUser ||
+      !studyLogs.length
+    ) {
+      return;
+    }
+
+
+    if (
+      !window.confirm(
+        "Delete all study history for this account?"
+      )
+    ) {
+      return;
+    }
+
+
+    try {
+
+      const batch =
+        writeBatch(db);
+
+
+      studyLogs.forEach(
+        log => {
+
+          batch.delete(
+            userDoc(
+              "study_logs",
+              log.id
+            )
+          );
+
+        }
+      );
+
+
+      await batch.commit();
+
+
+      showToast(
+        "Study history cleared."
+      );
+
+    } catch (error) {
+
+      console.error(
+        error
+      );
+
+
+      showToast(
+        "Could not clear study history."
+      );
+    }
+
+  }
+);
+
+
+// ============================================================
+// MORE SHEET
+// ============================================================
+
+function openMoreSheet() {
+
+  moreOpen =
+    true;
+
+
+  els.moreBackdrop
+    .classList.remove(
+      "hidden"
+    );
+
+
+  syncTimerInputs();
+
+  renderLayoutManager();
+
+  applyAppearance();
+}
+
+
+function closeMoreSheet() {
+
+  moreOpen =
+    false;
+
+
+  els.moreBackdrop
+    .classList.add(
+      "hidden"
+    );
+
+
+  applyViewState(
+    currentView ===
+      "more"
+
+      ? "overview"
+
+      : currentView
+  );
+}
+
 
 els.closeMore.addEventListener(
   "click",
-  () => {
-    els.moreBackdrop
-      .classList.add(
-        "hidden"
-      );
-  }
+  closeMoreSheet
 );
+
 
 els.moreBackdrop.addEventListener(
   "click",
   event => {
+
     if (
       event.target ===
       els.moreBackdrop
     ) {
-      els.moreBackdrop
-        .classList.add(
-          "hidden"
-        );
+
+      closeMoreSheet();
     }
+
   }
 );
 
-$$("[data-open-view]").forEach(
+
+$$(
+  "[data-sheet-view]"
+).forEach(
   button => {
 
     button.addEventListener(
       "click",
       () => {
 
-        els.moreBackdrop
-          .classList.add(
-            "hidden"
-          );
-
-        showView(
+        const view =
           button.dataset
-            .openView
+            .sheetView;
+
+
+        closeMoreSheet();
+
+
+        animateViewChange(
+          view
         );
       }
     );
+
   }
 );
 
 
-/* ============================================================
-   FIRESTORE
-   ============================================================ */
+// ============================================================
+// FIREBASE
+// ============================================================
 
 function clearListeners() {
 
@@ -2826,10 +3183,13 @@ function clearListeners() {
       unsubscribe()
   );
 
-  unsubscribeFns = [];
+
+  unsubscribeFns =
+    [];
 }
 
-async function seedDefaultLinks() {
+
+async function seedLinksIfEmpty() {
 
   const snapshot =
     await getDocs(
@@ -2841,14 +3201,17 @@ async function seedDefaultLinks() {
       )
     );
 
+
   if (
     !snapshot.empty
   ) {
     return;
   }
 
+
   const batch =
     writeBatch(db);
+
 
   DEFAULT_LINKS.forEach(
     link => {
@@ -2860,29 +3223,36 @@ async function seedDefaultLinks() {
           )
         );
 
+
       batch.set(
         reference,
         {
           ...link,
+
           createdAt:
             serverTimestamp()
         }
       );
+
     }
   );
+
 
   await batch.commit();
 }
 
-function startListeners() {
+
+function startRealtimeListeners() {
 
   clearListeners();
+
 
   if (!currentUser) {
     return;
   }
 
-  const tasksQuery =
+
+  const taskQuery =
     query(
       userCollection(
         "tasks"
@@ -2894,7 +3264,8 @@ function startListeners() {
       limit(250)
     );
 
-  const linksQuery =
+
+  const linkQuery =
     query(
       userCollection(
         "quick_links"
@@ -2906,7 +3277,8 @@ function startListeners() {
       limit(100)
     );
 
-  const logsQuery =
+
+  const logQuery =
     query(
       userCollection(
         "study_logs"
@@ -2918,22 +3290,24 @@ function startListeners() {
       limit(500)
     );
 
+
   unsubscribeFns.push(
 
     onSnapshot(
-      tasksQuery,
+      taskQuery,
 
       snapshot => {
 
         tasks =
           snapshot.docs.map(
-            document => ({
+            d => ({
               id:
-                document.id,
+                d.id,
 
-              ...document.data()
+              ...d.data()
             })
           );
+
 
         renderTasks();
       },
@@ -2941,65 +3315,85 @@ function startListeners() {
       error => {
 
         console.error(
-          "Tasks listener:",
+          "Tasks:",
           error
         );
 
-        toast(
-          "Task sync failed."
+
+        showToast(
+          error?.code ===
+            "failed-precondition"
+
+            ? "Firestore needs an index for this query."
+
+            : "Task sync failed."
         );
       }
     ),
 
+
     onSnapshot(
-      linksQuery,
+      linkQuery,
 
       snapshot => {
 
         quickLinks =
           snapshot.docs.map(
-            document => ({
+            d => ({
               id:
-                document.id,
+                d.id,
 
-              ...document.data()
+              ...d.data()
             })
           );
 
+
         renderLinks();
+
       },
 
       error =>
         console.error(
-          "Links listener:",
+          "Links:",
           error
         )
     ),
 
+
     onSnapshot(
-      logsQuery,
+      logQuery,
 
       snapshot => {
 
         studyLogs =
           snapshot.docs.map(
-            document => ({
+            d => ({
               id:
-                document.id,
+                d.id,
 
-              ...document.data()
+              ...d.data()
             })
           );
 
+
         renderAnalytics();
+
       },
 
-      error =>
+      error => {
+
         console.error(
-          "Logs listener:",
+          "Study logs:",
           error
-        )
+        );
+
+
+        showToast(
+          "Study analytics sync failed."
+        );
+      }
     ),
+
 
     onSnapshot(
       userDoc(
@@ -3011,13 +3405,16 @@ function startListeners() {
 
         noteContent =
           snapshot.exists()
+
             ? (
                 snapshot
                   .data()
                   .content ||
                 ""
               )
+
             : "";
+
 
         els.noteSaveState
           .textContent =
@@ -3025,153 +3422,204 @@ function startListeners() {
             ? "Saved to cloud"
             : "Ready";
 
+
         renderNotes();
-      },
 
-      error =>
-        console.error(
-          "Notes listener:",
-          error
-        )
-    ),
-
-    onSnapshot(
-      preferencesDoc(),
-
-      snapshot => {
-
-        preferences =
-          snapshot.exists()
-            ? normalizePreferences(
-                snapshot.data()
-              )
-            : clone(
-                DEFAULT_PREFERENCES
-              );
-
-        applyAppearance();
-        applyWidgetOrder();
-        syncTimerInputs();
-        updateTimerIfIdle();
-        renderLayoutManager();
-
-        requestAnimationFrame(
-          moveDockGlide
-        );
       },
 
       error => {
 
         console.error(
-          "Preferences listener:",
+          "Notes:",
           error
         );
 
-        toast(
-          "Personalization sync failed."
+
+        els.noteSaveState
+          .textContent =
+          "Unavailable";
+      }
+    ),
+
+
+    onSnapshot(
+      prefsDoc(),
+
+      snapshot => {
+
+        if (
+          snapshot.exists()
+        ) {
+
+          preferences =
+            normalizePreferences(
+              snapshot.data()
+            );
+
+        } else {
+
+          preferences =
+            cloneDefaults();
+        }
+
+
+        applyAppearance();
+
+        applyLayout();
+
+        syncTimerInputs();
+
+        updateTimerIfIdle();
+
+        renderLayoutManager();
+
+        requestAnimationFrame(
+          moveDockGlide
+        );
+
+      },
+
+      error => {
+
+        console.error(
+          "Preferences:",
+          error
+        );
+
+
+        showToast(
+          "Personalization settings could not sync."
         );
       }
     )
+
   );
 }
 
 
-/* ============================================================
-   AUTH
-   ============================================================ */
+// ============================================================
+// AUTH UI
+// ============================================================
 
-function signedOutUI() {
+function setSignedOutUI() {
 
   clearListeners();
+
 
   currentUser =
     null;
 
+
   tasks =
     [];
+
 
   studyLogs =
     [];
 
+
   quickLinks =
     [];
+
+
+  preferences =
+    cloneDefaults();
+
 
   noteContent =
     "";
 
-  preferences =
-    clone(
-      DEFAULT_PREFERENCES
-    );
-
-  applyAppearance();
-  applyWidgetOrder();
-  renderLayoutManager();
-  syncTimerInputs();
 
   renderTasks();
+
   renderAnalytics();
+
   renderLinks();
+
   renderNotes();
+
+  applyAppearance();
+
+  applyLayout();
+
+  syncTimerInputs();
+
 
   els.scratchpad.disabled =
     true;
 
+
   els.noteSaveState.textContent =
     "Not connected";
+
 
   els.signInBtn.classList.remove(
     "hidden"
   );
 
+
   els.userChip.classList.add(
     "hidden"
   );
 
-  setSync(
-    "Local mode",
+
+  setConnectionStatus(
+    "Offline mode",
     false
   );
 }
 
-async function signedInUI(user) {
+
+async function setSignedInUI(
+  user
+) {
 
   currentUser =
     user;
+
 
   els.signInBtn.classList.add(
     "hidden"
   );
 
+
   els.userChip.classList.remove(
     "hidden"
   );
+
 
   els.userName.textContent =
     user.displayName ||
     user.email ||
     "Student";
 
+
   if (user.photoURL) {
+
     els.userAvatar.src =
       user.photoURL;
   }
 
+
   els.scratchpad.disabled =
     false;
 
-  setSync(
+
+  setConnectionStatus(
     "Loading cloud workspace…",
     false
   );
 
+
   try {
 
-    await seedDefaultLinks();
+    await seedLinksIfEmpty();
 
-    startListeners();
 
-    setSync(
+    startRealtimeListeners();
+
+
+    setConnectionStatus(
       `Synced as ${
         user.displayName ||
         user.email ||
@@ -3180,28 +3628,36 @@ async function signedInUI(user) {
       true
     );
 
+
   } catch (error) {
 
     console.error(
-      "Workspace load:",
+      "Workspace:",
       error
     );
 
-    setSync(
-      "Cloud connection failed",
+
+    setConnectionStatus(
+      "Firebase connected, workspace failed",
       false
     );
 
-    toast(
+
+    showToast(
       error?.code ===
         "permission-denied"
 
-        ? "Firestore denied access. Publish your rules."
+        ? "Firebase denied access. Publish the Firestore rules."
 
-        : "Could not load cloud workspace."
+        : "Could not load your cloud workspace."
     );
   }
 }
+
+
+// ============================================================
+// SIGN IN
+// ============================================================
 
 els.signInBtn.addEventListener(
   "click",
@@ -3211,23 +3667,24 @@ els.signInBtn.addEventListener(
 
       await signInWithPopup(
         auth,
-        googleProvider
+        provider
       );
 
     } catch (error) {
 
       console.error(
-        "Sign in:",
+        "Sign-in:",
         error
       );
+
 
       if (
         error.code ===
         "auth/unauthorized-domain"
       ) {
 
-        toast(
-          "Add this site's domain to Firebase Authentication → Settings → Authorized domains."
+        showToast(
+          "Unauthorized domain: add this site's domain in Firebase → Authentication → Settings → Authorized domains."
         );
 
       } else if (
@@ -3235,8 +3692,8 @@ els.signInBtn.addEventListener(
         "auth/operation-not-allowed"
       ) {
 
-        toast(
-          "Google sign-in is not enabled."
+        showToast(
+          "Google sign-in is disabled in Firebase Authentication."
         );
 
       } else if (
@@ -3244,7 +3701,7 @@ els.signInBtn.addEventListener(
         "auth/popup-blocked"
       ) {
 
-        toast(
+        showToast(
           "Your browser blocked the login popup."
         );
 
@@ -3253,7 +3710,7 @@ els.signInBtn.addEventListener(
         "auth/popup-closed-by-user"
       ) {
 
-        toast(
+        showToast(
           `Login failed: ${
             error.code ||
             "unknown error"
@@ -3263,6 +3720,11 @@ els.signInBtn.addEventListener(
     }
   }
 );
+
+
+// ============================================================
+// SIGN OUT
+// ============================================================
 
 els.signOutBtn.addEventListener(
   "click",
@@ -3274,7 +3736,8 @@ els.signOutBtn.addEventListener(
         auth
       );
 
-      toast(
+
+      showToast(
         "Signed out."
       );
 
@@ -3284,49 +3747,63 @@ els.signOutBtn.addEventListener(
         error
       );
 
-      toast(
+
+      showToast(
         "Sign out failed."
       );
     }
   }
 );
 
+
+// ============================================================
+// AUTH STATE
+// ============================================================
+
 onAuthStateChanged(
   auth,
+
   user => {
 
     if (user) {
-      signedInUI(
+
+      setSignedInUI(
         user
       );
+
     } else {
-      signedOutUI();
+
+      setSignedOutUI();
+
     }
   }
 );
 
 
-/* ============================================================
-   INIT
-   ============================================================ */
-
-applyAppearance();
-applyWidgetOrder();
-renderLayoutManager();
-syncTimerInputs();
+// ============================================================
+// INITIAL UI
+// ============================================================
 
 renderTasks();
+
 renderAnalytics();
+
 renderLinks();
+
 renderNotes();
 
-showView(
+applyAppearance();
+
+applyLayout();
+
+syncTimerInputs();
+
+renderLayoutManager();
+
+applyViewState(
   "overview"
 );
 
-requestAnimationFrame(
-  moveDockGlide
-);
 
 window.addEventListener(
   "keydown",
@@ -3337,12 +3814,22 @@ window.addEventListener(
       "Escape"
     ) {
 
-      els.moreBackdrop
-        .classList.add(
-          "hidden"
-        );
+      if (moreOpen) {
+        closeMoreSheet();
+      }
 
-      closeLinkModal();
+
+      if (
+        !els.modalBackdrop
+          .classList
+          .contains(
+            "hidden"
+          )
+      ) {
+
+        closeLinkModal();
+      }
     }
+
   }
 );
