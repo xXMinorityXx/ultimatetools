@@ -29,14 +29,15 @@ import {
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3goBKm87go",
+  apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3go",
   authDomain: "student-dashboard-41b98.firebaseapp.com",
   projectId: "student-dashboard-41b98",
   storageBucket: "student-dashboard-41b98.firebasestorage.app",
   messagingSenderId: "908791794286",
-  appId: "1:908791794286:web:26f30e965d52fef572f47f",
-  measurementId: "G-NHXYYGMEZX"
+  appId: "1:908791794286:web:1a432119daf9d61772f47f",
+  measurementId: "G-Y39RMFW2W9"
 };
+
 
 const app =
   initializeApp(firebaseConfig);
