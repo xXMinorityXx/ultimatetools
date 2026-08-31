@@ -29,7 +29,7 @@ import {
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3go",
+  apiKey: "AIzaSyA3RzJKp5gq6a3JhYsI0D4jK3goBKm87go",
   authDomain: "student-dashboard-41b98.firebaseapp.com",
   projectId: "student-dashboard-41b98",
   storageBucket: "student-dashboard-41b98.firebasestorage.app",
