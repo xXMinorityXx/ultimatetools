@@ -1,754 +1,2431 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#090b10">
-  <meta name="description" content="A personal Liquid Glass student command center.">
-  <title>Student Command Center</title>
-  <link rel="preconnect" href="https://www.gstatic.com">
-  <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Command Center</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 </head>
+
 <body>
-  <div class="backdrop-light light-a"></div>
-  <div class="backdrop-light light-b"></div>
-  <div class="backdrop-light light-c"></div>
-  <div class="grain"></div>
 
-  <main class="app-shell">
-    <header class="hero-bar surface-light">
-      <div class="hero-copy">
-        <div class="eyebrow-row">
-          <span class="eyebrow">COMMAND CENTER</span>
-          <span class="connection-dot" id="connectionDot"></span>
-          <span class="sync-label" id="syncStatus">Offline mode</span>
-        </div>
-        <h1 id="greeting">Good afternoon.</h1>
-        <p class="hero-subtitle" id="heroDate">Loading your day…</p>
-      </div>
+    <!-- =========================================================
+         APP CONTAINER
+    ========================================================== -->
+    <div id="app">
 
-      <div class="hero-actions">
-        <button class="glass-button compact" id="signInBtn">Sign in with Google</button>
+        <!-- =====================================================
+             SIDEBAR
+        ====================================================== -->
+        <aside class="sidebar">
 
-        <div class="account-chip hidden" id="userChip">
-          <img id="userAvatar" alt="" referrerpolicy="no-referrer">
-          <span id="userName">Student</span>
-          <button class="mini-icon" id="signOutBtn" aria-label="Sign out" title="Sign out">↪</button>
-        </div>
-      </div>
-    </header>
+            <div class="sidebar-top">
 
-    <section class="workspace" id="workspace">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <span>✦</span>
+                    </div>
 
-      <!-- CLOCK -->
-      <article class="liquid-surface widget widget-clock" data-widget-id="clock">
-        <div class="surface-shine"></div>
+                    <div class="brand-text">
+                        <h1>Command Center</h1>
+                        <p>Student Dashboard</p>
+                    </div>
+                </div>
 
-        <div class="widget-head">
-          <div>
-            <span class="eyebrow">LOCAL TIME</span>
-            <h2>Right now</h2>
-          </div>
+                <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle Sidebar">
+                    ☰
+                </button>
 
-          <span class="live-badge">
-            <i></i> LIVE
-          </span>
-        </div>
-
-        <div class="clock-block">
-          <div class="clock-time" id="clockTime">--:--</div>
-
-          <div class="clock-line">
-            <span class="clock-ampm" id="clockAmPm">--</span>
-            <span id="clockDate">Loading…</span>
-          </div>
-        </div>
-
-        <div class="stat-strip">
-          <div>
-            <span>OPEN</span>
-            <strong id="clockOpen">0</strong>
-          </div>
-
-          <div>
-            <span>DONE</span>
-            <strong id="clockDone">0</strong>
-          </div>
-
-          <div>
-            <span>FOCUS</span>
-            <strong id="clockFocus">0m</strong>
-          </div>
-        </div>
-      </article>
-
-
-      <!-- FOCUS -->
-      <article class="liquid-surface widget widget-focus" data-widget-id="focus">
-        <div class="surface-shine"></div>
-
-        <div class="widget-head">
-          <div>
-            <span class="eyebrow">FOCUS ENGINE</span>
-            <h2>Pomodoro</h2>
-          </div>
-
-          <span class="status-pill" id="timerPill">FOCUS</span>
-        </div>
-
-        <div class="focus-layout">
-
-          <div class="timer-orb" id="timerOrb">
-            <div class="orb-inner">
-              <span class="timer-time" id="timerDisplay">25:00</span>
-              <span class="timer-caption" id="timerCaption">Deep work</span>
-            </div>
-          </div>
-
-          <div class="focus-controls">
-
-            <div class="segment-group">
-              <button class="segment active" data-timer-mode="focus">
-                Focus
-              </button>
-
-              <button class="segment" data-timer-mode="short">
-                Short
-              </button>
-
-              <button class="segment" data-timer-mode="long">
-                Long
-              </button>
             </div>
 
-            <div class="button-row">
-              <button class="accent-button" id="timerStart">
-                Start
-              </button>
+            <nav class="main-nav">
 
-              <button class="glass-button" id="timerReset">
-                Reset
-              </button>
+                <button class="nav-item active" data-page="dashboard">
+                    <span class="nav-icon">⌂</span>
+                    <span class="nav-label">Dashboard</span>
+                </button>
+
+                <button class="nav-item" data-page="tasks">
+                    <span class="nav-icon">✓</span>
+                    <span class="nav-label">Tasks</span>
+                </button>
+
+                <button class="nav-item" data-page="calendar">
+                    <span class="nav-icon">▣</span>
+                    <span class="nav-label">Calendar</span>
+                </button>
+
+                <button class="nav-item" data-page="notes">
+                    <span class="nav-icon">✎</span>
+                    <span class="nav-label">Notes</span>
+                </button>
+
+                <button class="nav-item" data-page="grades">
+                    <span class="nav-icon">★</span>
+                    <span class="nav-label">Grades</span>
+                </button>
+
+                <button class="nav-item" data-page="focus">
+                    <span class="nav-icon">◉</span>
+                    <span class="nav-label">Focus</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-bottom">
+
+                <button class="nav-item" data-page="settings">
+                    <span class="nav-icon">⚙</span>
+                    <span class="nav-label">Settings</span>
+                </button>
+
+                <button id="logoutButton" class="nav-item logout-button">
+                    <span class="nav-icon">⇥</span>
+                    <span class="nav-label">Log Out</span>
+                </button>
+
             </div>
 
-            <div class="focus-stats">
-              <div>
-                <span>TODAY</span>
-                <strong id="focusToday">0m</strong>
-              </div>
+        </aside>
 
-              <div>
-                <span>STREAK</span>
-                <strong id="focusStreak">0d</strong>
-              </div>
 
-              <div>
-                <span>SESSIONS</span>
-                <strong id="focusSessions">0</strong>
-              </div>
+        <!-- =====================================================
+             MAIN CONTENT
+        ====================================================== -->
+        <main class="main-content">
+
+            <!-- TOP BAR -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+
+                    <div class="mobile-brand">
+                        <div class="brand-icon">
+                            <span>✦</span>
+                        </div>
+
+                        <div>
+                            <h1>Command Center</h1>
+                        </div>
+                    </div>
+
+                    <div class="page-heading">
+                        <span id="pageEyebrow">Student Dashboard</span>
+                        <h2 id="pageTitle">Good afternoon!</h2>
+                    </div>
+
+                </div>
+
+
+                <div class="topbar-right">
+
+                    <button id="searchButton" class="topbar-button" aria-label="Search">
+                        ⌕
+                    </button>
+
+                    <button id="notificationButton" class="topbar-button notification-button" aria-label="Notifications">
+                        ♢
+                        <span id="notificationBadge" class="notification-badge">0</span>
+                    </button>
+
+                    <button id="profileButton" class="profile-button">
+
+                        <div id="topbarAvatar" class="avatar">
+                            <span>ST</span>
+                        </div>
+
+                        <div class="profile-info">
+                            <strong id="topbarUsername">Student</strong>
+                            <small id="topbarSchool">Student</small>
+                        </div>
+
+                        <span class="profile-chevron">⌄</span>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- SEARCH OVERLAY -->
+            <div id="searchOverlay" class="search-overlay hidden">
+
+                <div class="search-panel">
+
+                    <div class="search-header">
+                        <h3>Search Command Center</h3>
+
+                        <button id="closeSearchButton" class="modal-close">
+                            ×
+                        </button>
+                    </div>
+
+                    <div class="search-input-wrapper">
+
+                        <span class="search-input-icon">⌕</span>
+
+                        <input
+                            id="globalSearchInput"
+                            type="text"
+                            placeholder="Search tasks, notes, assignments..."
+                            autocomplete="off"
+                        >
+
+                    </div>
+
+                    <div id="searchResults" class="search-results">
+
+                        <div class="empty-search">
+                            <span>⌕</span>
+                            <p>Start typing to search.</p>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
 
-          </div>
+
+            <!-- =================================================
+                 DASHBOARD PAGE
+            ================================================== -->
+            <section id="page-dashboard" class="page active-page">
+
+                <div class="page-content">
+
+                    <!-- HERO -->
+                    <section class="welcome-card glass-card">
+
+                        <div class="welcome-copy">
+
+                            <span class="section-kicker">
+                                YOUR COMMAND CENTER
+                            </span>
+
+                            <h3 id="dashboardGreeting">
+                                Stay organized. Stay ahead.
+                            </h3>
+
+                            <p>
+                                Manage your school life, track your progress,
+                                and keep everything you need in one place.
+                            </p>
+
+                            <div class="welcome-actions">
+
+                                <button class="primary-button" data-action="add-task">
+                                    <span>＋</span>
+                                    Add Task
+                                </button>
+
+                                <button class="secondary-button" data-action="new-note">
+                                    <span>✎</span>
+                                    New Note
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="welcome-visual">
+
+                            <div class="orb orb-one"></div>
+                            <div class="orb orb-two"></div>
+
+                            <div class="floating-dashboard-icon icon-one">
+                                ✓
+                            </div>
+
+                            <div class="floating-dashboard-icon icon-two">
+                                ★
+                            </div>
+
+                            <div class="floating-dashboard-icon icon-three">
+                                ◉
+                            </div>
+
+                            <div class="dashboard-core">
+                                <span>✦</span>
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- QUICK STATS -->
+                    <section class="stats-grid">
+
+                        <div class="stat-card glass-card">
+
+                            <div class="stat-card-top">
+
+                                <div class="stat-icon task-stat-icon">
+                                    ✓
+                                </div>
+
+                                <span class="stat-label">
+                                    Tasks
+                                </span>
+
+                            </div>
+
+                            <div class="stat-value" id="statTasks">
+                                0
+                            </div>
+
+                            <div class="stat-description">
+                                <span id="statTasksCompleted">0 completed</span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card glass-card">
+
+                            <div class="stat-card-top">
+
+                                <div class="stat-icon due-stat-icon">
+                                    !
+                                </div>
+
+                                <span class="stat-label">
+                                    Due Soon
+                                </span>
+
+                            </div>
+
+                            <div class="stat-value" id="statDueSoon">
+                                0
+                            </div>
+
+                            <div class="stat-description">
+                                Upcoming deadlines
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card glass-card">
+
+                            <div class="stat-card-top">
+
+                                <div class="stat-icon grade-stat-icon">
+                                    ★
+                                </div>
+
+                                <span class="stat-label">
+                                    GPA
+                                </span>
+
+                            </div>
+
+                            <div class="stat-value" id="statGPA">
+                                —
+                            </div>
+
+                            <div class="stat-description">
+                                Current average
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card glass-card">
+
+                            <div class="stat-card-top">
+
+                                <div class="stat-icon focus-stat-icon">
+                                    ◉
+                                </div>
+
+                                <span class="stat-label">
+                                    Focus
+                                </span>
+
+                            </div>
+
+                            <div class="stat-value" id="statFocus">
+                                0m
+                            </div>
+
+                            <div class="stat-description">
+                                Today
+                            </div>
+
+                        </div>
+
+                    </section>
+
+
+                    <!-- DASHBOARD GRID -->
+                    <section class="dashboard-grid">
+
+                        <!-- TODAY'S TASKS -->
+                        <div class="dashboard-panel glass-card">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="section-kicker">
+                                        TODAY
+                                    </span>
+
+                                    <h3>
+                                        Tasks
+                                    </h3>
+                                </div>
+
+                                <button
+                                    class="panel-link"
+                                    data-page-link="tasks"
+                                >
+                                    View all →
+                                </button>
+
+                            </div>
+
+
+                            <div id="dashboardTaskList" class="dashboard-task-list">
+
+                                <div class="loading-state">
+                                    <div class="loading-spinner"></div>
+                                    <span>Loading tasks...</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- UPCOMING -->
+                        <div class="dashboard-panel glass-card">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="section-kicker">
+                                        NEXT UP
+                                    </span>
+
+                                    <h3>
+                                        Upcoming
+                                    </h3>
+                                </div>
+
+                                <button
+                                    class="panel-link"
+                                    data-page-link="calendar"
+                                >
+                                    Calendar →
+                                </button>
+
+                            </div>
+
+
+                            <div id="dashboardUpcomingList" class="upcoming-list">
+
+                                <div class="loading-state">
+                                    <div class="loading-spinner"></div>
+                                    <span>Loading events...</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- RECENT NOTES -->
+                        <div class="dashboard-panel glass-card">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="section-kicker">
+                                        NOTES
+                                    </span>
+
+                                    <h3>
+                                        Recent Notes
+                                    </h3>
+                                </div>
+
+                                <button
+                                    class="panel-link"
+                                    data-page-link="notes"
+                                >
+                                    View all →
+                                </button>
+
+                            </div>
+
+
+                            <div id="dashboardNotesList" class="dashboard-notes-list">
+
+                                <div class="loading-state">
+                                    <div class="loading-spinner"></div>
+                                    <span>Loading notes...</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PROGRESS -->
+                        <div class="dashboard-panel glass-card">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="section-kicker">
+                                        PROGRESS
+                                    </span>
+
+                                    <h3>
+                                        This Week
+                                    </h3>
+                                </div>
+
+                                <button
+                                    class="panel-link"
+                                    data-page-link="focus"
+                                >
+                                    Details →
+                                </button>
+
+                            </div>
+
+
+                            <div class="progress-overview">
+
+                                <div class="progress-ring-wrapper">
+
+                                    <div id="weeklyProgressRing" class="progress-ring">
+
+                                        <div class="progress-ring-inner">
+
+                                            <strong id="weeklyProgressPercent">
+                                                0%
+                                            </strong>
+
+                                            <span>
+                                                complete
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="progress-stats">
+
+                                    <div class="progress-stat">
+                                        <span class="progress-stat-label">
+                                            Tasks completed
+                                        </span>
+                                        <strong id="weeklyTasksCompleted">
+                                            0
+                                        </strong>
+                                    </div>
+
+                                    <div class="progress-stat">
+                                        <span class="progress-stat-label">
+                                            Focus time
+                                        </span>
+                                        <strong id="weeklyFocusTime">
+                                            0m
+                                        </strong>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </section>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 TASKS PAGE
+            ================================================== -->
+            <section id="page-tasks" class="page">
+
+                <div class="page-content">
+
+                    <div class="page-header">
+
+                        <div>
+                            <span class="section-kicker">
+                                PRODUCTIVITY
+                            </span>
+
+                            <h2>
+                                Tasks
+                            </h2>
+
+                            <p>
+                                Keep track of everything you need to get done.
+                            </p>
+                        </div>
+
+                        <button
+                            class="primary-button"
+                            data-action="add-task"
+                        >
+                            ＋ Add Task
+                        </button>
+
+                    </div>
+
+
+                    <div class="task-toolbar glass-card">
+
+                        <div class="task-filters">
+
+                            <button
+                                class="filter-button active"
+                                data-task-filter="all"
+                            >
+                                All
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-task-filter="active"
+                            >
+                                Active
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-task-filter="completed"
+                            >
+                                Completed
+                            </button>
+
+                            <button
+                                class="filter-button"
+                                data-task-filter="overdue"
+                            >
+                                Overdue
+                            </button>
+
+                        </div>
+
+
+                        <div class="task-sort">
+
+                            <label for="taskSort">
+                                Sort:
+                            </label>
+
+                            <select id="taskSort">
+
+                                <option value="date">
+                                    Due Date
+                                </option>
+
+                                <option value="priority">
+                                    Priority
+                                </option>
+
+                                <option value="created">
+                                    Recently Added
+                                </option>
+
+                                <option value="alphabetical">
+                                    Alphabetical
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div id="tasksContainer" class="tasks-container">
+
+                        <div class="loading-state glass-card">
+                            <div class="loading-spinner"></div>
+                            <span>Loading tasks...</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 CALENDAR PAGE
+            ================================================== -->
+            <section id="page-calendar" class="page">
+
+                <div class="page-content">
+
+                    <div class="page-header">
+
+                        <div>
+                            <span class="section-kicker">
+                                SCHEDULE
+                            </span>
+
+                            <h2>
+                                Calendar
+                            </h2>
+
+                            <p>
+                                See your upcoming schedule at a glance.
+                            </p>
+                        </div>
+
+                        <button
+                            class="primary-button"
+                            data-action="add-event"
+                        >
+                            ＋ Add Event
+                        </button>
+
+                    </div>
+
+
+                    <div class="calendar-layout">
+
+                        <div class="calendar-main glass-card">
+
+                            <div class="calendar-header">
+
+                                <button
+                                    id="calendarPrev"
+                                    class="calendar-nav-button"
+                                >
+                                    ‹
+                                </button>
+
+                                <h3 id="calendarMonth">
+                                    Month Year
+                                </h3>
+
+                                <button
+                                    id="calendarNext"
+                                    class="calendar-nav-button"
+                                >
+                                    ›
+                                </button>
+
+                            </div>
+
+
+                            <div class="calendar-weekdays">
+
+                                <span>Sun</span>
+                                <span>Mon</span>
+                                <span>Tue</span>
+                                <span>Wed</span>
+                                <span>Thu</span>
+                                <span>Fri</span>
+                                <span>Sat</span>
+
+                            </div>
+
+
+                            <div id="calendarGrid" class="calendar-grid">
+                            </div>
+
+                        </div>
+
+
+                        <div class="calendar-side glass-card">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="section-kicker">
+                                        EVENTS
+                                    </span>
+
+                                    <h3 id="selectedDateTitle">
+                                        Upcoming
+                                    </h3>
+                                </div>
+
+                            </div>
+
+
+                            <div
+                                id="calendarEventList"
+                                class="calendar-event-list"
+                            >
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 NOTES PAGE
+            ================================================== -->
+            <section id="page-notes" class="page">
+
+                <div class="page-content">
+
+                    <div class="page-header">
+
+                        <div>
+                            <span class="section-kicker">
+                                KNOWLEDGE
+                            </span>
+
+                            <h2>
+                                Notes
+                            </h2>
+
+                            <p>
+                                Capture ideas, reminders, and school notes.
+                            </p>
+                        </div>
+
+                        <button
+                            class="primary-button"
+                            data-action="new-note"
+                        >
+                            ＋ New Note
+                        </button>
+
+                    </div>
+
+
+                    <div class="notes-toolbar glass-card">
+
+                        <div class="notes-search">
+
+                            <span>⌕</span>
+
+                            <input
+                                type="text"
+                                id="notesSearchInput"
+                                placeholder="Search your notes..."
+                            >
+
+                        </div>
+
+                        <select id="notesSort">
+
+                            <option value="updated">
+                                Recently Updated
+                            </option>
+
+                            <option value="created">
+                                Recently Created
+                            </option>
+
+                            <option value="title">
+                                Title
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div
+                        id="notesGrid"
+                        class="notes-grid"
+                    >
+
+                        <div class="loading-state glass-card">
+                            <div class="loading-spinner"></div>
+                            <span>Loading notes...</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 GRADES PAGE
+            ================================================== -->
+            <section id="page-grades" class="page">
+
+                <div class="page-content">
+
+                    <div class="page-header">
+
+                        <div>
+                            <span class="section-kicker">
+                                ACADEMICS
+                            </span>
+
+                            <h2>
+                                Grades
+                            </h2>
+
+                            <p>
+                                Track your grades and academic progress.
+                            </p>
+                        </div>
+
+                        <button
+                            class="primary-button"
+                            data-action="add-grade"
+                        >
+                            ＋ Add Grade
+                        </button>
+
+                    </div>
+
+
+                    <div class="grades-overview">
+
+                        <div class="grade-summary glass-card">
+
+                            <div class="grade-summary-label">
+                                Current GPA
+                            </div>
+
+                            <div
+                                id="gradesGPA"
+                                class="grade-summary-value"
+                            >
+                                —
+                            </div>
+
+                            <div
+                                id="gradesGPAText"
+                                class="grade-summary-sub"
+                            >
+                                Add grades to calculate your GPA.
+                            </div>
+
+                        </div>
+
+
+                        <div class="grade-summary glass-card">
+
+                            <div class="grade-summary-label">
+                                Classes
+                            </div>
+
+                            <div
+                                id="gradesClassCount"
+                                class="grade-summary-value"
+                            >
+                                0
+                            </div>
+
+                            <div class="grade-summary-sub">
+                                Active courses
+                            </div>
+
+                        </div>
+
+
+                        <div class="grade-summary glass-card">
+
+                            <div class="grade-summary-label">
+                                Assignments
+                            </div>
+
+                            <div
+                                id="gradesAssignmentCount"
+                                class="grade-summary-value"
+                            >
+                                0
+                            </div>
+
+                            <div class="grade-summary-sub">
+                                Tracked grades
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        id="gradesContainer"
+                        class="grades-container"
+                    >
+
+                        <div class="loading-state glass-card">
+                            <div class="loading-spinner"></div>
+                            <span>Loading grades...</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 FOCUS PAGE
+            ================================================== -->
+            <section id="page-focus" class="page">
+
+                <div class="page-content">
+
+                    <div class="page-header">
+
+                        <div>
+                            <span class="section-kicker">
+                                DEEP WORK
+                            </span>
+
+                            <h2>
+                                Focus
+                            </h2>
+
+                            <p>
+                                Work distraction-free and build productive habits.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="focus-layout">
+
+                        <div class="focus-timer-card glass-card">
+
+                            <div class="focus-mode-label">
+                                FOCUS SESSION
+                            </div>
+
+                            <div
+                                id="focusTimer"
+                                class="focus-timer"
+                            >
+                                25:00
+                            </div>
+
+                            <div
+                                id="focusStatus"
+                                class="focus-status"
+                            >
+                                Ready when you are.
+                            </div>
+
+
+                            <div class="focus-controls">
+
+                                <button
+                                    id="focusStartButton"
+                                    class="primary-button focus-start-button"
+                                >
+                                    ▶ Start
+                                </button>
+
+                                <button
+                                    id="focusResetButton"
+                                    class="secondary-button"
+                                >
+                                    ↻ Reset
+                                </button>
+
+                            </div>
+
+
+                            <div class="focus-presets">
+
+                                <button
+                                    class="focus-preset active"
+                                    data-focus-duration="25"
+                                >
+                                    25 min
+                                </button>
+
+                                <button
+                                    class="focus-preset"
+                                    data-focus-duration="45"
+                                >
+                                    45 min
+                                </button>
+
+                                <button
+                                    class="focus-preset"
+                                    data-focus-duration="60"
+                                >
+                                    60 min
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="focus-sidebar glass-card">
+
+                            <div class="panel-header">
+
+                                <div>
+                                    <span class="section-kicker">
+                                        TODAY
+                                    </span>
+
+                                    <h3>
+                                        Focus Stats
+                                    </h3>
+                                </div>
+
+                            </div>
+
+
+                            <div class="focus-stat-large">
+
+                                <span class="focus-stat-large-label">
+                                    Focus Time
+                                </span>
+
+                                <strong id="focusToday">
+                                    0m
+                                </strong>
+
+                            </div>
+
+
+                            <div class="focus-stat-row">
+
+                                <span>
+                                    Sessions
+                                </span>
+
+                                <strong id="focusSessionsToday">
+                                    0
+                                </strong>
+
+                            </div>
+
+
+                            <div class="focus-stat-row">
+
+                                <span>
+                                    This Week
+                                </span>
+
+                                <strong id="focusWeek">
+                                    0m
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 SETTINGS PAGE
+            ================================================== -->
+            <section id="page-settings" class="page">
+
+                <div class="page-content">
+
+                    <div class="page-header">
+
+                        <div>
+                            <span class="section-kicker">
+                                CUSTOMIZE
+                            </span>
+
+                            <h2>
+                                Settings
+                            </h2>
+
+                            <p>
+                                Personalize your Command Center.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="settings-grid">
+
+                        <!-- PROFILE -->
+                        <div class="settings-card glass-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+                                    <span class="section-kicker">
+                                        PROFILE
+                                    </span>
+
+                                    <h3>
+                                        Student Profile
+                                    </h3>
+                                </div>
+
+                            </div>
+
+
+                            <form id="profileForm" class="settings-form">
+
+                                <div class="profile-preview">
+
+                                    <div
+                                        id="settingsAvatar"
+                                        class="avatar avatar-large"
+                                    >
+                                        <span>ST</span>
+                                    </div>
+
+                                    <div>
+                                        <strong id="settingsProfileName">
+                                            Student
+                                        </strong>
+
+                                        <span>
+                                            Your personal profile
+                                        </span>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-grid">
+
+                                    <div class="form-group">
+
+                                        <label for="profileName">
+                                            Name
+                                        </label>
+
+                                        <input
+                                            id="profileName"
+                                            type="text"
+                                            placeholder="Your name"
+                                        >
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label for="profileSchool">
+                                            School
+                                        </label>
+
+                                        <input
+                                            id="profileSchool"
+                                            type="text"
+                                            placeholder="Your school"
+                                        >
+
+                                    </div>
+
+
+                                    <div class="form-group">
+
+                                        <label for="profileGrade">
+                                            Grade
+                                        </label>
+
+                                        <input
+                                            id="profileGrade"
+                                            type="text"
+                                            placeholder="9"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+
+                                <button
+                                    type="submit"
+                                    class="primary-button"
+                                >
+                                    Save Profile
+                                </button>
+
+                            </form>
+
+                        </div>
+
+
+                        <!-- APPEARANCE -->
+                        <div class="settings-card glass-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+                                    <span class="section-kicker">
+                                        APPEARANCE
+                                    </span>
+
+                                    <h3>
+                                        Look & Feel
+                                    </h3>
+                                </div>
+
+                            </div>
+
+
+                            <div class="settings-options">
+
+                                <div class="setting-option">
+
+                                    <div>
+                                        <strong>
+                                            Theme
+                                        </strong>
+
+                                        <span>
+                                            Choose how your dashboard looks.
+                                        </span>
+                                    </div>
+
+                                    <select id="themeSelect">
+
+                                        <option value="dark">
+                                            Dark
+                                        </option>
+
+                                        <option value="light">
+                                            Light
+                                        </option>
+
+                                        <option value="system">
+                                            System
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div class="setting-option">
+
+                                    <div>
+                                        <strong>
+                                            Accent
+                                        </strong>
+
+                                        <span>
+                                            Choose your dashboard accent.
+                                        </span>
+                                    </div>
+
+                                    <div class="accent-picker">
+
+                                        <button
+                                            class="accent-option active"
+                                            data-accent="blue"
+                                            aria-label="Blue accent"
+                                        ></button>
+
+                                        <button
+                                            class="accent-option"
+                                            data-accent="purple"
+                                            aria-label="Purple accent"
+                                        ></button>
+
+                                        <button
+                                            class="accent-option"
+                                            data-accent="green"
+                                            aria-label="Green accent"
+                                        ></button>
+
+                                        <button
+                                            class="accent-option"
+                                            data-accent="orange"
+                                            aria-label="Orange accent"
+                                        ></button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- NOTIFICATIONS -->
+                        <div class="settings-card glass-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+                                    <span class="section-kicker">
+                                        NOTIFICATIONS
+                                    </span>
+
+                                    <h3>
+                                        Alerts
+                                    </h3>
+                                </div>
+
+                            </div>
+
+
+                            <div class="settings-options">
+
+                                <label class="setting-option toggle-option">
+
+                                    <div>
+                                        <strong>
+                                            Task reminders
+                                        </strong>
+
+                                        <span>
+                                            Get reminders for upcoming tasks.
+                                        </span>
+                                    </div>
+
+                                    <input
+                                        type="checkbox"
+                                        id="taskReminderToggle"
+                                        checked
+                                    >
+
+                                    <span class="toggle-switch"></span>
+
+                                </label>
+
+
+                                <label class="setting-option toggle-option">
+
+                                    <div>
+                                        <strong>
+                                            Daily summary
+                                        </strong>
+
+                                        <span>
+                                            See your daily progress summary.
+                                        </span>
+                                    </div>
+
+                                    <input
+                                        type="checkbox"
+                                        id="dailySummaryToggle"
+                                        checked
+                                    >
+
+                                    <span class="toggle-switch"></span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DATA -->
+                        <div class="settings-card glass-card">
+
+                            <div class="settings-card-header">
+
+                                <div>
+                                    <span class="section-kicker">
+                                        DATA
+                                    </span>
+
+                                    <h3>
+                                        Data Management
+                                    </h3>
+                                </div>
+
+                            </div>
+
+
+                            <div class="settings-data-actions">
+
+                                <button
+                                    id="exportDataButton"
+                                    class="secondary-button"
+                                >
+                                    ↓ Export Data
+                                </button>
+
+                                <button
+                                    id="clearDataButton"
+                                    class="danger-button"
+                                >
+                                    Delete Local Data
+                                </button>
+
+                            </div>
+
+                            <p class="settings-warning">
+                                Deleting local data will remove preferences
+                                stored on this device.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================================================
+         AUTH / LOGIN
+    ========================================================== -->
+    <div id="authScreen" class="auth-screen">
+
+        <div class="auth-background">
+
+            <div class="auth-orb auth-orb-one"></div>
+            <div class="auth-orb auth-orb-two"></div>
+
         </div>
-      </article>
 
 
-      <!-- TASKS -->
-      <article class="liquid-surface widget widget-tasks" data-widget-id="tasks">
-        <div class="surface-shine"></div>
+        <div class="auth-card glass-card">
 
-        <div class="widget-head">
-          <div>
-            <span class="eyebrow">CLOUD TASKS</span>
-            <h2>Assignments</h2>
-          </div>
+            <div class="auth-brand">
 
-          <div class="widget-head-actions">
-            <span class="counter" id="taskCountBadge">0</span>
-          </div>
+                <div class="brand-icon auth-brand-icon">
+                    <span>✦</span>
+                </div>
+
+                <div>
+                    <h1>
+                        Student Command Center
+                    </h1>
+
+                    <p>
+                        Everything you need. One place.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="auth-form-container">
+
+                <div class="auth-heading">
+
+                    <span class="section-kicker">
+                        WELCOME
+                    </span>
+
+                    <h2 id="authTitle">
+                        Sign in
+                    </h2>
+
+                    <p id="authSubtitle">
+                        Access your personal student dashboard.
+                    </p>
+
+                </div>
+
+
+                <!-- LOGIN FORM -->
+                <form id="loginForm" class="auth-form">
+
+                    <div class="form-group">
+
+                        <label for="loginEmail">
+                            Email
+                        </label>
+
+                        <input
+                            id="loginEmail"
+                            type="email"
+                            autocomplete="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="loginPassword">
+                            Password
+                        </label>
+
+                        <div class="password-input-wrapper">
+
+                            <input
+                                id="loginPassword"
+                                type="password"
+                                autocomplete="current-password"
+                                placeholder="Your password"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="loginPassword"
+                            >
+                                ◉
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="auth-options">
+
+                        <label class="checkbox-label">
+
+                            <input
+                                id="rememberMe"
+                                type="checkbox"
+                            >
+
+                            <span>
+                                Remember me
+                            </span>
+
+                        </label>
+
+
+                        <button
+                            type="button"
+                            id="forgotPasswordButton"
+                            class="text-button"
+                        >
+                            Forgot password?
+                        </button>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button auth-submit-button"
+                    >
+                        Sign In
+                    </button>
+
+                </form>
+
+
+                <!-- REGISTER FORM -->
+                <form
+                    id="registerForm"
+                    class="auth-form hidden"
+                >
+
+                    <div class="form-group">
+
+                        <label for="registerName">
+                            Name
+                        </label>
+
+                        <input
+                            id="registerName"
+                            type="text"
+                            autocomplete="name"
+                            placeholder="Your name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerEmail">
+                            Email
+                        </label>
+
+                        <input
+                            id="registerEmail"
+                            type="email"
+                            autocomplete="email"
+                            placeholder="you@example.com"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="registerPassword">
+                            Password
+                        </label>
+
+                        <div class="password-input-wrapper">
+
+                            <input
+                                id="registerPassword"
+                                type="password"
+                                autocomplete="new-password"
+                                placeholder="Create a password"
+                                required
+                                minlength="6"
+                            >
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                data-password-target="registerPassword"
+                            >
+                                ◉
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="primary-button auth-submit-button"
+                    >
+                        Create Account
+                    </button>
+
+                </form>
+
+
+                <div class="auth-switch">
+
+                    <span id="authSwitchText">
+                        Don't have an account?
+                    </span>
+
+                    <button
+                        id="authSwitchButton"
+                        class="text-button"
+                    >
+                        Create one
+                    </button>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <form class="task-composer" id="taskForm">
+    </div>
 
-          <input
-            id="taskText"
-            class="glass-input"
-            autocomplete="off"
-            maxlength="180"
-            placeholder="What needs to get done?"
-            required
-          >
 
-          <div class="composer-row">
+    <!-- =========================================================
+         MODAL BACKDROP
+    ========================================================== -->
+    <div id="modalBackdrop" class="modal-backdrop hidden">
 
-            <select id="taskCategory" class="glass-input">
-              <option value="School">School</option>
-              <option value="Math">Math</option>
-              <option value="Science">Science</option>
-              <option value="CS">CS</option>
-              <option value="History">History</option>
-              <option value="Personal">Personal</option>
-            </select>
 
-            <select id="taskPriority" class="glass-input">
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-              <option value="low">Low</option>
-            </select>
+        <!-- =====================================================
+             ADD TASK MODAL
+        ====================================================== -->
+        <div
+            id="taskModal"
+            class="modal glass-card hidden"
+        >
 
-            <input
-              id="taskDue"
-              class="glass-input"
-              type="date"
-              aria-label="Due date"
+            <div class="modal-header">
+
+                <div>
+                    <span class="section-kicker">
+                        PRODUCTIVITY
+                    </span>
+
+                    <h3>
+                        Add Task
+                    </h3>
+                </div>
+
+                <button class="modal-close" data-close-modal>
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="taskForm" class="modal-form">
+
+                <input
+                    type="hidden"
+                    id="taskId"
+                >
+
+
+                <div class="form-group">
+
+                    <label for="taskTitle">
+                        Task
+                    </label>
+
+                    <input
+                        id="taskTitle"
+                        type="text"
+                        placeholder="What do you need to do?"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="taskDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="taskDescription"
+                        rows="4"
+                        placeholder="Add details..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="taskDueDate">
+                            Due Date
+                        </label>
+
+                        <input
+                            id="taskDueDate"
+                            type="date"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="taskPriority">
+                            Priority
+                        </label>
+
+                        <select id="taskPriority">
+
+                            <option value="low">
+                                Low
+                            </option>
+
+                            <option value="medium" selected>
+                                Medium
+                            </option>
+
+                            <option value="high">
+                                High
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        data-close-modal
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Save Task
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- =====================================================
+             ADD EVENT MODAL
+        ====================================================== -->
+        <div
+            id="eventModal"
+            class="modal glass-card hidden"
+        >
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="section-kicker">
+                        SCHEDULE
+                    </span>
+
+                    <h3>
+                        Add Event
+                    </h3>
+                </div>
+
+                <button class="modal-close" data-close-modal>
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="eventForm" class="modal-form">
+
+                <input
+                    type="hidden"
+                    id="eventId"
+                >
+
+
+                <div class="form-group">
+
+                    <label for="eventTitle">
+                        Event
+                    </label>
+
+                    <input
+                        id="eventTitle"
+                        type="text"
+                        placeholder="Event title"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="eventDate">
+                            Date
+                        </label>
+
+                        <input
+                            id="eventDate"
+                            type="date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="eventTime">
+                            Time
+                        </label>
+
+                        <input
+                            id="eventTime"
+                            type="time"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="eventType">
+                        Type
+                    </label>
+
+                    <select id="eventType">
+
+                        <option value="school">
+                            School
+                        </option>
+
+                        <option value="assignment">
+                            Assignment
+                        </option>
+
+                        <option value="test">
+                            Test
+                        </option>
+
+                        <option value="personal">
+                            Personal
+                        </option>
+
+                        <option value="other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        data-close-modal
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Save Event
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- =====================================================
+             NOTE MODAL
+        ====================================================== -->
+        <div
+            id="noteModal"
+            class="modal glass-card hidden"
+        >
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="section-kicker">
+                        KNOWLEDGE
+                    </span>
+
+                    <h3>
+                        New Note
+                    </h3>
+                </div>
+
+                <button class="modal-close" data-close-modal>
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="noteForm" class="modal-form">
+
+                <input
+                    type="hidden"
+                    id="noteId"
+                >
+
+
+                <div class="form-group">
+
+                    <label for="noteTitle">
+                        Title
+                    </label>
+
+                    <input
+                        id="noteTitle"
+                        type="text"
+                        placeholder="Note title"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="noteContent">
+                        Note
+                    </label>
+
+                    <textarea
+                        id="noteContent"
+                        rows="10"
+                        placeholder="Write your note..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="noteColor">
+                        Color
+                    </label>
+
+                    <select id="noteColor">
+
+                        <option value="blue">
+                            Blue
+                        </option>
+
+                        <option value="purple">
+                            Purple
+                        </option>
+
+                        <option value="green">
+                            Green
+                        </option>
+
+                        <option value="orange">
+                            Orange
+                        </option>
+
+                        <option value="neutral">
+                            Neutral
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        data-close-modal
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Save Note
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- =====================================================
+             GRADE MODAL
+        ====================================================== -->
+        <div
+            id="gradeModal"
+            class="modal glass-card hidden"
+        >
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="section-kicker">
+                        ACADEMICS
+                    </span>
+
+                    <h3>
+                        Add Grade
+                    </h3>
+                </div>
+
+                <button class="modal-close" data-close-modal>
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="gradeForm" class="modal-form">
+
+                <input
+                    type="hidden"
+                    id="gradeId"
+                >
+
+
+                <div class="form-group">
+
+                    <label for="gradeCourse">
+                        Course
+                    </label>
+
+                    <input
+                        id="gradeCourse"
+                        type="text"
+                        placeholder="e.g. Algebra II"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="gradeAssignment">
+                        Assignment
+                    </label>
+
+                    <input
+                        id="gradeAssignment"
+                        type="text"
+                        placeholder="e.g. Chapter 4 Test"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="gradeEarned">
+                            Points Earned
+                        </label>
+
+                        <input
+                            id="gradeEarned"
+                            type="number"
+                            min="0"
+                            step="0.01"
+                            placeholder="95"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="gradePossible">
+                            Points Possible
+                        </label>
+
+                        <input
+                            id="gradePossible"
+                            type="number"
+                            min="1"
+                            step="0.01"
+                            placeholder="100"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        data-close-modal
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Save Grade
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- =====================================================
+             FORGOT PASSWORD MODAL
+        ====================================================== -->
+        <div
+            id="forgotPasswordModal"
+            class="modal glass-card hidden"
+        >
+
+            <div class="modal-header">
+
+                <div>
+                    <span class="section-kicker">
+                        ACCOUNT
+                    </span>
+
+                    <h3>
+                        Reset Password
+                    </h3>
+                </div>
+
+                <button class="modal-close" data-close-modal>
+                    ×
+                </button>
+
+            </div>
+
+
+            <form
+                id="forgotPasswordForm"
+                class="modal-form"
             >
 
-            <button class="accent-button" type="submit">
-              Add task
-            </button>
+                <p class="modal-description">
+                    Enter your email address and we'll send you a
+                    password reset link.
+                </p>
 
-          </div>
-        </form>
 
-        <div class="filter-bar">
+                <div class="form-group">
 
-          <div class="filter-tabs">
-            <button class="filter-tab active" data-task-status="active">
-              Active
-            </button>
+                    <label for="resetEmail">
+                        Email
+                    </label>
 
-            <button class="filter-tab" data-task-status="completed">
-              Completed
-            </button>
+                    <input
+                        id="resetEmail"
+                        type="email"
+                        placeholder="you@example.com"
+                        required
+                    >
 
-            <button class="filter-tab" data-task-status="all">
-              All
-            </button>
-          </div>
+                </div>
 
-          <select
-            id="categoryFilter"
-            class="glass-input compact-input"
-          >
-            <option value="all">All subjects</option>
-            <option value="School">School</option>
-            <option value="Math">Math</option>
-            <option value="Science">Science</option>
-            <option value="CS">CS</option>
-            <option value="History">History</option>
-            <option value="Personal">Personal</option>
-          </select>
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        data-close-modal
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="primary-button"
+                    >
+                        Send Reset Link
+                    </button>
+
+                </div>
+
+            </form>
 
         </div>
 
-        <div class="task-list" id="taskList">
-          <div class="empty-state">
-            Sign in to load your cloud tasks.
-          </div>
-        </div>
-      </article>
 
-
-      <!-- NOTES -->
-      <article class="liquid-surface widget widget-notes" data-widget-id="notes">
-
-        <div class="surface-shine"></div>
-
-        <div class="widget-head">
-          <div>
-            <span class="eyebrow">CLOUD SCRATCHPAD</span>
-            <h2>Notes</h2>
-          </div>
-
-          <span class="save-state" id="noteSaveState">
-            Not connected
-          </span>
-        </div>
-
-        <textarea
-          id="scratchpad"
-          class="notes-editor"
-          placeholder="Write anything… class codes, ideas, reminders, rough drafts."
-          disabled
-        ></textarea>
-
-        <div class="notes-footer">
-          <span id="noteCount">0 characters</span>
-
-          <button
-            class="glass-button compact"
-            id="clearNotesBtn"
-          >
-            Clear
-          </button>
-        </div>
-
-      </article>
-
-
-      <!-- LINKS -->
-      <article class="liquid-surface widget widget-links" data-widget-id="links">
-
-        <div class="surface-shine"></div>
-
-        <div class="widget-head">
-          <div>
-            <span class="eyebrow">LAUNCHPAD</span>
-            <h2>Quick links</h2>
-          </div>
-
-          <button
-            class="glass-button compact"
-            id="addLinkBtn"
-          >
-            + Add
-          </button>
-        </div>
-
+        <!-- =====================================================
+             CONFIRM DELETE MODAL
+        ====================================================== -->
         <div
-          class="link-grid"
-          id="linkGrid"
-        ></div>
+            id="confirmModal"
+            class="modal glass-card small-modal hidden"
+        >
 
-      </article>
+            <div class="modal-header">
+
+                <div>
+                    <span class="section-kicker">
+                        CONFIRM
+                    </span>
+
+                    <h3 id="confirmTitle">
+                        Are you sure?
+                    </h3>
+                </div>
+
+                <button class="modal-close" data-close-modal>
+                    ×
+                </button>
+
+            </div>
 
 
-      <!-- ANALYTICS -->
-      <article
-        class="liquid-surface widget widget-analytics"
-        data-widget-id="analytics"
-      >
+            <div class="confirm-content">
 
-        <div class="surface-shine"></div>
+                <p id="confirmMessage">
+                    This action cannot be undone.
+                </p>
 
-        <div class="widget-head">
+                <div class="modal-actions">
 
-          <div>
-            <span class="eyebrow">STUDY ANALYTICS</span>
-            <h2>Momentum</h2>
-          </div>
+                    <button
+                        id="confirmCancelButton"
+                        type="button"
+                        class="secondary-button"
+                        data-close-modal
+                    >
+                        Cancel
+                    </button>
 
-          <span class="status-pill">
-            LIVE
-          </span>
+                    <button
+                        id="confirmActionButton"
+                        type="button"
+                        class="danger-button"
+                    >
+                        Confirm
+                    </button>
 
-        </div>
+                </div>
 
-        <div class="analytics-grid">
-
-          <div class="metric-card">
-            <span>TODAY</span>
-            <strong id="analyticsToday">0m</strong>
-            <small>Focus time</small>
-          </div>
-
-          <div class="metric-card">
-            <span>7 DAYS</span>
-            <strong id="analyticsWeek">0m</strong>
-            <small>Rolling total</small>
-          </div>
-
-          <div class="metric-card">
-            <span>STREAK</span>
-            <strong id="analyticsStreak">0d</strong>
-            <small>Consecutive days</small>
-          </div>
-
-          <div class="metric-card">
-            <span>DONE</span>
-            <strong id="analyticsCompletion">0%</strong>
-            <small>Tasks completed</small>
-          </div>
+            </div>
 
         </div>
 
-        <div class="analytics-bottom">
-
-          <div>
-            <span class="eyebrow">NEXT MILESTONE</span>
-            <strong id="nextMilestone">
-              Start your first session.
-            </strong>
-          </div>
-
-          <button
-            class="glass-button compact"
-            id="clearStudyLogsBtn"
-          >
-            Clear history
-          </button>
-
-        </div>
-
-      </article>
-
-    </section>
-  </main>
+    </div>
 
 
-  <!-- FLOATING DOCK -->
-  <nav
-    class="liquid-dock"
-    id="liquidDock"
-    aria-label="Main navigation"
-  >
-
+    <!-- =========================================================
+         TOAST NOTIFICATIONS
+    ========================================================== -->
     <div
-      class="dock-glide"
-      id="dockGlide"
+        id="toastContainer"
+        class="toast-container"
+        aria-live="polite"
     ></div>
 
-    <button
-      class="dock-item active"
-      data-view="overview"
-    >
-      <span class="dock-icon">⌂</span>
-      <span>Home</span>
-    </button>
 
-    <button
-      class="dock-item"
-      data-view="focus"
-    >
-      <span class="dock-icon">◷</span>
-      <span>Focus</span>
-    </button>
-
-    <button
-      class="dock-item"
-      data-view="tasks"
-    >
-      <span class="dock-icon">✓</span>
-      <span>Tasks</span>
-    </button>
-
-    <button
-      class="dock-item"
-      data-view="notes"
-    >
-      <span class="dock-icon">✎</span>
-      <span>Notes</span>
-    </button>
-
-    <button
-      class="dock-item"
-      data-view="more"
-    >
-      <span class="dock-icon">•••</span>
-      <span>More</span>
-    </button>
-
-  </nav>
-
-
-  <!-- MORE SHEET -->
-  <div
-    class="sheet-backdrop hidden"
-    id="moreBackdrop"
-  >
-
-    <section
-      class="bottom-sheet liquid-surface"
-      id="moreSheet"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="moreTitle"
-    >
-
-      <div class="sheet-handle"></div>
-
-      <div class="widget-head">
-
-        <div>
-          <span class="eyebrow">WORKSPACE</span>
-          <h2 id="moreTitle">More</h2>
-        </div>
-
-        <button
-          class="mini-icon"
-          id="closeMore"
-          aria-label="Close"
-        >
-          ×
-        </button>
-
-      </div>
-
-
-      <div class="sheet-section">
-
-        <span class="section-title">
-          Workspace
-        </span>
-
-        <div class="sheet-actions">
-
-          <button
-            class="sheet-action"
-            data-sheet-view="links"
-          >
-            <b>Launchpad</b>
-            <small>Quick links</small>
-          </button>
-
-          <button
-            class="sheet-action"
-            data-sheet-view="analytics"
-          >
-            <b>Analytics</b>
-            <small>Study history</small>
-          </button>
-
-        </div>
-      </div>
-
-
-      <div class="sheet-section">
-
-        <span class="section-title">
-          Appearance
-        </span>
-
-        <div class="setting-row">
-
-          <div>
-            <b>Theme</b>
-            <small>
-              Change the glass atmosphere
-            </small>
-          </div>
-
-          <select
-            id="themeSelect"
-            class="glass-input compact-input"
-          >
-            <option value="midnight">Midnight</option>
-            <option value="moonlight">Moonlight</option>
-            <option value="aurora">Aurora</option>
-          </select>
-
-        </div>
-
-        <div
-          class="accent-row"
-          id="accentPicker"
-        >
-          <button
-            data-accent="blue"
-            aria-label="Blue accent"
-          ></button>
-
-          <button
-            data-accent="violet"
-            aria-label="Violet accent"
-          ></button>
-
-          <button
-            data-accent="mint"
-            aria-label="Mint accent"
-          ></button>
-
-          <button
-            data-accent="rose"
-            aria-label="Rose accent"
-          ></button>
-
-          <button
-            data-accent="amber"
-            aria-label="Amber accent"
-          ></button>
-        </div>
-
-      </div>
-
-
-      <div class="sheet-section">
-
-        <div class="setting-row setting-row-head">
-
-          <div>
-            <b>Personal layout</b>
-
-            <small>
-              Firebase remembers what you choose.
-            </small>
-          </div>
-
-          <button
-            class="glass-button compact"
-            id="resetLayoutBtn"
-          >
-            Reset
-          </button>
-
-        </div>
-
-        <div
-          class="layout-manager"
-          id="layoutManager"
-        ></div>
-
-      </div>
-
-
-      <div class="sheet-section">
-
-        <span class="section-title">
-          Timer defaults
-        </span>
-
-        <div class="timer-settings">
-
-          <label>
-            Focus
-            <input
-              id="focusMinutesInput"
-              class="glass-input"
-              type="number"
-              min="1"
-              max="120"
-            >
-          </label>
-
-          <label>
-            Short break
-            <input
-              id="shortMinutesInput"
-              class="glass-input"
-              type="number"
-              min="1"
-              max="60"
-            >
-          </label>
-
-          <label>
-            Long break
-            <input
-              id="longMinutesInput"
-              class="glass-input"
-              type="number"
-              min="1"
-              max="90"
-            >
-          </label>
-
-        </div>
-
-      </div>
-
-    </section>
-  </div>
-
-
-  <!-- LINK MODAL -->
-  <div
-    class="modal-backdrop hidden"
-    id="modalBackdrop"
-  >
-
-    <section
-      class="modal liquid-surface"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="linkModalTitle"
-    >
-
-      <div class="widget-head">
-
-        <div>
-          <span class="eyebrow">LAUNCHPAD</span>
-          <h2 id="linkModalTitle">
-            Add a quick link
-          </h2>
-        </div>
-
-        <button
-          class="mini-icon"
-          id="closeLinkModal"
-          aria-label="Close"
-        >
-          ×
-        </button>
-
-      </div>
-
-      <form
-        id="linkForm"
-        class="modal-form"
-      >
-
-        <label>
-          Name
-          <input
-            class="glass-input"
-            id="linkTitle"
-            maxlength="40"
-            required
-            placeholder="Canvas"
-          >
-        </label>
-
-        <label>
-          URL
-          <input
-            class="glass-input"
-            id="linkUrl"
-            type="url"
-            required
-            placeholder="https://example.com"
-          >
-        </label>
-
-        <label>
-          Accent
-          <select
-            class="glass-input"
-            id="linkColor"
-          >
-            <option value="blue">Blue</option>
-            <option value="violet">Violet</option>
-            <option value="mint">Mint</option>
-            <option value="rose">Rose</option>
-            <option value="amber">Amber</option>
-          </select>
-        </label>
-
-        <div class="button-row">
-
-          <button
-            type="button"
-            class="glass-button"
-            id="cancelLinkBtn"
-          >
-            Cancel
-          </button>
-
-          <button
-            type="submit"
-            class="accent-button"
-          >
-            Save link
-          </button>
-
-        </div>
-
-      </form>
-
-    </section>
-
-  </div>
-
-
-  <div
-    class="toast"
-    id="toast"
-  ></div>
-
-
-  <script
-    type="module"
-    src="./script.js"
-  ></script>
+    <!-- MAIN JAVASCRIPT -->
+    <script src="script.js"></script>
 
 </body>
 </html>
